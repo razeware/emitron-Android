@@ -1,0 +1,150 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'com.google.firebase.firebase-perf'
+
+apply plugin: 'io.fabric'
+
+apply plugin: 'kotlin-kapt'
+
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+
+android {
+  compileSdkVersion versions.compileSdk
+
+  dataBinding {
+    enabled = true
+  }
+
+  defaultConfig {
+    applicationId "com.raywenderlich.Emitron"
+    minSdkVersion versions.minSdk
+    targetSdkVersion versions.targetSdk
+    versionCode versions.versionCode
+    versionName versions.versionName
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    vectorDrawables.useSupportLibrary true
+    multiDexEnabled true
+    javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+}
+
+dependencies {
+  implementation project(':model')
+
+  implementation "androidx.annotation:annotation:${versions.annotations}"
+
+  implementation "androidx.appcompat:appcompat:${versions.appCompat}"
+  implementation "androidx.fragment:fragment-ktx:${versions.fragmentKtx}"
+
+  implementation "androidx.core:core-ktx:${versions.coreKtx}"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
+
+  // WorkManager
+  implementation "androidx.work:work-runtime-ktx:${versions.workManager}"
+
+  // Dagger
+  // https://github.com/google/dagger
+  implementation "com.google.dagger:dagger:${versions.dagger}"
+  implementation "com.google.dagger:dagger-android:${versions.dagger}"
+  implementation "com.google.dagger:dagger-android-support:${versions.dagger}"
+
+  // Navigation
+  // https://developer.android.com/guide/navigation/
+  implementation "androidx.navigation:navigation-ui-ktx:${versions.navigation}"
+  implementation "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"
+
+  // Coroutines
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
+
+  // Architecture components
+  implementation "androidx.lifecycle:lifecycle-extensions:${versions.architectureComponents}"
+  implementation "androidx.lifecycle:lifecycle-common-java8:${versions.architectureComponents}"
+  implementation "androidx.paging:paging-runtime-ktx:${versions.architectureComponentsPaging}"
+
+  implementation "com.google.android.material:material:${versions.materialDesign}"
+
+  // RecyclerView
+  implementation "androidx.recyclerview:recyclerview:${versions.recyclerView}"
+
+  // ConstraintLayout
+  implementation "androidx.constraintlayout:constraintlayout:${versions.constraintLayout}"
+
+  // VectorDrawable
+  implementation "androidx.vectordrawable:vectordrawable:${versions.vectorDrawable}"
+
+  // Exoplayer
+  // https://github.com/google/ExoPlayer
+  implementation "com.google.android.exoplayer:exoplayer-core:${versions.exoplayer}"
+  implementation "com.google.android.exoplayer:exoplayer-ui:${versions.exoplayer}"
+
+  implementation "com.google.firebase:firebase-config:${versions.firebaseConfig}"
+
+  // Retrofit
+  // https://github.com/square/retrofit
+  implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
+  implementation "com.squareup.retrofit2:converter-moshi:${versions.retrofit}"
+
+  // OkHttp
+  // https://github.com/square/okhttp
+  implementation "com.squareup.okhttp3:okhttp:${versions.okHttp}"
+  implementation "com.squareup.okhttp3:logging-interceptor:${versions.okHttp}"
+
+  // Moshi
+  // https://github.com/square/moshi
+  implementation "com.squareup.moshi:moshi:${versions.moshi}"
+
+  implementation "androidx.room:room-runtime:${versions.room}"
+
+  implementation "com.crashlytics.sdk.android:crashlytics:${versions.crashlytics}"
+
+  // Firebase
+  implementation "com.google.firebase:firebase-config:${versions.firebaseConfig}"
+
+  // Firebase Performance
+  implementation "com.google.firebase:firebase-perf:${versions.firebasePerf}"
+
+  // Glide
+  // https://github.com/bumptech/glide
+  implementation "com.github.bumptech.glide:glide:${versions.glide}"
+
+  // Compilers/Annotation processors
+
+  kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
+  kapt "com.google.dagger:dagger-android-processor:${versions.dagger}"
+  kapt "androidx.room:room-compiler:${versions.room}"
+  kapt "com.github.bumptech.glide:compiler:${versions.glide}"
+
+  // Test libraries
+
+  testImplementation "junit:junit:${versions.junit}"
+  testImplementation "org.mockito:mockito-core:${versions.mockito}"
+  testImplementation "org.mockito:mockito-inline:${versions.mockito}"
+  testImplementation "com.nhaarman:mockito-kotlin-kt1.1:${versions.mockitoKotlin}"
+  testImplementation "org.mockito:mockito-android:${versions.mockito}"
+  testImplementation "org.powermock:powermock-api-mockito2:${versions.powerMock}"
+  testImplementation "org.powermock:powermock-module-junit4:${versions.powerMock}"
+  testImplementation "android.arch.core:core-testing:${versions.architectureComponents}"
+  testImplementation "androidx.test:runner:${versions.testRunner}"
+  testImplementation "androidx.test:rules:${versions.testRunner}"
+  testImplementation "com.squareup.retrofit2:retrofit-mock:${versions.retrofit}"
+  testImplementation "io.mockk:mockk:${versions.mockk}"
+}
+
+apply plugin: 'com.google.gms.google-services'
