@@ -94,8 +94,6 @@ dependencies {
   implementation "com.google.android.exoplayer:exoplayer-core:${versions.exoplayer}"
   implementation "com.google.android.exoplayer:exoplayer-ui:${versions.exoplayer}"
 
-  implementation "com.google.firebase:firebase-config:${versions.firebaseConfig}"
-
   // Retrofit
   // https://github.com/square/retrofit
   implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
@@ -113,9 +111,6 @@ dependencies {
   implementation "androidx.room:room-runtime:${versions.room}"
 
   implementation "com.crashlytics.sdk.android:crashlytics:${versions.crashlytics}"
-
-  // Firebase
-  implementation "com.google.firebase:firebase-config:${versions.firebaseConfig}"
 
   // Firebase Performance
   implementation "com.google.firebase:firebase-perf:${versions.firebasePerf}"
