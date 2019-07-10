@@ -3,6 +3,8 @@ package com.raywenderlich.emitron.di
 import com.raywenderlich.emitron.MainActivity
 import com.raywenderlich.emitron.di.bindings.FragmentBindings
 import com.raywenderlich.emitron.di.bindings.ViewModelBindings
+import com.raywenderlich.emitron.di.impl.AuthInterceptor
+import com.raywenderlich.emitron.di.impl.AuthInterceptorImpl
 import com.raywenderlich.emitron.di.impl.ThreadManager
 import com.raywenderlich.emitron.di.impl.ThreadManagerImpl
 import dagger.Binds
@@ -17,5 +19,8 @@ abstract class AppBindings {
 
   @Binds
   abstract fun provideThreadManager(schedulerProvider: ThreadManagerImpl): ThreadManager
+
+  @Binds
+  abstract fun provideAuthInterceptor(authInterceptor: AuthInterceptorImpl): AuthInterceptor
 }
 

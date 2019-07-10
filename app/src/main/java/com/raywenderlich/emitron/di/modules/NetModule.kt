@@ -1,6 +1,8 @@
 package com.raywenderlich.emitron.di.modules
 
 import com.raywenderlich.emitron.BuildConfig
+import com.raywenderlich.emitron.data.content.ContentApi
+import com.raywenderlich.emitron.di.impl.AuthInterceptorImpl
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -27,9 +29,13 @@ class NetModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideOkHttp(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
+    fun provideOkHttp(
+      loggingInterceptor: HttpLoggingInterceptor,
+      authInterceptor: AuthInterceptorImpl
+    ): OkHttpClient =
       OkHttpClient.Builder()
         .connectTimeout(10, TimeUnit.SECONDS)
+        .addNetworkInterceptor(authInterceptor)
         .addInterceptor(loggingInterceptor)
         .build()
 
@@ -38,9 +44,14 @@ class NetModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
       Retrofit.Builder()
-        .baseUrl("https://api.raywenderlich.com") // Move to BuildConfig
+        .baseUrl("https://api.raywenderlich.com/api/") // Move to BuildConfig
         .addConverterFactory(MoshiConverterFactory.create())
         .client(okHttpClient)
         .build()
+
+    @JvmStatic
+    @Provides
+    fun provideCollectionApi(retrofit: Retrofit) = ContentApi.create(retrofit)
   }
+
 }
