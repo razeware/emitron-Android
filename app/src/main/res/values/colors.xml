@@ -1,7 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="colorPrimary">#008577</color>
-  <color name="colorPrimaryDark">#202020</color>
-  <color name="colorAccent">#D81B60</color>
-  <color name="ic_launcher_background">#050505</color>
+  <color name="dark_sea_green">#158443</color>
+  <color name="dark_sea_green_2">#16914a</color>
+  <color name="charcoal_black">#333333</color>
+  <color name="bright_grey">#3b4048</color>
+  <color name="raven_grey">#6e7687</color>
+  <color name="blue_grey">#73859f</color>
+  <color name="light_gray_blue">#a7adb4</color>
+  <color name="pale_blue">#dfe7f0</color>
+  <color name="aqua_haze_grey">#6e7687</color>
+  <color name="pale_grey">#f2f6fa</color>
+  <color name="copper">#cf3b2b</color>
+  <color name="pumpkin_orange">#fd7401</color>
+  <color name="white">#ffffff</color>
+  <color name="pale_red">#d54434</color>
+  <color name="charcoal_grey">#424750</color>
+
+  <color name="colorPrimary">@color/dark_sea_green</color>
+  <color name="colorPrimaryDark">@color/bright_grey</color>
+  <color name="colorAccent">@color/dark_sea_green</color>
+  <color name="colorAccentPressed">@color/dark_sea_green_2</color>
+  <color name="colorButton2">@color/bright_grey</color>
+  <color name="colorButton2Pressed">@color/charcoal_grey</color>
+  <color name="colorButton3">@color/copper</color>
+  <color name="colorButton3Pressed">@color/pale_red</color>
+
+  <color name="textColorBody1">@color/white</color>
+  <color name="textColorButton">@color/white</color>
+  <color name="textColorOverline">@color/white</color>
+  <color name="textColorBody2">@color/light_gray_blue</color>
+  <color name="textColorLabel">@color/light_gray_blue</color>
+  <color name="textColorFootnote">@color/light_gray_blue</color>
+  <color name="textColorCaption">@color/light_gray_blue</color>
+
+  <color name="colorDivider">@color/light_gray_blue</color>
+
 </resources>

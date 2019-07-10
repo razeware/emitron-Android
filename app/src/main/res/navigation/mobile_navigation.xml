@@ -3,23 +3,39 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/mobile_navigation"
-  app:startDestination="@+id/navigation_home">
+  app:startDestination="@+id/navigation_library">
 
   <fragment
-    android:id="@+id/navigation_home"
-    android:name="com.raywenderlich.emitron.ui.collection.CollectionFragment"
-    android:label="@string/title_library"
+    android:id="@+id/navigation_library"
+    android:name="com.raywenderlich.emitron.ui.library.LibraryFragment"
     tools:layout="@layout/fragment_library" />
 
   <fragment
-    android:id="@+id/navigation_dashboard"
-    android:name="com.raywenderlich.emitron.ui.library.MyTutorialFragment"
-    android:label="@string/title_downloads"
+    android:id="@+id/navigation_login"
+    android:name="com.raywenderlich.emitron.ui.login.LoginFragment"
+    tools:layout="@layout/fragment_login" />
+
+  <fragment
+    android:id="@+id/navigation_collection"
+    android:name="com.raywenderlich.emitron.ui.collection.CollectionFragment"
+    tools:layout="@layout/fragment_collection" />
+
+  <fragment
+    android:id="@+id/navigation_downloads"
+    android:name="com.raywenderlich.emitron.ui.download.DownloadFragment"
     tools:layout="@layout/fragment_downloads" />
 
   <fragment
-    android:id="@+id/navigation_notifications"
-    android:name="com.raywenderlich.emitron.ui.download.DownloadFragment"
-    android:label="@string/title_my_tutorials"
-    tools:layout="@layout/fragment_tutorials" />
+    android:id="@+id/navigation_my_tutorials"
+    android:name="com.raywenderlich.emitron.ui.mytutorial.MyTutorialFragmentHost"
+    tools:layout="@layout/fragment_my_tutorials" />
+
+  <action
+    android:id="@+id/navigation_action_settings"
+    app:destination="@id/navigation_settings" />
+
+  <fragment
+    android:id="@+id/navigation_settings"
+    android:name="com.raywenderlich.emitron.ui.settings.SettingsFragment"
+    tools:layout="@layout/fragment_settings" />
 </navigation>

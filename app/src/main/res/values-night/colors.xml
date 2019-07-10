@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="dark_sea_green">#158443</color>
+  <color name="charcoal_black">#333333</color>
+  <color name="bright_grey">#3b4048</color>
+  <color name="blue_grey">#73859f</color>
+  <color name="light_gray_blue">#a7adb4</color>
+  <color name="copper">#cf3b2b</color>
+  <color name="pumpkin_orange">#fd7401</color>
+  <color name="white">#ffffff</color>
+</resources>
