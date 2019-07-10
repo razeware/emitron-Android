@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <fraction name="letter_spacing_headline">-0.5</fraction>
+  <fraction name="letter_spacing_subtitle">0.15</fraction>
+  <fraction name="letter_spacing_label">0.5</fraction>
+  <fraction name="letter_spacing_body">0.5</fraction>
+  <fraction name="letter_spacing_footnote">0.25</fraction>
+  <fraction name="letter_spacing_overline">1.5</fraction>
+</resources>
