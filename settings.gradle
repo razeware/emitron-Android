@@ -1,0 +1,2 @@
+include ':app', ':model'
+rootProject.name = 'Emitron'

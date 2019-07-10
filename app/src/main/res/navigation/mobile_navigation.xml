@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/mobile_navigation"
+  app:startDestination="@+id/navigation_home">
+
+  <fragment
+    android:id="@+id/navigation_home"
+    android:name="com.raywenderlich.emitron.ui.collection.CollectionFragment"
+    android:label="@string/title_library"
+    tools:layout="@layout/fragment_library" />
+
+  <fragment
+    android:id="@+id/navigation_dashboard"
+    android:name="com.raywenderlich.emitron.ui.library.MyTutorialFragment"
+    android:label="@string/title_downloads"
+    tools:layout="@layout/fragment_downloads" />
+
+  <fragment
+    android:id="@+id/navigation_notifications"
+    android:name="com.raywenderlich.emitron.ui.download.DownloadFragment"
+    android:label="@string/title_my_tutorials"
+    tools:layout="@layout/fragment_tutorials" />
+</navigation>
