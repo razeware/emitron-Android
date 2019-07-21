@@ -13,26 +13,51 @@
   <color name="copper">#cf3b2b</color>
   <color name="pumpkin_orange">#fd7401</color>
   <color name="white">#ffffff</color>
+  <color name="white_50">#ddffffff</color>
   <color name="pale_red">#d54434</color>
   <color name="charcoal_grey">#424750</color>
+  <color name="transparent">#00000000</color>
 
   <color name="colorPrimary">@color/dark_sea_green</color>
-  <color name="colorPrimaryDark">@color/bright_grey</color>
-  <color name="colorAccent">@color/dark_sea_green</color>
-  <color name="colorAccentPressed">@color/dark_sea_green_2</color>
+  <color name="colorPrimaryDark">@color/dark_sea_green_2</color>
+
+  <color name="colorBackground">@color/pale_grey</color>
+  <color name="colorSurface">@color/white</color>
+  <color name="colorError">@color/copper</color>
+  <color name="colorOnPrimary">@color/white</color>
+  <color name="colorOnError">@color/white</color>
+  <color name="colorOnSurface">@color/white</color>
+  <color name="colorOnBackground">@color/white</color>
+
+  <color name="colorButton1">@color/dark_sea_green</color>
+  <color name="colorButton1Pressed">@color/dark_sea_green_2</color>
   <color name="colorButton2">@color/bright_grey</color>
   <color name="colorButton2Pressed">@color/charcoal_grey</color>
   <color name="colorButton3">@color/copper</color>
   <color name="colorButton3Pressed">@color/pale_red</color>
 
-  <color name="textColorBody1">@color/white</color>
-  <color name="textColorButton">@color/white</color>
-  <color name="textColorOverline">@color/white</color>
-  <color name="textColorBody2">@color/light_gray_blue</color>
-  <color name="textColorLabel">@color/light_gray_blue</color>
-  <color name="textColorFootnote">@color/light_gray_blue</color>
+  <color name="textColorBody1">@color/raven_grey</color>
+  <color name="textColorBody1OnDark">@color/white</color>
+  <color name="textColorButton">@color/raven_grey</color>
+  <color name="textColorOverline">@color/raven_grey</color>
+  <color name="textColorOverlineOnWhite">@color/raven_grey</color>
+  <color name="textColorBody2">@color/raven_grey</color>
+  <color name="textColorLabel">@color/raven_grey</color>
+  <color name="textColorFootnote">@color/raven_grey</color>
   <color name="textColorCaption">@color/light_gray_blue</color>
+  <color name="textColorHeadline">@color/charcoal_black</color>
+  <color name="textColorHeadlineOnDark">@color/white</color>
 
-  <color name="colorDivider">@color/light_gray_blue</color>
+  <color name="colorDivider">@color/bright_grey</color>
+  <color name="colorDividerOnLight">@color/bright_grey</color>
+  <color name="colorDividerOnDark">@color/light_gray_blue</color>
+  <color name="colorIcon">@color/light_gray_blue</color>
+
+  <color name="colorGradientEnd">@android:color/transparent</color>
+  <color name="colorGradientProgress">@color/white_50</color>
+  <color name="colorGradientStart">@color/charcoal_grey</color>
+  <color name="colorLauncherBackground">@color/charcoal_black</color>
+  <color name="colorPlayerProgress">@color/colorPrimary</color>
+  <color name="colorPlayerBuffered">@color/bright_grey</color>
 
 </resources>

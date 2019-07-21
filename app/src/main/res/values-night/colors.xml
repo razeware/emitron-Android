@@ -8,4 +8,27 @@
   <color name="copper">#cf3b2b</color>
   <color name="pumpkin_orange">#fd7401</color>
   <color name="white">#ffffff</color>
+
+  <color name="colorPrimary">@color/dark_sea_green</color>
+  <color name="colorPrimaryDark">@color/bright_grey</color>
+  <color name="colorButton1">@color/dark_sea_green</color>
+  <color name="colorButton1Pressed">@color/dark_sea_green_2</color>
+  <color name="colorButton2">@color/bright_grey</color>
+  <color name="colorButton2Pressed">@color/charcoal_grey</color>
+  <color name="colorButton3">@color/copper</color>
+  <color name="colorButton3Pressed">@color/pale_red</color>
+  <color name="colorSurface">@color/charcoal_black</color>
+
+  <color name="textColorBody1">@color/white</color>
+  <color name="textColorButton">@color/white</color>
+  <color name="textColorOverline">@color/white</color>
+  <color name="textColorBody2">@color/light_gray_blue</color>
+  <color name="textColorLabel">@color/white</color>
+  <color name="textColorFootnote">@color/light_gray_blue</color>
+  <color name="textColorCaption">@color/light_gray_blue</color>
+  <color name="textColorHeadline">@color/white</color>
+
+  <color name="colorDivider">@color/light_gray_blue</color>
+  <color name="colorIcon">@color/light_gray_blue</color>
+
 </resources>
