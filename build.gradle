@@ -8,16 +8,16 @@ buildscript {
       'targetSdk'                   : 28,
       'compileSdk'                  : 28,
       'gradle'                      : '3.5.0-rc01',
-      'kotlin'                      : '1.3.40',
+      'kotlin'                      : '1.3.41',
 
       // core
       'coreKtx'                     : "1.0.2",
-      'fragmentKtx'                 : "1.0.0",
-      'architectureComponents'      : "2.0.0",
+      'fragmentKtx'                 : "1.1.0-rc01",
+      'architectureComponents'      : "2.1.0-rc01",
       'architectureComponentsPaging': "2.1.0",
-      'workManager'                 : "2.0.1",
+      'workManager'                 : '2.1.0',
       'annotations'                 : "1.1.0",
-      'appCompat'                   : "1.0.2",
+      'appCompat'                   : "1.1.0-rc01",
       'multidex'                    : "2.0.1",
       'browser'                     : "1.0.0", // Chrome custom tabs
 
@@ -32,7 +32,7 @@ buildscript {
       'constraintLayout'            : "1.1.3",
       'exoplayer'                   : "2.10.1",
       'navigation'                  : "2.0.0",
-      'materialDesign'              : "1.0.0",
+      'materialDesign'              : "1.1.0-alpha08",
       'vectorDrawable'              : "1.0.1",
       'recyclerView'                : "1.0.0",
 
@@ -45,7 +45,7 @@ buildscript {
       //network
       'retrofit'                    : "2.6.0",
       'moshi'                       : "1.8.0",
-      'okHttp'                      : "3.14.2",
+      'okHttp'                      : '4.0.1',
       'glide'                       : "4.9.0",
 
       //quality
