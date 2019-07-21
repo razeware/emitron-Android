@@ -1,6 +1,6 @@
 package com.raywenderlich.emitron.impl
 
-import com.raywenderlich.emitron.utils.RequestHelper
+import com.raywenderlich.emitron.network.RequestHelper
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject

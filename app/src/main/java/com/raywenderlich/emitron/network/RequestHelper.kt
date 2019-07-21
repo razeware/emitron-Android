@@ -1,4 +1,4 @@
-package com.raywenderlich.emitron.utils
+package com.raywenderlich.emitron.network
 
 import androidx.collection.ArrayMap
 import com.raywenderlich.emitron.BuildConfig
