@@ -1,4 +1,4 @@
-package com.raywenderlich.emitron.di.utils
+package com.raywenderlich.emitron.utils
 
 import androidx.collection.ArrayMap
 import com.raywenderlich.emitron.BuildConfig
@@ -9,7 +9,8 @@ data class RequestHelper @JvmOverloads constructor(
 
   fun getHeaders(): ArrayMap<String, String> {
     val headers = ArrayMap<String, String>()
-    headers[SOURCE] = ANDROID
+    headers[SOURCE] =
+      ANDROID
     headers[HEADER_CLIENT_NAME] = BuildConfig.APPLICATION_ID
     headers[HEADER_CLIENT_VERSION] = BuildConfig.VERSION_NAME
     headers[ACCEPT] = "application/vnd.api+json; charset=utf-8"

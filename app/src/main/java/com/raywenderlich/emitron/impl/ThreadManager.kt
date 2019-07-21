@@ -1,4 +1,4 @@
-package com.raywenderlich.emitron.di.impl
+package com.raywenderlich.emitron.impl
 
 import kotlinx.coroutines.CoroutineDispatcher
 import java.util.concurrent.Executor
