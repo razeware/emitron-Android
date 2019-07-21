@@ -45,6 +45,7 @@ android {
 }
 
 dependencies {
+  api fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
   implementation project(':model')
 
   implementation "androidx.annotation:annotation:${versions.annotations}"
@@ -74,8 +75,11 @@ dependencies {
   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
 
   // Architecture components
-  implementation "androidx.lifecycle:lifecycle-extensions:${versions.architectureComponents}"
+  implementation "androidx.lifecycle:lifecycle-runtime:${versions.architectureComponents}"
   implementation "androidx.lifecycle:lifecycle-common-java8:${versions.architectureComponents}"
+  implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.architectureComponents}"
+
+
   implementation "androidx.paging:paging-runtime-ktx:${versions.architectureComponentsPaging}"
 
   implementation "com.google.android.material:material:${versions.materialDesign}"
@@ -93,6 +97,9 @@ dependencies {
   // https://github.com/google/ExoPlayer
   implementation "com.google.android.exoplayer:exoplayer-core:${versions.exoplayer}"
   implementation "com.google.android.exoplayer:exoplayer-ui:${versions.exoplayer}"
+  implementation "com.google.android.exoplayer:exoplayer-hls:${versions.exoplayer}"
+  implementation "com.google.android.exoplayer:extension-cast:${versions.exoplayer}"
+
 
   // Retrofit
   // https://github.com/square/retrofit
@@ -106,7 +113,7 @@ dependencies {
 
   // Moshi
   // https://github.com/square/moshi
-  implementation "com.squareup.moshi:moshi:${versions.moshi}"
+  implementation "com.squareup.moshi:moshi-kotlin:${versions.moshi}"
 
   implementation "androidx.room:room-runtime:${versions.room}"
 
@@ -118,6 +125,8 @@ dependencies {
   // Glide
   // https://github.com/bumptech/glide
   implementation "com.github.bumptech.glide:glide:${versions.glide}"
+
+  implementation "androidx.browser:browser:${versions.browser}"
 
   // Compilers/Annotation processors
 
@@ -131,12 +140,17 @@ dependencies {
   testImplementation "junit:junit:${versions.junit}"
   testImplementation "org.mockito:mockito-core:${versions.mockito}"
   testImplementation "org.mockito:mockito-inline:${versions.mockito}"
+  testImplementation "com.nhaarman:mockito-kotlin-kt1.1:${versions.mockitoKotlin}"
   testImplementation "org.mockito:mockito-android:${versions.mockito}"
   testImplementation "android.arch.core:core-testing:${versions.architectureComponents}"
   testImplementation "androidx.test:runner:${versions.testRunner}"
   testImplementation "androidx.test:rules:${versions.testRunner}"
   testImplementation "com.squareup.retrofit2:retrofit-mock:${versions.retrofit}"
   testImplementation "io.mockk:mockk:${versions.mockk}"
+
+  implementation "androidx.mediarouter:mediarouter:${versions.mediarouter}"
+  implementation "com.google.android.gms:play-services-cast-framework:${versions.castFramework}"
+
 }
 
 apply plugin: 'com.google.gms.google-services'
