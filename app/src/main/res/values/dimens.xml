@@ -63,6 +63,11 @@
   <dimen name="height_collection_banner">272dp</dimen>
   <dimen name="button_episode_number_height_width">36dp</dimen>
   <dimen name="button_episode_number_margin_end">16dp</dimen>
+  <dimen name="banner_play_icon_width_height">72dp</dimen>
+  <dimen name="banner_play_icon_padding">12dp</dimen>
+  <dimen name="banner_play_stroke_width">4dp</dimen>
+
+  <!-- Player view -->
 
   <!-- Card divider height -->
   <dimen name="height_card_divider">1dp</dimen>

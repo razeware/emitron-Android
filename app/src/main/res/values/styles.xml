@@ -194,7 +194,8 @@
     <item name="android:textStyle">bold</item>
   </style>
 
-  <style name="SearchTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+  <style name="SearchTextInputLayout"
+    parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
     <item name="boxBackgroundColor">@color/colorSurface</item>
     <item name="boxBackgroundMode">outline</item>
     <item name="boxCornerRadiusBottomEnd">@dimen/button_corner_radius</item>
