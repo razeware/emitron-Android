@@ -10,7 +10,7 @@ import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class MyTutorialFragmentHost : DaggerFragment() {
+class MyTutorialHostFragment : DaggerFragment() {
 
   @Inject
   lateinit var viewModelFactory: ViewModelFactory

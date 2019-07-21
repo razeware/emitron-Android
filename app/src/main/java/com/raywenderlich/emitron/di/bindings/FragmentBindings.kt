@@ -5,7 +5,7 @@ import com.raywenderlich.emitron.ui.download.DownloadFragment
 import com.raywenderlich.emitron.ui.filter.FilterFragment
 import com.raywenderlich.emitron.ui.library.LibraryFragment
 import com.raywenderlich.emitron.ui.login.LoginFragment
-import com.raywenderlich.emitron.ui.mytutorial.MyTutorialFragmentHost
+import com.raywenderlich.emitron.ui.mytutorial.MyTutorialHostFragment
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkFragment
 import com.raywenderlich.emitron.ui.mytutorial.progression.ProgressionFragment
 import com.raywenderlich.emitron.ui.onboarding.OnboardingFragment
@@ -44,9 +44,9 @@ abstract class FragmentBindings {
   @ContributesAndroidInjector
   abstract fun contributeOnboardingFragment(): OnboardingFragment
 
-  @ContributesAndroidInjector()
-  abstract fun contributeMyTutorialFragment(): MyTutorialFragmentHost
+  @ContributesAndroidInjector
+  abstract fun contributeMyTutorialHostFragment(): MyTutorialHostFragment
 
-  @ContributesAndroidInjector()
+  @ContributesAndroidInjector
   abstract fun contributeProgressionFragment(): ProgressionFragment
 }
