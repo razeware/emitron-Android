@@ -3,23 +3,107 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/mobile_navigation"
-  app:startDestination="@+id/navigation_home">
+  app:startDestination="@id/navigation_library">
 
   <fragment
-    android:id="@+id/navigation_home"
+    android:id="@+id/navigation_library"
+    android:name="com.raywenderlich.emitron.ui.library.LibraryFragment"
+    tools:layout="@layout/fragment_library">
+
+    <action
+      android:id="@+id/action_navigation_library_to_navigation_filter"
+      app:destination="@id/navigation_filter" />
+
+    <action
+      android:id="@+id/action_navigation_library_to_navigation_collection"
+      app:destination="@id/navigation_collection">
+      <argument
+        android:name="collectionId"
+        android:defaultValue="@null"
+        app:argType="string"
+        app:nullable="true" />
+    </action>
+    <action
+      android:id="@+id/action_navigation_library_to_navigation_login"
+      app:destination="@id/navigation_login" />
+  </fragment>
+
+  <fragment
+    android:id="@+id/navigation_login"
+    android:name="com.raywenderlich.emitron.ui.login.LoginFragment"
+    tools:layout="@layout/fragment_login">
+
+    <action
+      android:id="@+id/action_navigation_login_to_navigation_library"
+      app:destination="@id/navigation_library"
+      app:popUpTo="@id/navigation_library"
+      app:popUpToInclusive="false" />
+  </fragment>
+
+  <fragment
+    android:id="@+id/navigation_collection"
     android:name="com.raywenderlich.emitron.ui.collection.CollectionFragment"
-    android:label="@string/title_library"
-    tools:layout="@layout/fragment_library" />
+    tools:layout="@layout/fragment_collection">
+    <argument
+      android:name="collectionId"
+      android:defaultValue="@null"
+      app:argType="string"
+      app:nullable="true" />
+    <action
+      android:id="@+id/action_navigation_collection_to_navigation_player"
+      app:destination="@id/navigation_player" />
+  </fragment>
 
   <fragment
-    android:id="@+id/navigation_dashboard"
-    android:name="com.raywenderlich.emitron.ui.library.MyTutorialFragment"
-    android:label="@string/title_downloads"
-    tools:layout="@layout/fragment_downloads" />
-
-  <fragment
-    android:id="@+id/navigation_notifications"
+    android:id="@+id/navigation_downloads"
     android:name="com.raywenderlich.emitron.ui.download.DownloadFragment"
-    android:label="@string/title_my_tutorials"
-    tools:layout="@layout/fragment_tutorials" />
+    tools:layout="@layout/fragment_downloads">
+    <action
+      android:id="@+id/action_navigation_downloads_to_navigation_library"
+      app:destination="@id/navigation_library"
+      app:popUpTo="@id/navigation_library"
+      app:popUpToInclusive="true" />
+  </fragment>
+
+  <fragment
+    android:id="@+id/navigation_my_tutorials"
+    android:name="com.raywenderlich.emitron.ui.mytutorial.MyTutorialFragmentHost"
+    tools:layout="@layout/fragment_my_tutorials_host">
+    <action
+      android:id="@+id/action_navigation_my_tutorials_to_navigation_settings"
+      app:destination="@id/navigation_settings" />
+    <action
+      android:id="@+id/action_navigation_my_tutorials_to_navigation_library"
+      app:destination="@id/navigation_library" />
+  </fragment>
+
+  <fragment
+    android:id="@+id/navigation_filter"
+    android:name="com.raywenderlich.emitron.ui.filter.FilterFragment"
+    tools:layout="@layout/fragment_filter">
+    <action
+      android:id="@+id/action_navigation_filter_to_navigation_library"
+      app:destination="@id/navigation_library"
+      app:popUpTo="@id/navigation_library"
+      app:popUpToInclusive="true" />
+  </fragment>
+
+  <fragment
+    android:id="@+id/navigation_settings"
+    android:name="com.raywenderlich.emitron.ui.settings.SettingsFragment"
+    tools:layout="@layout/fragment_settings">
+
+    <action
+      android:id="@+id/action_navigation_settings_to_navigation_login"
+      app:destination="@id/navigation_login" />
+  </fragment>
+
+  <fragment
+    android:id="@+id/navigation_player"
+    android:name="com.raywenderlich.emitron.ui.player.PlayerFragment"
+    tools:layout="@layout/fragment_player">
+    <action
+      android:id="@+id/action_navigation_player_to_navigation_settings"
+      app:destination="@id/navigation_settings" />
+  </fragment>
 </navigation>
