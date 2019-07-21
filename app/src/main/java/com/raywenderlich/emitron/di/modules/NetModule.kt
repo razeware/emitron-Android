@@ -1,7 +1,7 @@
 package com.raywenderlich.emitron.di.modules
 
 import com.raywenderlich.emitron.BuildConfig
-import com.raywenderlich.emitron.impl.AuthInterceptorImpl
+import com.raywenderlich.emitron.network.AuthInterceptorImpl
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient

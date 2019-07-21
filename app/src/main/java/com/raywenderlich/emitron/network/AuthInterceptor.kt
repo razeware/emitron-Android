@@ -1,4 +1,4 @@
-package com.raywenderlich.emitron.impl
+package com.raywenderlich.emitron.network
 
 interface AuthInterceptor {
   fun updateApiToken(apiToken: String)
