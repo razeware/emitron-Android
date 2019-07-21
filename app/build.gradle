@@ -140,7 +140,6 @@ dependencies {
   testImplementation "junit:junit:${versions.junit}"
   testImplementation "org.mockito:mockito-core:${versions.mockito}"
   testImplementation "org.mockito:mockito-inline:${versions.mockito}"
-  testImplementation "com.nhaarman:mockito-kotlin-kt1.1:${versions.mockitoKotlin}"
   testImplementation "org.mockito:mockito-android:${versions.mockito}"
   testImplementation "android.arch.core:core-testing:${versions.architectureComponents}"
   testImplementation "androidx.test:runner:${versions.testRunner}"
