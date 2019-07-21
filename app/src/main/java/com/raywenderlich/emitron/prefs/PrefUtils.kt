@@ -1,4 +1,4 @@
-package com.raywenderlich.emitron.utils
+package com.raywenderlich.emitron.prefs
 
 import javax.inject.Inject
 

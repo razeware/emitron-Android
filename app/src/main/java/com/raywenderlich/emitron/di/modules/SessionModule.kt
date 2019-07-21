@@ -1,7 +1,7 @@
 package com.raywenderlich.emitron.di.modules
 
-import com.raywenderlich.emitron.utils.PrefUtils
-import com.raywenderlich.emitron.utils.RequestHelper
+import com.raywenderlich.emitron.prefs.PrefUtils
+import com.raywenderlich.emitron.network.RequestHelper
 import dagger.Module
 import dagger.Provides
 
