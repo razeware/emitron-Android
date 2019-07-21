@@ -4,21 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import com.raywenderlich.emitron.R
+import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
+import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
-class OnboardingFragment : Fragment() {
+class OnboardingFragment : DaggerFragment() {
 
-  private lateinit var onboardingViewModel: OnboardingViewModel
+  @Inject
+  lateinit var viewModelFactory: ViewModelFactory
+
+  private val viewModel: OnboardingViewModel by viewModels { viewModelFactory }
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    onboardingViewModel =
-      ViewModelProviders.of(this).get(OnboardingViewModel::class.java)
     return inflater.inflate(R.layout.fragment_onboarding, container, false)
   }
 }

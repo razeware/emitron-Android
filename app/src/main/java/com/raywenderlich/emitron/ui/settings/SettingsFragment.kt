@@ -4,21 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import com.raywenderlich.emitron.R
+import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
+import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
-class SettingsFragment : Fragment() {
+class SettingsFragment : DaggerFragment() {
 
-  private lateinit var settingsViewModel: SettingsViewModel
+  @Inject
+  lateinit var viewModelFactory: ViewModelFactory
+
+  private val viewModel: SettingsViewModel by viewModels { viewModelFactory }
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    settingsViewModel =
-      ViewModelProviders.of(this).get(SettingsViewModel::class.java)
     return inflater.inflate(R.layout.fragment_settings, container, false)
   }
 }

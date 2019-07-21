@@ -1,8 +1,7 @@
 package com.raywenderlich.emitron.di.modules
 
 import com.raywenderlich.emitron.BuildConfig
-import com.raywenderlich.emitron.data.content.ContentApi
-import com.raywenderlich.emitron.di.impl.AuthInterceptorImpl
+import com.raywenderlich.emitron.impl.AuthInterceptorImpl
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -48,10 +47,6 @@ class NetModule {
         .addConverterFactory(MoshiConverterFactory.create())
         .client(okHttpClient)
         .build()
-
-    @JvmStatic
-    @Provides
-    fun provideCollectionApi(retrofit: Retrofit) = ContentApi.create(retrofit)
   }
 
 }
