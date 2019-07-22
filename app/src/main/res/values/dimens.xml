@@ -13,6 +13,9 @@
   <!-- Overline -->
   <dimen name="overline_padding_internal">6dp</dimen>
 
+  <!-- Icon -->
+  <dimen name="icon_height_width">24dp</dimen>
+
   <!-- Button -->
   <dimen name="button_height_default">48dp</dimen>
   <dimen name="button_wide_padding_internal">16dp</dimen>
@@ -25,6 +28,10 @@
   <dimen name="margin_button_adjacent">10dp</dimen>
   <dimen name="button_icon_height_width">48dp</dimen>
   <dimen name="button_spacing_horizontal">8dp</dimen>
+
+  <!-- Checkbox -->
+  <dimen name="checkbox_corner_radius">9dp</dimen>
+  <dimen name="checkbox_icon_stroke_width">2dp</dimen>
 
   <!-- Text -->
   <dimen name="text_size_h1">30sp</dimen>
