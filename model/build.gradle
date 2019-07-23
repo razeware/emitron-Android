@@ -30,6 +30,8 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
   implementation "androidx.room:room-runtime:${versions.room}"
   implementation "androidx.core:core-ktx:${versions.coreKtx}"
+  implementation "com.squareup.moshi:moshi:${versions.moshi}"
+  implementation "com.jakewharton.threetenabp:threetenabp:${versions.threetenabp}"
   kapt "androidx.room:room-compiler:${versions.room}"
   testImplementation "junit:junit:${versions.junit}"
 }
