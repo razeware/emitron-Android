@@ -10,7 +10,7 @@ import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class MyTutorialHostFragment : DaggerFragment() {
+class MyTutorialFragment : DaggerFragment() {
 
   @Inject
   lateinit var viewModelFactory: ViewModelFactory
@@ -22,6 +22,6 @@ class MyTutorialHostFragment : DaggerFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    return inflater.inflate(R.layout.fragment_my_tutorials_host, container, false)
+    return inflater.inflate(R.layout.fragment_my_tutorials, container, false)
   }
 }

@@ -24,6 +24,6 @@ class BookmarkFragment : DaggerFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    return inflater.inflate(R.layout.fragment_my_tutorials_host, container, false)
+    return inflater.inflate(R.layout.fragment_bookmarks, container, false)
   }
 }

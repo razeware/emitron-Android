@@ -67,8 +67,8 @@
 
   <fragment
     android:id="@+id/navigation_my_tutorials"
-    android:name="com.raywenderlich.emitron.ui.mytutorial.MyTutorialFragmentHost"
-    tools:layout="@layout/fragment_my_tutorials_host">
+    android:name="com.raywenderlich.emitron.ui.mytutorial.MyTutorialFragment"
+    tools:layout="@layout/fragment_my_tutorials">
     <action
       android:id="@+id/action_navigation_my_tutorials_to_navigation_settings"
       app:destination="@id/navigation_settings" />
