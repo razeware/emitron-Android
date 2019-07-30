@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = Collection.TABLE_NAME
+  tableName = Collection.TABLE_NAME
 )
 class Collection {
 
