@@ -2,4 +2,110 @@
   <!-- Default screen margins, per the Android Design guidelines. -->
   <dimen name="activity_horizontal_margin">16dp</dimen>
   <dimen name="activity_vertical_margin">16dp</dimen>
+
+  <!-- Card View -->
+  <dimen name="card_radius">6dp</dimen>
+  <dimen name="card_elevation_default">2dp</dimen>
+  <dimen name="card_radius_snackbar">4dp</dimen>
+
+  <!-- Search view -->
+  <dimen name="search_view_height_default">52dp</dimen>
+  <dimen name="search_view_stroke_width">2dp</dimen>
+
+  <!-- Icon -->
+  <dimen name="icon_height_width">24dp</dimen>
+
+  <!-- Overline -->
+  <dimen name="overline_padding_internal">6dp</dimen>
+  <dimen name="overline_elevation">1dp</dimen>
+
+  <!-- Button -->
+  <dimen name="button_height_default">48dp</dimen>
+  <dimen name="button_wide_padding_internal">16dp</dimen>
+  <dimen name="button_wide_corner_radius">8dp</dimen>
+  <dimen name="button_wide_inset">2dp</dimen>
+  <dimen name="button_corner_radius">6dp</dimen>
+  <dimen name="button_padding_internal">8dp</dimen>
+  <dimen name="button_padding_internal_dense">4dp</dimen>
+  <dimen name="button_inset">2dp</dimen>
+  <dimen name="button_icon_height_width">48dp</dimen>
+  <dimen name="button_spacing_horizontal">8dp</dimen>
+
+  <!-- Chip -->
+  <dimen name="chip_height_default">40dp</dimen>
+
+  <!-- Text -->
+  <dimen name="text_size_h1">30sp</dimen>
+  <dimen name="text_size_h2">24sp</dimen>
+  <dimen name="text_size_h3">20sp</dimen>
+  <dimen name="text_size_h4">18sp</dimen>
+  <dimen name="text_size_h5">16sp</dimen>
+  <dimen name="text_size_subtitle">16sp</dimen>
+  <dimen name="text_size_label">14sp</dimen>
+  <dimen name="text_size_body_1">16sp</dimen>
+  <dimen name="text_size_body_2">14sp</dimen>
+  <dimen name="text_size_footnote">13sp</dimen>
+  <dimen name="text_size_caption">12sp</dimen>
+  <dimen name="text_size_button">15sp</dimen>
+  <dimen name="text_size_button_small">13sp</dimen>
+  <dimen name="text_size_overline">10sp</dimen>
+  <dimen name="line_height_h1">30sp</dimen>
+  <dimen name="line_height_h2">30sp</dimen>
+  <dimen name="line_height_h3">28sp</dimen>
+  <dimen name="line_height_h4">25sp</dimen>
+  <dimen name="line_height_h5">17sp</dimen>
+  <dimen name="line_height_subtitle">17sp</dimen>
+  <dimen name="line_height_body_1">22sp</dimen>
+  <dimen name="line_height_body_2">20sp</dimen>
+  <dimen name="line_height_label">14sp</dimen>
+  <dimen name="line_height_footnote">18sp</dimen>
+  <dimen name="line_height_caption">16sp</dimen>
+  <dimen name="line_height_overline">13sp</dimen>
+  <dimen name="line_height_button">15sp</dimen>
+
+  <dimen name="text_drawable_padding_dense">4dp</dimen>
+  <dimen name="text_label_padding">6dp</dimen>
+  <dimen name="text_spacing_vertical_body">12dp</dimen>
+  <dimen name="text_spacing_vertical_title">4dp</dimen>
+  <dimen name="text_spacing_vertical_default">8dp</dimen>
+
+  <!-- Checkbox -->
+  <dimen name="checkbox_corner_radius">9dp</dimen>
+  <dimen name="checkbox_icon_stroke_width">2dp</dimen>
+
+  <!-- Progress bar -->
+  <dimen name="progress_bar_small_height_width">24dp</dimen>
+
+  <!-- Library view -->
+  <dimen name="margin_button_sort_top">8dp</dimen>
+  <dimen name="margin_card_progress_top">16dp</dimen>
+  <dimen name="height_card_progress_height">4dp</dimen>
+  <dimen name="height_card_progress_round_height_width">32dp</dimen>
+  <dimen name="button_download_pause_height">6dp</dimen>
+  <dimen name="view_height_spacer">24dp</dimen>
+  <dimen name="card_icon_height_width">60dp</dimen>
+  <dimen name="card_icon_margin_start">32dp</dimen>
+  <dimen name="search_view_margin_top">12dp</dimen>
+  <dimen name="progress_item_text_radius">4dp</dimen>
+  <dimen name="progress_item_image_radius">6dp</dimen>
+  <dimen name="progress_item_text_height">9dp</dimen>
+
+  <!-- Collection detail view -->
+  <dimen name="margin_body_pro">32dp</dimen>
+  <dimen name="margin_action_button_top">8dp</dimen>
+  <dimen name="height_collection_banner">272dp</dimen>
+  <dimen name="button_episode_number_height_width">36dp</dimen>
+  <dimen name="button_episode_number_margin_end">16dp</dimen>
+  <dimen name="banner_play_icon_width_height">72dp</dimen>
+  <dimen name="banner_play_icon_padding">12dp</dimen>
+  <dimen name="banner_play_stroke_width">4dp</dimen>
+  <dimen name="banner_play_corner_radius">6dp</dimen>
+
+  <!-- Card divider height -->
+  <dimen name="height_card_divider">1dp</dimen>
+
+  <!-- Player settings -->
+  <dimen name="player_settings_button_row_margin_top">32dp</dimen>
+
+
 </resources>

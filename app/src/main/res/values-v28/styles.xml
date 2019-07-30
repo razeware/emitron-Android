@@ -21,6 +21,7 @@
     <item name="cardCornerRadius">@dimen/card_radius</item>
     <item name="cardUseCompatPadding">true</item>
     <item name="cardPreventCornerOverlap">true</item>
+    <item name="android:outlineSpotShadowColor">@color/cardShadow</item>
   </style>
 
   <style name="Button" parent="Widget.MaterialComponents.Button.UnelevatedButton">
@@ -121,6 +122,7 @@
     <item name="fontFamily">@font/bitter</item>
     <item name="android:textSize">@dimen/text_size_subtitle</item>
     <item name="android:letterSpacing">@fraction/letter_spacing_subtitle</item>
+    <item name="android:lineHeight">@dimen/line_height_body_1</item>
   </style>
 
   <style name="TextAppearance.Body" parent="Text">
@@ -132,11 +134,13 @@
   <style name="TextAppearance.Body.1" parent="TextAppearance.Body">
     <item name="android:textSize">@dimen/text_size_body_1</item>
     <item name="android:textColor">@color/textColorBody1</item>
+    <item name="android:lineHeight">@dimen/line_height_body_1</item>
   </style>
 
   <style name="TextAppearance.Body.2" parent="TextAppearance.Body">
     <item name="android:textSize">@dimen/text_size_body_2</item>
     <item name="android:textColor">@color/textColorBody2</item>
+    <item name="android:lineHeight">@dimen/line_height_body_2</item>
   </style>
 
   <style name="TextAppearance.Body.2.Inverse" parent="TextAppearance.Body.2">
@@ -148,18 +152,21 @@
     <item name="android:textStyle">bold</item>
     <item name="android:textSize">@dimen/text_size_label</item>
     <item name="android:textColor">@color/textColorLabel</item>
-    <item name="android:letterSpacing">@fraction/letter_spacing_label</item>
+    <item name="android:letterSpacing">0.05</item>
+    <item name="android:lineHeight">@dimen/line_height_label</item>
   </style>
 
   <style name="TextAppearance.Caption" parent="Text">
     <item name="android:textSize">@dimen/text_size_caption</item>
     <item name="android:textColor">@color/textColorCaption</item>
+    <item name="android:lineHeight">@dimen/line_height_caption</item>
     <item name="android:letterSpacing">@fraction/letter_spacing_caption</item>
   </style>
 
   <style name="TextAppearance.Footnote" parent="Text">
     <item name="android:textSize">@dimen/text_size_footnote</item>
     <item name="android:textColor">@color/textColorFootnote</item>
+    <item name="android:lineHeight">@dimen/line_height_footnote</item>
     <item name="android:letterSpacing">@fraction/letter_spacing_footnote</item>
   </style>
 
@@ -173,6 +180,7 @@
   <style name="TextAppearance.Button" parent="Text">
     <item name="android:textStyle">bold</item>
     <item name="android:textColor">@color/textColorButton</item>
+    <item name="android:lineHeight">@dimen/line_height_button</item>
   </style>
 
   <style name="TextAppearance.Overline.Raised" parent="TextAppearance.Overline">
@@ -194,12 +202,10 @@
 
   <style name="TextAppearance.Button.Regular" parent="TextAppearance.Button">
     <item name="android:textSize">@dimen/text_size_button</item>
-    <item name="android:letterSpacing">@fraction/letter_spacing_button</item>
   </style>
 
   <style name="TextAppearance.Button.Small" parent="TextAppearance.Button">
     <item name="android:textSize">@dimen/text_size_button_small</item>
-    <item name="android:letterSpacing">@fraction/letter_spacing_button_small</item>
   </style>
 
   <style name="TextAppearance.Button.Small.Inverse" parent="TextAppearance.Button.Small">

@@ -27,6 +27,6 @@ class LibraryFragment : DaggerFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    return inflater.inflate(R.layout.fragment_library, container, false)
+    return inflater.inflate(R.layout.layout_styles, container, false)
   }
 }

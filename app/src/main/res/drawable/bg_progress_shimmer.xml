@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <item
+    android:drawable="@drawable/bg_progress_shimmer_item_1"
+    android:duration="600" />
+  <item
+    android:drawable="@drawable/bg_progress_shimmer_item_2"
+    android:duration="600" />
+  <item
+    android:drawable="@drawable/bg_progress_shimmer_item_3"
+    android:duration="600" />
+
+</animation-list>
