@@ -2,6 +2,7 @@
   <!-- Default screen margins, per the Android Design guidelines. -->
   <dimen name="activity_horizontal_margin">16dp</dimen>
   <dimen name="activity_vertical_margin">16dp</dimen>
+  <dimen name="guideline_top_dense">8dp</dimen>
 
   <!-- Card View -->
   <dimen name="card_radius">6dp</dimen>
@@ -14,6 +15,7 @@
 
   <!-- Icon -->
   <dimen name="icon_height_width">24dp</dimen>
+  <dimen name="icon_height_width_small">16dp</dimen>
 
   <!-- Overline -->
   <dimen name="overline_padding_internal">6dp</dimen>
@@ -89,6 +91,9 @@
   <dimen name="progress_item_text_radius">4dp</dimen>
   <dimen name="progress_item_image_radius">6dp</dimen>
   <dimen name="progress_item_text_height">9dp</dimen>
+  <dimen name="download_progress_radius">8dp</dimen>
+  <dimen name="download_progress_thickness">3dp</dimen>
+  <dimen name="button_download_stop_radius">1dp</dimen>
 
   <!-- Collection detail view -->
   <dimen name="margin_body_pro">32dp</dimen>
@@ -107,5 +112,7 @@
   <!-- Player settings -->
   <dimen name="player_settings_button_row_margin_top">32dp</dimen>
 
+  <!-- Login view -->
+  <dimen name="login_logo_height_width">72dp</dimen>
 
 </resources>

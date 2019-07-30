@@ -39,8 +39,8 @@
 
     <androidx.appcompat.widget.AppCompatImageView
       android:id="@+id/image_logo"
-      android:layout_width="72dp"
-      android:layout_height="72dp"
+      android:layout_width="@dimen/login_logo_height_width"
+      android:layout_height="@dimen/login_logo_height_width"
       app:layout_constraintEnd_toStartOf="@+id/text_logo"
       app:layout_constraintHorizontal_chainStyle="packed"
       app:layout_constraintStart_toStartOf="@id/guideline_left"
