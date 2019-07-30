@@ -28,7 +28,6 @@ class EmitronApplication : Application(), HasSupportFragmentInjector, HasActivit
     DaggerAppComponent.builder().app(this)
       .build()
       .inject(this)
-    registerActivityLifecycleCallbacks(appLifeCycleDelegate)
     Fabric.with(this, Crashlytics())
   }
 
