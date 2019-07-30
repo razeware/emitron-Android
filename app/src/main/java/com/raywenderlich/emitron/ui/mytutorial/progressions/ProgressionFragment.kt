@@ -1,4 +1,4 @@
-package com.raywenderlich.emitron.ui.mytutorial.progression
+package com.raywenderlich.emitron.ui.mytutorial.progressions
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +13,9 @@ import javax.inject.Inject
 
 class ProgressionFragment : DaggerFragment() {
 
+  companion object {
+    fun newInstanceInProgress() = ProgressionFragment()
+  }
 
   @Inject
   lateinit var viewModelFactory: ViewModelFactory
