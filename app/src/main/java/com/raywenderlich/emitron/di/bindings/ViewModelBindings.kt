@@ -9,7 +9,7 @@ import com.raywenderlich.emitron.ui.filter.FilterViewModel
 import com.raywenderlich.emitron.ui.library.LibraryViewModel
 import com.raywenderlich.emitron.ui.login.LoginViewModel
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkViewModel
-import com.raywenderlich.emitron.ui.mytutorial.progression.ProgressionViewModel
+import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionViewModel
 import com.raywenderlich.emitron.ui.onboarding.OnboardingViewModel
 import com.raywenderlich.emitron.ui.player.PlayerViewModel
 import com.raywenderlich.emitron.ui.settings.SettingsViewModel

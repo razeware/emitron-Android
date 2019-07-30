@@ -7,7 +7,7 @@ import com.raywenderlich.emitron.ui.library.LibraryFragment
 import com.raywenderlich.emitron.ui.login.LoginFragment
 import com.raywenderlich.emitron.ui.mytutorial.MyTutorialFragment
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkFragment
-import com.raywenderlich.emitron.ui.mytutorial.progression.ProgressionFragment
+import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionFragment
 import com.raywenderlich.emitron.ui.onboarding.OnboardingFragment
 import com.raywenderlich.emitron.ui.player.PlayerFragment
 import com.raywenderlich.emitron.ui.settings.SettingsFragment
