@@ -1,6 +1,6 @@
 package com.raywenderlich.emitron.network
 
 interface AuthInterceptor {
-  fun updateApiToken(apiToken: String)
+  fun updateAuthToken(apiToken: String)
   fun clear()
 }
