@@ -5,7 +5,9 @@ import com.raywenderlich.guardpost.data.SSOUser
 import javax.inject.Inject
 
 /**
- * Prefs helper for account
+ * Prefs helper for user account
+ *
+ * Data related to user account preferences should be stored and accessed using [LoginPrefs]
  */
 class LoginPrefs @Inject constructor(private val prefs: PrefUtils) {
 
