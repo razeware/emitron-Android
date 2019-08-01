@@ -1,6 +1,6 @@
 package com.raywenderlich.emitron.di.modules
 
-import com.raywenderlich.emitron.prefs.PrefUtils
+import com.raywenderlich.emitron.data.login.LoginPrefs
 import com.raywenderlich.emitron.network.RequestHelper
 import dagger.Module
 import dagger.Provides
@@ -13,7 +13,7 @@ abstract class SessionModule {
 
     @JvmStatic
     @Provides
-    fun provideRequestHelper(prefUtils: PrefUtils): RequestHelper =
-      RequestHelper(apiAuthToken = prefUtils.getApiAuthToken())
+    fun provideRequestHelper(loginPrefs: LoginPrefs): RequestHelper =
+      RequestHelper(apiAuthToken = loginPrefs.authToken())
   }
 }

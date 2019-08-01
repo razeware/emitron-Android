@@ -18,9 +18,9 @@
       android:id="@+id/action_navigation_library_to_navigation_collection"
       app:destination="@id/navigation_collection">
       <argument
-        android:name="collectionId"
+        android:name="collection"
         android:defaultValue="@null"
-        app:argType="string"
+        app:argType="com.raywenderlich.emitron.model.Data"
         app:nullable="true" />
     </action>
     <action
@@ -45,9 +45,9 @@
     android:name="com.raywenderlich.emitron.ui.collection.CollectionFragment"
     tools:layout="@layout/fragment_collection">
     <argument
-      android:name="collectionId"
+      android:name="collection"
       android:defaultValue="@null"
-      app:argType="string"
+      app:argType="com.raywenderlich.emitron.model.Data"
       app:nullable="true" />
     <action
       android:id="@+id/action_navigation_collection_to_navigation_player"
@@ -68,13 +68,22 @@
   <fragment
     android:id="@+id/navigation_my_tutorials"
     android:name="com.raywenderlich.emitron.ui.mytutorial.MyTutorialFragment"
-    tools:layout="@layout/fragment_my_tutorials">
+    tools:layout="@layout/fragment_bookmarks">
     <action
       android:id="@+id/action_navigation_my_tutorials_to_navigation_settings"
       app:destination="@id/navigation_settings" />
     <action
       android:id="@+id/action_navigation_my_tutorials_to_navigation_library"
       app:destination="@id/navigation_library" />
+    <action
+      android:id="@+id/action_navigation_my_tutorials_navigation_collection"
+      app:destination="@id/navigation_collection">
+      <argument
+        android:name="collection"
+        android:defaultValue="@null"
+        app:argType="com.raywenderlich.emitron.model.Data"
+        app:nullable="true" />
+    </action>
   </fragment>
 
   <fragment
@@ -102,8 +111,10 @@
     android:id="@+id/navigation_player"
     android:name="com.raywenderlich.emitron.ui.player.PlayerFragment"
     tools:layout="@layout/fragment_player">
-    <action
-      android:id="@+id/action_navigation_player_to_navigation_settings"
-      app:destination="@id/navigation_settings" />
+    <argument
+      android:name="videos"
+      android:defaultValue="@null"
+      app:argType="com.raywenderlich.emitron.model.Contents"
+      app:nullable="true" />
   </fragment>
 </navigation>

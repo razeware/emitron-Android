@@ -1,7 +1,10 @@
 package com.raywenderlich.emitron.di.modules
 
 import com.raywenderlich.emitron.BuildConfig
+import com.raywenderlich.emitron.data.login.LoginApi
 import com.raywenderlich.emitron.network.AuthInterceptorImpl
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -44,9 +47,21 @@ class NetModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
       Retrofit.Builder()
         .baseUrl("https://api.raywenderlich.com/api/") // Move to BuildConfig
-        .addConverterFactory(MoshiConverterFactory.create())
+        .addConverterFactory(
+          MoshiConverterFactory.create(
+            Moshi.Builder().add(
+              KotlinJsonAdapterFactory()
+            ).build()
+          )
+        )
         .client(okHttpClient)
         .build()
+
+    @JvmStatic
+    @Provides
+    fun provideLoginApi(retrofit: Retrofit) = LoginApi.create(retrofit)
+
   }
+
 
 }

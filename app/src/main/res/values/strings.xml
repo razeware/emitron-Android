@@ -2,6 +2,31 @@
   <string name="app_name">Emitron</string>
   <string name="title_home">""</string>
   <string name="title_library">Library</string>
-  <string name="title_downloads">Dashboard</string>
+  <string name="title_downloads">Downloads</string>
   <string name="title_my_tutorials">My Tutorials</string>
+
+  <!-- Snackbar -->
+  <string name="snackbar_label_error">Error</string>
+  <string name="snackbar_label_warning">Warning</string>
+  <string name="snackbar_label_success">Success</string>
+  <string name="error_no_connection">No connection found.</string>
+
+  <!-- Login screen -->
+  <string name="button_sign_in">Sign In</string>
+  <string name="title_login_logo">raywenderlich.com</string>
+  <string name="button_sign_out">Sign out</string>
+  <string name="headline_login_no_subscription">The raywenderlich.com app is for subscribers only.</string>
+  <string name="body_login_no_subscription">For more information on how to become a raywenderlich.com subscriber please visit: store.raywenderlich.com/products/subscription</string>
+  <string name="error_login_subscription">Failed to login.</string>
+
+  <!-- My Tutorials -->
+  <string name="my_tutorials_tab_completed">Completed</string>
+  <string name="my_tutorials_tab_in_progress">In Progress</string>
+  <string name="my_tutorials_tab_bookmarks">Bookmarks</string>
+  <string name="body_bookmarks_empty">You haven’t bookmarked any tutorials yet</string>
+
+
+  <!-- Downloads -->
+  <string name="button_explore_tutorials">Explore Tutorials</string>
+  <string name="body_downloads_empty">You haven’t downloaded any tutorials yet</string>
 </resources>

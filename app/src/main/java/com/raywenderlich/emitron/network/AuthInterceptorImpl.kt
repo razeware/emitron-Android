@@ -6,10 +6,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AuthInterceptorImpl @Inject constructor(var requestHelper: RequestHelper) : AuthInterceptor,
-  Interceptor {
+class AuthInterceptorImpl @Inject constructor(private var requestHelper: RequestHelper) :
+  AuthInterceptor, Interceptor {
 
-  override fun updateApiToken(apiToken: String) {
+  override fun updateAuthToken(apiToken: String) {
     requestHelper = requestHelper.copy(apiAuthToken = apiToken)
   }
 

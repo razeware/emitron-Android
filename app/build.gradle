@@ -29,6 +29,7 @@ android {
     vectorDrawables.useSupportLibrary true
     multiDexEnabled true
     javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
+    resValue 'string', "client_api_key", "${client_api_key}"
   }
 
   buildTypes {
@@ -145,7 +146,9 @@ dependencies {
   testImplementation "androidx.test:runner:${versions.testRunner}"
   testImplementation "androidx.test:rules:${versions.testRunner}"
   testImplementation "com.squareup.retrofit2:retrofit-mock:${versions.retrofit}"
-  testImplementation "io.mockk:mockk:${versions.mockk}"
+  testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.coroutines}"
+  testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${versions.mockitoKotlin}"
+  testImplementation "com.google.truth:truth:${versions.googleTruth}"
 
   implementation "androidx.mediarouter:mediarouter:${versions.mediarouter}"
   implementation "com.google.android.gms:play-services-cast-framework:${versions.castFramework}"
