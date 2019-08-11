@@ -1,6 +1,7 @@
 package com.raywenderlich.emitron.di.modules
 
 import com.raywenderlich.emitron.BuildConfig
+import com.raywenderlich.emitron.data.content.ContentApi
 import com.raywenderlich.emitron.data.login.LoginApi
 import com.raywenderlich.emitron.network.AuthInterceptorImpl
 import com.squareup.moshi.Moshi
@@ -60,6 +61,10 @@ class NetModule {
     @JvmStatic
     @Provides
     fun provideLoginApi(retrofit: Retrofit) = LoginApi.create(retrofit)
+
+    @JvmStatic
+    @Provides
+    fun provideContentApi(retrofit: Retrofit) = ContentApi.create(retrofit)
 
   }
 
