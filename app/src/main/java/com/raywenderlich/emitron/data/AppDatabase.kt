@@ -4,11 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
-import com.google.android.exoplayer2.database.ExoDatabaseProvider.DATABASE_NAME
-import com.raywenderlich.emitron.model.Collection
+import com.raywenderlich.emitron.model.Domain
 
-@Database(entities = [Collection::class], version = 1, exportSchema = false)
+@Database(entities = [Domain::class], version = 1, exportSchema = true)
 abstract class AppDatabase : RoomDatabase() {
 
   companion object {
@@ -16,6 +14,8 @@ abstract class AppDatabase : RoomDatabase() {
     // For Singleton instantiation
     @Volatile
     private var instance: AppDatabase? = null
+
+    private const val DATABASE_NAME: String = "emitron_db"
 
     fun getInstance(context: Context): AppDatabase {
       return instance ?: synchronized(this) {
@@ -25,11 +25,6 @@ abstract class AppDatabase : RoomDatabase() {
 
     private fun buildDatabase(context: Context): AppDatabase {
       return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
-        .addCallback(object : RoomDatabase.Callback() {
-          override fun onCreate(db: SupportSQLiteDatabase) {
-            super.onCreate(db)
-          }
-        })
         .build()
     }
   }
