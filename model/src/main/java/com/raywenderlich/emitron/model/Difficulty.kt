@@ -1,16 +1,14 @@
 package com.raywenderlich.emitron.model
 
-import androidx.annotation.StringRes
-
 /**
  * Difficulty level for content
  *
  * @param resId Resource if for [Difficulty]
  */
-enum class Difficulty(@StringRes val resId: Int = -1) {
-  Beginner(R.string.difficulty_beginner),
-  Advanced(R.string.difficulty_advanced),
-  Intermediate(R.string.difficulty_intermediate);
+enum class Difficulty {
+  Beginner,
+  Advanced,
+  Intermediate;
 
   companion object {
     /**

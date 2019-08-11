@@ -1,8 +1,11 @@
 package com.raywenderlich.emitron.model
 
 import android.os.Parcelable
+import com.raywenderlich.emitron.model.utils.TimeUtils
 import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
+import org.threeten.bp.Clock
+import org.threeten.bp.LocalDateTime
 
 /**
  * Model class for content attributes
@@ -133,4 +136,29 @@ data class Attributes(
    * Content kind
    */
   val kind: String? = ""
-) : Parcelable
+) : Parcelable {
+
+  fun getReadableReleasedAt(
+    shortReleaseDate: Boolean,
+    today: LocalDateTime = LocalDateTime.now(Clock.systemUTC())
+  ): TimeUtils.Day =
+    if (releasedAt.isNullOrBlank()) {
+      TimeUtils.Day.None
+    } else {
+      TimeUtils.toReadableDate(releasedAt, shortReleaseDate, today = today)
+    }
+
+  fun getDurationHoursAndMinutes(): Pair<Long, Long> = if (null == duration) {
+    0L to 0L
+  } else {
+    TimeUtils.toHoursAndMinutes(duration)
+  }
+
+  fun getContentType(): ContentType? = ContentType.fromValue(contentType)
+
+  fun getDifficulty(): Difficulty? = Difficulty.fromValue(difficulty)
+
+  fun isLevelArchived(): Boolean = DomainLevel.Archived == DomainLevel.fromValue(level)
+
+  fun getPercentComplete(): Int = percentComplete?.toInt() ?: 0
+}

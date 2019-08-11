@@ -2,11 +2,13 @@ package com.raywenderlich.emitron.model
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 
 /**
  * Model for list response of Bookmark, Content, Progressions
  */
+@JsonClass(generateAdapter = true)
 @Parcelize
 data class Contents(
   /**
@@ -29,4 +31,20 @@ data class Contents(
    * Related meta data
    */
   val meta: Meta? = null
-) : Parcelable
+) : Parcelable {
+
+  /**
+   * @return total item count
+   */
+  fun getTotalCount(): Int = meta?.totalResultCount ?: 0
+
+  /**
+   * @return Next page no.
+   */
+  fun getNextPage(): Int? = links?.getNextPage()
+
+  /**
+   * @return list of [Data.id] for included content items
+   */
+  fun getDomainIds(): List<String> = datum.mapNotNull { it.id }
+}

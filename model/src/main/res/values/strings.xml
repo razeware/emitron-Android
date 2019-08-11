@@ -1,12 +1,3 @@
 <resources>
   <string name="app_name">model</string>
-
-  <!-- Content Difficulty -->
-  <string name="difficulty_beginner">Beginner</string>
-  <string name="difficulty_advanced">Advanced</string>
-  <string name="difficulty_intermediate">Intermediate</string>
-
-  <!-- Content Type -->
-  <string name="video_course">Video Course</string>
-  <string name="screencast">Screencast</string>
 </resources>
