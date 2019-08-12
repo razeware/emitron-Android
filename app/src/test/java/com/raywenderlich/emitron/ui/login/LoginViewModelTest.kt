@@ -2,10 +2,7 @@ package com.raywenderlich.emitron.ui.login
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.login.LoginRepository
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.ui.utils.TestCoroutineRule
@@ -47,7 +44,7 @@ class LoginViewModelTest {
   @Test
   fun getSubscription_noSubscription() {
     testCoroutineRule.runBlockingTest {
-      whenever(loginRepository.getSubscription()).thenReturn(Content())
+      whenever(loginRepository.getSubscription()).doReturn(Content())
 
       viewModel.getSubscription()
       verify(loginRepository).getSubscription()
@@ -60,7 +57,7 @@ class LoginViewModelTest {
   @Test
   fun getSubscription_hasSubscription() {
     testCoroutineRule.runBlockingTest {
-      whenever(loginRepository.getSubscription()).thenReturn(Content().apply {
+      whenever(loginRepository.getSubscription()).doReturn(Content().apply {
         hasSubscription = true
       })
 
@@ -76,7 +73,7 @@ class LoginViewModelTest {
   @Test
   fun getSubscription_apiError() {
     testCoroutineRule.runBlockingTest {
-      whenever(loginRepository.getSubscription()).thenThrow(RuntimeException())
+      whenever(loginRepository.getSubscription()).doThrow(RuntimeException())
 
       viewModel.getSubscription()
       verify(loginRepository).getSubscription()

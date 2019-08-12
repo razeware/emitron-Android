@@ -232,7 +232,7 @@ class ContentRepositoryTest {
 
     // Then
     assertThat(result.networkState?.observeForTestingResult())
-      .isEqualTo(NetworkState.error("Init failed"))
+      .isEqualTo(NetworkState.INIT_FAILED)
   }
 
   /**
@@ -261,7 +261,7 @@ class ContentRepositoryTest {
     val list = result.pagedList.observeForTestingResult()
 
     // Then
-    assertThat(result.networkState?.observeForTestingResult()).isEqualTo(NetworkState.INIT_ERROR)
+    assertThat(result.networkState?.observeForTestingResult()).isEqualTo(NetworkState.INIT_FAILED)
 
     // Given
     val data = (1..2).map { Data(id = it.toString()) }
@@ -281,14 +281,14 @@ class ContentRepositoryTest {
 
     // Then
     assertThat(list.size).isEqualTo(2)
-    assertThat(result.networkState?.observeForTestingResult()).isEqualTo(NetworkState.LOADED)
+    assertThat(result.networkState?.observeForTestingResult()).isEqualTo(NetworkState.SUCCESS)
 
     networkObserver?.let {
       val inOrder = Mockito.inOrder(networkObserver)
       inOrder.verify(networkObserver).onChanged(NetworkState.INIT)
-      inOrder.verify(networkObserver).onChanged(NetworkState.INIT_ERROR)
+      inOrder.verify(networkObserver).onChanged(NetworkState.INIT_FAILED)
       inOrder.verify(networkObserver).onChanged(NetworkState.INIT)
-      inOrder.verify(networkObserver).onChanged(NetworkState.LOADED)
+      inOrder.verify(networkObserver).onChanged(NetworkState.SUCCESS)
       inOrder.verifyNoMoreInteractions()
     }
   }
@@ -326,7 +326,7 @@ class ContentRepositoryTest {
 
     // Then
     assertThat(list.size < data.size).isTrue()
-    assertThat(result.networkState?.observeForTestingResult()).isEqualTo(NetworkState.LOADED)
+    assertThat(result.networkState?.observeForTestingResult()).isEqualTo(NetworkState.SUCCESS)
 
     // Given
     val responseBody: ResponseBody = mock()
@@ -345,7 +345,7 @@ class ContentRepositoryTest {
     list.loadAllData()
 
     // Then
-    assertThat(result.networkState?.observeForTestingResult()).isEqualTo(NetworkState.ERROR)
+    assertThat(result.networkState?.observeForTestingResult()).isEqualTo(NetworkState.FAILED)
     assertThat(result.retry).isNotNull()
 
     // Given
@@ -364,16 +364,16 @@ class ContentRepositoryTest {
     result.retry?.invoke()
 
     // Then
-    assertThat(result.networkState?.observeForTestingResult()).isEqualTo(NetworkState.LOADED)
+    assertThat(result.networkState?.observeForTestingResult()).isEqualTo(NetworkState.SUCCESS)
     assertThat(list).isEqualTo(data)
 
     networkObserver?.let {
       val inOrder = Mockito.inOrder(networkObserver)
       inOrder.verify(networkObserver).onChanged(NetworkState.INIT)
-      inOrder.verify(networkObserver).onChanged(NetworkState.LOADED)
-      inOrder.verify(networkObserver).onChanged(NetworkState.ERROR)
-      inOrder.verify(networkObserver).onChanged(NetworkState.LOADING)
-      inOrder.verify(networkObserver).onChanged(NetworkState.LOADED)
+      inOrder.verify(networkObserver).onChanged(NetworkState.SUCCESS)
+      inOrder.verify(networkObserver).onChanged(NetworkState.FAILED)
+      inOrder.verify(networkObserver).onChanged(NetworkState.RUNNING)
+      inOrder.verify(networkObserver).onChanged(NetworkState.SUCCESS)
       inOrder.verifyNoMoreInteractions()
     }
   }

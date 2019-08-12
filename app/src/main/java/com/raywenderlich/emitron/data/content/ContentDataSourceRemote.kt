@@ -60,10 +60,10 @@ class ContentDataSourceRemote(
    * Load next page
    */
   override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Data>) {
-    networkState.postValue(NetworkState.LOADING)
+    networkState.postValue(NetworkState.RUNNING)
     val loadAfterError = {
       retry = { loadAfter(params, callback) }
-      networkState.postValue(NetworkState.ERROR)
+      networkState.postValue(NetworkState.FAILED)
     }
 
     val response = try {
@@ -89,7 +89,7 @@ class ContentDataSourceRemote(
     }
 
     retry = null
-    networkState.postValue(NetworkState.LOADED)
+    networkState.postValue(NetworkState.SUCCESS)
     callback.onResult(items, (contentBody.getNextPage()))
   }
 
@@ -107,7 +107,7 @@ class ContentDataSourceRemote(
       retry = {
         loadInitial(params, callback)
       }
-      networkState.postValue(NetworkState.INIT_ERROR)
+      networkState.postValue(NetworkState.INIT_FAILED)
     }
 
     val loadInitialEmpty = {
@@ -141,7 +141,7 @@ class ContentDataSourceRemote(
     }
 
     retry = null
-    networkState.postValue(NetworkState.LOADED)
+    networkState.postValue(NetworkState.SUCCESS)
     this.contents.postValue(contentBody.copy(datum = emptyList()))
     callback.onResult(items, null, (contentBody.getNextPage()))
   }

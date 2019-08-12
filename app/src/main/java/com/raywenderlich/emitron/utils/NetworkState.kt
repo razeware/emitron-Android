@@ -1,74 +1,32 @@
 package com.raywenderlich.emitron.utils
 
 /**
- * Class to represent network request state
+ * Enum class to represent status of Network request
  */
-data class NetworkState(
+enum class NetworkState {
   /**
-   * Status of current request
+   * Request in progress
    */
-  val status: Status,
+  RUNNING,
   /**
-   * Any success of failure message
+   * Request is successful
    */
-  val msg: String? = null
-) {
-
+  SUCCESS,
   /**
-   * Enum class to represent status of Network request
+   * Request failed
    */
-  enum class Status {
-    /**
-     * Request in progress
-     */
-    RUNNING,
-    /**
-     * Request is successful
-     */
-    SUCCESS,
-    /**
-     * Request failed
-     */
-    FAILED
-  }
-
-  companion object {
-    /**
-     * Network request has completed
-     */
-    val LOADED: NetworkState = NetworkState(Status.SUCCESS)
-
-    /**
-     * Network request is in progress
-     */
-    val LOADING: NetworkState = NetworkState(Status.RUNNING)
-
-    /**
-     * Network request failed
-     */
-    val ERROR: NetworkState = NetworkState(Status.FAILED)
-
-    /**
-     * [INIT], [INIT_EMPTY], [INIT_ERROR] should be used with paginated APIs
-     *
-     * First page network request in progress
-     */
-    val INIT: NetworkState = NetworkState(Status.RUNNING, "Init running")
-
-    /**
-     * First page network request failed
-     */
-    val INIT_ERROR: NetworkState = NetworkState(Status.FAILED, "Init failed")
-
-    /**
-     * First page network request succeed, but no data received
-     */
-    val INIT_EMPTY: NetworkState = NetworkState(Status.FAILED, "Init no data")
-
-    /**
-     * Factory function to create [NetworkState.ERROR] with an error message
-     */
-    fun error(msg: String?): NetworkState = NetworkState(Status.FAILED, msg)
-  }
+  FAILED,
+  /**
+   * Initial request in progress
+   */
+  INIT,
+  /**
+   * Initial request failed
+   */
+  INIT_FAILED,
+  /**
+   * Initial request successful, but no data
+   */
+  INIT_EMPTY
 }
 
