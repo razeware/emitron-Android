@@ -153,6 +153,7 @@ dependencies {
   implementation "androidx.mediarouter:mediarouter:${versions.mediarouter}"
   implementation "com.google.android.gms:play-services-cast-framework:${versions.castFramework}"
 
+  implementation "com.jakewharton.threetenabp:threetenabp:${versions.threetenabp}"
 }
 
 apply plugin: 'com.google.gms.google-services'
