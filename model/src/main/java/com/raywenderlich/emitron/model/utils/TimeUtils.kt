@@ -5,23 +5,47 @@ import org.threeten.bp.LocalDateTime
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.format.DateTimeFormatter
 
-
+/**
+ * Helper functions to parse time
+ */
 object TimeUtils {
 
+  /**
+   * Data object for representing a Day value
+   */
   sealed class Day {
+    /** Today */
     object Today : Day()
+
+    /** Yesterday */
     object Yesterday : Day()
+
+    /** No day/ Empty value */
     object None : Day()
-    data class Formatted(val readableDate: String) : Day()
+
+    /** A formatted day */
+    data class Formatted(
+      /** Day in readable format*/
+      val readableDate: String
+    ) : Day()
   }
 
-  fun toReadableDate(timestamp: String, shortReleaseDate: Boolean, today: LocalDateTime): Day {
+  /**
+   * Format ISO time stamp to readable date
+   *
+   * @param timestamp timestamp string for parsing
+   * @param hasYear should we parse without year
+   * @param today LocalDateTime instance for parsing
+   *
+   * @return [Day]
+   */
+  fun toReadableDate(timestamp: String, hasYear: Boolean, today: LocalDateTime): Day {
     val date = OffsetDateTime.parse(timestamp)
     return when {
       isToday(date, today) -> Day.Today
       isYesterday(date, today) -> Day.Yesterday
       else -> {
-        val pattern = if (shortReleaseDate) {
+        val pattern = if (!hasYear) {
           "MMM d"
         } else {
           "MMM d yyyy"
@@ -32,14 +56,28 @@ object TimeUtils {
     }
   }
 
-  fun toHoursAndMinutes(seconds: Long): Pair<Long, Long> {
-    val duration = Duration.ofSeconds(seconds)
+  /**
+   * Convert seconds to hours/minutes
+   *
+   * @param timeInSeconds time in seconds
+   *
+   * @return [Pair] of hours and minutes
+   */
+  fun toHoursAndMinutes(timeInSeconds: Long): Pair<Long, Long> {
+    val duration = Duration.ofSeconds(timeInSeconds)
     val hours = duration.toHours()
     return hours to duration.toMinutes() - hours * 60
   }
 
-  fun toHoursAndMinutesAndSeconds(seconds: Long): Triple<Long, Long, Long> {
-    val duration = Duration.ofSeconds(seconds)
+  /**
+   * Convert seconds to hours/minutes/seconds
+   *
+   * @param timeInSeconds time in seconds
+   *
+   * @return [Triple] of hours, minutes and seconds
+   */
+  fun toHoursAndMinutesAndSeconds(timeInSeconds: Long): Triple<Long, Long, Long> {
+    val duration = Duration.ofSeconds(timeInSeconds)
     val hours = duration.toHours()
     val minutes = duration.toMinutes()
     val seconds = duration.toMillis() / 1000
@@ -69,6 +107,8 @@ object TimeUtils {
 
     val offsetToday = today.plusDays(offset)
 
-    return (thenYear == offsetToday.year && thenMonth == offsetToday.month && thenMonthDay == offsetToday.dayOfMonth)
+    return (thenYear == offsetToday.year &&
+        thenMonth == offsetToday.month &&
+        thenMonthDay == offsetToday.dayOfMonth)
   }
 }

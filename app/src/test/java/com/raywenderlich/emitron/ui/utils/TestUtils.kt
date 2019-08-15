@@ -1,8 +1,9 @@
-package com.raywenderlich.emitron.ui.utils.extensions
+package com.raywenderlich.emitron.ui.utils
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
+import com.google.common.truth.Truth
 import com.nhaarman.mockitokotlin2.mock
 
 class TestObserver<T> : Observer<T> {
@@ -36,4 +37,8 @@ fun <T> PagedList<T>.loadAllData() {
     val oldSize = this.loadedCount
     this.loadAround(this.size - 1)
   } while (this.size != oldSize)
+}
+
+infix fun Any?.isEqualTo(expected: Any?) {
+  Truth.assertThat(this).isEqualTo(expected)
 }

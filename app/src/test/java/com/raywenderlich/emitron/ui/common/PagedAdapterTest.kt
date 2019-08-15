@@ -3,6 +3,7 @@ package com.raywenderlich.emitron.ui.common
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
+import com.raywenderlich.emitron.ui.utils.isEqualTo
 import com.raywenderlich.emitron.utils.NetworkState
 import com.raywenderlich.emitron.utils.UiStateManager
 import org.junit.Before
@@ -30,7 +31,7 @@ class PagedAdapterTest {
     )
 
     // Then
-    pagedAdapter.uiState equals UiStateManager.UiState.ERROR
+    pagedAdapter.uiState isEqualTo UiStateManager.UiState.ERROR
     verify(onChangeLastItem).invoke(false)
   }
 
@@ -48,7 +49,7 @@ class PagedAdapterTest {
     )
 
     // Then
-    pagedAdapter.uiState equals UiStateManager.UiState.ERROR_EMPTY
+    pagedAdapter.uiState isEqualTo UiStateManager.UiState.ERROR_EMPTY
     verify(onChangeItem).invoke(1)
   }
 
@@ -66,7 +67,7 @@ class PagedAdapterTest {
     )
 
     // Then
-    pagedAdapter.uiState equals UiStateManager.UiState.LOADED
+    pagedAdapter.uiState isEqualTo UiStateManager.UiState.LOADED
     verify(onChangeItem).invoke(1)
   }
 
@@ -85,7 +86,7 @@ class PagedAdapterTest {
     )
 
     // Then
-    pagedAdapter.networkState equals NetworkState.FAILED
+    pagedAdapter.networkState isEqualTo NetworkState.FAILED
     verify(onChangeLastItem).invoke(false)
   }
 
@@ -102,7 +103,7 @@ class PagedAdapterTest {
     )
 
     // Then
-    pagedAdapter.networkState equals NetworkState.RUNNING
+    pagedAdapter.networkState isEqualTo NetworkState.RUNNING
     verify(onChangeItem).invoke(1)
   }
 
@@ -120,7 +121,7 @@ class PagedAdapterTest {
     )
 
     // Then
-    pagedAdapter.networkState equals NetworkState.RUNNING
+    pagedAdapter.networkState isEqualTo NetworkState.RUNNING
     verify(onChangeLastItem).invoke(false)
   }
 
@@ -141,7 +142,7 @@ class PagedAdapterTest {
     )
 
     // Then
-    pagedAdapter.uiState equals UiStateManager.UiState.ERROR_CONNECTION
+    pagedAdapter.uiState isEqualTo UiStateManager.UiState.ERROR_CONNECTION
     verify(onChangeLastItem).invoke(false)
 
     // When
@@ -153,7 +154,7 @@ class PagedAdapterTest {
     )
 
     // Then
-    pagedAdapter.uiState equals UiStateManager.UiState.LOADED
+    pagedAdapter.uiState isEqualTo UiStateManager.UiState.LOADED
     verify(onChangeLastItem).invoke(true)
 
     // Given
@@ -166,7 +167,7 @@ class PagedAdapterTest {
     )
 
     // Then
-    pagedAdapter.uiState equals UiStateManager.UiState.LOADING
+    pagedAdapter.uiState isEqualTo UiStateManager.UiState.LOADING
     verify(onChangeItem).invoke(1)
   }
 
@@ -206,8 +207,4 @@ class PagedAdapterTest {
     pagedAdapter.uiState = null
     assertThat(pagedAdapter.hasExtraRow()).isFalse()
   }
-}
-
-infix fun Any?.equals(expected: Any?) {
-  assertThat(this).isEqualTo(expected)
 }

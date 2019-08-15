@@ -6,10 +6,10 @@ import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.model.Contents
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.Links
-import com.raywenderlich.emitron.ui.utils.extensions.loadAllData
-import com.raywenderlich.emitron.ui.utils.extensions.observeForTestingObserver
-import com.raywenderlich.emitron.ui.utils.extensions.observeForTestingResult
-import com.raywenderlich.emitron.ui.utils.extensions.observeForTestingResultNullable
+import com.raywenderlich.emitron.ui.utils.loadAllData
+import com.raywenderlich.emitron.ui.utils.observeForTestingObserver
+import com.raywenderlich.emitron.ui.utils.observeForTestingResult
+import com.raywenderlich.emitron.ui.utils.observeForTestingResultNullable
 import com.raywenderlich.emitron.utils.NetworkState
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import okhttp3.ResponseBody

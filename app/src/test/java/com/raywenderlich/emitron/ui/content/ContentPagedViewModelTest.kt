@@ -10,8 +10,8 @@ import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import com.raywenderlich.emitron.model.Contents
 import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.ui.utils.extensions.observeForTestingObserver
-import com.raywenderlich.emitron.ui.utils.extensions.observeForTestingResult
+import com.raywenderlich.emitron.ui.utils.observeForTestingObserver
+import com.raywenderlich.emitron.ui.utils.observeForTestingResult
 import com.raywenderlich.emitron.utils.NetworkState
 import com.raywenderlich.emitron.utils.PagedResponse
 import com.raywenderlich.emitron.utils.UiStateManager
