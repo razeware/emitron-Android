@@ -39,16 +39,16 @@ object TimeUtils {
    *
    * @return [Day]
    */
-  fun toReadableDate(timestamp: String, hasYear: Boolean, today: LocalDateTime): Day {
+  fun toReadableDate(timestamp: String, withYear: Boolean, today: LocalDateTime): Day {
     val date = OffsetDateTime.parse(timestamp)
     return when {
       isToday(date, today) -> Day.Today
       isYesterday(date, today) -> Day.Yesterday
       else -> {
-        val pattern = if (!hasYear) {
-          "MMM d"
-        } else {
+        val pattern = if (withYear) {
           "MMM d yyyy"
+        } else {
+          "MMM d"
         }
         val formatter = DateTimeFormatter.ofPattern(pattern)
         Day.Formatted(date.format(formatter))

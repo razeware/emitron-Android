@@ -12,7 +12,7 @@ class AttributesTest {
   fun getReadableReleasedAt() {
     val attributes = Attributes()
     val today = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
-    assertThat(attributes.getReadableReleasedAt(true)).isEqualTo(TimeUtils.Day.None)
+    assertThat(attributes.getReadableReleasedAt(true, today)).isEqualTo(TimeUtils.Day.None)
 
     val attributes1 = Attributes(releasedAt = "2019-08-11T02:00:00.000Z")
     assertThat(attributes1.getReadableReleasedAt(true, today))
@@ -23,8 +23,12 @@ class AttributesTest {
       .isEqualTo(TimeUtils.Day.Yesterday)
 
     val attributes3 = Attributes(releasedAt = "2019-08-08T00:00:00.000Z")
-    assertThat(attributes3.getReadableReleasedAt(true, today))
+    assertThat(attributes3.getReadableReleasedAt(false, today))
       .isEqualTo(TimeUtils.Day.Formatted("Aug 8"))
+
+    val attributes4 = Attributes(releasedAt = "2019-08-08T00:00:00.000Z")
+    assertThat(attributes4.getReadableReleasedAt(true, today))
+      .isEqualTo(TimeUtils.Day.Formatted("Aug 8 2019"))
   }
 
   @Test

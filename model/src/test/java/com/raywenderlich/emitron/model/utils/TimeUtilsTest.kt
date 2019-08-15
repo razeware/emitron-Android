@@ -40,7 +40,7 @@ class TimeUtilsTest {
 
   @Test
   fun toHoursAndMinutes() {
-    TimeUtils.toHoursAndMinutes(4080) isEqualTo 1L to 8L
+    TimeUtils.toHoursAndMinutes(4080) isEqualTo (1L to 8L)
   }
 
   @Test

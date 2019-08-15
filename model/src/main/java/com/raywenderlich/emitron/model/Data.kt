@@ -4,9 +4,11 @@ import android.os.Parcelable
 import com.raywenderlich.emitron.model.utils.TimeUtils
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
+import org.threeten.bp.Clock
+import org.threeten.bp.LocalDateTime
 
 /**
- *  Model class for Bookmarks, Domains, Progressions, Contents, Groups.
+ *  Model class for Bookmark, Domain, Progression, Content, Group.
  */
 @Parcelize
 data class Data(
@@ -55,13 +57,6 @@ data class Data(
   var downloadProgress: Int = 0
 
   /**
-   * Default type from which this content was mapped
-   */
-  @IgnoredOnParcel
-  @Transient
-  var mappedFromType: String? = ""
-
-  /**
    *  Name
    *
    *  @return content name ex. Swift UI: Working With UIKit
@@ -69,32 +64,14 @@ data class Data(
   fun getName(): String? = attributes?.name
 
   /**
-   *  Domain
-   *
-   *  @return content domain ex. iOS & Swift
-   */
-  fun getDomain(): String? = relationships?.getDomainName()
-
-  /**
-   *  @return true if type is [DataType.Progressions], otherwise false
+   *  @return true if type is [DataType.Progressions], else false
    */
   private fun isTypeProgression(): Boolean = DataType.Progressions == DataType.fromValue(this.type)
 
   /**
-   *  @return true if type is [DataType.Groups], otherwise false
-   */
-  fun isTypeGroup(): Boolean = DataType.Groups == DataType.fromValue(type)
-
-  /**
-   *  @return true if type is [DataType.Domains], otherwise false
+   *  @return true if type is [DataType.Domains], else false
    */
   private fun isTypeDomain(): Boolean = DataType.Domains == DataType.fromValue(type)
-
-  /**
-   *  @return true if type is [DataType.Bookmarks], otherwise false
-   */
-  private fun isTypeBookmark(): Boolean = DataType.Bookmarks == DataType.fromValue(type) ||
-      DataType.Bookmarks == DataType.fromValue(mappedFromType)
 
   /**
    *  @return content description
@@ -107,79 +84,94 @@ data class Data(
   fun getCardArtworkUrl(): String? = attributes?.cardArtworkUrl
 
   /**
-   *  @return true if content doesn't require subscription, otherwise false
+   *  @return true if content doesn't require subscription, else false
    */
-  fun isFreeContent(): Boolean = attributes?.free ?: false
+  private fun isFreeContent(): Boolean = attributes?.free ?: false
 
   /**
-   *  @return true if content doesn't require subscription, otherwise false
-   */
-  fun isProgressionFinished(): Boolean = relationships?.hasFinishedContent() ?: false
-
-  /**
-   *  @return true if content doesn't require subscription, otherwise false
+   *  If data represents a progression object
+   *
+   *  @return percent completion value for progression
    */
   fun getPercentComplete(): Int = attributes?.getPercentComplete() ?: 0
 
   /**
-   *  @return true if content doesn't require subscription, otherwise false
-   */
-  fun getProgressionPercentComplete(): Int? = relationships?.getPercentComplete() ?: 0
-
-  /**
-   *  @return true if content doesn't require subscription, otherwise false
-   */
-  fun isFinished(): Boolean = attributes?.finished ?: false || isProgressionFinished()
-
-  /**
-   *  @return true if content doesn't require subscription, otherwise false
-   */
-  fun isProLabelVisible(): Boolean =
-    !isTypeProgression() && !isTypeBookmark() && !isFreeContent() && !isFinished()
-
-  /**
-   *  @return true if content doesn't require subscription, otherwise false
+   *  @return [ContentType] of content
    */
   fun getContentType(): ContentType? = attributes?.getContentType()
 
   /**
-   *  @return true if content doesn't require subscription, otherwise false
+   *  @return [Difficulty] of content
    */
   fun getDifficulty(): Difficulty? = attributes?.getDifficulty()
 
   /**
-   *  @return true if content doesn't require subscription, otherwise false
+   *  @return true if user has watched the content, else false
    */
-  fun getReleasedAt(shortReleaseDate: Boolean): TimeUtils.Day =
-    attributes?.getReadableReleasedAt(shortReleaseDate) ?: TimeUtils.Day.None
+  fun isFinished(): Boolean = attributes?.finished ?: false || isProgressionFinished()
 
   /**
-   *  @return true if content doesn't require subscription, otherwise false
+   *  @return true if content requires subscription, else false
+   */
+  fun isProLabelVisible(): Boolean =
+    !isTypeProgression() && !isFreeContent() && !isFinished()
+
+  /**
+   *  @return [TimeUtils.Day] after parsing release date of content
+   */
+  fun getReleasedAt(
+    withYear: Boolean, today: LocalDateTime = LocalDateTime.now(Clock.systemUTC())
+  ): TimeUtils.Day =
+    attributes?.getReadableReleasedAt(withYear, today) ?: TimeUtils.Day.None
+
+  /**
+   *  @return [Pair] of hours, minutes for watch duration content
    */
   fun getDuration(): Pair<Long, Long> = attributes?.getDurationHoursAndMinutes() ?: 0L to 0L
 
   /**
-   *  @return true if content is bookmarked, otherwise false
+   *  @return true if content is bookmarked, else false
    */
   fun isBookmarked(): Boolean = attributes?.bookmarked ?: false
 
   /**
-   *  @return true if content doesn't require subscription, otherwise false
+   *  @return technology string for content
    */
   fun getTechnology(): String? = attributes?.technology
 
   /**
-   *  @return true if content doesn't require subscription, otherwise false
+   *  @return contributor string for content
    */
   fun getContributors(): String? = attributes?.contributors
 
   /**
-   *  @return true if content doesn't require subscription, otherwise false
+   *  @return true if category is archived
    */
   fun isLevelArchived(): Boolean = attributes?.isLevelArchived() ?: false
 
   /**
-   *  @return true if content doesn't require subscription, otherwise false
+   *  @return true if progression
+   */
+  fun isProgressionFinished(): Boolean = relationships?.hasFinishedContent() ?: false
+
+  /**
+   *  @return true if content doesn't require subscription, else false
+   */
+  fun getProgressionPercentComplete(): Int? = relationships?.getPercentComplete() ?: 0
+
+  /**
+   *  Domain
+   *
+   *  @return content domain ex. iOS & Swift
+   */
+  fun getDomain(): String? = relationships?.getDomainName()
+
+  /**
+   * Set the [Contents.included] meta data to this object
+   *
+   * @param included list of domains, progressions, bookmarks
+   *
+   * @return this instance
    */
   fun setIncluded(included: List<Data>?): Data {
     if (included.isNullOrEmpty()) {
@@ -189,6 +181,13 @@ data class Data(
     return setDomain(included)
   }
 
+  /**
+   * Set the [Contents.included] domains to this object
+   *
+   * @param included list of domains
+   *
+   * @return this instance
+   */
   private fun setDomain(included: List<Data>): Data {
     val domains = included.filter {
       it.isTypeDomain()
@@ -224,10 +223,5 @@ data class Data(
       return dataList.filter { DataType.Categories == DataType.fromValue(it.type) }
         .mapNotNull { it.id }
     }
-
-    /**
-     *  @return Mocked Data
-     */
-    fun createMock(): Data = Data()
   }
 }

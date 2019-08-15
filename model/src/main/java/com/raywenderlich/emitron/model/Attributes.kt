@@ -4,7 +4,6 @@ import android.os.Parcelable
 import com.raywenderlich.emitron.model.utils.TimeUtils
 import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
-import org.threeten.bp.Clock
 import org.threeten.bp.LocalDateTime
 
 /**
@@ -139,13 +138,13 @@ data class Attributes(
 ) : Parcelable {
 
   fun getReadableReleasedAt(
-    shortReleaseDate: Boolean,
-    today: LocalDateTime = LocalDateTime.now(Clock.systemUTC())
+    withYear: Boolean,
+    today: LocalDateTime
   ): TimeUtils.Day =
     if (releasedAt.isNullOrBlank()) {
       TimeUtils.Day.None
     } else {
-      TimeUtils.toReadableDate(releasedAt, shortReleaseDate, today = today)
+      TimeUtils.toReadableDate(releasedAt, withYear, today = today)
     }
 
   fun getDurationHoursAndMinutes(): Pair<Long, Long> = if (null == duration) {
