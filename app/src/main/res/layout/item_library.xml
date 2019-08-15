@@ -1,7 +1,252 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
 
-  <!-- Add library item layout -->
-</androidx.constraintlayout.widget.ConstraintLayout>
+  <data>
+
+    <variable
+      name="data"
+      type="com.raywenderlich.emitron.model.Data" />
+
+    <import type="android.view.View" />
+  </data>
+
+  <com.google.android.material.card.MaterialCardView
+    android:id="@+id/item_foreground"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+      <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/activity_vertical_margin" />
+
+      <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/activity_horizontal_margin" />
+
+      <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
+
+      <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:text="@{data.getName()}"
+        android:textAppearance="@style/TextAppearance.Headline.4"
+        app:layout_constraintBottom_toTopOf="@+id/text_language"
+        app:layout_constraintEnd_toStartOf="@+id/image_collection"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toTopOf="@id/guideline_top"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="What's New in Swift 5: Types" />
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_language"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_spacing_vertical_title"
+        android:text="@{data.getDomain()}"
+        android:textAppearance="@style/TextAppearance.Caption"
+        app:layout_constraintBottom_toTopOf="@+id/text_description"
+        app:layout_constraintEnd_toEndOf="@+id/text_title"
+        app:layout_constraintStart_toStartOf="@+id/text_title"
+        app:layout_constraintTop_toBottomOf="@+id/text_title"
+        tools:text="iOS &amp; Swift" />
+
+      <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/image_collection"
+        android:layout_width="@dimen/card_icon_height_width"
+        android:layout_height="@dimen/card_icon_height_width"
+        android:layout_marginStart="@dimen/card_icon_margin_start"
+        android:background="@drawable/bg_rounded_outline"
+        android:outlineProvider="background"
+        android:scaleType="centerCrop"
+        app:imageUrl="@{data.cardArtworkUrl}"
+        app:layout_constraintBottom_toTopOf="@+id/text_description"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@id/guideline_right"
+        app:layout_constraintStart_toEndOf="@+id/text_title"
+        app:layout_constraintTop_toBottomOf="@id/guideline_top"
+        app:layout_constraintVertical_bias="0"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_spacing_vertical_body"
+        android:maxLines="3"
+        android:text="@{data.description}"
+        android:ellipsize="end"
+        android:textAppearance="@style/TextAppearance.Caption"
+        app:layout_constraintBottom_toTopOf="@+id/spacer"
+        app:layout_constraintEnd_toEndOf="@+id/image_collection"
+        app:layout_constraintStart_toStartOf="@+id/text_title"
+        app:layout_constraintTop_toBottomOf="@+id/image_collection"
+        tools:text="Get up and running fast with the recently announced and pre-alpha
+          Jetpack Compose toolkit." />
+
+      <View
+        android:id="@+id/spacer"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_height_spacer"
+        android:layout_marginTop="@dimen/view_height_spacer"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
+        app:layout_constraintEnd_toEndOf="@id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/text_title"
+        app:layout_constraintTop_toBottomOf="@+id/text_description" />
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_collection_label_pro"
+        style="@style/TextAppearance.Overline.Raised.Colored.White"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/button_spacing_horizontal"
+        android:text="@string/label_pro"
+        android:visibility="@{data.isProLabelVisible()? View.VISIBLE : View.GONE}"
+        app:layout_constraintBottom_toBottomOf="@+id/spacer"
+        app:layout_constraintEnd_toStartOf="@+id/text_duration"
+        app:layout_constraintStart_toStartOf="@+id/text_title"
+        app:layout_constraintTop_toTopOf="@+id/spacer"
+        tools:text="Pro"
+        tools:visibility="gone" />
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_duration"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@{data.releaseDateWithTypeAndDuration}"
+        android:textAppearance="@style/TextAppearance.Caption"
+        android:visibility="@{data.isFinished()? View.GONE : View.VISIBLE}"
+        app:layout_constraintBottom_toBottomOf="@+id/spacer"
+        app:layout_constraintEnd_toStartOf="@+id/button_bookmark"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@+id/text_collection_label_pro"
+        app:layout_constraintTop_toTopOf="@+id/spacer"
+        tools:text="Today · Video Course (56 min)"
+        tools:visibility="visible" />
+
+      <ProgressBar
+        android:id="@+id/progress_library_download"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="@dimen/height_card_progress_round_height_width"
+        android:layout_height="@dimen/height_card_progress_round_height_width"
+        android:layout_marginStart="@dimen/button_spacing_horizontal"
+        android:indeterminate="false"
+        android:progress="@{data.downloadProgress}"
+        android:progressDrawable="@drawable/progress_drawable"
+        app:layout_constraintBottom_toBottomOf="@+id/button_library_download"
+        app:layout_constraintEnd_toEndOf="@id/guideline_right"
+        app:layout_constraintTop_toTopOf="@+id/button_library_download"
+        tools:progress="50" />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_library_download_stop"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="@dimen/button_icon_height_width"
+        android:layout_height="@dimen/button_icon_height_width"
+        android:layout_marginStart="@dimen/button_spacing_horizontal"
+        android:gravity="center"
+        android:paddingLeft="@null"
+        android:paddingRight="@null"
+        android:textAppearance="@style/TextAppearance.Button.Regular"
+        app:icon="@drawable/ic_material_icon_download_pause"
+        app:iconSize="@dimen/button_download_pause_height"
+        app:layout_constraintBottom_toBottomOf="@+id/progress_library_download"
+        app:layout_constraintEnd_toEndOf="@+id/progress_library_download"
+        app:layout_constraintStart_toStartOf="@+id/progress_library_download"
+        app:layout_constraintTop_toTopOf="@+id/progress_library_download" />
+
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_library_download"
+        style="@style/Button.Icon"
+        android:layout_width="@dimen/button_icon_height_width"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/button_spacing_horizontal"
+        android:visibility="@{data.downloadProgress > 0? View.GONE : View.VISIBLE}"
+        app:icon="@drawable/ic_material_icon_download"
+        app:layout_constraintBottom_toBottomOf="@+id/spacer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spacer" />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_bookmark"
+        style="@style/Button.Icon"
+        android:layout_width="@dimen/button_icon_height_width"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/button_spacing_horizontal"
+        android:visibility="@{data.isBookmarked()? View.VISIBLE : View.GONE}"
+        app:icon="@drawable/ic_material_icon_bookmark"
+        app:iconTint="@{data.isBookmarked()? @color/colorButton1 : @color/colorIcon}"
+        app:layout_constraintBottom_toBottomOf="@+id/spacer"
+        app:layout_constraintEnd_toStartOf="@+id/button_library_download"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spacer" />
+
+      <androidx.constraintlayout.widget.Group
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="@{data.downloadProgress > 0? View.VISIBLE : View.GONE}"
+        app:constraint_referenced_ids="button_library_download_stop,progress_library_download"
+        tools:visibility="visible" />
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_label_completed"
+        style="@style/TextAppearance.Overline.Raised.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_completed"
+        android:visibility="@{data.isFinished()? View.VISIBLE : View.GONE}"
+        app:layout_constraintBottom_toBottomOf="@+id/spacer"
+        app:layout_constraintStart_toStartOf="@+id/text_title"
+        app:layout_constraintTop_toTopOf="@+id/spacer"
+        tools:text="Completed"
+        tools:visibility="visible" />
+
+      <ProgressBar
+        android:id="@+id/progress_completion"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/height_card_progress_height"
+        android:layout_marginTop="@dimen/margin_card_progress_top"
+        android:indeterminate="false"
+        android:progress="@{data.getProgressionPercentComplete()}"
+        android:progressDrawable="@drawable/progress_drawable_horizontal"
+        android:visibility="@{data.getProgressionPercentComplete() > 0? View.VISIBLE : View.GONE}"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spacer" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </com.google.android.material.card.MaterialCardView>
+
+</layout>

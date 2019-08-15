@@ -33,7 +33,7 @@
       style="@style/TextAppearance.Headline.3"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
+      android:layout_marginTop="@dimen/text_spacing_vertical_default"
       tools:text="An error occured!" />
 
     <androidx.appcompat.widget.AppCompatTextView
