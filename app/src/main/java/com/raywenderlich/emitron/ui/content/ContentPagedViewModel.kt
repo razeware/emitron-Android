@@ -47,7 +47,7 @@ class ContentPagedViewModel @Inject constructor() : UiStateViewModel {
    */
   fun handleItemRetry(isNetConnected: Boolean) {
     if (!isNetConnected && contentPagedList.value == null) {
-      uiState.postValue(UiStateManager.UiState.ERROR_CONNECTION)
+      uiState.value = UiStateManager.UiState.ERROR_CONNECTION
       return
     }
 

@@ -179,6 +179,7 @@ class ContentAdapter(
   fun updateErrorState(uiState: UiStateManager.UiState?) {
     if (pagedAdapter.errorState != uiState) {
       pagedAdapter.errorState = uiState
+      updateUiState(uiState)
     }
   }
 
