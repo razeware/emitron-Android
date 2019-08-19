@@ -33,7 +33,7 @@ fun Fragment.isNetConnected(): Boolean {
  *
  * @return Will return True if not connected, otherwise False
  */
-fun Fragment.isNetNotConnected() = !isNetConnected()
+fun Fragment.isNetNotConnected(): Boolean = !isNetConnected()
 
 /**
  * Extension function to inflate a databinding layout from a Fragment

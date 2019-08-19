@@ -20,4 +20,14 @@ data class Content(
 
   var hasSubscription = false
 
+  /**
+   *  @return percentage completion for content
+   */
+  fun getPercentComplete(): Int? = datum?.getPercentComplete() ?: 0
+
+  /**
+   *  @return true if user has finished content, else false
+   */
+  fun isFinished(): Boolean = datum?.isFinished() ?: false
+
 }

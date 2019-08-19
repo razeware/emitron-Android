@@ -4,6 +4,9 @@ import com.raywenderlich.emitron.model.Content
 import retrofit2.Retrofit
 import retrofit2.http.GET
 
+/**
+ * Service to make API calls respective to sessions
+ */
 interface LoginApi {
 
   /**
@@ -15,7 +18,7 @@ interface LoginApi {
   companion object {
 
     /**
-     * Factory method for [LoginApi]
+     * Factory function for [LoginApi]
      */
     fun create(retroFit: Retrofit): LoginApi = retroFit.create(
       LoginApi::class.java

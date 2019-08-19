@@ -7,7 +7,7 @@ package com.raywenderlich.emitron.utils
  */
 open class Event<out T>(private val content: T) {
 
-  var hasBeenHandled = false
+  var hasBeenHandled: Boolean = false
     private set // Allow external read but not write
 
   /**

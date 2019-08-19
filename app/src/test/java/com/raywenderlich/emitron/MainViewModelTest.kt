@@ -1,6 +1,7 @@
 package com.raywenderlich.emitron
 
 import com.google.common.truth.Truth.assertThat
+import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
@@ -22,8 +23,8 @@ class MainViewModelTest {
   @Test
   fun isAllowed_A() {
     // Is logged in and has subscription
-    whenever(loginRepository.isLoggedIn()).thenReturn(true)
-    whenever(loginRepository.hasSubscription()).thenReturn(true)
+    whenever(loginRepository.isLoggedIn()).doReturn(true)
+    whenever(loginRepository.hasSubscription()).doReturn(true)
     val result = viewModel.isAllowed()
     assertThat(result).isTrue()
     verify(loginRepository).isLoggedIn()
@@ -33,8 +34,8 @@ class MainViewModelTest {
   @Test
   fun isAllowed_B() {
     // Is logged in and has no subscription
-    whenever(loginRepository.isLoggedIn()).thenReturn(true)
-    whenever(loginRepository.hasSubscription()).thenReturn(false)
+    whenever(loginRepository.isLoggedIn()).doReturn(true)
+    whenever(loginRepository.hasSubscription()).doReturn(false)
     val result = viewModel.isAllowed()
     assertThat(result).isFalse()
     verify(loginRepository).isLoggedIn()

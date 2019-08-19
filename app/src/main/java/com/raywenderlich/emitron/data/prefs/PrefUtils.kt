@@ -75,6 +75,7 @@ class PrefUtils @Inject constructor(private val context: Application) {
    *
    * @return stored value of the preference if it exists or default value
    */
+  @Suppress("UNCHECKED_CAST")
   fun <T> get(key: String, defaultVal: T): T {
     return when (defaultVal) {
       is Boolean -> prefs.getBoolean(key, defaultVal) as T

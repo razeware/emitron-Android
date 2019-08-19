@@ -38,4 +38,9 @@ dependencies {
   kapt "androidx.room:room-compiler:${versions.room}"
   kapt "com.squareup.moshi:moshi-kotlin-codegen:${versions.moshi}"
   testImplementation "junit:junit:${versions.junit}"
+  testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${versions.mockitoKotlin}"
+  testImplementation "com.google.truth:truth:${versions.googleTruth}"
+  testImplementation "org.powermock:powermock-api-mockito2:${versions.powerMock}"
+  testImplementation "org.powermock:powermock-module-junit4:${versions.powerMock}"
+
 }

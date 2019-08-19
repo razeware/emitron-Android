@@ -1,9 +1,6 @@
 package com.raywenderlich.emitron.data.login
 
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.prefs.PrefUtils
 import com.raywenderlich.guardpost.data.SSOUser
 import org.junit.Before
@@ -18,7 +15,9 @@ class LoginPrefsTest {
 
   @Before
   fun setUp() {
-    whenever(prefUtils.get(any(), anyBoolean())).thenReturn(true)
+    whenever(prefUtils.get(any(), anyBoolean())).doReturn(true)
+    whenever(prefUtils.set(any(), anyBoolean())).doReturn(prefUtils)
+    whenever(prefUtils.commit()).doReturn(t = true)
     loginPrefs = LoginPrefs(prefUtils)
   }
 

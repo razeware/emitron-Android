@@ -5,6 +5,25 @@
   <string name="title_downloads">Downloads</string>
   <string name="title_my_tutorials">My Tutorials</string>
 
+  <!-- Generic -->
+  <string name="button_retry">Retry</string>
+  <string name="button_delete">Deleted</string>
+  <string name="label_loading">Loading …</string>
+  <string name="label_search">Search …</string>
+  <string name="label_completed">Completed</string>
+  <string name="label_pro">Pro</string>
+  <string name="error_no_internet">No internet available</string>
+
+  <plurals name="hours">
+    <item quantity="one">1 hr, </item>
+    <item quantity="other">%d hrs, </item>
+  </plurals>
+
+  <plurals name="minutes">
+    <item quantity="one">1 min</item>
+    <item quantity="other">%d mins</item>
+  </plurals>
+
   <!-- Snackbar -->
   <string name="snackbar_label_error">Error</string>
   <string name="snackbar_label_warning">Warning</string>
@@ -29,4 +48,27 @@
   <!-- Downloads -->
   <string name="button_explore_tutorials">Explore Tutorials</string>
   <string name="body_downloads_empty">You haven’t downloaded any tutorials yet</string>
+
+  <!-- Library -->
+  <string name="button_latest">Latest</string>
+  <string name="error_library_no_content">We couldn’t find any results</string>
+  <string name="error_library_no_content_body">Try removing some filters</string>
+  <string name="error_generic">Something went wrong!</string>
+  <string name="label_tutorials_count">%1$s Tutorials</string>
+  <string name="label_release_type_duration">%1$s &#8226; %2$s (%3$s%4$s)</string>
+  <string name="label_release_difficulty_type_duration">
+    %1$s &#8226; %2$s &#8226; %3$s (%4$s%5$s)</string>
+
+  <!-- Content Difficulty -->
+  <string name="difficulty_beginner">Beginner</string>
+  <string name="difficulty_advanced">Advanced</string>
+  <string name="difficulty_intermediate">Intermediate</string>
+
+  <!-- Content Type -->
+  <string name="content_type_video_course">Video Course</string>
+  <string name="content_type_screencast">Screencast</string>
+
+  <!-- Readable Date -->
+  <string name="today">Today</string>
+  <string name="yesterday">Yesterday</string>
 </resources>

@@ -44,4 +44,23 @@ data class Relationships(
    */
   @Json(name = "child_contents")
   val childContents: Content? = null
-) : Parcelable
+) : Parcelable {
+
+  fun getDomainName(): String? = domains?.datum?.mapNotNull { it.attributes?.name }?.joinToString()
+
+  fun hasFinishedContent(): Boolean = progression?.isFinished() ?: false
+
+  fun getPercentComplete(): Int = progression?.getPercentComplete() ?: 0
+
+  fun setDomains(domainList: List<Data>): Relationships {
+    if (domainList.isEmpty()) {
+      return this
+    }
+
+    return run {
+      val domainIds = this.domains?.getDomainIds() ?: emptyList()
+      val filteredDomainList = domainList.filter { domainIds.contains(it.id) }
+      this.copy(domains = Contents(datum = filteredDomainList))
+    }
+  }
+}

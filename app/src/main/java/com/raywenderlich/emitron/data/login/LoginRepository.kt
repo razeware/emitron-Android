@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
- * Repository to interact with login data layer
+ * Repository for session operations
  */
 class LoginRepository @Inject constructor(
   private val loginApi: LoginApi,

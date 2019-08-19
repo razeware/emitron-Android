@@ -2,10 +2,7 @@ package com.raywenderlich.emitron.data.login
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.network.AuthInterceptor
 import com.raywenderlich.emitron.ui.utils.TestCoroutineRule
@@ -41,7 +38,7 @@ class LoginRepositoryTest {
 
   @Test
   fun isLoggedIn() {
-    whenever(loginPrefs.isLoggedIn()).thenReturn(true)
+    whenever(loginPrefs.isLoggedIn()).doReturn(true)
     val result = repository.isLoggedIn()
     verify(loginPrefs).isLoggedIn()
     verifyNoMoreInteractions(loginPrefs)
@@ -50,7 +47,7 @@ class LoginRepositoryTest {
 
   @Test
   fun hasSubscription() {
-    whenever(loginPrefs.hasSubscription()).thenReturn(true)
+    whenever(loginPrefs.hasSubscription()).doReturn(true)
     val result = repository.hasSubscription()
     verify(loginPrefs).hasSubscription()
     verifyNoMoreInteractions(loginPrefs)
@@ -59,7 +56,7 @@ class LoginRepositoryTest {
 
   @Test
   fun storeUser() {
-    whenever(loginPrefs.authToken()).thenReturn("Raywenderlich")
+    whenever(loginPrefs.authToken()).doReturn("Raywenderlich")
     val user = SSOUser(token = "Raywenderlich")
     repository.storeUser(user)
     verify(loginPrefs).storeUser(user)
@@ -91,8 +88,8 @@ class LoginRepositoryTest {
   fun getSubscription() {
     testCoroutineRule.runBlockingTest {
       val expectedContent = Content()
-      whenever(loginApi.getSubscription()).thenReturn(expectedContent)
-      whenever(threadManager.io).thenReturn(Dispatchers.Unconfined)
+      whenever(loginApi.getSubscription()).doReturn(expectedContent)
+      whenever(threadManager.io).doReturn(Dispatchers.Unconfined)
       val result = repository.getSubscription()
       verify(loginApi).getSubscription()
       assertThat(result).isEqualTo(expectedContent)
