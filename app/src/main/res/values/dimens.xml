@@ -15,7 +15,9 @@
 
   <!-- Icon -->
   <dimen name="icon_height_width">24dp</dimen>
-  <dimen name="icon_height_width_small">16dp</dimen>
+  <!-- For text left/right drawables -->
+  <dimen name="icon_height_width_1">16dp</dimen>
+  <dimen name="icon_height_width_2">20dp</dimen>
 
   <!-- Overline -->
   <dimen name="overline_padding_internal">6dp</dimen>
@@ -99,8 +101,10 @@
   <dimen name="margin_body_pro">32dp</dimen>
   <dimen name="margin_action_button_top">8dp</dimen>
   <dimen name="height_collection_banner">272dp</dimen>
-  <dimen name="button_episode_number_height_width">36dp</dimen>
+  <dimen name="button_episode_number_height_width">32dp</dimen>
   <dimen name="button_episode_number_margin_end">16dp</dimen>
+  <dimen name="collection_detail_item_vertical_spacing">12dp</dimen>
+  <dimen name="collection_episode_headline_margin_top">20dp</dimen>
   <dimen name="banner_play_icon_width_height">72dp</dimen>
   <dimen name="banner_play_icon_padding">12dp</dimen>
   <dimen name="banner_play_stroke_width">4dp</dimen>
