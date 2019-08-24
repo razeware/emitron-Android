@@ -40,7 +40,7 @@
       android:id="@+id/view_stub_search_view"
       android:layout_width="0dp"
       android:layout_height="40dp"
-      android:background="@drawable/bg_progress_shimmer_image"
+      android:background="@drawable/bg_progress_shimmer_image_surface"
       app:layout_constraintBottom_toTopOf="@+id/view_stub_sort"
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintHorizontal_bias="0"
@@ -55,7 +55,7 @@
       android:layout_width="0dp"
       android:layout_height="28dp"
       android:layout_marginTop="@dimen/activity_vertical_margin"
-      android:background="@drawable/bg_progress_shimmer_image"
+      android:background="@drawable/bg_progress_shimmer_image_surface"
       app:layout_constraintBottom_toTopOf="@+id/layout_progress_item_1"
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintHorizontal_bias="0"
@@ -76,7 +76,7 @@
       app:layout_constraintStart_toStartOf="@id/guideline_left"
       app:layout_constraintTop_toBottomOf="@id/view_stub_sort">
 
-      <include layout="@layout/layout_shimmer_progress_item" />
+      <include layout="@layout/layout_library_shimmer_progress_item" />
     </FrameLayout>
 
     <FrameLayout
@@ -90,7 +90,7 @@
       app:layout_constraintStart_toStartOf="@id/guideline_left"
       app:layout_constraintTop_toBottomOf="@id/layout_progress_item_1">
 
-      <include layout="@layout/layout_shimmer_progress_item" />
+      <include layout="@layout/layout_library_shimmer_progress_item" />
     </FrameLayout>
 
     <FrameLayout
@@ -104,7 +104,7 @@
       app:layout_constraintStart_toStartOf="@id/guideline_left"
       app:layout_constraintTop_toBottomOf="@id/layout_progress_item_2">
 
-      <include layout="@layout/layout_shimmer_progress_item" />
+      <include layout="@layout/layout_library_shimmer_progress_item" />
     </FrameLayout>
 
   </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,7 @@
   <color name="textColorHeadline">@color/white</color>
 
   <color name="colorProgressItemBackground">#1161656c</color>
+  <color name="colorProgressItemBackground_200">#2261656c</color>
   <color name="colorProgressItemBackground_100">#61656c</color>
   <color name="colorDivider">@color/bright_grey</color>
 

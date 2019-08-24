@@ -147,7 +147,7 @@
       app:constraint_referenced_ids="button_library_filter,scroll_view_library_filter,text_library_count,button_library_sort,search_view_library" />
 
     <FrameLayout
-      android:id="@+id/layout_library_progress_container"
+      android:id="@+id/layout_shimmer_progress_container"
       android:layout_width="0dp"
       android:layout_height="0dp"
       android:background="@color/colorBackground"
@@ -159,8 +159,7 @@
       tools:visibility="gone">
 
       <include
-        android:id="@+id/layout_library_progress"
-        layout="@layout/layout_shimmer_progress" />
+        layout="@layout/layout_library_shimmer_progress" />
     </FrameLayout>
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
