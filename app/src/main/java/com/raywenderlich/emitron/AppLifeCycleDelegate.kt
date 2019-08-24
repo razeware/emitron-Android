@@ -1,6 +1,5 @@
 package com.raywenderlich.emitron
 
-import android.app.Application
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
@@ -14,7 +13,7 @@ import javax.inject.Singleton
  * as it will affect to app launch timing
  */
 @Singleton
-class AppLifeCycleDelegate @Inject constructor(val application: Application) : LifecycleObserver {
+class AppLifeCycleDelegate @Inject constructor() : LifecycleObserver {
 
   /**
    * True if the app is cold started, else False
@@ -27,7 +26,7 @@ class AppLifeCycleDelegate @Inject constructor(val application: Application) : L
   private var isInForeground = false
 
   /**
-   * Application lifecycle delegate functions
+   * See [Lifecycle.Event.ON_CREATE]
    */
   @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
   fun onLaunch() {
@@ -35,12 +34,18 @@ class AppLifeCycleDelegate @Inject constructor(val application: Application) : L
     isNewLaunch = true
   }
 
+  /**
+   * See [Lifecycle.Event.ON_RESUME]
+   */
   @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
   fun onResume() {
     // App is resumed
     isInForeground = true
   }
 
+  /**
+   * See [Lifecycle.Event.ON_PAUSE]
+   */
   @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
   fun onPause() {
     // App is being sent to background
