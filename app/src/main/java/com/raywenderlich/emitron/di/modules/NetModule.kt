@@ -4,6 +4,7 @@ import com.raywenderlich.emitron.BuildConfig
 import com.raywenderlich.emitron.data.bookmarks.BookmarkApi
 import com.raywenderlich.emitron.data.content.ContentApi
 import com.raywenderlich.emitron.data.login.LoginApi
+import com.raywenderlich.emitron.data.progressions.ProgressionApi
 import com.raywenderlich.emitron.network.AuthInterceptorImpl
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -71,6 +72,9 @@ class NetModule {
     @Provides
     fun provideBookmarkApi(retrofit: Retrofit): BookmarkApi = BookmarkApi.create(retrofit)
 
+    @JvmStatic
+    @Provides
+    fun provideProgressionApi(retrofit: Retrofit): ProgressionApi = ProgressionApi.create(retrofit)
 
   }
 
