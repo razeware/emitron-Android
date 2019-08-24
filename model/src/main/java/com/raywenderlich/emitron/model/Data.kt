@@ -2,7 +2,6 @@ package com.raywenderlich.emitron.model
 
 import android.os.Parcelable
 import com.raywenderlich.emitron.model.utils.TimeUtils
-import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import org.threeten.bp.Clock
 import org.threeten.bp.LocalDateTime
@@ -41,21 +40,6 @@ data class Data(
    */
   val included: Contents? = null
 ) : Parcelable {
-
-  /**
-   *  Release date with type and duration ex. July 25 2019
-   */
-  @IgnoredOnParcel
-  @Transient
-  var releaseDateWithTypeAndDuration: String = ""
-
-  /**
-   *  Download progress if the current item is downloading
-   */
-  @IgnoredOnParcel
-  @Transient
-  var downloadProgress: Int = 0
-
   /**
    *  Name
    *

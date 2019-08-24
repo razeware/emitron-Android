@@ -14,14 +14,16 @@ class ContentItemViewHolder(private val binding: ItemLibraryBinding) :
   RecyclerView.ViewHolder(binding.root) {
 
   /**
-   * @param data [Data] for this item layout
+   * @param content [Data] for this item layout
    * @param onItemClick Click listener for this item layout
    */
-  fun bindTo(data: Data?, onItemClick: (Int) -> Unit) {
+  fun bindTo(content: Data?, onItemClick: (Int) -> Unit) {
     binding.root.setOnClickListener {
       onItemClick(adapterPosition)
     }
-    binding.data = data
+    binding.data = content
+    binding.releaseDateWithTypeAndDuration =
+      content?.getReadableReleaseAtWithTypeAndDuration(binding.root.context)
     binding.executePendingBindings()
   }
 

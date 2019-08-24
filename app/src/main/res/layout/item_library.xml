@@ -9,6 +9,14 @@
       name="data"
       type="com.raywenderlich.emitron.model.Data" />
 
+    <variable
+      name="releaseDateWithTypeAndDuration"
+      type="String" />
+
+    <variable
+      name="downloadProgress"
+      type="Integer" />
+
     <import type="android.view.View" />
   </data>
 
@@ -139,7 +147,7 @@
         android:id="@+id/text_duration"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@{data.releaseDateWithTypeAndDuration}"
+        android:text="@{releaseDateWithTypeAndDuration}"
         android:textAppearance="@style/TextAppearance.Caption"
         android:visibility="@{data.isFinished()? View.GONE : View.VISIBLE}"
         app:layout_constraintBottom_toBottomOf="@+id/spacer"
@@ -157,7 +165,7 @@
         android:layout_height="@dimen/height_card_progress_round_height_width"
         android:layout_marginStart="@dimen/button_spacing_horizontal"
         android:indeterminate="false"
-        android:progress="@{data.downloadProgress}"
+        android:progress="@{downloadProgress}"
         android:progressDrawable="@drawable/progress_drawable"
         app:layout_constraintBottom_toBottomOf="@+id/button_library_download"
         app:layout_constraintEnd_toEndOf="@id/guideline_right"
@@ -188,7 +196,7 @@
         android:layout_width="@dimen/button_icon_height_width"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/button_spacing_horizontal"
-        android:visibility="@{data.downloadProgress > 0? View.GONE : View.VISIBLE}"
+        android:visibility="@{downloadProgress > 0? View.GONE : View.VISIBLE}"
         app:icon="@drawable/ic_material_icon_download"
         app:layout_constraintBottom_toBottomOf="@+id/spacer"
         app:layout_constraintEnd_toEndOf="parent"
@@ -214,7 +222,7 @@
       <androidx.constraintlayout.widget.Group
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="@{data.downloadProgress > 0? View.VISIBLE : View.GONE}"
+        android:visibility="@{downloadProgress > 0? View.VISIBLE : View.GONE}"
         app:constraint_referenced_ids="button_library_download_stop,progress_library_download"
         tools:visibility="visible" />
 

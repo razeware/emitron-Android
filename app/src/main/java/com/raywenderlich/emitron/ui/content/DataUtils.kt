@@ -10,31 +10,30 @@ import com.raywenderlich.emitron.model.utils.TimeUtils
 /**
  * [Data.attributes] contains release date, difficulty, and content type
  *
- * This extension function formats release date, difficulty and content type to readable string
+ * @return Readable formatted string of release date, difficulty and content type
  */
-fun Data.setReadableReleaseAtWithTypeAndDuration(
+fun Data.getReadableReleaseAtWithTypeAndDuration(
   context: Context,
-  data: Data,
   withDifficulty: Boolean = false,
-  shortReleaseDate: Boolean = false
-) {
+  withYear: Boolean = true
+): String {
   with(context) {
 
-    val releasedAt = when (val day = data.getReleasedAt(shortReleaseDate)) {
+    val releasedAt = when (val day = getReleasedAt(withYear)) {
       is TimeUtils.Day.Today -> getString(R.string.today)
       is TimeUtils.Day.Yesterday -> getString(R.string.yesterday)
       is TimeUtils.Day.Formatted -> day.readableDate
       else -> ""
     }
 
-    val contentTypeString = when (data.getContentType()) {
+    val contentTypeString = when (getContentType()) {
       ContentType.Collection -> getString(R.string.content_type_video_course)
       ContentType.Screencast -> getString(R.string.content_type_screencast)
       else ->
         ""
     }
 
-    val (hrs, mins) = data.getDuration()
+    val (hrs, mins) = getDuration()
 
     val durationHrs = if (hrs > 0) {
       "${resources.getQuantityString(R.plurals.hours, hrs.toInt(), hrs)} "
@@ -50,14 +49,14 @@ fun Data.setReadableReleaseAtWithTypeAndDuration(
 
     if (withDifficulty) {
 
-      val difficultyString = when (data.getDifficulty()) {
+      val difficultyString = when (getDifficulty()) {
         Difficulty.Advanced -> getString(R.string.difficulty_advanced)
         Difficulty.Beginner -> getString(R.string.difficulty_beginner)
         Difficulty.Intermediate -> getString(R.string.difficulty_intermediate)
         else -> ""
       }
 
-      releaseDateWithTypeAndDuration = getString(
+      return getString(
         R.string.label_release_difficulty_type_duration,
         releasedAt,
         difficultyString,
@@ -65,10 +64,10 @@ fun Data.setReadableReleaseAtWithTypeAndDuration(
         durationHrs,
         durationMins
       )
-      return
+
     }
 
-    releaseDateWithTypeAndDuration = getString(
+    return getString(
       R.string.label_release_type_duration,
       releasedAt,
       contentTypeString,
