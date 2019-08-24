@@ -76,3 +76,20 @@ fun Data.getReadableReleaseAtWithTypeAndDuration(
     )
   }
 }
+
+/**
+ * @return Readable formatted string of contributors
+ */
+fun Data.getReadableContributors(context: Context): String {
+  with(context) {
+    val contributors: String? = getContributors()
+
+    return if (contributors.isNullOrBlank()) {
+      ""
+    } else {
+      getString(
+        R.string.contributors, getContributors()
+      )
+    }
+  }
+}

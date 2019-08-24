@@ -4,10 +4,12 @@ import androidx.annotation.MainThread
 import androidx.lifecycle.Transformations
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
+import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.Contents
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.utils.PagedResponse
 import com.raywenderlich.emitron.utils.async.ThreadManager
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -63,5 +65,19 @@ class ContentRepository @Inject constructor(
         sourceFactory.sourceLiveData.value?.retryAllFailed()
       }
     )
+  }
+
+  /**
+   * Get content
+   *
+   * @param id Content id to be fetched
+   *
+   * @return [Content] Response Content
+   */
+  @Throws(Exception::class)
+  suspend fun getContent(id: String): Content {
+    return withContext(threadManager.io) {
+      api.getContent(id)
+    }
   }
 }

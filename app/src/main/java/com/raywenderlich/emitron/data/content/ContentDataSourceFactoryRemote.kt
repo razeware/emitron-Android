@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.utils.async.ThreadManager
+import com.raywenderlich.emitron.utils.NetworkState
 
 /**
  * Factory for [ContentDataSourceRemote]
