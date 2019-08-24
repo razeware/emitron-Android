@@ -5,9 +5,9 @@ buildscript {
       'versionCode'                 : 1,
       'versionName'                 : "0.1",
       'minSdk'                      : 21,
-      'targetSdk'                   : 28,
-      'compileSdk'                  : 28,
-      'gradle'                      : '3.5.0-rc03',
+      'targetSdk'                   : 29,
+      'compileSdk'                  : 29,
+      'gradle'                      : '3.5.0',
       'kotlin'                      : '1.3.41',
 
       // core
@@ -15,13 +15,13 @@ buildscript {
       'fragmentKtx'                 : "1.1.0-rc01",
       'architectureComponents'      : "2.1.0-rc01",
       'architectureComponentsPaging': "2.1.0",
-      'workManager'                 : '2.1.0',
+      'workManager'                 : '2.2.0',
       'annotations'                 : "1.1.0",
       'appCompat'                   : "1.1.0-rc01",
       'multidex'                    : "2.0.1",
       'browser'                     : "1.0.0", // Chrome custom tabs
 
-      'dagger'                      : '2.23.2',
+      'dagger'                      : '2.24',
       'coroutines'                  : "1.2.1",
 
       // cast
@@ -32,7 +32,7 @@ buildscript {
       'constraintLayout'            : "1.1.3",
       'exoplayer'                   : "2.10.1",
       'navigation'                  : "2.0.0",
-      'materialDesign'              : "1.1.0-alpha08",
+      'materialDesign'              : '1.1.0-alpha09',
       'vectorDrawable'              : "1.0.1",
       'recyclerView'                : "1.0.0",
 
@@ -43,9 +43,9 @@ buildscript {
       'threetenabp'                 : "1.2.1",
 
       //network
-      'retrofit'                    : "2.6.0",
+      'retrofit'                    : '2.6.1',
       'moshi'                       : "1.8.0",
-      'okHttp'                      : '4.0.1',
+      'okHttp'                      : '4.1.0',
       'glide'                       : "4.9.0",
 
       //quality
