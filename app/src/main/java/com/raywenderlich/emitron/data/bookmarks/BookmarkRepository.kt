@@ -20,6 +20,7 @@ class BookmarkRepository @Inject constructor(
    *
    * @return Pair of response [Content] and True/False if request was succeeded/failed
    */
+  @Throws(Exception::class)
   suspend fun createBookmark(contentId: String): Pair<Content?, Boolean> {
     val bookmark = Content.newBookmark(contentId)
     return withContext(threadManager.io) {
@@ -35,6 +36,7 @@ class BookmarkRepository @Inject constructor(
    *
    * @return True, if request was successful, else False
    */
+  @Throws(Exception::class)
   suspend fun deleteBookmark(bookmarkId: String): Boolean {
     return withContext(threadManager.io) {
       val response = api.deleteBookmark(bookmarkId)

@@ -21,6 +21,7 @@ interface ProgressionApi {
    * @return Response<Content> response object containing response body
    */
   @POST("progressions")
+  @Throws(Exception::class)
   suspend fun createProgression(
     @Body data: Content
   ): Response<Content>
@@ -33,6 +34,7 @@ interface ProgressionApi {
    * @return Response<Any> response object containing response body
    */
   @DELETE("progressions/{id}")
+  @Throws(Exception::class)
   suspend fun deleteProgression(
     @Path("id") id: String
   ): Response<Any>

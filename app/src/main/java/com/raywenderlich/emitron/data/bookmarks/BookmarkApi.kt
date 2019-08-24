@@ -21,6 +21,7 @@ interface BookmarkApi {
    * @return Response<Content> response object containing response body
    */
   @POST("bookmarks")
+  @Throws(Exception::class)
   suspend fun createBookmark(
     @Body data: Content
   ): Response<Content>
@@ -33,6 +34,7 @@ interface BookmarkApi {
    * @return Response<Any> response object containing response body
    */
   @DELETE("bookmarks/{id}")
+  @Throws(Exception::class)
   suspend fun deleteBookmark(
     @Path("id") id: String
   ): Response<Any>

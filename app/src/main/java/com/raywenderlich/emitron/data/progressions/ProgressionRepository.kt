@@ -20,6 +20,7 @@ class ProgressionRepository @Inject constructor(
    *
    * @return Pair of response [Content] and True/False if request was succeeded/failed
    */
+  @Throws(Exception::class)
   suspend fun createProgression(contentId: String): Pair<Content?, Boolean> {
     val progression = Content.newProgression(contentId)
     return withContext(threadManager.io) {
@@ -35,6 +36,7 @@ class ProgressionRepository @Inject constructor(
    *
    * @return True, if request was successful, else False
    */
+  @Throws(Exception::class)
   suspend fun deleteProgression(progressionId: String): Boolean {
     return withContext(threadManager.io) {
       val response = api.deleteProgression(progressionId)
