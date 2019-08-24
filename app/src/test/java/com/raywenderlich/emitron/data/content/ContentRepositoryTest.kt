@@ -6,11 +6,7 @@ import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.model.Contents
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.Links
-import com.raywenderlich.emitron.ui.utils.loadAllData
-import com.raywenderlich.emitron.ui.utils.observeForTestingObserver
-import com.raywenderlich.emitron.ui.utils.observeForTestingResult
-import com.raywenderlich.emitron.ui.utils.observeForTestingResultNullable
-import com.raywenderlich.emitron.utils.NetworkState
+import com.raywenderlich.emitron.utils.*
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import okhttp3.ResponseBody
 import org.junit.Before
@@ -21,7 +17,6 @@ import org.mockito.ArgumentMatchers.anyList
 import org.mockito.Mockito
 import retrofit2.Response
 import retrofit2.mock.Calls
-import java.util.concurrent.Executor
 
 class ContentRepositoryTest {
 
@@ -36,11 +31,6 @@ class ContentRepositoryTest {
 
   @Before
   fun setUp() {
-    class CurrentThreadExecutor : Executor {
-      override fun execute(r: Runnable) {
-        r.run()
-      }
-    }
     whenever(threadManager.networkIo).doReturn(CurrentThreadExecutor())
     repository = ContentRepository(contentApi, threadManager)
   }

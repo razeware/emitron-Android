@@ -1,4 +1,4 @@
-package com.raywenderlich.emitron.ui.utils
+package com.raywenderlich.emitron.utils
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -5,7 +5,7 @@ import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.login.LoginRepository
 import com.raywenderlich.emitron.model.Content
-import com.raywenderlich.emitron.ui.utils.TestCoroutineRule
+import com.raywenderlich.emitron.utils.TestCoroutineRule
 import com.raywenderlich.guardpost.data.SSOUser
 import org.junit.Before
 import org.junit.Rule

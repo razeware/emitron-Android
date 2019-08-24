@@ -7,7 +7,7 @@ import com.raywenderlich.emitron.data.content.ContentRepository
 import com.raywenderlich.emitron.model.Contents
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.ui.content.ContentPagedViewModel
-import com.raywenderlich.emitron.ui.utils.observeForTestingResult
+import com.raywenderlich.emitron.utils.observeForTestingResult
 import com.raywenderlich.emitron.utils.PagedResponse
 import org.junit.Before
 import org.junit.Rule

@@ -1,10 +1,11 @@
-package com.raywenderlich.emitron.ui.utils
+package com.raywenderlich.emitron.utils
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import com.google.common.truth.Truth
 import com.nhaarman.mockitokotlin2.mock
+import java.util.concurrent.Executor
 
 class TestObserver<T> : Observer<T> {
   var value: T? = null
@@ -41,4 +42,10 @@ fun <T> PagedList<T>.loadAllData() {
 
 infix fun Any?.isEqualTo(expected: Any?) {
   Truth.assertThat(this).isEqualTo(expected)
+}
+
+class CurrentThreadExecutor : Executor {
+  override fun execute(r: Runnable) {
+    r.run()
+  }
 }
