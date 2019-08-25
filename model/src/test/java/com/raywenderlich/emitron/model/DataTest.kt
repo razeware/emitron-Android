@@ -1,5 +1,6 @@
 package com.raywenderlich.emitron.model
 
+import com.google.common.truth.Truth.assertThat
 import com.raywenderlich.emitron.model.utils.TimeUtils
 import com.raywenderlich.emitron.model.utils.isEqualTo
 import org.junit.Test
@@ -161,23 +162,212 @@ class DataTest {
 
   @Test
   fun setIncluded() {
-    val domains = listOf(
+    val domainsAndProgressions = listOf(
       Data(id = "1", attributes = Attributes(name = "iOS & Swift"), type = "domains"),
-      Data(attributes = Attributes(name = "Android & Kotlin"), type = "domains")
+      Data(attributes = Attributes(name = "Android & Kotlin"), type = "domains"),
+      Data(id = "4", attributes = Attributes(finished = true), type = "progressions"),
+      Data(attributes = Attributes(finished = false), type = "progressions")
     )
+
     val data = Data(
       relationships = Relationships(
         domains = Contents(
           datum = listOf(Data(id = "1"))
-        )
+        ),
+        progression = Content(datum = Data(id = "4"))
       )
     )
-    val result = data.setIncluded(domains)
+    val result = data.setIncluded(domainsAndProgressions)
 
     result.getDomain() isEqualTo "iOS & Swift"
+    result.isFinished() isEqualTo true
 
     val result2 = data.setIncluded(emptyList())
 
     result2.getDomain() isEqualTo ""
+    result2.isFinished() isEqualTo false
+  }
+
+  @Test
+  fun getBookmarkId() {
+    val relationships = Relationships(bookmark = Content(datum = Data(id = "1")))
+    val data = Data(relationships = relationships)
+
+    assertThat(data.getBookmarkId()).isEqualTo("1")
+  }
+
+  @Test
+  fun getProgressionId() {
+    val relationships = Relationships(progression = Content(datum = Data(id = "2")))
+    val data = Data(relationships = relationships)
+
+    assertThat(data.getProgressionId()).isEqualTo("2")
+  }
+
+  @Test
+  fun addBookmark() {
+    val relationships = Relationships()
+    val data = Data(relationships = relationships)
+
+    val bookmark = Content(datum = Data(id = "1"))
+    assertThat(data.addBookmark(bookmark)).isEqualTo(
+      Data(
+        attributes = Attributes(bookmarked = true),
+        relationships = Relationships(bookmark = bookmark)
+      )
+    )
+  }
+
+  @Test
+  fun removeBookmark() {
+    val data = Data(
+      attributes = Attributes(bookmarked = true),
+      relationships = Relationships(
+        progression = Content(datum = Data(id = "2")),
+        bookmark = Content(datum = Data(id = "1"))
+      )
+    )
+    assertThat(data.removeBookmark()).isEqualTo(
+      Data(
+        attributes = Attributes(bookmarked = false),
+        relationships = Relationships(
+          progression = Content(datum = Data(id = "2"))
+        )
+      )
+    )
+  }
+
+  @Test
+  fun isTypeGroup() {
+    val data = Data(type = "groups")
+    assertThat(data.isTypeGroup()).isTrue()
+
+    val data2 = Data()
+    assertThat(data2.isTypeGroup()).isFalse()
+  }
+
+  @Test
+  fun isTypeScreencast() {
+    val data = Data(type = "groups", attributes = Attributes(contentType = "screencast"))
+    assertThat(data.isTypeScreencast()).isTrue()
+
+    val data2 = Data()
+    assertThat(data2.isTypeScreencast()).isFalse()
+  }
+
+  @Test
+  fun getEpisodeDuration() {
+    val data = Data()
+    assertThat(data.getEpisodeDuration()).isEmpty()
+
+    val data2 = Data(attributes = Attributes(duration = 4088))
+    assertThat(data2.getEpisodeDuration()).isEqualTo("01:08:08")
+
+    val data3 = Data(attributes = Attributes(duration = 488))
+    assertThat(data3.getEpisodeDuration()).isEqualTo("08:08")
+  }
+
+  @Test
+  fun getGroupedData() {
+    val relationships = Relationships(
+      contents = Contents(
+        datum = listOf(
+          Data(id = "1"),
+          Data(id = "2")
+        )
+      )
+    )
+    val data = Data(relationships = relationships)
+    assertThat(data.getGroupedData()).isEqualTo(
+      listOf(
+        Data(id = "1"),
+        Data(id = "2")
+      )
+    )
+
+    val relationships2 = Relationships()
+    val data2 = Data(relationships = relationships2)
+    assertThat(data2.getGroupedData().isEmpty()).isTrue()
+
+    val data3 = Data()
+    assertThat(data3.getGroupedData().isEmpty()).isTrue()
+  }
+
+  @Test
+  fun getGroupedDataIds() {
+    val relationships = Relationships(
+      contents = Contents(
+        datum = listOf(
+          Data(id = "1"),
+          Data(id = "2")
+        )
+      )
+    )
+    val data = Data(relationships = relationships)
+    assertThat(data.getGroupedDataIds()).isEqualTo(
+      listOf(
+        "1",
+        "2"
+      )
+    )
+
+    val relationships2 = Relationships()
+    val data2 = Data(relationships = relationships2)
+    assertThat(data2.getGroupedData().isEmpty()).isTrue()
+
+    val data3 = Data()
+    assertThat(data3.getGroupedData().isEmpty()).isTrue()
+  }
+
+  @Test
+  fun toggleFinished() {
+    val data = Data(attributes = Attributes(finished = false))
+    val result = data.toggleFinished()
+    assertThat(result.isFinished()).isTrue()
+
+    val data2 = Data(attributes = Attributes(finished = true))
+    val result2 = data2.toggleFinished()
+    assertThat(result2.isFinished()).isFalse()
+  }
+
+  @Test
+  fun getEpisodeNumber() {
+    val data = Data(attributes = Attributes(finished = true))
+    val result = data.getEpisodeNumber(1, true)
+    assertThat(result).isEmpty()
+
+    val data2 = Data(attributes = Attributes(finished = true))
+    val result2 = data2.getEpisodeNumber(1, false)
+    assertThat(result2).isEmpty()
+
+    val data3 = Data(attributes = Attributes(finished = false))
+    val result3 = data3.getEpisodeNumber(1, true)
+    assertThat(result3).isEmpty()
+
+    val data4 = Data(attributes = Attributes(finished = false))
+    val result4 = data4.getEpisodeNumber(1, false)
+    assertThat(result4).isEqualTo("1")
+  }
+
+  @Test
+  fun getDomainIds() {
+    val listOfData = listOf(
+      Data(id = "1", type = "domains"),
+      Data(id = "2", type = "domains"),
+      Data(id = "3", type = "progressions")
+    )
+
+    assertThat(Data.getDomainIds(listOfData)).isEqualTo(listOf("1", "2"))
+  }
+
+  @Test
+  fun getCategoryIds() {
+    val listOfData = listOf(
+      Data(id = "3", type = "categories"),
+      Data(id = "4", type = "categories"),
+      Data(id = "5", type = "domains")
+    )
+
+    assertThat(Data.getCategoryIds(listOfData)).isEqualTo(listOf("3", "4"))
   }
 }

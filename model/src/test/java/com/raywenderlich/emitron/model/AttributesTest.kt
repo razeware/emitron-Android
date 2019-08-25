@@ -41,6 +41,17 @@ class AttributesTest {
   }
 
   @Test
+  fun getDurationHoursAndMinutesAndSeconds() {
+    val attributes = Attributes()
+    assertThat(attributes.getDurationHoursAndMinutesAndSeconds())
+      .isEqualTo(Triple(0L, 0L, 0L))
+
+    val attributes2 = Attributes(duration = 4088)
+    assertThat(attributes2.getDurationHoursAndMinutesAndSeconds())
+      .isEqualTo(Triple(1L, 8L, 8L))
+  }
+
+  @Test
   fun getContentType() {
     val attributes = Attributes(contentType = "screencast")
     assertThat(attributes.getContentType()).isEquivalentAccordingToCompareTo(ContentType.Screencast)
