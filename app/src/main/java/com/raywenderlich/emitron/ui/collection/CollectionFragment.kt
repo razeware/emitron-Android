@@ -100,7 +100,7 @@ class CollectionFragment : DaggerFragment() {
   }
 
   private fun initObservers() {
-    viewModel.episodeEpisodes.observe(viewLifecycleOwner) {
+    viewModel.collectionEpisodes.observe(viewLifecycleOwner) {
       it?.let {
         adapter.submitList(it)
         adapter.notifyDataSetChanged()
@@ -124,7 +124,7 @@ class CollectionFragment : DaggerFragment() {
       }
     }
 
-    viewModel.contentType.observe(viewLifecycleOwner) {
+    viewModel.collectionContentType.observe(viewLifecycleOwner) {
       it?.let {
         if (it.isScreenCast()) {
           binding.groupCollectionContent.visibility = View.GONE
