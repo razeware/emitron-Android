@@ -45,9 +45,7 @@ class LibraryFragment : DaggerFragment() {
 
   private lateinit var binding: FragmentLibraryBinding
 
-  private val progressDelegate by lazy(LazyThreadSafetyMode.NONE) {
-    ShimmerProgressDelegate(requireView())
-  }
+  private lateinit var progressDelegate: ShimmerProgressDelegate
 
   private var adapter = ContentAdapter({
     openCollection(it)
@@ -111,6 +109,7 @@ class LibraryFragment : DaggerFragment() {
     binding.buttonLibrarySort.setOnClickListener {
 
     }
+    progressDelegate = ShimmerProgressDelegate(requireView())
   }
 
   private fun initObservers() {
@@ -123,11 +122,11 @@ class LibraryFragment : DaggerFragment() {
     when (networkState) {
       NetworkState.INIT -> {
         progressDelegate.showProgressView()
-        binding.layoutLibraryContent.visibility = View.GONE
+        showHideButtons(false)
       }
       NetworkState.SUCCESS -> {
         progressDelegate.hideProgressView()
-        binding.layoutLibraryContent.visibility = View.VISIBLE
+        showHideButtons(true)
       }
       else -> {
         // Ignore
@@ -138,7 +137,7 @@ class LibraryFragment : DaggerFragment() {
   private fun loadCollections() {
     if (isNetNotConnected()) {
       pagedFragment.value.onErrorConnection()
-      hideButtons()
+      showHideButtons()
       progressDelegate.hideProgressView()
       return
     }
@@ -154,7 +153,11 @@ class LibraryFragment : DaggerFragment() {
     }
   }
 
-  private fun hideButtons() {
-    binding.layoutLibraryContent.visibility = View.GONE
+  private fun showHideButtons(show: Boolean = false) {
+    binding.layoutLibraryContent.visibility = if (show) {
+      View.VISIBLE
+    } else {
+      View.GONE
+    }
   }
 }
