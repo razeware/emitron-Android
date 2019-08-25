@@ -15,6 +15,7 @@ import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import com.raywenderlich.emitron.ui.common.ShimmerProgressDelegate
 import com.raywenderlich.emitron.ui.content.getReadableContributors
 import com.raywenderlich.emitron.ui.content.getReadableReleaseAtWithTypeAndDuration
+import com.raywenderlich.emitron.utils.UiStateManager
 import com.raywenderlich.emitron.utils.extensions.*
 import com.raywenderlich.emitron.utils.getDefaultAppBarConfiguration
 import dagger.android.support.DaggerFragment
@@ -47,9 +48,7 @@ class CollectionFragment : DaggerFragment() {
 
   private lateinit var binding: FragmentCollectionBinding
 
-  private val progressDelegate by lazy(LazyThreadSafetyMode.NONE) {
-    ShimmerProgressDelegate(requireView())
-  }
+  private lateinit var progressDelegate: ShimmerProgressDelegate
 
   /**
    * See [androidx.fragment.app.Fragment.onCreateView]
@@ -97,6 +96,7 @@ class CollectionFragment : DaggerFragment() {
     binding.buttonCollectionPlay.setOnClickListener {
       openPlayer()
     }
+    progressDelegate = ShimmerProgressDelegate(requireView())
   }
 
   private fun initObservers() {
@@ -104,7 +104,7 @@ class CollectionFragment : DaggerFragment() {
       it?.let {
         adapter.submitList(it)
         adapter.notifyDataSetChanged()
-        handleProgress()
+        binding.groupCollectionContent.visibility = View.VISIBLE
       }
     }
 
@@ -183,11 +183,20 @@ class CollectionFragment : DaggerFragment() {
         }
       }
     }
+
+    viewModel.uiState.observe(viewLifecycleOwner) {
+      when (it) {
+        UiStateManager.UiState.LOADED -> handleProgress(false)
+        UiStateManager.UiState.LOADING -> handleProgress(true)
+        else -> {
+          // Ignored, for now :)
+        }
+      }
+    }
   }
 
   private fun loadCollection() {
     args.collection?.let {
-      handleProgress(true)
       viewModel.loadCollection(it)
     }
   }
@@ -201,7 +210,6 @@ class CollectionFragment : DaggerFragment() {
       progressDelegate.showProgressView()
       binding.groupCollectionContent.visibility = View.GONE
     } else {
-      binding.groupCollectionContent.visibility = View.VISIBLE
       progressDelegate.hideProgressView()
     }
   }
