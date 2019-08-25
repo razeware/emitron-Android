@@ -38,7 +38,7 @@ class ProgressionRepositoryTest {
   }
 
   @Test
-  fun createProgression() {
+  fun updateProgression() {
     testCoroutineRule.runBlockingTest {
       val expectedContent = Content()
       val progression = createProgressionStub()
@@ -48,7 +48,7 @@ class ProgressionRepositoryTest {
           expectedContent
         )
       )
-      val (result, isSuccessful) = repository.createProgression("1")
+      val (result, isSuccessful) = repository.updateProgression("1")
       verify(progressionApi).createProgression(progression)
       Truth.assertThat(result).isEqualTo(expectedContent)
       Truth.assertThat(isSuccessful).isTrue()
@@ -57,14 +57,14 @@ class ProgressionRepositoryTest {
   }
 
   @Test
-  fun createProgression_failure() {
+  fun updateProgression_failure() {
     testCoroutineRule.runBlockingTest {
       val expectedContent = createProgressionStub()
       val responseBody: ResponseBody = mock()
       val errorResponse: Response<Content> = Response.error(401, responseBody)
       whenever(progressionApi.createProgression(any())).doReturn(errorResponse)
 
-      val (_, result) = repository.createProgression("1")
+      val (_, result) = repository.updateProgression("1")
 
       verify(progressionApi).createProgression(expectedContent)
       Truth.assertThat(result).isFalse()

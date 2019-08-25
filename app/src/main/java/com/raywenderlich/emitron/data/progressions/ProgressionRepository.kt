@@ -21,7 +21,7 @@ class ProgressionRepository @Inject constructor(
    * @return Pair of response [Content] and True/False if request was succeeded/failed
    */
   @Throws(Exception::class)
-  suspend fun createProgression(contentId: String): Pair<Content?, Boolean> {
+  suspend fun updateProgression(contentId: String): Pair<Content?, Boolean> {
     val progression = Content.newProgression(contentId)
     return withContext(threadManager.io) {
       val response = api.createProgression(progression)
