@@ -216,6 +216,7 @@ Values and References" />
         android:paddingRight="@null"
         android:textAppearance="@style/TextAppearance.Button.Regular"
         app:icon="@drawable/ic_material_icon_download"
+        app:iconSize="@dimen/icon_height_width_2"
         app:iconTint="@color/colorIcon"
         app:layout_constraintBottom_toBottomOf="@+id/button_collection_bookmark"
         app:layout_constraintEnd_toStartOf="@+id/button_collection_bookmark"
@@ -235,6 +236,7 @@ Values and References" />
         android:paddingRight="@null"
         android:textAppearance="@style/TextAppearance.Button.Regular"
         app:icon="@drawable/ic_material_icon_bookmark"
+        app:iconSize="@dimen/icon_height_width_2"
         app:iconTint="@{data.isBookmarked()? @color/colorButton1 : @color/colorIcon}"
         app:layout_constraintBottom_toTopOf="@+id/text_collection_description"
         app:layout_constraintEnd_toStartOf="@+id/text_collection_completed"
@@ -330,8 +332,7 @@ Values and References" />
         app:layout_constraintTop_toBottomOf="@+id/text_collection_author"
         tools:visibility="visible">
 
-        <include
-          layout="@layout/layout_collection_shimmer_progress" />
+        <include layout="@layout/layout_collection_shimmer_progress" />
       </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
