@@ -1,5 +1,6 @@
 package com.raywenderlich.emitron.data.bookmarks
 
+import androidx.annotation.WorkerThread
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import kotlinx.coroutines.withContext
@@ -20,6 +21,7 @@ class BookmarkRepository @Inject constructor(
    *
    * @return Pair of response [Content] and True/False if request was succeeded/failed
    */
+  @WorkerThread
   @Throws(Exception::class)
   suspend fun createBookmark(contentId: String): Pair<Content?, Boolean> {
     val bookmark = Content.newBookmark(contentId)
@@ -36,6 +38,7 @@ class BookmarkRepository @Inject constructor(
    *
    * @return True, if request was successful, else False
    */
+  @WorkerThread
   @Throws(Exception::class)
   suspend fun deleteBookmark(bookmarkId: String): Boolean {
     return withContext(threadManager.io) {

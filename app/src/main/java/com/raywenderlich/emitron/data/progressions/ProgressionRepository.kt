@@ -1,5 +1,6 @@
 package com.raywenderlich.emitron.data.progressions
 
+import androidx.annotation.WorkerThread
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import kotlinx.coroutines.withContext
@@ -20,6 +21,7 @@ class ProgressionRepository @Inject constructor(
    *
    * @return Pair of response [Content] and True/False if request was succeeded/failed
    */
+  @WorkerThread
   @Throws(Exception::class)
   suspend fun updateProgression(contentId: String): Pair<Content?, Boolean> {
     val progression = Content.newProgression(contentId)
@@ -36,6 +38,7 @@ class ProgressionRepository @Inject constructor(
    *
    * @return True, if request was successful, else False
    */
+  @WorkerThread
   @Throws(Exception::class)
   suspend fun deleteProgression(progressionId: String): Boolean {
     return withContext(threadManager.io) {
