@@ -103,29 +103,37 @@
     <item name="android:textAppearance">@style/TextAppearance.Button.Regular</item>
   </style>
 
-  <style name="Text">
+  <style name="Text.Regular">
     <item name="android:fontFamily">@font/roboto</item>
     <item name="fontFamily">@font/roboto</item>
   </style>
 
-  <style name="TextAppearance.Headline" parent="TextAppearance.MaterialComponents.Headline1">
-    <item name="android:fontFamily">@font/bitter</item>
-    <item name="fontFamily">@font/bitter</item>
-    <item name="android:textStyle">bold</item>
+  <style name="Text.Medium">
+    <item name="android:fontFamily">@font/roboto_medium</item>
+    <item name="fontFamily">@font/roboto_medium</item>
+  </style>
+
+  <style name="Text.Bold">
+    <item name="android:fontFamily">@font/roboto_bold</item>
+    <item name="fontFamily">@font/roboto_bold</item>
+  </style>
+
+  <style name="Text.Headline">
+    <item name="android:fontFamily">@font/roboto_bold</item>
+    <item name="fontFamily">@font/roboto_bold</item>
+  </style>
+
+  <style name="TextAppearance.Headline" parent="Text.Headline">
     <item name="android:textColor">@color/textColorHeadline</item>
     <item name="android:letterSpacing">@fraction/letter_spacing_headline</item>
   </style>
 
-  <style name="TextAppearance.Subtitle" parent="Text">
-    <item name="android:fontFamily">@font/bitter</item>
-    <item name="fontFamily">@font/bitter</item>
+  <style name="TextAppearance.Subtitle" parent="Text.Headline">
     <item name="android:textSize">@dimen/text_size_subtitle</item>
     <item name="android:letterSpacing">@fraction/letter_spacing_subtitle</item>
   </style>
 
-  <style name="TextAppearance.Body" parent="Text">
-    <item name="android:fontFamily">@font/roboto</item>
-    <item name="fontFamily">@font/roboto</item>
+  <style name="TextAppearance.Body" parent="Text.Regular">
     <item name="android:letterSpacing">@fraction/letter_spacing_body</item>
   </style>
 
@@ -143,9 +151,7 @@
     <item name="android:textColor">@color/textColorBody2Inverse</item>
   </style>
 
-  <style name="TextAppearance.Label" parent="Text">
-    <item name="android:fontFamily">@font/roboto</item>
-    <item name="android:textStyle">bold</item>
+  <style name="TextAppearance.Label" parent="Text.Bold">
     <item name="android:textSize">@dimen/text_size_label</item>
     <item name="android:textColor">@color/textColorLabel</item>
     <item name="android:letterSpacing">@fraction/letter_spacing_label</item>
@@ -163,15 +169,19 @@
     <item name="android:letterSpacing">@fraction/letter_spacing_footnote</item>
   </style>
 
-  <style name="TextAppearance.Overline" parent="Text">
-    <item name="android:textStyle">bold</item>
+  <style name="TextAppearance.Overline" parent="Text.Bold">
     <item name="android:textSize">@dimen/text_size_overline</item>
     <item name="android:textColor">@color/textColorOverline</item>
     <item name="android:letterSpacing">@fraction/letter_spacing_overline</item>
   </style>
 
-  <style name="TextAppearance.Button" parent="Text">
-    <item name="android:textStyle">bold</item>
+  <style name="TextAppearance.Overline.2" parent="Text.Medium">
+    <item name="android:textSize">@dimen/text_size_overline_2</item>
+    <item name="android:textColor">@color/textColorOverline</item>
+    <item name="android:letterSpacing">@fraction/letter_spacing_overline_2</item>
+  </style>
+
+  <style name="TextAppearance.Button" parent="Text.Bold">
     <item name="android:textColor">@color/textColorButton</item>
   </style>
 

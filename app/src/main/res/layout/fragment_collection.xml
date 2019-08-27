@@ -157,7 +157,7 @@
         android:layout_marginTop="@dimen/text_spacing_vertical_body"
         android:text="@{data.getTechnology()}"
         android:textAllCaps="true"
-        android:textAppearance="@style/TextAppearance.Caption"
+        android:textAppearance="@style/TextAppearance.Overline.2"
         app:layout_constraintBottom_toTopOf="@+id/text_collection_title"
         app:layout_constraintEnd_toStartOf="@+id/text_collection_label_pro"
         app:layout_constraintHorizontal_chainStyle="spread"

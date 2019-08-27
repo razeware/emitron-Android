@@ -53,6 +53,7 @@
   <dimen name="text_size_button">15sp</dimen>
   <dimen name="text_size_button_small">13sp</dimen>
   <dimen name="text_size_overline">10sp</dimen>
+  <dimen name="text_size_overline_2">11sp</dimen>
   <dimen name="line_height_h1">30sp</dimen>
   <dimen name="line_height_h2">30sp</dimen>
   <dimen name="line_height_h3">28sp</dimen>
@@ -66,6 +67,7 @@
   <dimen name="line_height_caption">16sp</dimen>
   <dimen name="line_height_overline">13sp</dimen>
   <dimen name="line_height_button">15sp</dimen>
+  <dimen name="line_height_overline_2">11sp</dimen>
 
   <dimen name="text_drawable_padding_dense">4dp</dimen>
   <dimen name="text_label_padding">6dp</dimen>

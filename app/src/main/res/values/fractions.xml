@@ -9,4 +9,5 @@
   <fraction name="letter_spacing_button">0</fraction>
   <fraction name="letter_spacing_button_small">0.015</fraction>
   <fraction name="letter_spacing_overline">0.015</fraction>
+  <fraction name="letter_spacing_overline_2">0.05</fraction>
 </resources>
