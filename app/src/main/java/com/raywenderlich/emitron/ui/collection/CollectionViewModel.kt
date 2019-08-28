@@ -192,7 +192,7 @@ class CollectionViewModel @Inject constructor(
             EpisodeItem.buildFrom(it.copy(relationships = it.relationships?.setContents(data)))
           }
 
-          _collectionEpisodes.postValue(fetchedCollectionEpisodes)
+          _collectionEpisodes.value = fetchedCollectionEpisodes
         }
       }
       uiState.value = UiStateManager.UiState.LOADED
