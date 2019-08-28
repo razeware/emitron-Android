@@ -66,8 +66,5 @@ class LoginRepository @Inject constructor(
    */
   suspend fun getSubscription(): Content {
     return Content().apply { hasSubscription = true }
-    return withContext(threadManager.io) {
-      loginApi.getSubscription()
-    }
   }
 }
