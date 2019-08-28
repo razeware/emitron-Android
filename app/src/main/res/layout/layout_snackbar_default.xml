@@ -29,6 +29,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:elevation="0dp"
+        android:visibility="gone"
         tools:text="Error" />
 
       <com.google.android.material.textview.MaterialTextView
@@ -36,7 +37,7 @@
         style="@style/TextAppearance.Body.2.Inverse"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/text_spacing_vertical_default"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button_snackbar_dismiss"
         app:layout_constraintStart_toEndOf="@id/text_snackbar_type"
@@ -51,6 +52,7 @@
         app:icon="@drawable/ic_material_icon_close"
         app:iconPadding="0dp"
         app:iconTint="@color/colorIconInverse"
+        app:iconSize="@dimen/icon_height_width_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/text_snackbar_body"
