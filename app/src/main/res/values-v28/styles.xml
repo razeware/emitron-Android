@@ -104,9 +104,24 @@
     <item name="android:textAppearance">@style/TextAppearance.Button.Regular</item>
   </style>
 
-  <style name="Text">
+  <style name="Text.Regular">
     <item name="android:fontFamily">@font/roboto</item>
     <item name="fontFamily">@font/roboto</item>
+  </style>
+
+  <style name="Text.Medium">
+    <item name="android:fontFamily">@font/roboto_medium</item>
+    <item name="fontFamily">@font/roboto_medium</item>
+  </style>
+
+  <style name="Text.Bold">
+    <item name="android:fontFamily">@font/roboto_bold</item>
+    <item name="fontFamily">@font/roboto_bold</item>
+  </style>
+
+  <style name="Text.Headline">
+    <item name="android:fontFamily">@font/bitter_bold</item>
+    <item name="fontFamily">@font/bitter_bold</item>
   </style>
 
   <style name="TextAppearance.Headline" parent="Text.Headline">
@@ -147,14 +162,14 @@
     <item name="android:lineHeight">@dimen/line_height_label</item>
   </style>
 
-  <style name="TextAppearance.Caption" parent="Text">
+  <style name="TextAppearance.Caption" parent="Text.Regular">
     <item name="android:textSize">@dimen/text_size_caption</item>
     <item name="android:textColor">@color/textColorCaption</item>
     <item name="android:lineHeight">@dimen/line_height_caption</item>
     <item name="android:letterSpacing">@fraction/letter_spacing_caption</item>
   </style>
 
-  <style name="TextAppearance.Footnote" parent="Text">
+  <style name="TextAppearance.Footnote" parent="Text.Regular">
     <item name="android:textSize">@dimen/text_size_footnote</item>
     <item name="android:textColor">@color/textColorFootnote</item>
     <item name="android:lineHeight">@dimen/line_height_footnote</item>

@@ -103,6 +103,8 @@
     <item name="android:textAppearance">@style/TextAppearance.Button.Regular</item>
   </style>
 
+  <style name="Text" />
+
   <style name="Text.Regular">
     <item name="android:fontFamily">@font/roboto</item>
     <item name="fontFamily">@font/roboto</item>
@@ -119,8 +121,8 @@
   </style>
 
   <style name="Text.Headline">
-    <item name="android:fontFamily">@font/roboto_bold</item>
-    <item name="fontFamily">@font/roboto_bold</item>
+    <item name="android:fontFamily">@font/bitter_bold</item>
+    <item name="fontFamily">@font/bitter_bold</item>
   </style>
 
   <style name="TextAppearance.Headline" parent="Text.Headline">
