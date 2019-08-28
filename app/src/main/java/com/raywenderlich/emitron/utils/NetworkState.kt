@@ -27,6 +27,10 @@ enum class NetworkState {
   /**
    * Initial request successful, but no data
    */
-  INIT_EMPTY
+  INIT_EMPTY,
+  /**
+   * Initial request successful
+   */
+  INIT_SUCCESS
 }
 

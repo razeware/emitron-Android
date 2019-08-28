@@ -48,6 +48,13 @@ data class Data(
   fun getName(): String? = attributes?.name
 
   /**
+   * Level
+   *
+   * @return content level
+   */
+  fun getLevel(): String? = attributes?.level
+
+  /**
    *  @return true if type is [DataType.Progressions], else false
    */
   private fun isTypeProgression(): Boolean = DataType.Progressions == DataType.fromValue(this.type)
@@ -222,6 +229,7 @@ data class Data(
   }
 
   /**
+  <<<<<<< Updated upstream
    *  @return true if content doesn't require subscription, otherwise false
    */
   fun removeBookmark(): Data {
@@ -279,6 +287,11 @@ data class Data(
   fun getEpisodeNumber(position: Int, episodeIsProContent: Boolean): String =
     if (episodeIsProContent || isFinished()) "" else position.toString()
 
+  /**
+   *  @return true if [DataType] is search
+   */
+  fun isTypeSearch(): Boolean = DataType.Search == DataType.fromValue(type)
+
   companion object {
 
     /**
@@ -300,5 +313,61 @@ data class Data(
       return dataList.filter { DataType.Categories == DataType.fromValue(it.type) }
         .mapNotNull { it.id }
     }
+
+    /**
+     *  @param dataList List of content
+     *
+     *  @return list of category ids from input list
+     */
+    fun getSearchTerm(dataList: List<Data>): String {
+      return dataList.firstOrNull { DataType.Search == DataType.fromValue(it.type) }?.getName()
+        ?: ""
+    }
+
+    /**
+     * Create a data object from [Category] row
+     *
+     * @param category Category row from database
+     *
+     * @return [Data] for passed category
+     */
+    fun fromCategory(category: Category): Data =
+      Data(
+        id = category.categoryId,
+        attributes = Attributes(
+          name = category.name
+        )
+      )
+
+    /**
+     * Create a data object from [Domain] row
+     *
+     * @param domain Domain row from database
+     *
+     * @return [Data] for passed domain
+     */
+    fun fromDomain(domain: Domain): Data =
+      Data(
+        id = domain.domainId,
+        attributes = Attributes(
+          name = domain.name,
+          level = domain.level
+        )
+      )
+
+    /**
+     * Create a data object for search query
+     *
+     * @param searchTerm Search query
+     *
+     * @return [Data] for passed query
+     */
+    fun fromSearchQuery(searchTerm: String?): Data =
+      Data(
+        type = DataType.Search.toRequestFormat(),
+        attributes = Attributes(
+          name = searchTerm
+        )
+      )
   }
 }

@@ -27,7 +27,8 @@ interface ContentApi {
       "screencast"
     ),
     @Query("filter[category_ids][]") category: List<String> = emptyList(),
-    @Query("filter[domain_ids][]") domain: List<String> = emptyList()
+    @Query("filter[domain_ids][]") domain: List<String> = emptyList(),
+    @Query("q") search: String = ""
   ): Call<Contents>
 
   /**

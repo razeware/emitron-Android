@@ -26,4 +26,18 @@ class LibraryViewModel @Inject constructor(
     val listing = repository.getContents(filters = filters)
     contentPagedViewModel.repoResult.postValue(listing)
   }
+
+  /**
+   * Load recently searched queries
+   *
+   * @return list of recent search queries
+   */
+  fun loadSearchQueries(): List<String> = repository.getSearchQueries()
+
+  /**
+   * Save recent query
+   *
+   * @param query search query
+   */
+  fun saveSearchQuery(query: String): Unit = repository.saveSearchQuery(query)
 }

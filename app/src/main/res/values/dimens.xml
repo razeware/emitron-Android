@@ -10,7 +10,7 @@
   <dimen name="card_radius_snackbar">4dp</dimen>
 
   <!-- Search view -->
-  <dimen name="search_view_height_default">52dp</dimen>
+  <dimen name="search_view_height_default">44dp</dimen>
   <dimen name="search_view_stroke_width">2dp</dimen>
 
   <!-- Icon -->
@@ -18,14 +18,14 @@
   <!-- For text left/right drawables -->
   <dimen name="icon_height_width_1">16dp</dimen>
   <dimen name="icon_height_width_2">20dp</dimen>
+  <dimen name="nav_icon_height_width">22dp</dimen>
 
   <!-- Overline -->
   <dimen name="overline_padding_internal">6dp</dimen>
   <dimen name="overline_elevation">1dp</dimen>
 
   <!-- Button -->
-  <dimen name="button_height_default">48dp</dimen>
-  <dimen name="button_wide_padding_internal">16dp</dimen>
+  <dimen name="button_height_default">52dp</dimen>
   <dimen name="button_wide_corner_radius">8dp</dimen>
   <dimen name="button_wide_inset">2dp</dimen>
   <dimen name="button_corner_radius">6dp</dimen>
@@ -98,6 +98,7 @@
   <dimen name="download_progress_radius">8dp</dimen>
   <dimen name="download_progress_thickness">3dp</dimen>
   <dimen name="button_download_stop_radius">1dp</dimen>
+  <dimen name="default_item_spacing_vertical">12dp</dimen>
 
   <!-- Collection detail view -->
   <dimen name="margin_body_pro">32dp</dimen>

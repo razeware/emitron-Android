@@ -8,6 +8,7 @@ import androidx.paging.toLiveData
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.Contents
 import com.raywenderlich.emitron.model.Data
+import com.raywenderlich.emitron.ui.settings.SettingsPrefs
 import com.raywenderlich.emitron.utils.PagedResponse
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import kotlinx.coroutines.withContext
@@ -18,7 +19,8 @@ import javax.inject.Inject
  */
 class ContentRepository @Inject constructor(
   private val api: ContentApi,
-  private val threadManager: ThreadManager
+  private val threadManager: ThreadManager,
+  private val settingsPref: SettingsPrefs
 ) {
 
   /**
@@ -82,4 +84,18 @@ class ContentRepository @Inject constructor(
       api.getContent(id)
     }
   }
+
+  /**
+   * Get recently searched queries
+   *
+   * @return list of recent search queries
+   */
+  fun getSearchQueries(): List<String> = settingsPref.getSearchQueries().toList()
+
+  /**
+   * Save recent query
+   *
+   * @param query search query
+   */
+  fun saveSearchQuery(query: String): Unit = settingsPref.saveSearchQuery(query)
 }

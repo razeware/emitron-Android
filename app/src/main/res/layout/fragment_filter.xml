@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
 
   <data />
 
@@ -42,9 +43,50 @@
       android:id="@+id/toolbar"
       android:layout_width="match_parent"
       android:layout_height="?android:actionBarSize"
-      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintBottom_toTopOf="@+id/recycler_view_filter"
       app:layout_constraintTop_toTopOf="@+id/guideline_top"
       app:layout_constraintVertical_bias="0"
       app:layout_constraintVertical_chainStyle="spread_inside" />
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/recycler_view_filter"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_marginBottom="@dimen/activity_vertical_margin"
+      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior"
+      app:layout_constraintBottom_toTopOf="@+id/button_filter_clear"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/toolbar"
+      tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      tools:listitem="@layout/item_filter_header" />
+
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_filter_clear"
+      style="@style/Button.Colored.2"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:text="@string/button_filter_clear_all"
+      android:textAppearance="@style/TextAppearance.Button.Regular"
+      app:layout_constraintBottom_toBottomOf="@+id/guideline_bottom"
+      app:layout_constraintEnd_toStartOf="@+id/button_filter_close"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/recycler_view_filter" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_filter_close"
+      style="@style/Button.Colored"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/button_spacing_horizontal"
+      android:text="@string/button_filter_apply"
+      android:textAppearance="@style/TextAppearance.Button.Regular"
+      app:layout_constraintBottom_toBottomOf="@+id/button_filter_clear"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toEndOf="@id/button_filter_clear"
+      app:layout_constraintTop_toTopOf="@+id/button_filter_clear" />
+
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

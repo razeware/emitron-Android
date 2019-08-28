@@ -33,12 +33,11 @@
     <item name="android:textAppearance">@style/TextAppearance.Button.Regular</item>
     <item name="android:paddingStart">@dimen/button_padding_internal</item>
     <item name="android:paddingEnd">@dimen/button_padding_internal</item>
+    <item name="android:drawablePadding">@dimen/button_padding_internal</item>
+    <item name="android:gravity">center</item>
   </style>
 
   <style name="Button.Wide" parent="Button">
-    <item name="android:paddingStart">@dimen/button_wide_padding_internal</item>
-    <item name="android:paddingEnd">@dimen/button_wide_padding_internal</item>
-    <item name="android:drawablePadding">@dimen/button_padding_internal</item>
     <item name="cornerRadius">@dimen/button_wide_corner_radius</item>
     <item name="android:insetTop">@dimen/button_wide_inset</item>
     <item name="android:insetBottom">@dimen/button_wide_inset</item>

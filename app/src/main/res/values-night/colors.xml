@@ -4,20 +4,20 @@
   <color name="colorSurface">@color/bright_grey</color>
   <color name="colorOnBackground">@color/white</color>
 
-  <color name="colorIconOnSurface">@color/white</color>
-
   <color name="textColorBody1">@color/white</color>
   <color name="textColorButton">@color/white</color>
   <color name="textColorOverline">@color/white</color>
-  <color name="textColorBody2">@color/light_gray_blue</color>
+  <color name="textColorBody2">@color/white</color>
   <color name="textColorLabel">@color/white</color>
   <color name="textColorFootnote">@color/light_gray_blue</color>
   <color name="textColorCaption">@color/light_gray_blue</color>
   <color name="textColorHeadline">@color/white</color>
 
+  <color name="colorIcon">@color/light_gray_blue</color>
+  <color name="colorIcon2">@color/white</color>
   <color name="colorProgressItemBackground">#1161656c</color>
   <color name="colorProgressItemBackground_200">#2261656c</color>
   <color name="colorProgressItemBackground_100">#61656c</color>
   <color name="colorDivider">@color/bright_grey</color>
-
+  <color name="colorCheckboxUnchecked">@color/light_gray_blue</color>
 </resources>

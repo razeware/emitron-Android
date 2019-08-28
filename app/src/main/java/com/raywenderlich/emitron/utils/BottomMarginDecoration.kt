@@ -19,6 +19,7 @@ class BottomMarginDecoration : RecyclerView.ItemDecoration() {
     parent: RecyclerView,
     state: RecyclerView.State
   ) {
-    outRect.bottom = view.context.resources.getDimensionPixelSize(R.dimen.activity_vertical_margin)
+    outRect.bottom =
+      view.context.resources.getDimensionPixelSize(R.dimen.activity_vertical_margin)
   }
 }

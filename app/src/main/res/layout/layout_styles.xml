@@ -107,7 +107,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/text_spacing_vertical_default"
-      android:drawableStart="@drawable/ic_material_icon_checkmark_small"
+      android:drawableStart="@drawable/ic_material_icon_checkmark_1"
       android:drawablePadding="@dimen/text_drawable_padding_dense"
       android:text="OVERLINE, Roboto, 10pt, 1.5 On Primary" />
 

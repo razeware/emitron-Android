@@ -44,6 +44,7 @@
   <color name="textColorBody1">@color/raven_grey</color>
   <color name="textColorBody1Inverse">@color/white</color>
   <color name="textColorButton">@color/raven_grey</color>
+  <color name="textColorButton2">@color/light_gray_blue</color>
   <color name="textColorButtonInverse">@color/white</color>
   <color name="textColorButtonOnError">@color/white</color>
   <color name="textColorOverline">@color/raven_grey</color>
@@ -52,6 +53,7 @@
   <color name="textColorBody2">@color/raven_grey</color>
   <color name="textColorBody2Inverse">@color/white</color>
   <color name="textColorLabel">@color/light_gray_blue</color>
+  <color name="textColorLabel2">@color/light_gray_blue</color>
   <color name="textColorFootnote">@color/raven_grey</color>
   <color name="textColorCaption">@color/raven_grey</color>
   <color name="textColorHeadline">@color/charcoal_black</color>
@@ -61,7 +63,7 @@
   <color name="colorDividerOnLight">@color/bright_grey</color>
   <color name="colorDividerInverse">@color/light_gray_blue</color>
   <color name="colorIcon">@color/light_gray_blue</color>
-  <color name="colorIconOnSurface">@color/light_gray_blue</color>
+  <color name="colorIcon2">@color/light_gray_blue</color>
   <color name="colorIconOnError">@color/white</color>
   <color name="colorIconInverse">@color/white</color>
 
@@ -78,4 +80,6 @@
   <color name="colorProgressItemBackground_100">#a7adb4</color>
   <color name="colorProgressItemBackgroundGradient1">#3361656c</color>
   <color name="colorProgressItemBackgroundGradient2">#5561656c</color>
+
+  <color name="colorCheckboxUnchecked">@color/light_gray_blue</color>
 </resources>

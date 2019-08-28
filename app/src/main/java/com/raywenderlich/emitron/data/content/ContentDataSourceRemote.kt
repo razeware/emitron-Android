@@ -14,10 +14,10 @@ import java.io.IOException
  * PagedKeyedDataSource for [Contents]
  */
 class ContentDataSourceRemote(
-  private val pageSize: Int,
-  private val contentApi: ContentApi,
-  private val threadManager: ThreadManager,
-  private val filters: List<Data>
+    private val pageSize: Int,
+    private val contentApi: ContentApi,
+    private val threadManager: ThreadManager,
+    private val filters: List<Data>
 ) : PageKeyedDataSource<Int, Data>() {
 
   private var retry: (() -> Any)? = null
@@ -50,8 +50,8 @@ class ContentDataSourceRemote(
    * Load previous page
    */
   override fun loadBefore(
-    params: LoadParams<Int>,
-    callback: LoadCallback<Int, Data>
+      params: LoadParams<Int>,
+      callback: LoadCallback<Int, Data>
   ) {
     // ignored, since you only ever append to you initial load
   }
@@ -97,8 +97,8 @@ class ContentDataSourceRemote(
    * Load first page
    */
   override fun loadInitial(
-    params: LoadInitialParams<Int>,
-    callback: LoadInitialCallback<Int, Data>
+      params: LoadInitialParams<Int>,
+      callback: LoadInitialCallback<Int, Data>
   ) {
 
     networkState.postValue(NetworkState.INIT)
@@ -141,16 +141,17 @@ class ContentDataSourceRemote(
     }
 
     retry = null
-    networkState.postValue(NetworkState.SUCCESS)
+    networkState.postValue(NetworkState.INIT_SUCCESS)
     this.contents.postValue(contentBody.copy(datum = emptyList()))
     callback.onResult(items, null, (contentBody.getNextPage()))
   }
 
   private fun getContent(pageNumber: Int): Response<Contents>? = contentApi.getContents(
-    pageNumber = pageNumber,
-    pageSize = pageSize,
-    contentType = ContentType.getAllowedContentType().toList(),
-    domain = Data.getDomainIds(filters),
-    category = Data.getCategoryIds(filters)
+      pageNumber = pageNumber,
+      pageSize = pageSize,
+      contentType = ContentType.getAllowedContentType().toList(),
+      domain = Data.getDomainIds(filters),
+      category = Data.getCategoryIds(filters),
+      search = Data.getSearchTerm(filters)
   ).execute()
 }

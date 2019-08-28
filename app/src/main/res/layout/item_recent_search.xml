@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <variable
+      name="title"
+      type="String" />
+
+  </data>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/activity_horizontal_margin">
+
+    <com.google.android.material.textview.MaterialTextView
+      android:id="@+id/body_recent_search"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/activity_horizontal_margin"
+      android:text="@{title}"
+      android:textAppearance="@style/TextAppearance.Body.1"
+      tools:text="android beginner screencast" />
+
+    <View
+      android:id="@+id/collection_item_divider"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/height_card_divider"
+      android:layout_marginTop="@dimen/activity_vertical_margin"
+      android:background="@color/colorDivider" />
+  </LinearLayout>
+
+</layout>
