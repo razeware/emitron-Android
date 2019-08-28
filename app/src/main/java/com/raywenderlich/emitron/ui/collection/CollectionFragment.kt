@@ -103,7 +103,6 @@ class CollectionFragment : DaggerFragment() {
     viewModel.collectionEpisodes.observe(viewLifecycleOwner) {
       it?.let {
         adapter.submitList(it)
-        adapter.notifyDataSetChanged()
         binding.groupCollectionContent.visibility = View.VISIBLE
       }
     }

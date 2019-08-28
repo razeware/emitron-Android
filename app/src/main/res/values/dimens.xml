@@ -53,6 +53,7 @@
   <dimen name="text_size_button">15sp</dimen>
   <dimen name="text_size_button_small">13sp</dimen>
   <dimen name="text_size_overline">10sp</dimen>
+  <dimen name="text_size_overline_2">11sp</dimen>
   <dimen name="line_height_h1">30sp</dimen>
   <dimen name="line_height_h2">30sp</dimen>
   <dimen name="line_height_h3">28sp</dimen>
@@ -66,6 +67,7 @@
   <dimen name="line_height_caption">16sp</dimen>
   <dimen name="line_height_overline">13sp</dimen>
   <dimen name="line_height_button">15sp</dimen>
+  <dimen name="line_height_overline_2">11sp</dimen>
 
   <dimen name="text_drawable_padding_dense">4dp</dimen>
   <dimen name="text_label_padding">6dp</dimen>
@@ -105,10 +107,10 @@
   <dimen name="button_episode_number_margin_end">16dp</dimen>
   <dimen name="collection_detail_item_vertical_spacing">12dp</dimen>
   <dimen name="collection_episode_headline_margin_top">20dp</dimen>
-  <dimen name="banner_play_icon_width_height">72dp</dimen>
+  <dimen name="banner_play_icon_width_height">56dp</dimen>
   <dimen name="banner_play_icon_padding">12dp</dimen>
   <dimen name="banner_play_stroke_width">4dp</dimen>
-  <dimen name="banner_play_corner_radius">6dp</dimen>
+  <dimen name="banner_play_corner_radius">9dp</dimen>
 
   <!-- Card divider height -->
   <dimen name="height_card_divider">1dp</dimen>

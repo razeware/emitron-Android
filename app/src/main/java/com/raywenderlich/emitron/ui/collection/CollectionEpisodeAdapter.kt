@@ -120,6 +120,7 @@ class CollectionEpisodeAdapter(
   fun submitList(it: List<EpisodeItem>) {
     this.items.clear()
     this.items.addAll(it)
+    notifyDataSetChanged()
   }
 
   /**
