@@ -1,28 +1,34 @@
 package com.raywenderlich.emitron
 
-import android.app.Activity
 import android.app.Application
-import androidx.fragment.app.Fragment
 import com.crashlytics.android.Crashlytics
 import com.raywenderlich.emitron.di.DaggerAppComponent
+import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
-import dagger.android.support.HasSupportFragmentInjector
+import dagger.android.HasAndroidInjector
 import io.fabric.sdk.android.Fabric
 import javax.inject.Inject
 
+/**
+ * Application class for Emitron
+ */
+class EmitronApplication : Application(), HasAndroidInjector {
 
-class EmitronApplication : Application(), HasSupportFragmentInjector, HasActivityInjector {
-
+  /**
+   * Injector for Android components
+   */
   @Inject
-  lateinit var activityInjector: DispatchingAndroidInjector<Activity>
+  lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
-  @Inject
-  lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
-
+  /**
+   * Delegate class to handle app lifecycle events
+   */
   @Inject
   lateinit var appLifeCycleDelegate: AppLifeCycleDelegate
 
+  /**
+   * See [Application.onCreate]
+   */
   override fun onCreate() {
     super.onCreate()
     DaggerAppComponent.builder().app(this)
@@ -31,8 +37,9 @@ class EmitronApplication : Application(), HasSupportFragmentInjector, HasActivit
     Fabric.with(this, Crashlytics())
   }
 
-  override fun activityInjector() = activityInjector
-
-  override fun supportFragmentInjector() = fragmentInjector
+  /**
+   * @return injector for Android components
+   */
+  override fun androidInjector(): AndroidInjector<Any> = androidInjector
 
 }

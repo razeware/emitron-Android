@@ -3,7 +3,7 @@ package com.raywenderlich.emitron.ui.common
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
-import com.raywenderlich.emitron.ui.utils.isEqualTo
+import com.raywenderlich.emitron.utils.isEqualTo
 import com.raywenderlich.emitron.utils.NetworkState
 import com.raywenderlich.emitron.utils.UiStateManager
 import org.junit.Before

@@ -6,11 +6,22 @@ import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.ui.content.ContentPagedViewModel
 import javax.inject.Inject
 
+/**
+ * View model for library view
+ */
 class LibraryViewModel @Inject constructor(
   private val repository: ContentRepository,
+  /**
+   * Common view model to handle pagination related code
+   */
   val contentPagedViewModel: ContentPagedViewModel
 ) : ViewModel() {
 
+  /**
+   * Load collections
+   *
+   * @param filters List of filters
+   */
   fun loadCollections(filters: List<Data> = emptyList()) {
     val listing = repository.getContents(filters = filters)
     contentPagedViewModel.repoResult.postValue(listing)

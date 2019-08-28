@@ -137,6 +137,11 @@ data class Attributes(
   val kind: String? = ""
 ) : Parcelable {
 
+  /**
+   * Get releasedAt formatted to [TimeUtils.Day]
+   *
+   * @return [TimeUtils.Day]
+   */
   fun getReadableReleasedAt(
     withYear: Boolean,
     today: LocalDateTime
@@ -147,17 +152,49 @@ data class Attributes(
       TimeUtils.toReadableDate(releasedAt, withYear, today = today)
     }
 
+  /**
+   * Get Pair of hours, minutes
+   */
   fun getDurationHoursAndMinutes(): Pair<Long, Long> = if (null == duration) {
     0L to 0L
   } else {
     TimeUtils.toHoursAndMinutes(duration)
   }
 
+  /**
+   * Get Triple of hours, minutes, seconds
+   */
+  fun getDurationHoursAndMinutesAndSeconds(): Triple<Long, Long, Long> = if (null == duration) {
+    Triple(0L, 0L, 0L)
+  } else {
+    TimeUtils.toHoursAndMinutesAndSeconds(duration)
+  }
+
+  /**
+   * Get content type of data
+   *
+   * @return [ContentType]
+   */
   fun getContentType(): ContentType? = ContentType.fromValue(contentType)
 
+  /**
+   * Get content difficulty
+   *
+   * @return [Difficulty]
+   */
   fun getDifficulty(): Difficulty? = Difficulty.fromValue(difficulty)
 
+  /**
+   * Check if Domain level is achieved
+   *
+   * @return True if domain is archived else False
+   */
   fun isLevelArchived(): Boolean = DomainLevel.Archived == DomainLevel.fromValue(level)
 
+  /**
+   * Get percent completion for the content
+   *
+   * @return [Int] percent completion value
+   */
   fun getPercentComplete(): Int = percentComplete?.toInt() ?: 0
 }

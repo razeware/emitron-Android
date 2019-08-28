@@ -71,4 +71,20 @@
   <!-- Readable Date -->
   <string name="today">Today</string>
   <string name="yesterday">Yesterday</string>
+
+  <!-- Content Detail Screen -->
+  <string name="body_pro_course">To unlock this course visit raywenderlich.com/subscription \n for more information</string>
+  <string name="title_pro_course">Pro Course</string>
+  <string name="course_episodes">Course Episodes</string>
+  <string name="contributors">By %1$s</string>
+  <string name="message_bookmark_created">Bookmark added.</string>
+  <string name="message_collection_episode_load_failed">Failed to fetch episodes.</string>
+  <string name="message_bookmark_failed_to_create">Failed to add bookmark.</string>
+  <string name="message_bookmark_deleted">Bookmark removed.</string>
+  <string name="message_bookmark_failed_to_delete">Failed to remove bookmark.</string>
+
+  <string name="message_episode_marked_completed">Episode marked completed.</string>
+  <string name="message_episode_failed_to_mark_completed">Failed to mark episode completed.</string>
+  <string name="message_episode_marked_in_progress">Episode marked in progress.</string>
+  <string name="message_episode_failed_to_mark_in_progress">Failed to mark episode in progress.</string>
 </resources>

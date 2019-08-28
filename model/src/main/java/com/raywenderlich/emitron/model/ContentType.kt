@@ -6,7 +6,13 @@ package com.raywenderlich.emitron.model;
  * @return [ContentType]
  */
 enum class ContentType {
+  /**
+   * Collection
+   */
   Collection,
+  /**
+   * Screencast
+   */
   Screencast;
 
   /**

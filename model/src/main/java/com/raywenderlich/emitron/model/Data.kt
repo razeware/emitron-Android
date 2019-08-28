@@ -2,7 +2,6 @@ package com.raywenderlich.emitron.model
 
 import android.os.Parcelable
 import com.raywenderlich.emitron.model.utils.TimeUtils
-import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import org.threeten.bp.Clock
 import org.threeten.bp.LocalDateTime
@@ -31,7 +30,7 @@ data class Data(
   /**
    *  Relationships
    */
-  val relationships: Relationships? = Relationships(),
+  val relationships: Relationships? = null,
   /**
    *  Meta
    */
@@ -41,21 +40,6 @@ data class Data(
    */
   val included: Contents? = null
 ) : Parcelable {
-
-  /**
-   *  Release date with type and duration ex. July 25 2019
-   */
-  @IgnoredOnParcel
-  @Transient
-  var releaseDateWithTypeAndDuration: String = ""
-
-  /**
-   *  Download progress if the current item is downloading
-   */
-  @IgnoredOnParcel
-  @Transient
-  var downloadProgress: Int = 0
-
   /**
    *  Name
    *
@@ -86,7 +70,7 @@ data class Data(
   /**
    *  @return true if content doesn't require subscription, else false
    */
-  private fun isFreeContent(): Boolean = attributes?.free ?: false
+  fun isFreeContent(): Boolean = attributes?.free ?: false
 
   /**
    *  If data represents a progression object
@@ -178,7 +162,7 @@ data class Data(
       return this
     }
 
-    return setDomain(included)
+    return setDomain(included).setProgression(included)
   }
 
   /**
@@ -197,10 +181,103 @@ data class Data(
       return this
     }
 
-    return this.copy(
-      relationships = relationships?.setDomains(domains) ?: Relationships().setDomains(domains)
-    )
+    val relationships =
+      relationships?.setDomains(domains) ?: Relationships().setDomains(domains)
+
+    return this.copy(relationships = relationships)
   }
+
+  private fun setProgression(included: List<Data>): Data {
+    val progressions = included.filter {
+      it.isTypeProgression()
+    }
+
+    if (progressions.isEmpty()) {
+      return this
+    }
+
+    val relationships =
+      relationships?.setProgression(progressions) ?: Relationships().setProgression(progressions)
+
+    return this.copy(relationships = relationships)
+  }
+
+  /**
+   *  @return true if content doesn't require subscription, otherwise false
+   */
+  fun getBookmarkId(): String? = relationships?.getBookmarkId()
+
+  /**
+   * @return progression id
+   */
+  fun getProgressionId(): String? = relationships?.getProgressionId()
+
+  /**
+   *  @return true if content doesn't require subscription, otherwise false
+   */
+  fun addBookmark(content: Content?): Data {
+    val relationships = this.relationships?.copy(bookmark = content)
+    val attributes = this.attributes?.copy(bookmarked = true) ?: Attributes(bookmarked = true)
+    return this.copy(attributes = attributes, relationships = relationships)
+  }
+
+  /**
+   *  @return true if content doesn't require subscription, otherwise false
+   */
+  fun removeBookmark(): Data {
+    val relationships = this.relationships?.copy(bookmark = null)
+    val attributes = this.attributes?.copy(bookmarked = false)
+    return this.copy(attributes = attributes, relationships = relationships)
+  }
+
+  /**
+   *  @return true if type is [DataType.Groups], otherwise false
+   */
+  fun isTypeGroup(): Boolean = DataType.Groups == DataType.fromValue(type)
+
+  /**
+   *  @return true if type is [ContentType.Screencast], otherwise false
+   */
+  fun isTypeScreencast(): Boolean = getContentType()?.isScreenCast() ?: false
+
+  /**
+   *  @return true if content doesn't require subscription, otherwise false
+   */
+  fun getEpisodeDuration(): String {
+    val (hrs, mins, secs) = attributes?.getDurationHoursAndMinutesAndSeconds() ?: return ""
+    if (hrs <= 0) {
+      return "${"%02d".format(mins)}:${"%02d".format(secs)}"
+    }
+    return "${"%02d".format(hrs)}:${"%02d".format(mins)}:${"%02d".format(secs)}"
+  }
+
+  /**
+   *  @return true if content doesn't require subscription, otherwise false
+   */
+  fun getGroupedData(): List<Data> = relationships?.getGroupedData() ?: emptyList()
+
+  /**
+   *  @return true if content doesn't require subscription, otherwise false
+   */
+  fun getGroupedDataIds(): List<String> = relationships?.getGroupedDataIds() ?: emptyList()
+
+  /**
+   * Mark episode finished/ or in-progress
+   */
+  fun toggleFinished(): Data =
+    this.copy(attributes = this.attributes?.copy(finished = !this.isFinished()))
+
+  /**
+   * Get episode number
+   *
+   * @param position Episode position
+   * @param episodeIsProContent Episode requires subscription
+   *
+   * @return Empty String if episode is finished or it requires subscription,
+   * else String of position
+   */
+  fun getEpisodeNumber(position: Int, episodeIsProContent: Boolean): String =
+    if (episodeIsProContent || isFinished()) "" else position.toString()
 
   companion object {
 

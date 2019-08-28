@@ -1,6 +1,5 @@
 package com.raywenderlich.emitron.ui.library
 
-import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +14,7 @@ import com.raywenderlich.emitron.databinding.FragmentLibraryBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.ui.common.PagedAdapter
+import com.raywenderlich.emitron.ui.common.ShimmerProgressDelegate
 import com.raywenderlich.emitron.ui.content.ContentAdapter
 import com.raywenderlich.emitron.ui.content.ContentPagedFragment
 import com.raywenderlich.emitron.utils.BottomMarginDecoration
@@ -44,6 +44,8 @@ class LibraryFragment : DaggerFragment() {
   private val parentViewModel: MainViewModel by activityViewModels { viewModelFactory }
 
   private lateinit var binding: FragmentLibraryBinding
+
+  private lateinit var progressDelegate: ShimmerProgressDelegate
 
   private var adapter = ContentAdapter({
     openCollection(it)
@@ -107,6 +109,7 @@ class LibraryFragment : DaggerFragment() {
     binding.buttonLibrarySort.setOnClickListener {
 
     }
+    progressDelegate = ShimmerProgressDelegate(requireView())
   }
 
   private fun initObservers() {
@@ -118,12 +121,12 @@ class LibraryFragment : DaggerFragment() {
   private fun handleInitialProgress(networkState: NetworkState?) {
     when (networkState) {
       NetworkState.INIT -> {
-        showProgressView()
-        binding.layoutLibraryContent.visibility = View.GONE
+        progressDelegate.showProgressView()
+        showHideButtons(false)
       }
       NetworkState.SUCCESS -> {
-        hideProgressView()
-        binding.layoutLibraryContent.visibility = View.VISIBLE
+        progressDelegate.hideProgressView()
+        showHideButtons(true)
       }
       else -> {
         // Ignore
@@ -134,8 +137,8 @@ class LibraryFragment : DaggerFragment() {
   private fun loadCollections() {
     if (isNetNotConnected()) {
       pagedFragment.value.onErrorConnection()
-      hideButtons()
-      hideProgressView()
+      showHideButtons()
+      progressDelegate.hideProgressView()
       return
     }
 
@@ -150,32 +153,11 @@ class LibraryFragment : DaggerFragment() {
     }
   }
 
-  private fun getProgressViews() = arrayOf(
-    binding.layoutLibraryProgress.layoutProgressItem1,
-    binding.layoutLibraryProgress.layoutProgressItem2,
-    binding.layoutLibraryProgress.layoutProgressItem3
-  )
-
-  private fun showProgressView() {
-    binding.layoutLibraryProgressContainer.visibility = View.VISIBLE
-    getProgressViews().map { view ->
-      (view.background as? AnimationDrawable)?.let { drawable ->
-        drawable.setEnterFadeDuration(500)
-        drawable.setExitFadeDuration(500)
-        drawable.start()
-      }
+  private fun showHideButtons(show: Boolean = false) {
+    binding.layoutLibraryContent.visibility = if (show) {
+      View.VISIBLE
+    } else {
+      View.GONE
     }
-  }
-
-  private fun hideProgressView() {
-    val progressView = binding.layoutLibraryProgressContainer
-    progressView.visibility = View.GONE
-    getProgressViews().map { view ->
-      (view.background as? AnimationDrawable)?.stop()
-    }
-  }
-
-  private fun hideButtons() {
-    binding.layoutLibraryContent.visibility = View.GONE
   }
 }

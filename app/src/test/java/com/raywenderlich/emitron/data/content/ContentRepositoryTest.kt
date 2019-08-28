@@ -1,17 +1,16 @@
 package com.raywenderlich.emitron.data.content
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.google.common.truth.Truth
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
+import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.Contents
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.Links
-import com.raywenderlich.emitron.ui.utils.loadAllData
-import com.raywenderlich.emitron.ui.utils.observeForTestingObserver
-import com.raywenderlich.emitron.ui.utils.observeForTestingResult
-import com.raywenderlich.emitron.ui.utils.observeForTestingResultNullable
-import com.raywenderlich.emitron.utils.NetworkState
+import com.raywenderlich.emitron.utils.*
 import com.raywenderlich.emitron.utils.async.ThreadManager
+import kotlinx.coroutines.Dispatchers
 import okhttp3.ResponseBody
 import org.junit.Before
 import org.junit.Rule
@@ -21,7 +20,6 @@ import org.mockito.ArgumentMatchers.anyList
 import org.mockito.Mockito
 import retrofit2.Response
 import retrofit2.mock.Calls
-import java.util.concurrent.Executor
 
 class ContentRepositoryTest {
 
@@ -34,13 +32,12 @@ class ContentRepositoryTest {
 
   private val threadManager: ThreadManager = mock()
 
+  @get:Rule
+  val testCoroutineRule: TestCoroutineRule = TestCoroutineRule()
+
   @Before
   fun setUp() {
-    class CurrentThreadExecutor : Executor {
-      override fun execute(r: Runnable) {
-        r.run()
-      }
-    }
+    whenever(threadManager.io).doReturn(Dispatchers.Unconfined)
     whenever(threadManager.networkIo).doReturn(CurrentThreadExecutor())
     repository = ContentRepository(contentApi, threadManager)
   }
@@ -214,6 +211,7 @@ class ContentRepositoryTest {
 
     // Given
     val responseBody: ResponseBody = mock()
+    val response = Calls.response<Contents>(Response.error(500, responseBody))
     whenever(
       contentApi.getContents(
         pageNumber = anyInt(),
@@ -222,9 +220,7 @@ class ContentRepositoryTest {
         category = eq(emptyList()),
         domain = eq(emptyList())
       )
-    ).doReturn(
-      Calls.response(Response.error(500, responseBody))
-    )
+    ).doReturn(response)
 
     // When
     val result = repository.getContents(emptyList(), 5)
@@ -243,6 +239,7 @@ class ContentRepositoryTest {
 
     // Given
     val responseBody: ResponseBody = mock()
+    val response = Calls.response<Contents>(Response.error(500, responseBody))
     whenever(
       contentApi.getContents(
         pageNumber = anyInt(),
@@ -251,9 +248,7 @@ class ContentRepositoryTest {
         category = eq(emptyList()),
         domain = eq(emptyList())
       )
-    ).doReturn(
-      Calls.response(Response.error(500, responseBody))
-    )
+    ).doReturn(response)
 
     // When
     val result = repository.getContents(emptyList(), 5)
@@ -330,6 +325,7 @@ class ContentRepositoryTest {
 
     // Given
     val responseBody: ResponseBody = mock()
+    val response = Calls.response<Contents>(Response.error(500, responseBody))
     whenever(
       contentApi.getContents(
         pageNumber = anyInt(),
@@ -338,9 +334,7 @@ class ContentRepositoryTest {
         category = eq(emptyList()),
         domain = eq(emptyList())
       )
-    ).doReturn(
-      Calls.response(Response.error(500, responseBody))
-    )
+    ).doReturn(response)
     // When
     list.loadAllData()
 
@@ -375,6 +369,33 @@ class ContentRepositoryTest {
       inOrder.verify(networkObserver).onChanged(NetworkState.RUNNING)
       inOrder.verify(networkObserver).onChanged(NetworkState.SUCCESS)
       inOrder.verifyNoMoreInteractions()
+    }
+  }
+
+  @Test
+  fun getContent() {
+    testCoroutineRule.runBlockingTest {
+      val expectedContent = Content()
+
+      whenever(contentApi.getContent("1")).doReturn(expectedContent)
+
+      val result = repository.getContent("1")
+      Truth.assertThat(result).isEqualTo(expectedContent)
+
+      verify(contentApi).getContent("1")
+      verifyNoMoreInteractions(contentApi)
+    }
+  }
+
+  @Test(expected = Exception::class)
+  fun getContent_failure() {
+    testCoroutineRule.runBlockingTest {
+      val expected = RuntimeException()
+      whenever(contentApi.getContent(any())).thenThrow(expected)
+
+      repository.getContent("1")
+      verify(contentApi).getContent("1")
+      verifyNoMoreInteractions(contentApi)
     }
   }
 }

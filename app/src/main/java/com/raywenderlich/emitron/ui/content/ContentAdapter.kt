@@ -84,15 +84,7 @@ class ContentAdapter(
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when (holder) {
       is ContentItemViewHolder -> {
-        val data = getItem(position)?.setIncluded(included)
-        if (data != null) {
-          data.setReadableReleaseAtWithTypeAndDuration(holder.itemView.context, data)
-          (holder).bindTo(data) {
-            onItemClick(data)
-          }
-        } else {
-          Log.exception(IllegalArgumentException("Item was null!"))
-        }
+        bindContentItem(holder, position)
       }
       is ItemFooterViewHolder -> holder.bindTo(pagedAdapter.networkState)
       is ItemErrorViewHolder -> holder.bindTo(pagedAdapter.uiState, hasAppliedFilters)
@@ -108,17 +100,20 @@ class ContentAdapter(
     payloads: List<Any>
   ) {
     if (payloads.isNotEmpty()) {
-      val data = getItem(position)?.setIncluded(included)
-      if (data != null) {
-        data.setReadableReleaseAtWithTypeAndDuration(holder.itemView.context, data)
-        (holder as ContentItemViewHolder).bindTo(data) {
-          onItemClick(data)
-        }
-      } else {
-        Log.exception(IllegalArgumentException("Item was null!"))
-      }
+      bindContentItem(holder as ContentItemViewHolder, position)
     } else {
       onBindViewHolder(holder, position)
+    }
+  }
+
+  private fun bindContentItem(viewHolder: ContentItemViewHolder, position: Int) {
+    val data = getItem(position)?.setIncluded(included)
+    if (data != null) {
+      (viewHolder).bindTo(data) {
+        onItemClick(data)
+      }
+    } else {
+      Log.exception(IllegalArgumentException("Item was null!"))
     }
   }
 
