@@ -44,6 +44,15 @@ interface UiStateManager {
     fun hasError(): Boolean {
       return this == ERROR || this == ERROR_CONNECTION || this == ERROR_EMPTY
     }
+
+    /**
+     * Check if UI state is empty
+     *
+     * @return true if UI is empty, else false
+     */
+    fun isEmpty(): Boolean {
+      return this == ERROR_EMPTY
+    }
   }
 
   /**

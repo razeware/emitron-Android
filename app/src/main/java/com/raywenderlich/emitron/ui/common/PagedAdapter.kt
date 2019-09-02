@@ -48,7 +48,7 @@ class PagedAdapter {
     this.networkState = newNetworkState
 
     if (newNetworkState == NetworkState.INIT) {
-      uiState = UiStateManager.UiState.LOADED
+      uiState = null
     }
     val hasExtraRow = hasExtraRow()
     if (hadExtraRow != hasExtraRow) {
@@ -86,6 +86,7 @@ class PagedAdapter {
   /**
    * Check if footer progress item view should be shown
    */
-  fun hasExtraRow(): Boolean = (networkState != null && networkState != NetworkState.SUCCESS) ||
+  fun hasExtraRow(): Boolean = (networkState != null && networkState != NetworkState.SUCCESS
+      && networkState != NetworkState.INIT_SUCCESS) ||
       (uiState != null && uiState != UiStateManager.UiState.LOADED)
 }
