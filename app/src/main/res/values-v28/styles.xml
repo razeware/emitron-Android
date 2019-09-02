@@ -268,12 +268,11 @@
     <item name="hintEnabled">false</item>
   </style>
 
-  <style name="SearchEditText" parent="Widget.AppCompat.EditText">
-    <item name="android:fontFamily">@font/roboto</item>
-    <item name="fontFamily">@font/roboto</item>
-    <item name="android:textColor">@color/textColorBody1</item>
-    <item name="android:textColorHint">@color/textColorCaption</item>
-
+  <style name="SearchEditText">
+    <item name="android:textColorHint">@color/textColorHint</item>
+    <item name="android:textAppearance">@style/TextAppearance.Body.2</item>
+    <item name="android:imeOptions">actionSearch</item>
+    <item name="android:inputType">textNoSuggestions</item>
   </style>
 
 </resources>

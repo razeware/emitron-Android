@@ -58,12 +58,14 @@
   <color name="textColorCaption">@color/raven_grey</color>
   <color name="textColorHeadline">@color/charcoal_black</color>
   <color name="textColorHeadlineInverse">@color/white</color>
+  <color name="textColorHint">@color/blue_grey</color>
 
   <color name="colorDivider">@color/pale_blue</color>
   <color name="colorDividerOnLight">@color/bright_grey</color>
   <color name="colorDividerInverse">@color/light_gray_blue</color>
   <color name="colorIcon">@color/light_gray_blue</color>
   <color name="colorIcon2">@color/light_gray_blue</color>
+  <color name="colorIcon3">@color/light_gray_blue</color>
   <color name="colorIconOnError">@color/white</color>
   <color name="colorIconInverse">@color/white</color>
 
@@ -82,4 +84,6 @@
   <color name="colorProgressItemBackgroundGradient2">#5561656c</color>
 
   <color name="colorCheckboxUnchecked">@color/light_gray_blue</color>
+  <color name="colorNavDivider">@color/transparent</color>
+  <color name="colorBoxStroke">@color/white</color>
 </resources>

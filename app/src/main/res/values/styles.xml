@@ -13,6 +13,21 @@
     <item name="materialCardViewStyle">@style/Card</item>
   </style>
 
+  <style name="AppTheme.Popup" parent="Widget.AppCompat.PopupMenu">
+    <item name="android:paddingTop">0dp</item>
+    <item name="android:paddingBottom">0dp</item>
+    <item name="textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceSmall</item>
+    <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceSmall</item>
+  </style>
+
+  <style name="myPopupMenuTextAppearanceSmall" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large">
+    <item name="android:fontFamily">@font/roboto_bold</item>
+    <item name="fontFamily">@font/roboto_bold</item>
+    <item name="android:textSize">@dimen/text_size_button</item>
+    <item name="android:textColor">@color/textColorButton</item>
+    <item name="android:letterSpacing">@fraction/letter_spacing_button</item>
+  </style>
+
   <style name="AppTheme.Toolbar_Overlay" parent="AppTheme">
     <item name="colorPrimary">@color/transparent</item>
   </style>
@@ -264,18 +279,18 @@
     <item name="boxCornerRadiusBottomStart">@dimen/button_corner_radius</item>
     <item name="boxCornerRadiusTopEnd">@dimen/button_corner_radius</item>
     <item name="boxCornerRadiusTopStart">@dimen/button_corner_radius</item>
-    <item name="boxStrokeColor">@color/blue_grey</item>
-    <item name="boxStrokeWidth">0dp</item>
+    <item name="boxStrokeColor">@color/selector_text_input_layout_stroke</item>
+    <item name="boxStrokeWidth">@dimen/search_view_stroke_width</item>
     <item name="hintAnimationEnabled">true</item>
     <item name="hintEnabled">false</item>
   </style>
 
-  <style name="SearchEditText" parent="Widget.AppCompat.EditText">
-    <item name="android:fontFamily">@font/roboto</item>
-    <item name="fontFamily">@font/roboto</item>
-    <item name="android:textColor">@color/textColorBody1</item>
-    <item name="android:textColorHint">@color/textColorCaption</item>
-
+  <style name="SearchEditText">
+    <item name="android:textColorHint">@color/textColorHint</item>
+    <item name="android:textAppearance">@style/TextAppearance.Body.2</item>
+    <item name="android:imeOptions">actionSearch</item>
+    <item name="android:inputType">textNoSuggestions</item>
   </style>
+
 
 </resources>

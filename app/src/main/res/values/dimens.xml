@@ -99,6 +99,7 @@
   <dimen name="download_progress_thickness">3dp</dimen>
   <dimen name="button_download_stop_radius">1dp</dimen>
   <dimen name="default_item_spacing_vertical">12dp</dimen>
+  <dimen name="sort_option_height">36dp</dimen>
 
   <!-- Collection detail view -->
   <dimen name="margin_body_pro">32dp</dimen>
