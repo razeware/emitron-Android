@@ -400,6 +400,8 @@ class LibraryFragment : DaggerFragment() {
           loadCollections()
           return
         }
+      } else {
+        binding.editTextLibrarySearch.setText("")
       }
     }
   }
