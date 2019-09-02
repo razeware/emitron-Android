@@ -75,7 +75,8 @@ class ContentAdapter(
      *
      * @return True if adapter is part of library view else False
      */
-    fun isContent(): Boolean = this == Content || this == ContentWithFilters
+    fun isContent(): Boolean =
+      this == Content || this == ContentWithFilters || this == ContentWithSearch
   }
 
   /**

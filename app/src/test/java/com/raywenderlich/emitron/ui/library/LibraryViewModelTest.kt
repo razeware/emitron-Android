@@ -63,7 +63,7 @@ class LibraryViewModelTest {
 
   @Test
   fun saveSearchQuery() {
-    viewModel.saveSearchQuery("Emitron")
+    gitviewModel.saveSearchQuery("Emitron")
 
     verify(contentRepository).saveSearchQuery("Emitron")
     verifyNoMoreInteractions(contentRepository)
