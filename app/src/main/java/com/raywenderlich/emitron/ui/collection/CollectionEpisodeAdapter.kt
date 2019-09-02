@@ -163,13 +163,20 @@ data class EpisodeItem(
         EpisodeItem(data = childData)
       }
 
-    private fun getTitle(data: Data) = EpisodeItem(data.getName())
+    private fun getTitle(data: Data): EpisodeItem? {
+      val name = data.getName()
+      return if (!name.isNullOrBlank()) {
+        EpisodeItem(data.getName())
+      } else {
+        null
+      }
+    }
 
     /**
      * Build episode item from [Data]
      */
     fun buildFrom(data: Data): List<EpisodeItem> =
-      listOf(getTitle(data), *(getContentItems(data).toTypedArray()))
+      listOfNotNull(getTitle(data), *(getContentItems(data).toTypedArray()))
 
   }
 }
