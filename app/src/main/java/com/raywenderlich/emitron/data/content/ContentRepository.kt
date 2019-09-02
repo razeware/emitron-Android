@@ -90,7 +90,7 @@ class ContentRepository @Inject constructor(
    *
    * @return list of recent search queries
    */
-  fun getSearchQueries(): List<String> = settingsPref.getSearchQueries().toList()
+  fun getSearchQueries(): List<String> = settingsPref.getSearchQueries()
 
   /**
    * Save recent query

@@ -57,11 +57,6 @@ class PrefUtils @Inject constructor(private val context: Application) {
     return this
   }
 
-  fun set(key: String, value: Set<String>) {
-    editor.putStringSet(key, value)
-    commit()
-  }
-
   /**
    * Save preferences to file
    */
@@ -89,8 +84,5 @@ class PrefUtils @Inject constructor(private val context: Application) {
       else -> throw IllegalStateException()
     }
   }
-
-  fun get(key: String, defaultVal: Set<String>): Set<String> =
-    prefs.getStringSet(key, defaultVal)?.toSet() ?: defaultVal
 
 }
