@@ -12,8 +12,8 @@ import javax.inject.Inject
  * Repository for filter operations
  */
 class FilterRepository @Inject constructor(
-  private val filterDataSourceLocal: FilterDataSourceLocal,
   private val filterApi: FilterApi,
+  private val filterDataSourceLocal: FilterDataSourceLocal,
   private val threadManager: ThreadManager
 ) {
 
