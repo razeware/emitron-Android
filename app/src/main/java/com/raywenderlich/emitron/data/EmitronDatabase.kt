@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.raywenderlich.emitron.data.filter.dao.CategoryDao
+import com.raywenderlich.emitron.data.filter.dao.DomainDao
 import com.raywenderlich.emitron.model.Category
 import com.raywenderlich.emitron.model.Domain
 
@@ -13,6 +15,16 @@ import com.raywenderlich.emitron.model.Domain
 @Database(entities = [Domain::class, Category::class], version = 1, exportSchema = true)
 abstract class EmitronDatabase : RoomDatabase() {
 
+  /**
+   * DomainDao
+   */
+  abstract fun domainDao(): DomainDao
+
+  /**
+   * CategoryDao
+   */
+  abstract fun categoryDao(): CategoryDao
+  
   companion object {
 
     // For Singleton instantiation
