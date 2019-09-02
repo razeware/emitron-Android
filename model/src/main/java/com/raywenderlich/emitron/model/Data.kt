@@ -11,34 +11,34 @@ import org.threeten.bp.LocalDateTime
  */
 @Parcelize
 data class Data(
-  /**
-   *  Id
-   */
-  val id: String? = null,
-  /**
-   * Maps to [DataType]
-   */
-  val type: String? = null,
-  /**
-   *  Attributes
-   */
-  val attributes: Attributes? = null,
-  /**
-   *  Links
-   */
-  val links: Links? = null,
-  /**
-   *  Relationships
-   */
-  val relationships: Relationships? = null,
-  /**
-   *  Meta
-   */
-  val meta: Meta? = null,
-  /**
-   *  Contents
-   */
-  val included: Contents? = null
+    /**
+     *  Id
+     */
+    val id: String? = null,
+    /**
+     * Maps to [DataType]
+     */
+    val type: String? = null,
+    /**
+     *  Attributes
+     */
+    val attributes: Attributes? = null,
+    /**
+     *  Links
+     */
+    val links: Links? = null,
+    /**
+     *  Relationships
+     */
+    val relationships: Relationships? = null,
+    /**
+     *  Meta
+     */
+    val meta: Meta? = null,
+    /**
+     *  Contents
+     */
+    val included: Contents? = null
 ) : Parcelable {
   /**
    *  Name
@@ -46,6 +46,13 @@ data class Data(
    *  @return content name ex. Swift UI: Working With UIKit
    */
   fun getName(): String? = attributes?.name
+
+  /**
+   * Level
+   *
+   * @return content level
+   */
+  fun getLevel(): String? = attributes?.level
 
   /**
    *  @return true if type is [DataType.Progressions], else false
@@ -98,15 +105,15 @@ data class Data(
    *  @return true if content requires subscription, else false
    */
   fun isProLabelVisible(): Boolean =
-    !isTypeProgression() && !isFreeContent() && !isFinished()
+      !isTypeProgression() && !isFreeContent() && !isFinished()
 
   /**
    *  @return [TimeUtils.Day] after parsing release date of content
    */
   fun getReleasedAt(
-    withYear: Boolean, today: LocalDateTime = LocalDateTime.now(Clock.systemUTC())
+      withYear: Boolean, today: LocalDateTime = LocalDateTime.now(Clock.systemUTC())
   ): TimeUtils.Day =
-    attributes?.getReadableReleasedAt(withYear, today) ?: TimeUtils.Day.None
+      attributes?.getReadableReleasedAt(withYear, today) ?: TimeUtils.Day.None
 
   /**
    *  @return [Pair] of hours, minutes for watch duration content
@@ -139,7 +146,7 @@ data class Data(
   fun isProgressionFinished(): Boolean = relationships?.hasFinishedContent() ?: false
 
   /**
-   *  @return true if content doesn't require subscription, else false
+   *  @return Progress completion for content
    */
   fun getProgressionPercentComplete(): Int? = relationships?.getPercentComplete() ?: 0
 
@@ -182,7 +189,7 @@ data class Data(
     }
 
     val relationships =
-      relationships?.setDomains(domains) ?: Relationships().setDomains(domains)
+        relationships?.setDomains(domains) ?: Relationships().setDomains(domains)
 
     return this.copy(relationships = relationships)
   }
@@ -197,13 +204,13 @@ data class Data(
     }
 
     val relationships =
-      relationships?.setProgression(progressions) ?: Relationships().setProgression(progressions)
+        relationships?.setProgression(progressions) ?: Relationships().setProgression(progressions)
 
     return this.copy(relationships = relationships)
   }
 
   /**
-   *  @return true if content doesn't require subscription, otherwise false
+   *  @return bookmark id
    */
   fun getBookmarkId(): String? = relationships?.getBookmarkId()
 
@@ -213,16 +220,22 @@ data class Data(
   fun getProgressionId(): String? = relationships?.getProgressionId()
 
   /**
-   *  @return true if content doesn't require subscription, otherwise false
+   * Add bookmark relation and attribute from content
+   *
+   * @param bookmark Bookmark to be added to relationship
+   *
+   * @return Data after adding bookmark
    */
-  fun addBookmark(content: Content?): Data {
-    val relationships = this.relationships?.copy(bookmark = content)
+  fun addBookmark(bookmark: Content?): Data {
+    val relationships = this.relationships?.copy(bookmark = bookmark)
     val attributes = this.attributes?.copy(bookmarked = true) ?: Attributes(bookmarked = true)
     return this.copy(attributes = attributes, relationships = relationships)
   }
 
   /**
-   *  @return true if content doesn't require subscription, otherwise false
+   *  Remove bookmark relation and attribute from content
+   *
+   *  @return Data after removing bookmark
    */
   fun removeBookmark(): Data {
     val relationships = this.relationships?.copy(bookmark = null)
@@ -241,7 +254,7 @@ data class Data(
   fun isTypeScreencast(): Boolean = getContentType()?.isScreenCast() ?: false
 
   /**
-   *  @return true if content doesn't require subscription, otherwise false
+   *  @return formatted episode duration string
    */
   fun getEpisodeDuration(): String {
     val (hrs, mins, secs) = attributes?.getDurationHoursAndMinutesAndSeconds() ?: return ""
@@ -252,12 +265,12 @@ data class Data(
   }
 
   /**
-   *  @return true if content doesn't require subscription, otherwise false
+   *  @return grouped data list
    */
   fun getGroupedData(): List<Data> = relationships?.getGroupedData() ?: emptyList()
 
   /**
-   *  @return true if content doesn't require subscription, otherwise false
+   *  @return ids of grouped data list
    */
   fun getGroupedDataIds(): List<String> = relationships?.getGroupedDataIds() ?: emptyList()
 
@@ -265,7 +278,7 @@ data class Data(
    * Mark episode finished/ or in-progress
    */
   fun toggleFinished(): Data =
-    this.copy(attributes = this.attributes?.copy(finished = !this.isFinished()))
+      this.copy(attributes = this.attributes?.copy(finished = !this.isFinished()))
 
   /**
    * Get episode number
@@ -277,7 +290,7 @@ data class Data(
    * else String of position
    */
   fun getEpisodeNumber(position: Int, episodeIsProContent: Boolean): String =
-    if (episodeIsProContent || isFinished()) "" else position.toString()
+      if (episodeIsProContent || isFinished()) "" else position.toString()
 
   companion object {
 
@@ -288,7 +301,7 @@ data class Data(
      */
     fun getDomainIds(dataList: List<Data>): List<String> {
       return dataList.filter { it.isTypeDomain() }
-        .mapNotNull { it.id }
+          .mapNotNull { it.id }
     }
 
     /**
@@ -298,7 +311,93 @@ data class Data(
      */
     fun getCategoryIds(dataList: List<Data>): List<String> {
       return dataList.filter { DataType.Categories == DataType.fromValue(it.type) }
-        .mapNotNull { it.id }
+          .mapNotNull { it.id }
     }
+
+    /**
+     *  @param dataList List of content
+     *
+     *  @return list of category ids from input list
+     */
+    fun getSearchTerm(dataList: List<Data>): String {
+      return dataList.firstOrNull { DataType.Search == DataType.fromValue(it.type) }?.getName()
+          ?: ""
+    }
+
+    /**
+     *  @param dataList List of content
+     *
+     *  @return list of category ids from input list
+     */
+    fun getSortOrder(dataList: List<Data>): String {
+      val sortOrder =
+          dataList.firstOrNull { DataType.Sort == DataType.fromValue(it.type) }?.getName()
+              ?: ""
+      return SortOrder.fromValue(sortOrder)?.param ?: SortOrder.Newest.param
+    }
+
+
+    /**
+     * Create a data object from [Category] row
+     *
+     * @param category Category row from database
+     *
+     * @return [Data] for passed category
+     */
+    fun fromCategory(category: Category): Data =
+        Data(
+            id = category.categoryId,
+            type = DataType.Categories.toRequestFormat(),
+            attributes = Attributes(
+                name = category.name
+            )
+        )
+
+    /**
+     * Create a data object from [Domain] row
+     *
+     * @param domain Domain row from database
+     *
+     * @return [Data] for passed domain
+     */
+    fun fromDomain(domain: Domain): Data =
+        Data(
+            id = domain.domainId,
+            type = DataType.Domains.toRequestFormat(),
+            attributes = Attributes(
+                name = domain.name,
+                level = domain.level
+            )
+        )
+
+    /**
+     * Create a data object for search query
+     *
+     * @param searchTerm Search query
+     *
+     * @return [Data] for passed query
+     */
+    fun fromSearchQuery(searchTerm: String?): Data =
+        Data(
+            type = DataType.Search.toRequestFormat(),
+            attributes = Attributes(
+                name = searchTerm
+            )
+        )
+
+    /**
+     * Create a data object for sort order
+     *
+     * @param sortOrder Sort Order
+     *
+     * @return [Data] for passed query
+     */
+    fun fromSortOrder(sortOrder: String?): Data =
+        Data(
+            type = DataType.Sort.toRequestFormat(),
+            attributes = Attributes(
+                name = sortOrder
+            )
+        )
   }
 }
