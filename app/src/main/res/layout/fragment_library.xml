@@ -41,6 +41,7 @@
       android:id="@+id/search_view_library"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
+      app:cardBackgroundColor="@color/transparent"
       app:cardPreventCornerOverlap="true"
       app:cardUseCompatPadding="false"
       app:layout_constraintBottom_toTopOf="@+id/recycler_view_library_recent"
@@ -56,23 +57,24 @@
         style="@style/SearchTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/search_view_height_default"
+        android:minHeight="@dimen/search_view_height_default"
         android:hint="@string/label_search"
         app:endIconDrawable="@drawable/ic_material_icon_close"
         app:endIconMode="clear_text"
-        app:layout_constraintVertical_chainStyle="spread_inside">
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        app:startIconDrawable="@drawable/ic_material_icon_search"
+        app:startIconTint="@color/colorIcon3">
 
         <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/edit_text_library_search"
+          style="@style/SearchEditText"
           android:layout_width="match_parent"
-          android:layout_height="@dimen/search_view_height_default"
-          android:hint="@string/label_search"
-          android:imeActionLabel="@string/label_search"
-          android:imeOptions="actionSearch"
-          android:inputType="textNoSuggestions"
+          android:layout_height="wrap_content"
           android:paddingTop="@null"
           android:paddingBottom="@null"
-          android:textColor="@color/white"
-          android:textColorHint="@color/blue_grey" />
+          android:hint="@string/label_search"
+          android:imeActionLabel="@string/label_search" />
 
       </com.google.android.material.textfield.TextInputLayout>
 
@@ -144,7 +146,7 @@
       style="@style/Button.Text.Icon"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/button_latest"
+      android:text="@string/button_newest"
       android:textAppearance="@style/TextAppearance.Button.Regular"
       android:textColor="@color/textColorButton"
       app:icon="@drawable/ic_material_icon_sort"
@@ -174,8 +176,8 @@
       android:layout_width="0dp"
       android:layout_height="0dp"
       android:background="@color/colorBackground"
-      android:elevation="@dimen/card_elevation_default"
       android:clickable="false"
+      android:elevation="@dimen/card_elevation_default"
       android:focusableInTouchMode="false"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
@@ -183,8 +185,7 @@
       app:layout_constraintTop_toTopOf="parent"
       tools:visibility="gone">
 
-      <include
-        layout="@layout/layout_library_shimmer_progress" />
+      <include layout="@layout/layout_library_shimmer_progress" />
     </FrameLayout>
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -49,8 +49,11 @@
   <string name="button_explore_tutorials">Explore Tutorials</string>
   <string name="body_downloads_empty">You haven’t downloaded any tutorials yet</string>
 
+  <string name="body_progressions_empty">You haven’t started any tutorials yet</string>
+
   <!-- Library -->
-  <string name="button_latest">Latest</string>
+  <string name="button_newest">Newest</string>
+  <string name="button_popularity">Popularity</string>
   <string name="error_library_no_content">We couldn’t find any results</string>
   <string name="error_library_no_content_body">Try removing some filters</string>
   <string name="error_generic">Something went wrong!</string>
@@ -100,6 +103,7 @@
   <string name="button_show">Show</string>
   <string name="error_load_failed_domains">Failed to fetch domains.</string>
   <string name="error_load_failed_categories">Failed to fetch categories.</string>
+  <string name="button_label_delete">Delete</string>
 
   <string-array name="filter_difficulty">
     <item>@string/difficulty_beginner</item>
@@ -108,9 +112,8 @@
   </string-array>
 
   <string-array name="filter_content_type">
-    <item>Video Course</item>
-    <item>Screencast</item>
-    <item>Episode</item>
+    <item>@string/content_type_video_course</item>
+    <item>@string/content_type_screencast</item>
   </string-array>
 
 </resources>

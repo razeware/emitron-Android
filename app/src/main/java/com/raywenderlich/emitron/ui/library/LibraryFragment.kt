@@ -1,10 +1,14 @@
 package com.raywenderlich.emitron.ui.library
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -27,6 +31,7 @@ import com.raywenderlich.emitron.utils.NetworkState
 import com.raywenderlich.emitron.utils.extensions.*
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
+
 
 /**
  * Library view
@@ -55,12 +60,12 @@ class LibraryFragment : DaggerFragment() {
     viewModel.contentPagedViewModel.handleItemRetry(isNetConnected())
   }, {
     loadCollections()
-  }, PagedAdapter())
+  }, pagedAdapter = PagedAdapter())
 
   private val pagedFragment = lazy(LazyThreadSafetyMode.NONE) {
     ContentPagedFragment(
-        viewModel.contentPagedViewModel,
-        adapter
+      viewModel.contentPagedViewModel,
+      adapter
     )
   }
 
@@ -68,12 +73,12 @@ class LibraryFragment : DaggerFragment() {
    * See [androidx.fragment.app.Fragment.onCreateView]
    */
   override fun onCreateView(
-      inflater: LayoutInflater,
-      container: ViewGroup?,
-      savedInstanceState: Bundle?
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
   ): View? {
     binding = setDataBindingView(
-        inflater, R.layout.fragment_library, container
+      inflater, R.layout.fragment_library, container
     )
     return binding.root
   }
@@ -95,97 +100,107 @@ class LibraryFragment : DaggerFragment() {
     }
   }
 
+  @SuppressLint("ClickableViewAccessibility")
   private fun initUi() {
     binding.textLibraryCount.text = getString(R.string.label_tutorials_count, "⋯")
     pagedFragment.value.initPaging(this, binding.recyclerViewLibrary) {
       binding.textLibraryCount.text =
-          getString(R.string.label_tutorials_count, it.getTotalCount().toString())
+        getString(R.string.label_tutorials_count, it.getTotalCount().toString())
     }
 
     binding.recyclerViewLibrary.addItemDecoration(BottomMarginDecoration())
 
     binding.buttonLibraryFilter.setOnClickListener(
-        Navigation.createNavigateOnClickListener(
-            R.id.action_navigation_library_to_navigation_filter
-        )
+      Navigation.createNavigateOnClickListener(
+        R.id.action_navigation_library_to_navigation_filter
+      )
     )
 
     binding.buttonLibrarySort.setOnClickListener {
-
+      showSortPopup()
     }
+
     progressDelegate = ShimmerProgressDelegate(requireView())
 
-    binding.editTextLibrarySearch.setOnFocusChangeListener { _, hasFocus ->
-      if (hasFocus) {
-        initRecentSearchRecyclerView()
-      }
+    binding.editTextLibrarySearch.setOnTouchListener { _, _ ->
+      toggleRecentSearchView()
+      false
     }
 
     binding.editTextLibrarySearch.setOnEditorActionListener { _, actionId, _ ->
       if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-        val searchTerm = binding.editTextLibrarySearch.text?.toString()
-        if (!searchTerm.isNullOrBlank()) {
-          viewModel.saveSearchQuery(searchTerm)
-          parentViewModel.setSearchQuery(searchTerm)
-          hideRecentSearchControls()
-          loadCollections()
-        }
+        handleSearchImeAction()
         true
       } else {
         false
       }
     }
 
-    binding.textInputLayoutSearch.setEndIconOnClickListener {
-      val searchTerm = binding.editTextLibrarySearch.text?.toString()
+    binding.textInputLayoutSearch.setStartIconOnClickListener {
+      showRecentSearchControls()
+    }
 
-      if (!searchTerm.isNullOrBlank()) {
-        if (parentViewModel.clearSearchQuery()) {
-          hideRecentSearchControls()
-          loadCollections()
-        }
-        binding.editTextLibrarySearch.setText("")
+    binding.textInputLayoutSearch.setEndIconOnClickListener {
+      handleQueryCleared()
+    }
+  }
+
+  private fun showSortPopup() {
+    val popup = PopupMenu(
+      requireContext(),
+      binding.buttonLibrarySort,
+      Gravity.END,
+      0,
+      R.style.AppTheme_Popup
+    )
+    popup.menuInflater.inflate(R.menu.menu_library_sort, popup.menu)
+    popup.setOnMenuItemClickListener {
+      parentViewModel.setSortOrder(it.title.toString())
+      loadCollections()
+      true
+    }
+    popup.show()
+  }
+
+  private fun showRecentSearchControls() {
+    val isRecentSearchViewShowing = binding.recyclerViewLibraryRecent.isVisible
+    if (isRecentSearchViewShowing) {
+      toggleControls(visible = true)
+      hideRecentSearchControls()
+    } else {
+      if (toggleRecentSearchView()) {
+        binding.textInputLayoutSearch.setStartIconDrawable(R.drawable.ic_material_icon_arrow_back)
       }
     }
   }
 
   private fun hideRecentSearchControls() {
     with(binding) {
-      textInputLayoutSearch.setStartIconDrawable(0)
+      textInputLayoutSearch.setStartIconDrawable(R.drawable.ic_material_icon_search)
       recyclerViewLibraryRecent.visibility = View.GONE
       hideKeyboard()
     }
   }
 
-  private fun initRecentSearchRecyclerView() {
+  private fun toggleRecentSearchView(): Boolean {
     val recyclerView = binding.recyclerViewLibraryRecent
 
     // Get recent search terms
     toggleControls(visible = false)
     val recentSearchTerms = viewModel.loadSearchQueries()
     if (recentSearchTerms.isNotEmpty()) {
-      with(binding.textInputLayoutSearch) {
-        setStartIconDrawable(R.drawable.ic_material_icon_arrow_back)
-        setStartIconOnClickListener {
-          toggleControls(visible = true)
-          hideRecentSearchControls()
+      with(recyclerView) {
+        layoutManager = object : LinearLayoutManager(requireContext()) {
+          override fun canScrollVertically(): Boolean = false
+        }
+        adapter = RecentSearchAdapter(recentSearchTerms) {
+          handleRecentSearchItemSelected(it)
         }
       }
       recyclerView.visibility = View.VISIBLE
     }
 
-    with(recyclerView) {
-      layoutManager = object : LinearLayoutManager(requireContext()) {
-        override fun canScrollVertically(): Boolean = false
-      }
-      adapter = RecentSearchAdapter(recentSearchTerms) {
-        viewModel.saveSearchQuery(it)
-        parentViewModel.setSearchQuery(it)
-        binding.editTextLibrarySearch.setText(it)
-        hideRecentSearchControls()
-        loadCollections()
-      }
-    }
+    return recyclerView.isVisible
   }
 
   private fun initObservers() {
@@ -197,6 +212,18 @@ class LibraryFragment : DaggerFragment() {
     }
     parentViewModel.query.observe(viewLifecycleOwner) {
       binding.editTextLibrarySearch.setText(it)
+      if (it.isNullOrBlank()) {
+        if (!parentViewModel.hasFilters()) {
+          adapter.updateContentType()
+        }
+      } else {
+        if (!parentViewModel.hasFilters()) {
+          adapter.updateContentType(ContentAdapter.ContentAdapterType.ContentWithSearch)
+        }
+      }
+    }
+    parentViewModel.sortOrder.observe(viewLifecycleOwner) {
+      binding.buttonLibrarySort.text = it ?: getString(R.string.button_newest)
     }
   }
 
@@ -205,13 +232,15 @@ class LibraryFragment : DaggerFragment() {
       NetworkState.INIT -> {
         progressDelegate.showProgressView()
         toggleControls()
+
       }
-      NetworkState.INIT_SUCCESS -> {
-        progressDelegate.hideProgressView()
+      NetworkState.INIT_SUCCESS, NetworkState.INIT_EMPTY -> {
         toggleControls(true)
+        hideRecentSearchControls()
+        progressDelegate.hideProgressView()
       }
       else -> {
-        // Ignore
+        // Handled by the adapter
       }
     }
   }
@@ -224,13 +253,18 @@ class LibraryFragment : DaggerFragment() {
       return
     }
 
-    viewModel.loadCollections(parentViewModel.getSelectedFilters())
+    viewModel.loadCollections(
+      parentViewModel.getSelectedFilters(
+        withSearch = true,
+        withSort = true
+      )
+    )
   }
 
   private fun openCollection(collection: Data?) {
     collection?.let {
       val action = LibraryFragmentDirections
-          .actionNavigationLibraryToNavigationCollection(collection = collection)
+        .actionNavigationLibraryToNavigationCollection(collection = collection)
       findNavController().navigate(action)
     }
   }
@@ -263,63 +297,119 @@ class LibraryFragment : DaggerFragment() {
   private fun handleFilters(filters: List<Data>?) {
     if (filters.isNullOrEmpty()) return
 
-    val filterWithoutSearchItems = filters.filter { !it.isTypeSearch() }
-
-    val shapeAppearanceModel = ShapeAppearanceModel().apply {
-      setCornerRadius(9.0f.toInt().toPx().toFloat())
+    val selectedFilters = parentViewModel.getSelectedFilters()
+    clearAllFilters()
+    if (selectedFilters.size > 1) {
+      addClearAllChip()
     }
-    val applyChipStyle = { chip: Chip ->
-      chip.apply {
-        this.shapeAppearanceModel = shapeAppearanceModel
-        isCloseIconVisible = true
-        closeIcon = context.getDrawable(R.drawable.ic_material_icon_close)
-        setChipIconTintResource(R.color.white)
-        setChipBackgroundColorResource(R.color.colorSurface)
-        isClickable = true
-        isCheckable = false
-        setChipMinHeightResource(R.dimen.chip_height_default)
-        setTextAppearance(R.style.TextAppearance_Button_Small)
-      }
+    selectedFilters.map {
+      addFilterChip(it)
     }
+  }
 
+  private fun clearAllFilters() {
     val filterContainer = binding.chipGroupLibraryFilter
-
     filterContainer.removeAllViews()
     filterContainer.visibility = View.GONE
+    adapter.updateContentType(ContentAdapter.ContentAdapterType.Content)
+  }
 
-    if (filterWithoutSearchItems.size > 1) {
-      filterContainer.visibility = View.VISIBLE
-      if (filterContainer.childCount <= 0) {
-        val closeChip = Chip(requireContext()).apply {
-          text = getString(R.string.button_filter_clear_all)
-          applyChipStyle(this)
-          setChipBackgroundColorResource(R.color.colorError)
-          setCloseIconTintResource(R.color.colorIconOnError)
-          setTextAppearance(R.style.TextAppearance_Button_Small_Inverse)
-        }
-        closeChip.setOnCloseIconClickListener {
-          filterContainer.removeAllViews()
-          filterContainer.visibility = View.GONE
-          parentViewModel.resetFilters()
-          adapter.hasAppliedFilters(false)
-          loadCollections()
-        }
-        filterContainer.addView(closeChip as View)
+  private fun applyDefaultChipStyle(chip: Chip) {
+    val shapeAppearanceModel =
+      ShapeAppearanceModel().apply {
+        setCornerRadius(9.0f.toInt().toPx().toFloat())
       }
+    with(chip) {
+      this.shapeAppearanceModel = shapeAppearanceModel
+      isCloseIconVisible = true
+      closeIcon = context.getDrawable(R.drawable.ic_material_icon_close)
+      setChipIconTintResource(R.color.white)
+      setChipBackgroundColorResource(R.color.colorSurface)
+      isClickable = true
+      isCheckable = false
+      setChipMinHeightResource(R.dimen.chip_height_default)
+      setTextAppearance(R.style.TextAppearance_Button_Small)
     }
-    filterWithoutSearchItems.map {
+  }
+
+  private fun addClearAllChip() {
+    val filterContainer = binding.chipGroupLibraryFilter
+    filterContainer.visibility = View.VISIBLE
+    if (filterContainer.childCount <= 0) {
+      val closeChip = Chip(requireContext()).apply {
+        text = getString(R.string.button_filter_clear_all)
+        applyDefaultChipStyle(this)
+        setChipBackgroundColorResource(R.color.colorError)
+        setCloseIconTintResource(R.color.colorIconOnError)
+        setTextAppearance(R.style.TextAppearance_Button_Small_Inverse)
+      }
+      closeChip.setOnCloseIconClickListener {
+        filterContainer.removeAllViews()
+        filterContainer.visibility = View.GONE
+        parentViewModel.resetFilters()
+        adapter.updateContentType()
+        loadCollections()
+      }
+      filterContainer.addView(closeChip as View)
+    }
+  }
+
+  private fun addFilterChip(filter: Data) {
+    val filterContainer = binding.chipGroupLibraryFilter
+    with(filter) {
       val chip = Chip(requireContext()).apply {
-        text = it.getName()
-        tag = it
-        applyChipStyle(this)
+        text = getName()
+        tag = filter
+        applyDefaultChipStyle(this)
       }
       chip.setOnCloseIconClickListener {
         parentViewModel.removeFilter(it.tag as? Data)
+        if (parentViewModel.getSelectedFilters().isEmpty()) {
+          clearAllFilters()
+        }
         loadCollections()
       }
       filterContainer.addView(chip as View)
-      adapter.hasAppliedFilters()
+      adapter.updateContentType(ContentAdapter.ContentAdapterType.ContentWithFilters)
       filterContainer.visibility = View.VISIBLE
     }
+  }
+
+  private fun handleSearchImeAction() {
+    val query = binding.editTextLibrarySearch.text?.toString()
+    if (!query.isNullOrBlank()) {
+      viewModel.saveSearchQuery(query)
+      parentViewModel.setSearchQuery(query)
+      hideRecentSearchControls()
+      loadCollections()
+    }
+  }
+
+  private fun handleQueryCleared() {
+    val lastQuery = parentViewModel.query.value
+    val query = binding.editTextLibrarySearch.text?.toString()
+    if (!query.isNullOrBlank()) {
+
+      if (binding.recyclerViewLibrary.isVisible && parentViewModel.clearSearchQuery()) {
+        hideRecentSearchControls()
+        loadCollections()
+        return
+      }
+
+      if (!lastQuery.isNullOrBlank() && lastQuery == query) {
+        if (parentViewModel.clearSearchQuery()) {
+          loadCollections()
+          return
+        }
+      }
+    }
+  }
+
+  private fun handleRecentSearchItemSelected(query: String) {
+    viewModel.saveSearchQuery(query)
+    parentViewModel.setSearchQuery(query)
+    binding.editTextLibrarySearch.setText(query)
+    hideRecentSearchControls()
+    loadCollections()
   }
 }
