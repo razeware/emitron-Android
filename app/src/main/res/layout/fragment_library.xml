@@ -41,30 +41,44 @@
       android:id="@+id/search_view_library"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      app:layout_constraintBottom_toTopOf="@+id/scroll_view_library_filter"
+      app:cardBackgroundColor="@color/transparent"
+      app:cardPreventCornerOverlap="true"
+      app:cardUseCompatPadding="false"
+      app:layout_constraintBottom_toTopOf="@+id/recycler_view_library_recent"
       app:layout_constraintEnd_toStartOf="@+id/button_library_filter"
       app:layout_constraintStart_toStartOf="@id/guideline_left"
       app:layout_constraintTop_toTopOf="@id/guideline_top"
+      app:layout_constraintVertical_bias="0"
+      app:layout_constraintVertical_chainStyle="packed"
       app:layout_goneMarginBottom="0dp">
 
       <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_layout_search"
         style="@style/SearchTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/search_view_height_default"
+        android:minHeight="@dimen/search_view_height_default"
         android:hint="@string/label_search"
-        app:layout_constraintVertical_chainStyle="spread_inside">
+        app:endIconDrawable="@drawable/ic_material_icon_close"
+        app:endIconMode="clear_text"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        app:startIconDrawable="@drawable/ic_material_icon_search"
+        app:startIconTint="@color/colorIcon3">
 
         <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/edit_text_library_search"
+          style="@style/SearchEditText"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:paddingTop="@null"
+          android:paddingBottom="@null"
           android:hint="@string/label_search"
-          android:textColor="@color/white"
-          android:textColorHint="@color/blue_grey" />
+          android:imeActionLabel="@string/label_search" />
 
       </com.google.android.material.textfield.TextInputLayout>
 
     </com.google.android.material.card.MaterialCardView>
-
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/button_library_filter"
@@ -78,21 +92,37 @@
       app:layout_constraintStart_toEndOf="@+id/search_view_library"
       app:layout_constraintTop_toTopOf="@+id/search_view_library" />
 
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/recycler_view_library_recent"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/activity_vertical_margin"
+      android:visibility="gone"
+      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      app:layout_constraintBottom_toTopOf="@+id/scroll_view_library_filter"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/search_view_library"
+      tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      tools:listitem="@layout/item_recent_search" />
+
     <HorizontalScrollView
       android:id="@+id/scroll_view_library_filter"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:scrollbars="none"
+      android:visibility="gone"
       app:layout_constraintBottom_toTopOf="@+id/button_library_sort"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="@id/guideline_left"
-      app:layout_constraintTop_toBottomOf="@+id/search_view_library">
+      app:layout_constraintTop_toBottomOf="@+id/recycler_view_library_recent">
 
       <com.google.android.material.chip.ChipGroup
         android:id="@+id/chip_group_library_filter"
         style="@style/Widget.MaterialComponents.ChipGroup"
         android:layout_width="0dp"
         android:layout_height="@dimen/chip_height_default"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:visibility="gone"
         app:chipSpacing="@dimen/button_spacing_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -102,7 +132,7 @@
 
     <com.google.android.material.textview.MaterialTextView
       android:id="@+id/text_library_count"
-      style="@style/TextAppearance.Label"
+      style="@style/TextAppearance.Label.Colored.Grey"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       app:layout_constraintBottom_toBottomOf="@+id/button_library_sort"
@@ -116,10 +146,12 @@
       style="@style/Button.Text.Icon"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/button_latest"
+      android:text="@string/button_newest"
       android:textAppearance="@style/TextAppearance.Button.Regular"
       android:textColor="@color/textColorButton"
       app:icon="@drawable/ic_material_icon_sort"
+      app:iconPadding="@dimen/button_padding_internal_dense"
+      app:iconTint="@color/colorIcon2"
       app:layout_constraintBottom_toTopOf="@+id/recycler_view_library"
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintStart_toEndOf="@+id/text_library_count"
@@ -139,20 +171,13 @@
       tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
       tools:listitem="@layout/item_library" />
 
-    <androidx.constraintlayout.widget.Group
-      android:id="@+id/layout_library_content"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:visibility="visible"
-      app:constraint_referenced_ids="button_library_filter,scroll_view_library_filter,text_library_count,button_library_sort,search_view_library" />
-
     <FrameLayout
       android:id="@+id/layout_shimmer_progress_container"
       android:layout_width="0dp"
       android:layout_height="0dp"
       android:background="@color/colorBackground"
-      android:elevation="@dimen/card_elevation_default"
       android:clickable="false"
+      android:elevation="@dimen/card_elevation_default"
       android:focusableInTouchMode="false"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
@@ -160,8 +185,7 @@
       app:layout_constraintTop_toTopOf="parent"
       tools:visibility="gone">
 
-      <include
-        layout="@layout/layout_library_shimmer_progress" />
+      <include layout="@layout/layout_library_shimmer_progress" />
     </FrameLayout>
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
