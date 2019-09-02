@@ -287,11 +287,6 @@ data class Data(
   fun getEpisodeNumber(position: Int, episodeIsProContent: Boolean): String =
     if (episodeIsProContent || isFinished()) "" else position.toString()
 
-  /**
-   *  @return true if [DataType] is search
-   */
-  fun isTypeSearch(): Boolean = DataType.Search == DataType.fromValue(type)
-
   companion object {
 
     /**
@@ -325,6 +320,19 @@ data class Data(
     }
 
     /**
+     *  @param dataList List of content
+     *
+     *  @return list of category ids from input list
+     */
+    fun getSortOrder(dataList: List<Data>): String {
+      val sortOrder =
+        dataList.firstOrNull { DataType.Sort == DataType.fromValue(it.type) }?.getName()
+          ?: ""
+      return SortOrder.fromValue(sortOrder)?.param ?: SortOrder.Newest.param
+    }
+
+
+    /**
      * Create a data object from [Category] row
      *
      * @param category Category row from database
@@ -334,6 +342,7 @@ data class Data(
     fun fromCategory(category: Category): Data =
       Data(
         id = category.categoryId,
+        type = DataType.Categories.toRequestFormat(),
         attributes = Attributes(
           name = category.name
         )
@@ -349,6 +358,7 @@ data class Data(
     fun fromDomain(domain: Domain): Data =
       Data(
         id = domain.domainId,
+        type = DataType.Domains.toRequestFormat(),
         attributes = Attributes(
           name = domain.name,
           level = domain.level
@@ -367,6 +377,21 @@ data class Data(
         type = DataType.Search.toRequestFormat(),
         attributes = Attributes(
           name = searchTerm
+        )
+      )
+
+    /**
+     * Create a data object for sort order
+     *
+     * @param sortOrder Sort Order
+     *
+     * @return [Data] for passed query
+     */
+    fun fromSortOrder(sortOrder: String?): Data =
+      Data(
+        type = DataType.Sort.toRequestFormat(),
+        attributes = Attributes(
+          name = sortOrder
         )
       )
   }

@@ -117,7 +117,12 @@ class DataTest {
     data2.getReleasedAt(false, today = today) isEqualTo TimeUtils.Day.None
 
     val data3 = Data(attributes = attributes)
-    data3.getReleasedAt(true, today = today) isEqualTo TimeUtils.Day.Formatted("Aug 8 2019")
+    data3.getReleasedAt(true, today = today) isEqualTo TimeUtils.Day.Formatted("Aug 8")
+
+    val attributes2 = Attributes(releasedAt = "2018-08-08T02:00:00.000Z")
+    val data4 = Data(attributes = attributes2)
+    today.minusYears(1)
+    data4.getReleasedAt(true, today = today) isEqualTo TimeUtils.Day.Formatted("Aug 8 2018")
   }
 
   @Test
@@ -369,5 +374,112 @@ class DataTest {
     )
 
     assertThat(Data.getCategoryIds(listOfData)).isEqualTo(listOf("3", "4"))
+  }
+
+  @Test
+  fun getSearchTerm() {
+    val filters = listOf(
+      Data(
+        type = DataType.Search.toRequestFormat(),
+        attributes = Attributes(name = "Emitron")
+      )
+    )
+    val searchTerm = Data.getSearchTerm(filters)
+
+    searchTerm isEqualTo "Emitron"
+  }
+
+  @Test
+  fun getSortOrder() {
+    val filters = listOf(
+      Data(
+        type = DataType.Sort.toRequestFormat(),
+        attributes = Attributes(name = "popularity")
+      )
+    )
+    val sortOrder = Data.getSortOrder(filters)
+
+    sortOrder isEqualTo "popularity"
+
+    val filters2 = listOf(
+      Data(
+        type = DataType.Sort.toRequestFormat(),
+        attributes = Attributes(name = "newest")
+      )
+    )
+    val sortOrder2 = Data.getSortOrder(filters2)
+
+    sortOrder2 isEqualTo "-released_at"
+
+    val filters3 = emptyList<Data>()
+    val sortOrder3 = Data.getSortOrder(filters3)
+
+    sortOrder3 isEqualTo "-released_at"
+  }
+
+  @Test
+  fun fromCategory() {
+    val expected = Data(
+      id = "1",
+      type = DataType.Categories.toRequestFormat(),
+      attributes = Attributes(
+        name = "Architecture"
+      )
+    )
+
+    val category = Category().apply {
+      categoryId = "1"
+      name = "Architecture"
+    }
+    val result = Data.fromCategory(category)
+
+    result isEqualTo expected
+  }
+
+  @Test
+  fun fromDomain() {
+    val expected = Data(
+      id = "2",
+      type = DataType.Domains.toRequestFormat(),
+      attributes = Attributes(
+        name = "iOS and Swift"
+      )
+    )
+
+    val domain = Domain().apply {
+      domainId = "2"
+      name = "iOS and Swift"
+    }
+    val result = Data.fromDomain(domain)
+
+    result isEqualTo expected
+  }
+
+  @Test
+  fun fromSearchQuery() {
+    val expected = Data(
+      type = DataType.Search.toRequestFormat(),
+      attributes = Attributes(
+        name = "Emitron"
+      )
+    )
+
+    val result = Data.fromSearchQuery("Emitron")
+
+    result isEqualTo expected
+  }
+
+  @Test
+  fun fromSortOrder() {
+    val expected = Data(
+      type = DataType.Sort.toRequestFormat(),
+      attributes = Attributes(
+        name = "popularity"
+      )
+    )
+
+    val result = Data.fromSortOrder("popularity")
+
+    result isEqualTo expected
   }
 }
