@@ -8,7 +8,7 @@ import androidx.paging.toLiveData
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.Contents
 import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.ui.settings.SettingsPrefs
+import com.raywenderlich.emitron.data.settings.SettingsPrefs
 import com.raywenderlich.emitron.utils.PagedResponse
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import kotlinx.coroutines.withContext

@@ -1,6 +1,5 @@
-package com.raywenderlich.emitron.ui.settings
+package com.raywenderlich.emitron.data.settings
 
-import androidx.collection.ArraySet
 import com.raywenderlich.emitron.data.prefs.PrefUtils
 import javax.inject.Inject
 
@@ -25,21 +24,25 @@ class SettingsPrefs @Inject constructor(private val prefs: PrefUtils) {
    * @param query Search term
    */
   fun saveSearchQuery(query: String) {
-    val recentSearchTerms = getSearchQueries()
-    val updatedRecentSearchTerms = ArraySet(recentSearchTerms).toMutableList()
+    val recentSearchTerms = getSearchQueries().toMutableList()
     if (recentSearchTerms.contains(query)) {
-      updatedRecentSearchTerms.remove(query)
-      updatedRecentSearchTerms.add(0, query)
+      recentSearchTerms.remove(query)
+      recentSearchTerms.add(0, query)
     } else {
-      updatedRecentSearchTerms.add(0, query)
+      recentSearchTerms.add(0, query)
     }
-    val lastFiveSearchTerms = if (updatedRecentSearchTerms.size >= 5) {
-      updatedRecentSearchTerms.take(5)
+    val lastFiveSearchTerms = if (recentSearchTerms.size >= 5) {
+      recentSearchTerms.take(5)
     } else {
-      updatedRecentSearchTerms
+      recentSearchTerms
     }
     with(prefs) {
-      set(RECENT_SEARCHES, lastFiveSearchTerms.toSet())
+      set(
+        RECENT_SEARCHES, lastFiveSearchTerms.toString()
+          .replace("[", "")
+          .replace("]", "")
+      )
+      commit()
     }
   }
 
@@ -47,7 +50,14 @@ class SettingsPrefs @Inject constructor(private val prefs: PrefUtils) {
    * Get recently searched queries
    *
    */
-  fun getSearchQueries(): Set<String> = prefs.get(RECENT_SEARCHES, emptySet())
+  fun getSearchQueries(): List<String> {
+    val prefs = prefs.get(RECENT_SEARCHES, "")
+    return if (prefs.isEmpty()) {
+      emptyList()
+    } else {
+      prefs.split(",").map { it.trim() }
+    }
+  }
 
   /**
    * Clear preferences
