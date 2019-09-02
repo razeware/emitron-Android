@@ -34,6 +34,8 @@ class MainViewModel @Inject constructor(private val loginRepository: LoginReposi
 
   private val _query = MutableLiveData<String>()
 
+  private val _sortOrder = MutableLiveData<String>()
+
 
   /**
    * Observer for selected filters
@@ -47,13 +49,18 @@ class MainViewModel @Inject constructor(private val loginRepository: LoginReposi
   val query: LiveData<String>
     get() = _query
 
+  /**
+   * Observer for selected filters
+   */
+  val sortOrder: LiveData<String>
+    get() = _sortOrder
 
   /**
    * Set selected filter
    *
    * @param filters List<Data> list of filter
    */
-  fun setSelectedFilter(filters: List<Data>) {
+  fun setSelectedFilters(filters: List<Data>) {
     _selectedFilters.value = filters
   }
 
@@ -62,16 +69,30 @@ class MainViewModel @Inject constructor(private val loginRepository: LoginReposi
    *
    * @return List<Data> Selected filters
    */
-  fun getSelectedFilters(): List<Data> {
+  fun getSelectedFilters(withSearch: Boolean = false, withSort: Boolean = false): List<Data> {
     val filters = selectedFilters.value ?: emptyList()
-    val selectedQuery = query.value
 
-    return if (selectedQuery.isNullOrBlank()) {
-      filters.plus(Data.fromSearchQuery(selectedQuery))
+    val selectedQuery = query.value
+    val searchFilter = if (withSearch && !selectedQuery.isNullOrBlank()) {
+      Data.fromSearchQuery(selectedQuery)
     } else {
-      filters
+      null
     }
+    val sortOrder = sortOrder.value
+    val sortFilter = if (withSort && !sortOrder.isNullOrBlank()) {
+      Data.fromSortOrder(sortOrder)
+    } else {
+      null
+    }
+    return filters.plus(searchFilter).plus(sortFilter).filterNotNull()
   }
+
+  /**
+   * Check if any filters are applied
+   *
+   * @return True if filters are applied, else False
+   */
+  fun hasFilters(): Boolean = getSelectedFilters().isNotEmpty()
 
   /**
    * Remove on filter
@@ -99,10 +120,25 @@ class MainViewModel @Inject constructor(private val loginRepository: LoginReposi
     _query.value = searchTerm
   }
 
+
+  /**
+   * Add sort order
+   *
+   * @param sortOrder Sort order
+   */
+  fun setSortOrder(sortOrder: String?) {
+    _sortOrder.value = sortOrder?.toLowerCase()
+  }
+
+  /**
+   * Clear search query
+   *
+   * @return True if search query was cleared else False
+   */
   fun clearSearchQuery(): Boolean = if (_query.value.isNullOrBlank()) {
     false
   } else {
-    _query.value = null
+    _query.value = ""
     true
   }
 }
