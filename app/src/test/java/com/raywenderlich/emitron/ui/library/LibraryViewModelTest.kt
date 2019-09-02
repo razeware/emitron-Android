@@ -7,8 +7,9 @@ import com.raywenderlich.emitron.data.content.ContentRepository
 import com.raywenderlich.emitron.model.Contents
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.ui.content.ContentPagedViewModel
-import com.raywenderlich.emitron.utils.observeForTestingResult
 import com.raywenderlich.emitron.utils.PagedResponse
+import com.raywenderlich.emitron.utils.isEqualTo
+import com.raywenderlich.emitron.utils.observeForTestingResult
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -49,4 +50,22 @@ class LibraryViewModelTest {
     assertThat(contentViewModel.repoResult.value).isEqualTo(response)
   }
 
+  @Test
+  fun loadSearchQueries() {
+    whenever(contentRepository.getSearchQueries()).doReturn(listOf("Emitron", "Android"))
+
+    val result = viewModel.loadSearchQueries()
+
+    result isEqualTo listOf("Emitron", "Android")
+    verify(contentRepository).getSearchQueries()
+    verifyNoMoreInteractions(contentRepository)
+  }
+
+  @Test
+  fun saveSearchQuery() {
+    viewModel.saveSearchQuery("Emitron")
+
+    verify(contentRepository).saveSearchQuery("Emitron")
+    verifyNoMoreInteractions(contentRepository)
+  }
 }

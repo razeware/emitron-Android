@@ -10,11 +10,11 @@ import javax.inject.Inject
  * View model for library view
  */
 class LibraryViewModel @Inject constructor(
-  private val repository: ContentRepository,
-  /**
-   * Common view model to handle pagination related code
-   */
-  val contentPagedViewModel: ContentPagedViewModel
+    private val repository: ContentRepository,
+    /**
+     * Common view model to handle pagination related code
+     */
+    val contentPagedViewModel: ContentPagedViewModel
 ) : ViewModel() {
 
   /**
@@ -26,4 +26,18 @@ class LibraryViewModel @Inject constructor(
     val listing = repository.getContents(filters = filters)
     contentPagedViewModel.repoResult.postValue(listing)
   }
+
+  /**
+   * Load recently searched queries
+   *
+   * @return list of recent search queries
+   */
+  fun loadSearchQueries(): List<String> = repository.getSearchQueries()
+
+  /**
+   * Save recent query
+   *
+   * @param query search query
+   */
+  fun saveSearchQuery(query: String): Unit = repository.saveSearchQuery(query)
 }

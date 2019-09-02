@@ -24,7 +24,7 @@ abstract class EmitronDatabase : RoomDatabase() {
    * CategoryDao
    */
   abstract fun categoryDao(): CategoryDao
-  
+
   companion object {
 
     // For Singleton instantiation
