@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.raywenderlich.emitron.databinding.ItemLibraryBinding
 import com.raywenderlich.emitron.model.Data
+import com.raywenderlich.emitron.ui.common.ItemErrorViewHolder.Companion.toVisibility
 
 /**
  * View holder to represent content item in library, bookmark, downloads and progression UI
@@ -17,14 +18,23 @@ class ContentItemViewHolder(private val binding: ItemLibraryBinding) :
    * @param content [Data] for this item layout
    * @param onItemClick Click listener for this item layout
    */
-  fun bindTo(content: Data?, onItemClick: (Int) -> Unit) {
+  fun bindTo(
+    content: Data?,
+    contentAdapterType: ContentAdapter.ContentAdapterType,
+    onItemClick: (Int) -> Unit
+  ) {
     binding.root.setOnClickListener {
       onItemClick(adapterPosition)
     }
     binding.data = content
     binding.releaseDateWithTypeAndDuration =
       content?.getReadableReleaseAtWithTypeAndDuration(binding.root.context)
+
+    binding.progressCompletion.visibility = toVisibility(!contentAdapterType.isContent())
+    binding.buttonBookmark.visibility = toVisibility(!contentAdapterType.isContent())
+
     binding.executePendingBindings()
+
   }
 
   /**
