@@ -117,7 +117,7 @@ dependencies {
   // https://github.com/square/moshi
   implementation "com.squareup.moshi:moshi-kotlin:${versions.moshi}"
 
-  implementation "androidx.room:room-runtime:${versions.room}"
+  implementation "androidx.room:room-ktx:${versions.room}"
 
   implementation "com.crashlytics.sdk.android:crashlytics:${versions.crashlytics}"
 
