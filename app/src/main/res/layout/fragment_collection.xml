@@ -251,7 +251,7 @@ Values and References" />
         android:layout_marginStart="@dimen/button_spacing_horizontal"
         android:text="@string/label_completed"
         android:visibility="@{data.isProgressionFinished()? View.VISIBLE : View.GONE}"
-        app:drawableStartCompat="@drawable/ic_material_icon_checkmark_small"
+        app:drawableStartCompat="@drawable/ic_material_icon_checkmark_1"
         app:layout_constraintBottom_toBottomOf="@+id/button_collection_bookmark"
         app:layout_constraintEnd_toEndOf="@+id/guideline_right"
         app:layout_constraintStart_toEndOf="@+id/button_collection_bookmark"

@@ -78,4 +78,5 @@
   <color name="colorProgressItemBackground_100">#a7adb4</color>
   <color name="colorProgressItemBackgroundGradient1">#3361656c</color>
   <color name="colorProgressItemBackgroundGradient2">#5561656c</color>
+  <color name="colorCheckboxUnchecked">@color/light_gray_blue</color>
 </resources>
