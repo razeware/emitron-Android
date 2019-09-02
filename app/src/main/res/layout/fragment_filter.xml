@@ -71,6 +71,7 @@
       android:layout_marginEnd="@dimen/filter_progress_margin_start_end"
       android:layout_marginBottom="@dimen/filter_progress_margin_start_end"
       android:indeterminate="true"
+      android:visibility="gone"
       app:layout_constraintBottom_toTopOf="@+id/button_filter_clear"
       app:layout_constraintEnd_toEndOf="@id/recycler_view_filter"
       app:layout_constraintStart_toStartOf="@id/recycler_view_filter"
