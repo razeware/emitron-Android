@@ -222,7 +222,7 @@ class LibraryFragment : DaggerFragment() {
       }
     }
     parentViewModel.sortOrder.observe(viewLifecycleOwner) {
-      binding.buttonLibrarySort.text = it ?: getString(R.string.button_newest)
+      binding.buttonLibrarySort.text = it?.capitalize() ?: getString(R.string.button_newest)
     }
   }
 
