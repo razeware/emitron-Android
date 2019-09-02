@@ -1,5 +1,6 @@
 package com.raywenderlich.emitron.data.login
 
+import androidx.annotation.WorkerThread
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.network.AuthInterceptor
 import com.raywenderlich.emitron.utils.async.ThreadManager
@@ -64,6 +65,8 @@ class LoginRepository @Inject constructor(
    *
    * @return Subscription API response
    */
+  @WorkerThread
+  @Throws(Exception::class)
   suspend fun getSubscription(): Content {
     return withContext(threadManager.io) {
       loginApi.getSubscription()
