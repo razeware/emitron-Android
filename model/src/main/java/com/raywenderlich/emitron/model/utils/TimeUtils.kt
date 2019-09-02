@@ -45,7 +45,8 @@ object TimeUtils {
       isToday(date, today) -> Day.Today
       isYesterday(date, today) -> Day.Yesterday
       else -> {
-        val pattern = if (withYear) {
+        val isCurrentYear = date.year == today.year
+        val pattern = if (withYear && !isCurrentYear) {
           "MMM d yyyy"
         } else {
           "MMM d"
