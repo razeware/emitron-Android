@@ -168,9 +168,7 @@ class LibraryFragment : DaggerFragment() {
       toggleControls(visible = true)
       hideRecentSearchControls()
     } else {
-      if (toggleRecentSearchView()) {
-        binding.textInputLayoutSearch.setStartIconDrawable(R.drawable.ic_material_icon_arrow_back)
-      }
+      toggleRecentSearchView()
     }
   }
 
@@ -186,7 +184,6 @@ class LibraryFragment : DaggerFragment() {
     val recyclerView = binding.recyclerViewLibraryRecent
 
     // Get recent search terms
-    toggleControls(visible = false)
     val recentSearchTerms = viewModel.loadSearchQueries()
     if (recentSearchTerms.isNotEmpty()) {
       with(recyclerView) {
@@ -198,6 +195,8 @@ class LibraryFragment : DaggerFragment() {
         }
       }
       recyclerView.visibility = View.VISIBLE
+      toggleControls(visible = false)
+      binding.textInputLayoutSearch.setStartIconDrawable(R.drawable.ic_material_icon_arrow_back)
     }
 
     return recyclerView.isVisible
