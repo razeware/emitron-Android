@@ -19,7 +19,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardPreventCornerOverlap="true"
-    app:cardUseCompatPadding="true"
+    app:cardUseCompatPadding="false"
+    android:layout_marginBottom="@dimen/default_item_spacing_vertical"
     tools:layout_margin="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout

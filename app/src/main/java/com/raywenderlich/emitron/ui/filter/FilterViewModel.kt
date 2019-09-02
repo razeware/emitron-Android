@@ -17,15 +17,15 @@ import javax.inject.Inject
  */
 class FilterViewModel @Inject constructor(private val repository: FilterRepository) : ViewModel() {
 
-  private val _domains = repository.getDomains()
   private val _loadFilterOptionsResult = MutableLiveData<Event<LoadFilterOptionResult>>()
+  private val _domains = repository.getDomains()
   private val _categories = repository.getCategories()
 
   /**
    * Observer for domains
    */
-  val domains: LiveData<List<Data>?> = Transformations.map(
-      _domains
+  val domains: LiveData<List<Data>> = Transformations.map(
+    _domains
   ) {
     it?.map { domain ->
       Data.fromDomain(domain)
@@ -38,8 +38,8 @@ class FilterViewModel @Inject constructor(private val repository: FilterReposito
   /**
    * Observer for categories
    */
-  val categories: LiveData<List<Data>?> = Transformations.map(
-      _categories
+  val categories: LiveData<List<Data>> = Transformations.map(
+    _categories
   ) {
     it?.map { category ->
       Data.fromCategory(category)
@@ -64,7 +64,12 @@ class FilterViewModel @Inject constructor(private val repository: FilterReposito
     /**
      * Request to load categories failed
      */
-    FailedToFetchCategories
+    FailedToFetchCategories,
+
+    /**
+     * Request in progress
+     */
+    FetchingFilterOption
   }
 
   /**
@@ -73,6 +78,7 @@ class FilterViewModel @Inject constructor(private val repository: FilterReposito
    * This request will update our local db
    */
   fun getDomains() {
+    _loadFilterOptionsResult.value = Event(LoadFilterOptionResult.FetchingFilterOption)
 
     val onFailure = {
       _loadFilterOptionsResult.value = Event(LoadFilterOptionResult.FailedToFetchDomains)
@@ -95,6 +101,7 @@ class FilterViewModel @Inject constructor(private val repository: FilterReposito
    *  This request will update our local db
    */
   fun getCategories() {
+    _loadFilterOptionsResult.value = Event(LoadFilterOptionResult.FetchingFilterOption)
 
     val onFailure = {
       _loadFilterOptionsResult.value = Event(LoadFilterOptionResult.FailedToFetchCategories)

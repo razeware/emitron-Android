@@ -6,15 +6,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.model.Data
 
-internal class Filter(val category: FilterCategory? = null,
-                      val option: Pair<FilterCategory, Data>? = null)
+internal class Filter(
+  val category: FilterCategory? = null,
+  val option: Pair<FilterCategory, Data>? = null
+)
 
 /**
  * Applicable filter categories
  */
 enum class FilterCategory(
-    /** Filter category res id */
-    val resId: Int) {
+  /** Filter category res id */
+  val resId: Int
+) {
   /**
    * Filter platform
    */
@@ -37,10 +40,10 @@ enum class FilterCategory(
  * Adapter for filter options
  */
 class FilterAdapter(
-    private val categories: MutableMap<FilterCategory, List<Data>>,
-    private val onCategorySelected: (FilterCategory?) -> Unit
+  private val categories: MutableMap<FilterCategory, List<Data>>,
+  private val onCategorySelected: (FilterCategory?) -> Unit
 ) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+  RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   private val selectedOptions: MutableList<Data> = mutableListOf()
   private val selectedHeaders = SparseArrayCompat<Boolean>()
@@ -134,7 +137,7 @@ class FilterAdapter(
       val isClickedHeaderExpanded = selectedHeaders[clickPosition] ?: false
       if (isClickedHeaderExpanded) {
         val selectedFilterCategory =
-            filterOptions.asSequence().elementAt(clickPosition).category
+          filterOptions.asSequence().elementAt(clickPosition).category
         selectedFilterCategory?.let {
           val childCount = categories[selectedFilterCategory]?.size ?: 0
           categories[selectedFilterCategory] = emptyList()
@@ -163,8 +166,10 @@ class FilterAdapter(
 
   private fun updateFilterOptions() {
     filterOptions = categories.flatMap {
-      listOf(Filter(it.key),
-          *(it.value.map { data -> Filter(option = it.key to data) }.toTypedArray()))
+      listOf(
+        Filter(it.key),
+        *(it.value.map { data -> Filter(option = it.key to data) }.toTypedArray())
+      )
     }
   }
 

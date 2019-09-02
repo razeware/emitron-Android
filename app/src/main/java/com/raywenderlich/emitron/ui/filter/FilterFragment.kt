@@ -49,9 +49,9 @@ class FilterFragment : DaggerFragment() {
    * See [androidx.fragment.app.Fragment.onCreateView]
    */
   override fun onCreateView(
-      inflater: LayoutInflater,
-      container: ViewGroup?,
-      savedInstanceState: Bundle?
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
   ): View? {
     binding = setDataBindingView(inflater, R.layout.fragment_filter, container)
     return binding.root
@@ -71,16 +71,16 @@ class FilterFragment : DaggerFragment() {
   private fun initToolbar() {
     binding.toolbar.setupWithNavController(findNavController(), getDefaultAppBarConfiguration())
     binding.toolbar.navigationIcon =
-        VectorDrawableCompat.create(resources, R.drawable.ic_material_icon_close, null)
+      VectorDrawableCompat.create(resources, R.drawable.ic_material_icon_close, null)
   }
 
   private fun initUi() {
     binding.buttonFilterClose.setOnClickListener {
-      parentViewModel.setSelectedFilter(filterAdapter.getSelectedOptions())
+      parentViewModel.setSelectedFilters(filterAdapter.getSelectedOptions())
       findNavController().navigate(R.id.action_navigation_filter_to_navigation_library)
     }
     binding.buttonFilterClear.setOnClickListener {
-      parentViewModel.setSelectedFilter(emptyList())
+      parentViewModel.setSelectedFilters(emptyList())
       findNavController().navigate(R.id.action_navigation_filter_to_navigation_library)
     }
 
@@ -93,14 +93,19 @@ class FilterFragment : DaggerFragment() {
 
       when (it?.getContentIfNotHandled()) {
         FilterViewModel.LoadFilterOptionResult.FailedToFetchDomains -> {
+          binding.filterProgress.visibility = View.GONE
           if (!viewModel.hasDomains()) {
             showErrorSnackbar(getString(R.string.error_load_failed_domains))
           }
         }
-        FilterViewModel.LoadFilterOptionResult.FailedToFetchCategories ->
+        FilterViewModel.LoadFilterOptionResult.FailedToFetchCategories -> {
+          binding.filterProgress.visibility = View.GONE
           if (!viewModel.hasCategories()) {
             showErrorSnackbar(getString(R.string.error_load_failed_categories))
           }
+        }
+        FilterViewModel.LoadFilterOptionResult.FetchingFilterOption ->
+          binding.filterProgress.visibility = View.VISIBLE
         null -> {
           // Houston, We Have a Problem!
         }
@@ -110,11 +115,12 @@ class FilterFragment : DaggerFragment() {
 
   private fun createFilterAdapter(): FilterAdapter {
     return FilterAdapter(
-        mutableMapOf(
-            FilterCategory.Platform to emptyList(),
-            FilterCategory.ContentType to emptyList(),
-            FilterCategory.Difficulty to emptyList(),
-            FilterCategory.Category to emptyList())
+      mutableMapOf(
+        FilterCategory.Platform to emptyList(),
+        FilterCategory.ContentType to emptyList(),
+        FilterCategory.Difficulty to emptyList(),
+        FilterCategory.Category to emptyList()
+      )
     ) { filterHeader ->
       filterHeader?.let {
         when (it) {
@@ -125,16 +131,10 @@ class FilterFragment : DaggerFragment() {
             loadCategories()
           }
           FilterCategory.ContentType -> {
-            val contentTypeList =
-                viewModel.getContentTypeList(resources.getStringArray(R.array.filter_content_type))
-            filterAdapter.setFilterOptions(contentTypeList,
-                FilterCategory.ContentType)
+            loadContentTypes()
           }
           FilterCategory.Difficulty -> {
-            val difficultyList =
-                viewModel.getDifficultyList(resources.getStringArray(R.array.filter_difficulty))
-            filterAdapter.setFilterOptions(difficultyList,
-                FilterCategory.Difficulty)
+            loadDifficulty()
           }
         }
       }
@@ -143,8 +143,11 @@ class FilterFragment : DaggerFragment() {
 
   private fun loadPlatforms() {
     viewModel.domains.observe(this, Observer { domainList ->
-      filterAdapter.setFilterOptions(domainList,
-          FilterCategory.Platform)
+      binding.filterProgress.visibility = View.GONE
+      filterAdapter.setFilterOptions(
+        domainList,
+        FilterCategory.Platform
+      )
     })
 
     viewModel.getDomains()
@@ -152,14 +155,42 @@ class FilterFragment : DaggerFragment() {
 
   private fun loadCategories() {
     viewModel.categories.observe(this, Observer { categoryList ->
-      filterAdapter.setFilterOptions(categoryList,
-          FilterCategory.Category)
+      binding.filterProgress.visibility = View.GONE
+      filterAdapter.setFilterOptions(
+        categoryList,
+        FilterCategory.Category
+      )
     })
 
     viewModel.getCategories()
   }
 
+  private fun loadContentTypes() {
+    val contentTypeList =
+      viewModel.getContentTypeList(resources.getStringArray(R.array.filter_content_type))
+    filterAdapter.setFilterOptions(
+      contentTypeList,
+      FilterCategory.ContentType
+    )
+  }
+
+  private fun loadDifficulty() {
+    val difficultyList =
+      viewModel.getDifficultyList(resources.getStringArray(R.array.filter_difficulty))
+    filterAdapter.setFilterOptions(
+      difficultyList,
+      FilterCategory.Difficulty
+    )
+  }
+
   private fun loadFilters() {
     filterAdapter.setSelectedOptions(parentViewModel.getSelectedFilters())
+
+    if (parentViewModel.getSelectedFilters().isNotEmpty()) {
+      loadPlatforms()
+      loadCategories()
+      loadContentTypes()
+      loadDifficulty()
+    }
   }
 }

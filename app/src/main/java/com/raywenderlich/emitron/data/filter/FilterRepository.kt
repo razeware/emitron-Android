@@ -29,6 +29,7 @@ class FilterRepository @Inject constructor(
    *
    */
   @WorkerThread
+  @Throws(Exception::class)
   suspend fun fetchCategories() {
     withContext(threadManager.io) {
       val categories = filterApi.getCategories()
@@ -41,6 +42,7 @@ class FilterRepository @Inject constructor(
    *
    */
   @WorkerThread
+  @Throws(Exception::class)
   suspend fun fetchDomains() {
     withContext(threadManager.io) {
       val domains = filterApi.getDomains()

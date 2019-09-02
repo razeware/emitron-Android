@@ -55,13 +55,26 @@
       android:layout_marginBottom="@dimen/activity_vertical_margin"
       app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
       app:layout_behavior="@string/appbar_scrolling_view_behavior"
-      app:layout_constraintBottom_toTopOf="@+id/button_filter_clear"
+      app:layout_constraintBottom_toTopOf="@+id/filter_progress"
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintStart_toStartOf="@id/guideline_left"
       app:layout_constraintTop_toBottomOf="@+id/toolbar"
       tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
       tools:listitem="@layout/item_filter_header" />
 
+    <ProgressBar
+      android:id="@+id/filter_progress"
+      style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+      android:layout_width="0dp"
+      android:layout_height="@dimen/filter_progress_height"
+      android:layout_marginStart="@dimen/filter_progress_height"
+      android:layout_marginEnd="@dimen/filter_progress_margin_start_end"
+      android:layout_marginBottom="@dimen/filter_progress_margin_start_end"
+      android:indeterminate="true"
+      app:layout_constraintBottom_toTopOf="@+id/button_filter_clear"
+      app:layout_constraintEnd_toEndOf="@id/recycler_view_filter"
+      app:layout_constraintStart_toStartOf="@id/recycler_view_filter"
+      app:layout_constraintTop_toBottomOf="@+id/recycler_view_filter" />
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/button_filter_clear"
@@ -73,7 +86,7 @@
       app:layout_constraintBottom_toBottomOf="@+id/guideline_bottom"
       app:layout_constraintEnd_toStartOf="@+id/button_filter_close"
       app:layout_constraintStart_toStartOf="@id/guideline_left"
-      app:layout_constraintTop_toBottomOf="@+id/recycler_view_filter" />
+      app:layout_constraintTop_toBottomOf="@+id/filter_progress" />
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/button_filter_close"
@@ -87,6 +100,7 @@
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintStart_toEndOf="@id/button_filter_clear"
       app:layout_constraintTop_toTopOf="@+id/button_filter_clear" />
+
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

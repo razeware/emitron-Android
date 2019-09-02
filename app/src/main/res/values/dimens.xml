@@ -123,4 +123,8 @@
   <!-- Login view -->
   <dimen name="login_logo_height_width">72dp</dimen>
 
+  <!-- Filter view -->
+  <dimen name="filter_progress_height">4dp</dimen>
+  <dimen name="filter_progress_margin_start_end">4dp</dimen>
+
 </resources>
