@@ -13,6 +13,21 @@
     <item name="materialCardViewStyle">@style/Card</item>
   </style>
 
+  <style name="AppTheme.Popup" parent="Widget.AppCompat.PopupMenu">
+    <item name="android:paddingTop">0dp</item>
+    <item name="android:paddingBottom">0dp</item>
+    <item name="textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceSmall</item>
+    <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceSmall</item>
+  </style>
+
+  <style name="myPopupMenuTextAppearanceSmall" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large">
+    <item name="android:fontFamily">@font/roboto_bold</item>
+    <item name="fontFamily">@font/roboto_bold</item>
+    <item name="android:textSize">@dimen/text_size_button</item>
+    <item name="android:textColor">@color/textColorButton</item>
+    <item name="android:letterSpacing">@fraction/letter_spacing_button</item>
+  </style>
+
   <style name="AppTheme.Toolbar_Overlay" parent="AppTheme">
     <item name="colorPrimary">@color/transparent</item>
   </style>
@@ -32,12 +47,11 @@
     <item name="android:textAppearance">@style/TextAppearance.Button.Regular</item>
     <item name="android:paddingStart">@dimen/button_padding_internal</item>
     <item name="android:paddingEnd">@dimen/button_padding_internal</item>
+    <item name="android:drawablePadding">@dimen/button_padding_internal</item>
+    <item name="android:gravity">center</item>
   </style>
 
   <style name="Button.Wide" parent="Button">
-    <item name="android:paddingStart">@dimen/button_wide_padding_internal</item>
-    <item name="android:paddingEnd">@dimen/button_wide_padding_internal</item>
-    <item name="android:drawablePadding">@dimen/button_padding_internal</item>
     <item name="cornerRadius">@dimen/button_wide_corner_radius</item>
     <item name="android:insetTop">@dimen/button_wide_inset</item>
     <item name="android:insetBottom">@dimen/button_wide_inset</item>
@@ -159,6 +173,10 @@
     <item name="android:letterSpacing">@fraction/letter_spacing_label</item>
   </style>
 
+  <style name="TextAppearance.Label.Colored.Grey" parent="TextAppearance.Label">
+    <item name="android:textColor">@color/textColorLabel2</item>
+  </style>
+
   <style name="TextAppearance.Caption" parent="Text">
     <item name="android:textSize">@dimen/text_size_caption</item>
     <item name="android:textColor">@color/textColorCaption</item>
@@ -214,6 +232,10 @@
     <item name="android:letterSpacing">@fraction/letter_spacing_button_small</item>
   </style>
 
+  <style name="TextAppearance.Button.Small.Colored.Grey" parent="TextAppearance.Button.Small">
+    <item name="android:textColor">@color/textColorButton2</item>
+  </style>
+
   <style name="TextAppearance.Button.Small.Inverse" parent="TextAppearance.Button.Small">
     <item name="android:textColor">@color/textColorButtonOnError</item>
   </style>
@@ -263,12 +285,12 @@
     <item name="hintEnabled">false</item>
   </style>
 
-  <style name="SearchEditText" parent="Widget.AppCompat.EditText">
-    <item name="android:fontFamily">@font/roboto</item>
-    <item name="fontFamily">@font/roboto</item>
-    <item name="android:textColor">@color/textColorBody1</item>
-    <item name="android:textColorHint">@color/textColorCaption</item>
-
+  <style name="SearchEditText">
+    <item name="android:textColorHint">@color/textColorHint</item>
+    <item name="android:textAppearance">@style/TextAppearance.Body.2</item>
+    <item name="android:imeOptions">actionSearch</item>
+    <item name="android:inputType">textNoSuggestions</item>
   </style>
+
 
 </resources>

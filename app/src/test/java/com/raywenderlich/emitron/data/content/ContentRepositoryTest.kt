@@ -1,13 +1,10 @@
 package com.raywenderlich.emitron.data.content
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.common.truth.Truth
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
-import com.raywenderlich.emitron.model.Content
-import com.raywenderlich.emitron.model.Contents
-import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.model.Links
+import com.raywenderlich.emitron.model.*
+import com.raywenderlich.emitron.data.settings.SettingsPrefs
 import com.raywenderlich.emitron.utils.*
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import kotlinx.coroutines.Dispatchers
@@ -15,8 +12,7 @@ import okhttp3.ResponseBody
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatchers.anyInt
-import org.mockito.ArgumentMatchers.anyList
+import org.mockito.ArgumentMatchers.*
 import org.mockito.Mockito
 import retrofit2.Response
 import retrofit2.mock.Calls
@@ -32,6 +28,8 @@ class ContentRepositoryTest {
 
   private val threadManager: ThreadManager = mock()
 
+  private val settingsPref: SettingsPrefs = mock()
+
   @get:Rule
   val testCoroutineRule: TestCoroutineRule = TestCoroutineRule()
 
@@ -39,7 +37,7 @@ class ContentRepositoryTest {
   fun setUp() {
     whenever(threadManager.io).doReturn(Dispatchers.Unconfined)
     whenever(threadManager.networkIo).doReturn(CurrentThreadExecutor())
-    repository = ContentRepository(contentApi, threadManager)
+    repository = ContentRepository(contentApi, threadManager, settingsPref)
   }
 
   /**
@@ -55,8 +53,10 @@ class ContentRepositoryTest {
         pageNumber = anyInt(),
         pageSize = anyInt(),
         contentType = anyList(),
-        category = eq(emptyList()),
-        domain = eq(emptyList())
+        category = anyList(),
+        domain = anyList(),
+        search = anyString(),
+        sort = anyString()
       )
     ).doReturn(
       Calls.response(
@@ -97,8 +97,10 @@ class ContentRepositoryTest {
         pageNumber = anyInt(),
         pageSize = anyInt(),
         contentType = anyList(),
-        category = eq(emptyList()),
-        domain = eq(emptyList())
+        category = anyList(),
+        domain = anyList(),
+        search = anyString(),
+        sort = anyString()
       )
     ).doReturn(
       Calls.response(
@@ -117,7 +119,59 @@ class ContentRepositoryTest {
       5,
       expectedContentTypeFilter,
       emptyList(),
-      emptyList()
+      emptyList(),
+      "",
+      "-released_at"
+    )
+    verifyNoMoreInteractions(contentApi)
+  }
+
+  /**
+   * Test correct API filters are passed
+   */
+  @Test
+  fun getContents_correctApiParamWithFilters() {
+
+    // Given
+    val contents = Contents(datum = emptyList())
+    whenever(
+      contentApi.getContents(
+        pageNumber = anyInt(),
+        pageSize = anyInt(),
+        contentType = anyList(),
+        category = anyList(),
+        domain = anyList(),
+        search = anyString(),
+        sort = anyString()
+      )
+    ).doReturn(
+      Calls.response(
+        contents
+      )
+    )
+
+    val filterList = listOf(
+      Data(id = "1", type = DataType.Categories.toRequestFormat()),
+      Data(type = DataType.Search.toRequestFormat(), attributes = Attributes(name = "Emitron")),
+      Data(id = "2", type = DataType.Domains.toRequestFormat()),
+      Data(type = DataType.Sort.toRequestFormat(), attributes = Attributes(name = "popularity"))
+    )
+
+    // When
+    val result =
+      repository.getContents(filters = filterList, pageSize = 5)
+    result.pagedList.observeForTestingResult()
+
+    // Then
+    val expectedContentTypeFilter = listOf("collection", "screencast")
+    verify(contentApi).getContents(
+      1,
+      5,
+      expectedContentTypeFilter,
+      listOf("1"),
+      listOf("2"),
+      "Emitron",
+      "popularity"
     )
     verifyNoMoreInteractions(contentApi)
   }
@@ -136,8 +190,10 @@ class ContentRepositoryTest {
         pageNumber = anyInt(),
         pageSize = anyInt(),
         contentType = anyList(),
-        category = eq(emptyList()),
-        domain = eq(emptyList())
+        category = anyList(),
+        domain = anyList(),
+        search = anyString(),
+        sort = anyString()
       )
     ).doReturn(
       Calls.response(contents)
@@ -166,8 +222,10 @@ class ContentRepositoryTest {
         pageNumber = anyInt(),
         pageSize = anyInt(),
         contentType = anyList(),
-        category = eq(emptyList()),
-        domain = eq(emptyList())
+        category = anyList(),
+        domain = anyList(),
+        search = anyString(),
+        sort = anyString()
       )
     ).doReturn(
       Calls.response(contents)
@@ -188,8 +246,10 @@ class ContentRepositoryTest {
         pageNumber = anyInt(),
         pageSize = anyInt(),
         contentType = anyList(),
-        category = eq(emptyList()),
-        domain = eq(emptyList())
+        category = anyList(),
+        domain = anyList(),
+        search = anyString(),
+        sort = anyString()
       )
     ).doReturn(
       Calls.response(contents)
@@ -217,8 +277,10 @@ class ContentRepositoryTest {
         pageNumber = anyInt(),
         pageSize = anyInt(),
         contentType = anyList(),
-        category = eq(emptyList()),
-        domain = eq(emptyList())
+        category = anyList(),
+        domain = anyList(),
+        search = anyString(),
+        sort = anyString()
       )
     ).doReturn(response)
 
@@ -245,8 +307,10 @@ class ContentRepositoryTest {
         pageNumber = anyInt(),
         pageSize = anyInt(),
         contentType = anyList(),
-        category = eq(emptyList()),
-        domain = eq(emptyList())
+        category = anyList(),
+        domain = anyList(),
+        search = anyString(),
+        sort = anyString()
       )
     ).doReturn(response)
 
@@ -266,8 +330,10 @@ class ContentRepositoryTest {
         pageNumber = anyInt(),
         pageSize = anyInt(),
         contentType = anyList(),
-        category = eq(emptyList()),
-        domain = eq(emptyList())
+        category = anyList(),
+        domain = anyList(),
+        search = anyString(),
+        sort = anyString()
       )
     ).doReturn(Calls.response(contents))
 
@@ -276,14 +342,14 @@ class ContentRepositoryTest {
 
     // Then
     assertThat(list.size).isEqualTo(2)
-    assertThat(result.networkState?.observeForTestingResult()).isEqualTo(NetworkState.SUCCESS)
+    assertThat(result.networkState?.observeForTestingResult()).isEqualTo(NetworkState.INIT_SUCCESS)
 
     networkObserver?.let {
       val inOrder = Mockito.inOrder(networkObserver)
       inOrder.verify(networkObserver).onChanged(NetworkState.INIT)
       inOrder.verify(networkObserver).onChanged(NetworkState.INIT_FAILED)
       inOrder.verify(networkObserver).onChanged(NetworkState.INIT)
-      inOrder.verify(networkObserver).onChanged(NetworkState.SUCCESS)
+      inOrder.verify(networkObserver).onChanged(NetworkState.INIT_SUCCESS)
       inOrder.verifyNoMoreInteractions()
     }
   }
@@ -303,8 +369,10 @@ class ContentRepositoryTest {
         pageNumber = anyInt(),
         pageSize = anyInt(),
         contentType = anyList(),
-        category = eq(emptyList()),
-        domain = eq(emptyList())
+        category = anyList(),
+        domain = anyList(),
+        search = anyString(),
+        sort = anyString()
       )
     ).doReturn(
       Calls.response(
@@ -321,7 +389,7 @@ class ContentRepositoryTest {
 
     // Then
     assertThat(list.size < data.size).isTrue()
-    assertThat(result.networkState?.observeForTestingResult()).isEqualTo(NetworkState.SUCCESS)
+    assertThat(result.networkState?.observeForTestingResult()).isEqualTo(NetworkState.INIT_SUCCESS)
 
     // Given
     val responseBody: ResponseBody = mock()
@@ -331,8 +399,10 @@ class ContentRepositoryTest {
         pageNumber = anyInt(),
         pageSize = anyInt(),
         contentType = anyList(),
-        category = eq(emptyList()),
-        domain = eq(emptyList())
+        category = anyList(),
+        domain = anyList(),
+        search = anyString(),
+        sort = anyString()
       )
     ).doReturn(response)
     // When
@@ -349,8 +419,10 @@ class ContentRepositoryTest {
         pageNumber = anyInt(),
         pageSize = anyInt(),
         contentType = anyList(),
-        category = eq(emptyList()),
-        domain = eq(emptyList())
+        category = anyList(),
+        domain = anyList(),
+        search = anyString(),
+        sort = anyString()
       )
     ).doReturn(Calls.response(contents))
 
@@ -364,7 +436,7 @@ class ContentRepositoryTest {
     networkObserver?.let {
       val inOrder = Mockito.inOrder(networkObserver)
       inOrder.verify(networkObserver).onChanged(NetworkState.INIT)
-      inOrder.verify(networkObserver).onChanged(NetworkState.SUCCESS)
+      inOrder.verify(networkObserver).onChanged(NetworkState.INIT_SUCCESS)
       inOrder.verify(networkObserver).onChanged(NetworkState.FAILED)
       inOrder.verify(networkObserver).onChanged(NetworkState.RUNNING)
       inOrder.verify(networkObserver).onChanged(NetworkState.SUCCESS)
@@ -375,12 +447,15 @@ class ContentRepositoryTest {
   @Test
   fun getContent() {
     testCoroutineRule.runBlockingTest {
+      // Given
       val expectedContent = Content()
 
+      // When
       whenever(contentApi.getContent("1")).doReturn(expectedContent)
 
+      // Then
       val result = repository.getContent("1")
-      Truth.assertThat(result).isEqualTo(expectedContent)
+      assertThat(result).isEqualTo(expectedContent)
 
       verify(contentApi).getContent("1")
       verifyNoMoreInteractions(contentApi)
@@ -390,12 +465,40 @@ class ContentRepositoryTest {
   @Test(expected = Exception::class)
   fun getContent_failure() {
     testCoroutineRule.runBlockingTest {
+      // Given
       val expected = RuntimeException()
-      whenever(contentApi.getContent(any())).thenThrow(expected)
+      whenever(contentApi.getContent(anyString())).doThrow(expected)
 
+      // When
       repository.getContent("1")
+
+      // Then
       verify(contentApi).getContent("1")
       verifyNoMoreInteractions(contentApi)
     }
+  }
+
+  @Test
+  fun getSearchQuery() {
+    // Given
+    whenever(settingsPref.getSearchQueries()).doReturn(listOf("Emitron", "Swift"))
+
+    // When
+    val result = repository.getSearchQueries()
+
+    // Then
+    result isEqualTo listOf("Emitron", "Swift")
+    verify(settingsPref).getSearchQueries()
+    verifyNoMoreInteractions(settingsPref)
+  }
+
+  @Test
+  fun saveSearchQuery() {
+    // When
+    repository.saveSearchQuery("Emitron")
+
+    // Then
+    verify(settingsPref).saveSearchQuery("Emitron")
+    verifyNoMoreInteractions(settingsPref)
   }
 }

@@ -141,7 +141,7 @@ class ContentDataSourceRemote(
     }
 
     retry = null
-    networkState.postValue(NetworkState.SUCCESS)
+    networkState.postValue(NetworkState.INIT_SUCCESS)
     this.contents.postValue(contentBody.copy(datum = emptyList()))
     callback.onResult(items, null, (contentBody.getNextPage()))
   }
@@ -151,6 +151,8 @@ class ContentDataSourceRemote(
     pageSize = pageSize,
     contentType = ContentType.getAllowedContentType().toList(),
     domain = Data.getDomainIds(filters),
-    category = Data.getCategoryIds(filters)
+    category = Data.getCategoryIds(filters),
+    search = Data.getSearchTerm(filters),
+    sort = Data.getSortOrder(filters)
   ).execute()
 }

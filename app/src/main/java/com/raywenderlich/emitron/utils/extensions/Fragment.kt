@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -89,4 +90,15 @@ fun Fragment.showErrorSnackbar(text: String) {
  */
 fun Fragment.showSuccessSnackbar(text: String) {
   (requireActivity() as? AppCompatActivity)?.showSnackbar(text, SnackbarType.Success)
+}
+
+fun Fragment.hideKeyboard() {
+  val inputMethodManager =
+    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+  if (view != null) {
+    inputMethodManager.hideSoftInputFromWindow(requireView().windowToken, 0)
+  }
+  if (view != null) {
+    requireView().clearFocus()
+  }
 }

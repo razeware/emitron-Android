@@ -6,7 +6,7 @@
     android:height="@dimen/icon_height_width" />
   <stroke
     android:width="@dimen/checkbox_icon_stroke_width"
-    android:color="@color/colorIcon" />
+    android:color="@color/colorCheckboxUnchecked" />
   <solid
     android:width="@dimen/checkbox_icon_stroke_width"
     android:color="@color/transparent" />

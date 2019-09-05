@@ -20,7 +20,9 @@ class ContentAdapter(
   private val onItemClick: (Data?) -> Unit,
   private val retryItemCallback: () -> Unit,
   private val retryCallback: () -> Unit,
-  private val pagedAdapter: PagedAdapter
+  private val emptyCallback: (() -> Unit)? = null,
+  private val pagedAdapter: PagedAdapter,
+  private var contentAdapterType: ContentAdapterType = ContentAdapterType.Content
 ) : PagedListAdapter<Data, RecyclerView.ViewHolder>(DataDiffCallback) {
 
   /**
@@ -29,10 +31,53 @@ class ContentAdapter(
   var included: List<Data>? = null
 
   /**
-   * true the user has applied filters
+   * Content adapter is shared across screens
+   *
+   * The enum class will represent the view type to which adapter is attached
+   *
+   * This will help in showing error/empty messages respective to a view
    */
-  var hasAppliedFilters: Boolean = false
-    private set
+  enum class ContentAdapterType {
+    /**
+     * Adapter is part of library view
+     */
+    Content,
+    /**
+     * Adapter is part of library view with filters applied
+     */
+    ContentWithFilters,
+    /**
+     * Adapter is part of library view with search applied
+     */
+    ContentWithSearch,
+    /**
+     * Adapter is part of Bookmark view
+     */
+    Bookmark,
+    /**
+     * Adapter is part of Progression view
+     */
+    Progression,
+    /**
+     * Adapter is part of Download view
+     */
+    Download;
+
+    /**
+     * Adapter is part of library view with filter or search
+     *
+     * @return True if filters are applied or user is searching else False
+     */
+    fun isContentWithFilters(): Boolean = this == ContentWithFilters || this == ContentWithSearch
+
+    /**
+     * Adapter is part of library view
+     *
+     * @return True if adapter is part of library view else False
+     */
+    fun isContent(): Boolean =
+      this == Content || this == ContentWithFilters || this == ContentWithSearch
+  }
 
   /**
    * [RecyclerView.Adapter.getItemViewType]
@@ -66,7 +111,8 @@ class ContentAdapter(
       R.layout.item_error -> ItemErrorViewHolder.create(
         parent,
         viewType,
-        retryCallback
+        retryCallback,
+        emptyCallback
       )
       R.layout.item_library -> {
         ContentItemViewHolder.create(
@@ -87,7 +133,7 @@ class ContentAdapter(
         bindContentItem(holder, position)
       }
       is ItemFooterViewHolder -> holder.bindTo(pagedAdapter.networkState)
-      is ItemErrorViewHolder -> holder.bindTo(pagedAdapter.uiState, hasAppliedFilters)
+      is ItemErrorViewHolder -> holder.bindTo(pagedAdapter.uiState, contentAdapterType)
     }
   }
 
@@ -109,7 +155,7 @@ class ContentAdapter(
   private fun bindContentItem(viewHolder: ContentItemViewHolder, position: Int) {
     val data = getItem(position)?.setIncluded(included)
     if (data != null) {
-      (viewHolder).bindTo(data) {
+      (viewHolder).bindTo(data, contentAdapterType) {
         onItemClick(data)
       }
     } else {
@@ -179,13 +225,26 @@ class ContentAdapter(
   }
 
   /**
-   * Apply filters
+   * Update content adapter type
    *
-   * @param hasApplied if user has applied filters
+   * @param type Current parent view type for adapter
    */
-  fun hasAppliedFilters(hasApplied: Boolean = true) {
-    hasAppliedFilters = hasApplied
+  fun updateContentType(type: ContentAdapterType = ContentAdapterType.Content) {
+    contentAdapterType = type
   }
+
+  /**
+   * Get item for given view holder
+   *
+   * @param viewHolder ViewHolder to be removed
+   */
+  fun getItemFor(viewHolder: RecyclerView.ViewHolder): Data? {
+    return viewHolder.adapterPosition.run {
+      notifyItemRemoved(this)
+      getItem(this)
+    }
+  }
+
 }
 
 /**

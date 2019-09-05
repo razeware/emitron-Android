@@ -38,6 +38,7 @@ class MainActivity : DaggerAppCompatActivity() {
   private fun onNavDestinationChanged(destination: NavDestination) {
     // bottom nav is visible on all screen
     binding.navView.visibility = View.VISIBLE
+    binding.navDivider.visibility = View.VISIBLE
 
     when (destination.id) {
       R.id.navigation_settings,
@@ -45,6 +46,7 @@ class MainActivity : DaggerAppCompatActivity() {
       R.id.navigation_collection,
       R.id.navigation_login -> {
         // Hide bottom nav on login screen
+        binding.navDivider.visibility = View.GONE
         binding.navView.visibility = View.GONE
       }
     }

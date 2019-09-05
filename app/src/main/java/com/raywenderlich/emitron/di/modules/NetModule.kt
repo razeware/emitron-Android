@@ -3,6 +3,7 @@ package com.raywenderlich.emitron.di.modules
 import com.raywenderlich.emitron.BuildConfig
 import com.raywenderlich.emitron.data.bookmarks.BookmarkApi
 import com.raywenderlich.emitron.data.content.ContentApi
+import com.raywenderlich.emitron.data.filter.FilterApi
 import com.raywenderlich.emitron.data.login.LoginApi
 import com.raywenderlich.emitron.data.progressions.ProgressionApi
 import com.raywenderlich.emitron.network.AuthInterceptorImpl
@@ -75,6 +76,10 @@ class NetModule {
     @JvmStatic
     @Provides
     fun provideProgressionApi(retrofit: Retrofit): ProgressionApi = ProgressionApi.create(retrofit)
+
+    @JvmStatic
+    @Provides
+    fun provideFilterApi(retrofit: Retrofit): FilterApi = FilterApi.create(retrofit)
 
   }
 

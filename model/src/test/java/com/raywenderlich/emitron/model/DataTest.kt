@@ -17,10 +17,17 @@ class DataTest {
   }
 
   @Test
+  fun getLevel() {
+    val attributes = Attributes(level = "archived")
+    val data = Data(attributes = attributes)
+    data.getLevel() isEqualTo "archived"
+  }
+
+  @Test
   fun getDomain() {
     val domains = listOf(
-      Data(attributes = Attributes(name = "iOS & Swift")),
-      Data(attributes = Attributes(name = "Android & Kotlin"))
+        Data(attributes = Attributes(name = "iOS & Swift")),
+        Data(attributes = Attributes(name = "Android & Kotlin"))
     )
     val domainNames = "iOS & Swift, Android & Kotlin"
     val relationShip = Relationships(domains = Contents(datum = domains))
@@ -117,7 +124,12 @@ class DataTest {
     data2.getReleasedAt(false, today = today) isEqualTo TimeUtils.Day.None
 
     val data3 = Data(attributes = attributes)
-    data3.getReleasedAt(true, today = today) isEqualTo TimeUtils.Day.Formatted("Aug 8 2019")
+    data3.getReleasedAt(true, today = today) isEqualTo TimeUtils.Day.Formatted("Aug 8")
+
+    val attributes2 = Attributes(releasedAt = "2018-08-08T02:00:00.000Z")
+    val data4 = Data(attributes = attributes2)
+    today.minusYears(1)
+    data4.getReleasedAt(true, today = today) isEqualTo TimeUtils.Day.Formatted("Aug 8 2018")
   }
 
   @Test
@@ -163,19 +175,19 @@ class DataTest {
   @Test
   fun setIncluded() {
     val domainsAndProgressions = listOf(
-      Data(id = "1", attributes = Attributes(name = "iOS & Swift"), type = "domains"),
-      Data(attributes = Attributes(name = "Android & Kotlin"), type = "domains"),
-      Data(id = "4", attributes = Attributes(finished = true), type = "progressions"),
-      Data(attributes = Attributes(finished = false), type = "progressions")
+        Data(id = "1", attributes = Attributes(name = "iOS & Swift"), type = "domains"),
+        Data(attributes = Attributes(name = "Android & Kotlin"), type = "domains"),
+        Data(id = "4", attributes = Attributes(finished = true), type = "progressions"),
+        Data(attributes = Attributes(finished = false), type = "progressions")
     )
 
     val data = Data(
-      relationships = Relationships(
-        domains = Contents(
-          datum = listOf(Data(id = "1"))
-        ),
-        progression = Content(datum = Data(id = "4"))
-      )
+        relationships = Relationships(
+            domains = Contents(
+                datum = listOf(Data(id = "1"))
+            ),
+            progression = Content(datum = Data(id = "4"))
+        )
     )
     val result = data.setIncluded(domainsAndProgressions)
 
@@ -211,29 +223,29 @@ class DataTest {
 
     val bookmark = Content(datum = Data(id = "1"))
     assertThat(data.addBookmark(bookmark)).isEqualTo(
-      Data(
-        attributes = Attributes(bookmarked = true),
-        relationships = Relationships(bookmark = bookmark)
-      )
+        Data(
+            attributes = Attributes(bookmarked = true),
+            relationships = Relationships(bookmark = bookmark)
+        )
     )
   }
 
   @Test
   fun removeBookmark() {
     val data = Data(
-      attributes = Attributes(bookmarked = true),
-      relationships = Relationships(
-        progression = Content(datum = Data(id = "2")),
-        bookmark = Content(datum = Data(id = "1"))
-      )
+        attributes = Attributes(bookmarked = true),
+        relationships = Relationships(
+            progression = Content(datum = Data(id = "2")),
+            bookmark = Content(datum = Data(id = "1"))
+        )
     )
     assertThat(data.removeBookmark()).isEqualTo(
-      Data(
-        attributes = Attributes(bookmarked = false),
-        relationships = Relationships(
-          progression = Content(datum = Data(id = "2"))
+        Data(
+            attributes = Attributes(bookmarked = false),
+            relationships = Relationships(
+                progression = Content(datum = Data(id = "2"))
+            )
         )
-      )
     )
   }
 
@@ -270,19 +282,19 @@ class DataTest {
   @Test
   fun getGroupedData() {
     val relationships = Relationships(
-      contents = Contents(
-        datum = listOf(
-          Data(id = "1"),
-          Data(id = "2")
+        contents = Contents(
+            datum = listOf(
+                Data(id = "1"),
+                Data(id = "2")
+            )
         )
-      )
     )
     val data = Data(relationships = relationships)
     assertThat(data.getGroupedData()).isEqualTo(
-      listOf(
-        Data(id = "1"),
-        Data(id = "2")
-      )
+        listOf(
+            Data(id = "1"),
+            Data(id = "2")
+        )
     )
 
     val relationships2 = Relationships()
@@ -296,19 +308,19 @@ class DataTest {
   @Test
   fun getGroupedDataIds() {
     val relationships = Relationships(
-      contents = Contents(
-        datum = listOf(
-          Data(id = "1"),
-          Data(id = "2")
+        contents = Contents(
+            datum = listOf(
+                Data(id = "1"),
+                Data(id = "2")
+            )
         )
-      )
     )
     val data = Data(relationships = relationships)
     assertThat(data.getGroupedDataIds()).isEqualTo(
-      listOf(
-        "1",
-        "2"
-      )
+        listOf(
+            "1",
+            "2"
+        )
     )
 
     val relationships2 = Relationships()
@@ -352,9 +364,9 @@ class DataTest {
   @Test
   fun getDomainIds() {
     val listOfData = listOf(
-      Data(id = "1", type = "domains"),
-      Data(id = "2", type = "domains"),
-      Data(id = "3", type = "progressions")
+        Data(id = "1", type = "domains"),
+        Data(id = "2", type = "domains"),
+        Data(id = "3", type = "progressions")
     )
 
     assertThat(Data.getDomainIds(listOfData)).isEqualTo(listOf("1", "2"))
@@ -363,11 +375,118 @@ class DataTest {
   @Test
   fun getCategoryIds() {
     val listOfData = listOf(
-      Data(id = "3", type = "categories"),
-      Data(id = "4", type = "categories"),
-      Data(id = "5", type = "domains")
+        Data(id = "3", type = "categories"),
+        Data(id = "4", type = "categories"),
+        Data(id = "5", type = "domains")
     )
 
     assertThat(Data.getCategoryIds(listOfData)).isEqualTo(listOf("3", "4"))
+  }
+
+  @Test
+  fun getSearchTerm() {
+    val filters = listOf(
+        Data(
+            type = DataType.Search.toRequestFormat(),
+            attributes = Attributes(name = "Emitron")
+        )
+    )
+    val searchTerm = Data.getSearchTerm(filters)
+
+    searchTerm isEqualTo "Emitron"
+  }
+
+  @Test
+  fun getSortOrder() {
+    val filters = listOf(
+        Data(
+            type = DataType.Sort.toRequestFormat(),
+            attributes = Attributes(name = "popularity")
+        )
+    )
+    val sortOrder = Data.getSortOrder(filters)
+
+    sortOrder isEqualTo "popularity"
+
+    val filters2 = listOf(
+        Data(
+            type = DataType.Sort.toRequestFormat(),
+            attributes = Attributes(name = "newest")
+        )
+    )
+    val sortOrder2 = Data.getSortOrder(filters2)
+
+    sortOrder2 isEqualTo "-released_at"
+
+    val filters3 = emptyList<Data>()
+    val sortOrder3 = Data.getSortOrder(filters3)
+
+    sortOrder3 isEqualTo "-released_at"
+  }
+
+  @Test
+  fun fromCategory() {
+    val expected = Data(
+        id = "1",
+        type = DataType.Categories.toRequestFormat(),
+        attributes = Attributes(
+            name = "Architecture"
+        )
+    )
+
+    val category = Category().apply {
+      categoryId = "1"
+      name = "Architecture"
+    }
+    val result = Data.fromCategory(category)
+
+    result isEqualTo expected
+  }
+
+  @Test
+  fun fromDomain() {
+    val expected = Data(
+        id = "2",
+        type = DataType.Domains.toRequestFormat(),
+        attributes = Attributes(
+            name = "iOS and Swift"
+        )
+    )
+
+    val domain = Domain().apply {
+      domainId = "2"
+      name = "iOS and Swift"
+    }
+    val result = Data.fromDomain(domain)
+
+    result isEqualTo expected
+  }
+
+  @Test
+  fun fromSearchQuery() {
+    val expected = Data(
+        type = DataType.Search.toRequestFormat(),
+        attributes = Attributes(
+            name = "Emitron"
+        )
+    )
+
+    val result = Data.fromSearchQuery("Emitron")
+
+    result isEqualTo expected
+  }
+
+  @Test
+  fun fromSortOrder() {
+    val expected = Data(
+        type = DataType.Sort.toRequestFormat(),
+        attributes = Attributes(
+            name = "popularity"
+        )
+    )
+
+    val result = Data.fromSortOrder("popularity")
+
+    result isEqualTo expected
   }
 }

@@ -3,15 +3,15 @@ package com.raywenderlich.emitron.ui.common
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
-import com.raywenderlich.emitron.utils.isEqualTo
 import com.raywenderlich.emitron.utils.NetworkState
 import com.raywenderlich.emitron.utils.UiStateManager
+import com.raywenderlich.emitron.utils.isEqualTo
 import org.junit.Before
 import org.junit.Test
 
 class PagedAdapterTest {
 
-  lateinit var pagedAdapter: PagedAdapter
+  private lateinit var pagedAdapter: PagedAdapter
   private val onChangeItem: (Int) -> Unit = mock()
   private val onChangeLastItem: (Boolean) -> Unit = mock()
 
@@ -67,7 +67,7 @@ class PagedAdapterTest {
     )
 
     // Then
-    pagedAdapter.uiState isEqualTo UiStateManager.UiState.LOADED
+    pagedAdapter.uiState isEqualTo null
     verify(onChangeItem).invoke(1)
   }
 
@@ -204,6 +204,10 @@ class PagedAdapterTest {
     assertThat(pagedAdapter.hasExtraRow()).isFalse()
 
     pagedAdapter.networkState = NetworkState.SUCCESS
+    pagedAdapter.uiState = null
+    assertThat(pagedAdapter.hasExtraRow()).isFalse()
+
+    pagedAdapter.networkState = NetworkState.INIT_SUCCESS
     pagedAdapter.uiState = null
     assertThat(pagedAdapter.hasExtraRow()).isFalse()
   }

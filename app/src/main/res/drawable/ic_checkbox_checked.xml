@@ -11,5 +11,7 @@
       <corners android:radius="@dimen/checkbox_corner_radius" />
     </shape>
   </item>
-  <item android:drawable="@drawable/ic_material_icon_checkmark" />
+  <item
+    android:drawable="@drawable/ic_material_icon_checkmark_2"
+    android:gravity="center" />
 </layer-list>

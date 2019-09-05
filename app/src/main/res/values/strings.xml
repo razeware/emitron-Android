@@ -10,6 +10,7 @@
   <string name="button_delete">Deleted</string>
   <string name="label_loading">Loading …</string>
   <string name="label_search">Search …</string>
+  <string name="label_ime_search">Search</string>
   <string name="label_completed">Completed</string>
   <string name="label_pro">Pro</string>
   <string name="error_no_internet">No internet available</string>
@@ -44,13 +45,15 @@
   <string name="my_tutorials_tab_bookmarks">Bookmarks</string>
   <string name="body_bookmarks_empty">You haven’t bookmarked any tutorials yet</string>
 
-
   <!-- Downloads -->
   <string name="button_explore_tutorials">Explore Tutorials</string>
   <string name="body_downloads_empty">You haven’t downloaded any tutorials yet</string>
 
+  <string name="body_progressions_empty">You haven’t started any tutorials yet</string>
+
   <!-- Library -->
-  <string name="button_latest">Latest</string>
+  <string name="button_newest">Newest</string>
+  <string name="button_popularity">Popularity</string>
   <string name="error_library_no_content">We couldn’t find any results</string>
   <string name="error_library_no_content_body">Try removing some filters</string>
   <string name="error_generic">Something went wrong!</string>
@@ -58,6 +61,7 @@
   <string name="label_release_type_duration">%1$s &#8226; %2$s (%3$s%4$s)</string>
   <string name="label_release_difficulty_type_duration">
     %1$s &#8226; %2$s &#8226; %3$s (%4$s%5$s)</string>
+  <string name="label_recent_search">Recent Searches</string>
 
   <!-- Content Difficulty -->
   <string name="difficulty_beginner">Beginner</string>
@@ -87,4 +91,29 @@
   <string name="message_episode_failed_to_mark_completed">Failed to mark episode completed.</string>
   <string name="message_episode_marked_in_progress">Episode marked in progress.</string>
   <string name="message_episode_failed_to_mark_in_progress">Failed to mark episode in progress.</string>
+
+  <!-- Filter screen -->
+  <string name="button_filter_clear_all">Clear All</string>
+  <string name="button_filter_apply">Apply</string>
+  <string name="title_filter_platform">Platforms</string>
+  <string name="title_filter_content_type">Content Type</string>
+  <string name="title_filter_difficulty">Difficulty</string>
+  <string name="title_filter_categories">Categories</string>
+  <string name="button_hide">Hide</string>
+  <string name="button_show">Show</string>
+  <string name="error_load_failed_domains">Failed to fetch domains.</string>
+  <string name="error_load_failed_categories">Failed to fetch categories.</string>
+  <string name="button_label_delete">Delete</string>
+
+  <string-array name="filter_difficulty">
+    <item>@string/difficulty_beginner</item>
+    <item>@string/difficulty_intermediate</item>
+    <item>@string/difficulty_advanced</item>
+  </string-array>
+
+  <string-array name="filter_content_type">
+    <item>@string/content_type_video_course</item>
+    <item>@string/content_type_screencast</item>
+  </string-array>
+
 </resources>

@@ -46,9 +46,7 @@ class ContentPagedFragment(
 
     contentPagedViewModel.contentPagedList.observe(owner, Observer { pagedList ->
       pagedList?.let {
-        if (it.isNotEmpty()) {
-          contentAdapter.submitList(it)
-        }
+        contentAdapter.submitList(it)
       }
     })
 
