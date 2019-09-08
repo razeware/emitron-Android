@@ -15,6 +15,10 @@ class ThreadManagerImpl @Inject constructor() :
 
   override val io: CoroutineDispatcher = Dispatchers.IO
 
-  override val networkIo: ExecutorService = Executors.newFixedThreadPool(5)
+  override val db: CoroutineDispatcher = Dispatchers.IO
+
+  override val networkExecutor: ExecutorService = Executors.newFixedThreadPool(5)
+
+  override val dbExecutor: ExecutorService = Executors.newFixedThreadPool(5)
 
 }

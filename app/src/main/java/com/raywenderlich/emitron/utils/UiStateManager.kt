@@ -62,6 +62,7 @@ interface UiStateManager {
     uiState.observe(lifeCycle, Observer {
       when (it) {
         UiState.ERROR -> onError()
+        UiState.ERROR_EMPTY -> onErrorEmpty()
         UiState.LOADING -> onLoading()
         UiState.LOADED -> onLoaded()
         UiState.ERROR_CONNECTION -> onErrorConnection()
@@ -75,6 +76,11 @@ interface UiStateManager {
    * Handle UI on any error
    */
   val onError: () -> Unit
+
+  /**
+   * Handle UI on any error
+   */
+  val onErrorEmpty: () -> Unit
   /**
    * Handle UI on connectivity failure
    */

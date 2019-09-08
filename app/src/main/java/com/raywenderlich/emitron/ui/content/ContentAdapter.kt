@@ -16,14 +16,39 @@ import com.raywenderlich.emitron.utils.UiStateManager
 /**
  * Paged list Adapter for [Data] items
  */
-class ContentAdapter(
+class ContentAdapter private constructor(
+  private var adapterContentType: AdapterContentType = AdapterContentType.Content,
+  private val pagedAdapter: PagedAdapter,
   private val onItemClick: (Data?) -> Unit,
-  private val retryItemCallback: () -> Unit,
+  private val onItemRetry: () -> Unit,
   private val retryCallback: () -> Unit,
   private val emptyCallback: (() -> Unit)? = null,
-  private val pagedAdapter: PagedAdapter,
-  private var contentAdapterType: ContentAdapterType = ContentAdapterType.Content
+  private val bookmarkCallback: ((Data?) -> Unit)? = null,
+  private val downloadCallback: ((Data?, Int) -> Unit)? = null
 ) : PagedListAdapter<Data, RecyclerView.ViewHolder>(DataDiffCallback) {
+
+  companion object {
+
+    fun build(
+      adapterContentType: AdapterContentType = AdapterContentType.Content,
+      pagedAdapter: PagedAdapter = PagedAdapter(),
+      onItemClick: (Data?) -> Unit,
+      onItemRetry: () -> Unit,
+      retryCallback: () -> Unit,
+      emptyCallback: (() -> Unit)? = null,
+      bookmarkCallback: ((Data?) -> Unit)? = null,
+      downloadCallback: ((Data?, Int) -> Unit)? = null
+    ): ContentAdapter = ContentAdapter(
+      adapterContentType = adapterContentType,
+      pagedAdapter = pagedAdapter,
+      onItemClick = onItemClick,
+      onItemRetry = onItemRetry,
+      retryCallback = retryCallback,
+      emptyCallback = emptyCallback,
+      bookmarkCallback = bookmarkCallback,
+      downloadCallback = downloadCallback
+    )
+  }
 
   /**
    * Meta data for items
@@ -37,7 +62,7 @@ class ContentAdapter(
    *
    * This will help in showing error/empty messages respective to a view
    */
-  enum class ContentAdapterType {
+  enum class AdapterContentType {
     /**
      * Adapter is part of library view
      */
@@ -53,15 +78,19 @@ class ContentAdapter(
     /**
      * Adapter is part of Bookmark view
      */
-    Bookmark,
+    ContentBookmarked,
     /**
      * Adapter is part of Progression view
      */
-    Progression,
+    ContentInProgress,
+    /**
+     * Adapter is part of Progression view
+     */
+    ContentCompleted,
     /**
      * Adapter is part of Download view
      */
-    Download;
+    ContentDownloaded;
 
     /**
      * Adapter is part of library view with filter or search
@@ -77,24 +106,35 @@ class ContentAdapter(
      */
     fun isContent(): Boolean =
       this == Content || this == ContentWithFilters || this == ContentWithSearch
+
+    /**
+     * Adapter is part of bookmark view
+     *
+     * @return True if adapter is part of bookmark view else False
+     */
+    fun isBookmarked(): Boolean =
+      this == ContentBookmarked
+
+    fun isCompleted(): Boolean =
+      this == ContentCompleted
   }
 
   /**
    * [RecyclerView.Adapter.getItemViewType]
    *
    * R.layout.item_error -> to show error without any data is loaded
-   * R.layout.item_library_footer -> to show progress/error after some data is loaded
-   * R.layout.item_library -> to show any item
+   * R.layout.item_footer -> to show progress/error after some data is loaded
+   * R.layout.item_content -> to show any item
    */
   override fun getItemViewType(position: Int): Int {
     return if (pagedAdapter.hasExtraRow() && position == itemCount - 1) {
       if (pagedAdapter.hasUiStateError()) {
         R.layout.item_error
       } else {
-        R.layout.item_library_footer
+        R.layout.item_footer
       }
     } else {
-      R.layout.item_library
+      R.layout.item_content
     }
   }
 
@@ -103,10 +143,10 @@ class ContentAdapter(
    */
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     return when (viewType) {
-      R.layout.item_library_footer -> ItemFooterViewHolder.create(
+      R.layout.item_footer -> ItemFooterViewHolder.create(
         parent,
         viewType,
-        retryItemCallback
+        onItemRetry
       )
       R.layout.item_error -> ItemErrorViewHolder.create(
         parent,
@@ -114,7 +154,7 @@ class ContentAdapter(
         retryCallback,
         emptyCallback
       )
-      R.layout.item_library -> {
+      R.layout.item_content -> {
         ContentItemViewHolder.create(
           parent,
           viewType
@@ -133,7 +173,7 @@ class ContentAdapter(
         bindContentItem(holder, position)
       }
       is ItemFooterViewHolder -> holder.bindTo(pagedAdapter.networkState)
-      is ItemErrorViewHolder -> holder.bindTo(pagedAdapter.uiState, contentAdapterType)
+      is ItemErrorViewHolder -> holder.bindTo(pagedAdapter.uiState, adapterContentType)
     }
   }
 
@@ -155,9 +195,18 @@ class ContentAdapter(
   private fun bindContentItem(viewHolder: ContentItemViewHolder, position: Int) {
     val data = getItem(position)?.setIncluded(included)
     if (data != null) {
-      (viewHolder).bindTo(data, contentAdapterType) {
-        onItemClick(data)
-      }
+      (viewHolder).bindTo(
+        content = data,
+        adapterContent = adapterContentType,
+        onItemClick = { clickPosition ->
+          onItemClick(getItem(clickPosition))
+        },
+        bookmarkCallback = { clickPosition ->
+          bookmarkCallback?.invoke(getItem(clickPosition))
+        },
+        downloadCallback = { clickPosition, status ->
+          downloadCallback?.invoke(getItem(clickPosition), status)
+        })
     } else {
       Log.exception(IllegalArgumentException("Item was null!"))
     }
@@ -225,12 +274,12 @@ class ContentAdapter(
   }
 
   /**
-   * Update content adapter type
+   * Update content adapter contentType
    *
-   * @param type Current parent view type for adapter
+   * @param contentType Current parent view contentType for adapter
    */
-  fun updateContentType(type: ContentAdapterType = ContentAdapterType.Content) {
-    contentAdapterType = type
+  fun updateContentType(contentType: AdapterContentType = AdapterContentType.Content) {
+    adapterContentType = contentType
   }
 
   /**

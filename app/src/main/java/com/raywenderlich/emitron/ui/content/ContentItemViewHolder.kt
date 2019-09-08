@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.raywenderlich.emitron.databinding.ItemLibraryBinding
+import com.raywenderlich.emitron.databinding.ItemContentBinding
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.ui.common.ItemErrorViewHolder.Companion.toVisibility
 
 /**
  * View holder to represent content item in library, bookmark, downloads and progression UI
  */
-class ContentItemViewHolder(private val binding: ItemLibraryBinding) :
+class ContentItemViewHolder(private val binding: ItemContentBinding) :
   RecyclerView.ViewHolder(binding.root) {
 
   /**
@@ -20,8 +20,10 @@ class ContentItemViewHolder(private val binding: ItemLibraryBinding) :
    */
   fun bindTo(
     content: Data?,
-    contentAdapterType: ContentAdapter.ContentAdapterType,
-    onItemClick: (Int) -> Unit
+    adapterContent: ContentAdapter.AdapterContentType,
+    onItemClick: (Int) -> Unit,
+    bookmarkCallback: ((Int) -> Unit)? = null,
+    downloadCallback: ((Int, Int) -> Unit)? = null
   ) {
     binding.root.setOnClickListener {
       onItemClick(adapterPosition)
@@ -29,12 +31,26 @@ class ContentItemViewHolder(private val binding: ItemLibraryBinding) :
     binding.data = content
     binding.releaseDateWithTypeAndDuration =
       content?.getReadableReleaseAtWithTypeAndDuration(binding.root.context)
+    binding.textLanguage.text = content?.getDomain()
 
-    binding.progressCompletion.visibility = toVisibility(!contentAdapterType.isContent())
-    binding.buttonBookmark.visibility = toVisibility(!contentAdapterType.isContent())
-
+    binding.progressContentProgression.visibility =
+      toVisibility(
+        !adapterContent.isContent()
+            && !adapterContent.isBookmarked()
+            && !adapterContent.isCompleted()
+      )
+    binding.textCollectionLabelPro.visibility = toVisibility(adapterContent.isContent())
+    binding.buttonBookmark.visibility = toVisibility(adapterContent.isBookmarked())
+    binding.buttonBookmark.setOnClickListener {
+      bookmarkCallback?.invoke(adapterPosition)
+    }
+    binding.buttonDownload.setOnClickListener {
+      downloadCallback?.invoke(adapterPosition, 1)
+    }
+    binding.buttonDownloadStop.setOnClickListener {
+      downloadCallback?.invoke(adapterPosition, 0)
+    }
     binding.executePendingBindings()
-
   }
 
   /**
@@ -43,6 +59,9 @@ class ContentItemViewHolder(private val binding: ItemLibraryBinding) :
    */
   fun unBind() {
     binding.root.setOnClickListener(null)
+    binding.buttonBookmark.setOnClickListener(null)
+    binding.buttonDownload.setOnClickListener(null)
+    binding.buttonDownloadStop.setOnClickListener(null)
   }
 
   companion object {

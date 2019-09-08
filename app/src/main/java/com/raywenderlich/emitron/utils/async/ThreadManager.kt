@@ -12,9 +12,19 @@ interface ThreadManager {
   /**
    * Default network executor
    */
-  val networkIo: Executor
+  val networkExecutor: Executor
   /**
    * IO dispatched for coroutine(s)
    */
   val io: CoroutineDispatcher
+
+  /**
+   * Default database executor
+   */
+  val dbExecutor: Executor
+
+  /**
+   * IO dispatched for coroutine(s)
+   */
+  val db: CoroutineDispatcher
 }

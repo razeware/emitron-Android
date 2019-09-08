@@ -5,10 +5,10 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.Transformations
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
+import com.raywenderlich.emitron.data.settings.SettingsPrefs
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.Contents
 import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.data.settings.SettingsPrefs
 import com.raywenderlich.emitron.utils.PagedResponse
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import kotlinx.coroutines.withContext
@@ -51,7 +51,10 @@ class ContentRepository @Inject constructor(
       .build()
 
     val livePagedList =
-      sourceFactory.toLiveData(config = pagedListConfig, fetchExecutor = threadManager.networkIo)
+      sourceFactory.toLiveData(
+        config = pagedListConfig,
+        fetchExecutor = threadManager.networkExecutor
+      )
 
     val networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.networkState }
 

@@ -26,11 +26,11 @@ class ItemErrorViewHolder(
 
   /**
    * @param uiState for this item layout
-   * @param contentAdapterType Type for current adapter.
+   * @param adapterContentType Type for current adapter.
    */
   fun bindTo(
     uiState: UiStateManager.UiState?,
-    contentAdapterType: ContentAdapter.ContentAdapterType
+    adapterContentType: ContentAdapter.AdapterContentType
   ) {
 
     with(viewDataBinding) {
@@ -52,7 +52,7 @@ class ItemErrorViewHolder(
 
       viewDataBinding.buttonRetry.setIconResource(
         getRetryActionIconResource(
-          contentAdapterType
+          adapterContentType
         )
       )
 
@@ -60,15 +60,15 @@ class ItemErrorViewHolder(
         UiStateManager.UiState.ERROR_CONNECTION -> viewDataBinding.textViewError.text =
           viewDataBinding.root.resources.getString(R.string.error_no_internet)
         UiStateManager.UiState.ERROR_EMPTY -> {
-          textViewError.text = getEmptyErrorForAdapterType(contentAdapterType)
+          textViewError.text = getEmptyErrorForAdapterType(adapterContentType)
           textViewErrorBody.text =
             viewDataBinding.root.resources.getString(R.string.error_library_no_content_body)
           textViewErrorBody.visibility =
-            toVisibility(contentAdapterType.isContentWithFilters())
+            toVisibility(adapterContentType.isContentWithFilters())
           buttonRetry.visibility =
-            toVisibility(!contentAdapterType.isContentWithFilters())
+            toVisibility(!adapterContentType.isContentWithFilters())
           buttonRetry.text =
-            getRetryButtonLabelForAdapterType(contentAdapterType)
+            getRetryButtonLabelForAdapterType(adapterContentType)
         }
         else -> textViewError.text =
           viewDataBinding.root.resources.getString(R.string.error_generic)
@@ -76,46 +76,50 @@ class ItemErrorViewHolder(
     }
   }
 
-  private fun getEmptyErrorForAdapterType(contentAdapterType: ContentAdapter.ContentAdapterType) =
-    when (contentAdapterType) {
-      ContentAdapter.ContentAdapterType.Content,
-      ContentAdapter.ContentAdapterType.ContentWithFilters,
-      ContentAdapter.ContentAdapterType.ContentWithSearch ->
+  private fun getEmptyErrorForAdapterType(adapterContentType: ContentAdapter.AdapterContentType) =
+    when (adapterContentType) {
+      ContentAdapter.AdapterContentType.Content,
+      ContentAdapter.AdapterContentType.ContentWithFilters,
+      ContentAdapter.AdapterContentType.ContentWithSearch ->
         viewDataBinding.root.resources.getString(R.string.error_library_no_content)
-      ContentAdapter.ContentAdapterType.Bookmark ->
+      ContentAdapter.AdapterContentType.ContentBookmarked ->
         viewDataBinding.root.resources.getString(R.string.body_bookmarks_empty)
-      ContentAdapter.ContentAdapterType.Progression ->
+      ContentAdapter.AdapterContentType.ContentInProgress ->
         viewDataBinding.root.resources.getString(R.string.body_progressions_empty)
-      ContentAdapter.ContentAdapterType.Download ->
+      ContentAdapter.AdapterContentType.ContentCompleted ->
+        viewDataBinding.root.resources.getString(R.string.body_progressions_completed_empty)
+      ContentAdapter.AdapterContentType.ContentDownloaded ->
         viewDataBinding.root.resources.getString(R.string.body_bookmarks_empty)
     }
 
   private fun getRetryButtonLabelForAdapterType(
-    contentAdapterType:
-    ContentAdapter.ContentAdapterType
+    adapterContentType:
+    ContentAdapter.AdapterContentType
   ) =
-    when (contentAdapterType) {
-      ContentAdapter.ContentAdapterType.ContentWithSearch,
-      ContentAdapter.ContentAdapterType.Content,
-      ContentAdapter.ContentAdapterType.ContentWithFilters ->
+    when (adapterContentType) {
+      ContentAdapter.AdapterContentType.ContentWithSearch,
+      ContentAdapter.AdapterContentType.Content,
+      ContentAdapter.AdapterContentType.ContentWithFilters ->
         viewDataBinding.root.resources.getString(R.string.button_retry)
-      ContentAdapter.ContentAdapterType.Bookmark,
-      ContentAdapter.ContentAdapterType.Progression,
-      ContentAdapter.ContentAdapterType.Download ->
+      ContentAdapter.AdapterContentType.ContentBookmarked,
+      ContentAdapter.AdapterContentType.ContentCompleted,
+      ContentAdapter.AdapterContentType.ContentInProgress,
+      ContentAdapter.AdapterContentType.ContentDownloaded ->
         viewDataBinding.root.resources.getString(R.string.button_explore_tutorials)
     }
 
   private fun getRetryActionIconResource(
-    contentAdapterType:
-    ContentAdapter.ContentAdapterType
+    adapterContentType:
+    ContentAdapter.AdapterContentType
   ) =
-    when (contentAdapterType) {
-      ContentAdapter.ContentAdapterType.ContentWithSearch,
-      ContentAdapter.ContentAdapterType.Content,
-      ContentAdapter.ContentAdapterType.ContentWithFilters -> 0
-      ContentAdapter.ContentAdapterType.Bookmark,
-      ContentAdapter.ContentAdapterType.Progression,
-      ContentAdapter.ContentAdapterType.Download ->
+    when (adapterContentType) {
+      ContentAdapter.AdapterContentType.ContentWithSearch,
+      ContentAdapter.AdapterContentType.Content,
+      ContentAdapter.AdapterContentType.ContentWithFilters -> 0
+      ContentAdapter.AdapterContentType.ContentBookmarked,
+      ContentAdapter.AdapterContentType.ContentCompleted,
+      ContentAdapter.AdapterContentType.ContentInProgress,
+      ContentAdapter.AdapterContentType.ContentDownloaded ->
         R.drawable.ic_material_button_icon_arrow_right_green_contained
     }
 

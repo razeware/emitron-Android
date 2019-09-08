@@ -21,6 +21,11 @@ class ContentPagedFragment(
     contentAdapter.updateErrorState(UiStateManager.UiState.ERROR)
   }
 
+  override val onErrorEmpty: () -> Unit = {
+    // notify adapter to show error state
+    contentAdapter.updateErrorState(UiStateManager.UiState.ERROR_EMPTY)
+  }
+
   override val onErrorConnection: () -> Unit = {
     contentAdapter.updateErrorState(UiStateManager.UiState.ERROR_CONNECTION)
   }

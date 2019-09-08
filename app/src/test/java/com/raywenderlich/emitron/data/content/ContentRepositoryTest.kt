@@ -3,8 +3,8 @@ package com.raywenderlich.emitron.data.content
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
-import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.data.settings.SettingsPrefs
+import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.utils.*
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +36,7 @@ class ContentRepositoryTest {
   @Before
   fun setUp() {
     whenever(threadManager.io).doReturn(Dispatchers.Unconfined)
-    whenever(threadManager.networkIo).doReturn(CurrentThreadExecutor())
+    whenever(threadManager.networkExecutor).doReturn(CurrentThreadExecutor())
     repository = ContentRepository(contentApi, threadManager, settingsPref)
   }
 

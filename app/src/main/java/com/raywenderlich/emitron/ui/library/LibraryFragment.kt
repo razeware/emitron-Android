@@ -21,7 +21,6 @@ import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentLibraryBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.ui.common.PagedAdapter
 import com.raywenderlich.emitron.ui.common.ShimmerProgressDelegate
 import com.raywenderlich.emitron.ui.content.ContentAdapter
 import com.raywenderlich.emitron.ui.content.ContentPagedFragment
@@ -54,17 +53,17 @@ class LibraryFragment : DaggerFragment() {
 
   private lateinit var progressDelegate: ShimmerProgressDelegate
 
-  private var adapter = ContentAdapter({
-    openCollection(it)
-  }, {
-    viewModel.contentPagedViewModel.handleItemRetry(isNetConnected())
-  }, {
-    loadCollections()
-  }, pagedAdapter = PagedAdapter())
+  private val adapter by lazy {
+    ContentAdapter.build(
+      onItemClick = ::openCollection,
+      onItemRetry = ::handleItemRetry,
+      retryCallback = ::loadCollections
+    )
+  }
 
   private val pagedFragment = lazy(LazyThreadSafetyMode.NONE) {
     ContentPagedFragment(
-      viewModel.contentPagedViewModel,
+      viewModel.getPaginationViewModel(),
       adapter
     )
   }
@@ -203,7 +202,7 @@ class LibraryFragment : DaggerFragment() {
   }
 
   private fun initObservers() {
-    viewModel.contentPagedViewModel.networkState.observe(viewLifecycleOwner) {
+    viewModel.getPaginationViewModel().networkState.observe(viewLifecycleOwner) {
       handleInitialProgress(it)
     }
     parentViewModel.selectedFilters.observe(viewLifecycleOwner) {
@@ -217,7 +216,7 @@ class LibraryFragment : DaggerFragment() {
         }
       } else {
         if (!parentViewModel.hasFilters()) {
-          adapter.updateContentType(ContentAdapter.ContentAdapterType.ContentWithSearch)
+          adapter.updateContentType(ContentAdapter.AdapterContentType.ContentWithSearch)
         }
       }
     }
@@ -258,6 +257,8 @@ class LibraryFragment : DaggerFragment() {
         withSort = true
       )
     )
+
+    viewModel.syncDomainsAndCategories()
   }
 
   private fun openCollection(collection: Data?) {
@@ -310,7 +311,7 @@ class LibraryFragment : DaggerFragment() {
     val filterContainer = binding.chipGroupLibraryFilter
     filterContainer.removeAllViews()
     filterContainer.visibility = View.GONE
-    adapter.updateContentType(ContentAdapter.ContentAdapterType.Content)
+    adapter.updateContentType(ContentAdapter.AdapterContentType.Content)
   }
 
   private fun applyDefaultChipStyle(chip: Chip) {
@@ -369,7 +370,7 @@ class LibraryFragment : DaggerFragment() {
         loadCollections()
       }
       filterContainer.addView(chip as View)
-      adapter.updateContentType(ContentAdapter.ContentAdapterType.ContentWithFilters)
+      adapter.updateContentType(ContentAdapter.AdapterContentType.ContentWithFilters)
       filterContainer.visibility = View.VISIBLE
     }
   }
@@ -412,5 +413,9 @@ class LibraryFragment : DaggerFragment() {
     binding.editTextLibrarySearch.setText(query)
     hideRecentSearchControls()
     loadCollections()
+  }
+
+  private fun handleItemRetry() {
+    viewModel.getPaginationViewModel().handleItemRetry(isNetConnected())
   }
 }

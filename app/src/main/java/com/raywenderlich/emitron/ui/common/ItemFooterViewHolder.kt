@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.raywenderlich.emitron.databinding.ItemLibraryFooterBinding
+import com.raywenderlich.emitron.databinding.ItemFooterBinding
 import com.raywenderlich.emitron.ui.common.ItemErrorViewHolder.Companion.toVisibility
 import com.raywenderlich.emitron.utils.NetworkState
 
@@ -13,7 +13,7 @@ import com.raywenderlich.emitron.utils.NetworkState
  * View holder for footer progress/error
  */
 class ItemFooterViewHolder(
-  private val viewDataBinding: ItemLibraryFooterBinding,
+  private val viewDataBinding: ItemFooterBinding,
   private val retryCallback: () -> Unit
 ) : RecyclerView.ViewHolder(viewDataBinding.root) {
 
