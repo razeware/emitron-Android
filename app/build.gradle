@@ -30,6 +30,12 @@ android {
     multiDexEnabled true
     javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
     resValue 'string', "client_api_key", "${client_api_key}"
+
+    kapt {
+      arguments {
+        arg("room.schemaLocation", "$projectDir/schemas".toString())
+      }
+    }
   }
 
   buildTypes {
@@ -46,6 +52,10 @@ android {
 
   kotlinOptions {
     jvmTarget = "1.8"
+  }
+
+  sourceSets {
+    androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
   }
 }
 
