@@ -116,4 +116,15 @@
     <item>@string/content_type_screencast</item>
   </string-array>
 
+  <!-- Settings -->
+  <string name="label_video_playback_speed">Video Playback Speed</string>
+  <string name="label_downloads_wifi_only">Downloads (WiFi only)</string>
+  <string name="label_download_quality">Download Quality</string>
+  <string name="label_subtitles">Subtitles</string>
+  <string name="label_night_mode">Night mode</string>
+  <string name="label_allow_crash_reporting">Allow crash reporting</string>
+  <string name="button_on">On</string>
+  <string name="button_off">Off</string>
+  <string name="button_system_default">System default</string>
+
 </resources>

@@ -2,11 +2,9 @@ package com.raywenderlich.emitron
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.login.LoginRepository
+import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.model.Attributes
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.DataType
@@ -19,6 +17,7 @@ import org.junit.Test
 class MainViewModelTest {
 
   private val loginRepository: LoginRepository = mock()
+  private val settingsRepository: SettingsRepository = mock()
 
   private lateinit var viewModel: MainViewModel
 
@@ -27,7 +26,7 @@ class MainViewModelTest {
 
   @Before
   fun setUp() {
-    viewModel = MainViewModel(loginRepository)
+    viewModel = MainViewModel(loginRepository, settingsRepository)
   }
 
   @Test
@@ -211,5 +210,33 @@ class MainViewModelTest {
 
     // Then
     result2 isEqualTo false
+  }
+
+  @Test
+  fun getNightModeSettings() {
+    // Given
+    whenever(settingsRepository.getNightMode()).thenReturn(1)
+
+    // When
+    val expected = viewModel.getNightModeSettings()
+
+    // Then
+    expected isEqualTo 1
+    verify(settingsRepository).getNightMode()
+    verifyNoMoreInteractions(settingsRepository)
+  }
+
+  @Test
+  fun isCrashReportingAllowed() {
+    // Given
+    whenever(settingsRepository.isCrashReportingAllowed()).thenReturn(true)
+
+    // When
+    val expected = viewModel.isCrashReportingAllowed()
+
+    // Then
+    expected isEqualTo true
+    verify(settingsRepository).isCrashReportingAllowed()
+    verifyNoMoreInteractions(settingsRepository)
   }
 }

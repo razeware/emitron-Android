@@ -1,9 +1,11 @@
 package com.raywenderlich.emitron
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.raywenderlich.emitron.data.login.LoginRepository
+import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.model.Data
 import javax.inject.Inject
 
@@ -12,8 +14,11 @@ import javax.inject.Inject
  *
  * @param loginRepository [LoginRepository] to verify/get user login details
  */
-class MainViewModel @Inject constructor(private val loginRepository: LoginRepository) :
-  ViewModel() {
+class MainViewModel @Inject constructor(
+  private val loginRepository: LoginRepository,
+  private val settingsRepository: SettingsRepository
+
+) : ViewModel() {
 
   /**
    * @return True if user is logged in, otherwise False
@@ -35,7 +40,6 @@ class MainViewModel @Inject constructor(private val loginRepository: LoginReposi
   private val _query = MutableLiveData<String>()
 
   private val _sortOrder = MutableLiveData<String>()
-
 
   /**
    * Observer for selected filters
@@ -141,4 +145,19 @@ class MainViewModel @Inject constructor(private val loginRepository: LoginReposi
     _query.value = ""
     true
   }
+
+  /**
+   * Get selected night mode from preference
+   *
+   * @return Either of [AppCompatDelegate.MODE_NIGHT_YES],
+   * [AppCompatDelegate.MODE_NIGHT_NO], [AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM]
+   */
+  fun getNightModeSettings(): Int = settingsRepository.getNightMode()
+
+  /**
+   * Get if user has allowed crash reporting
+   *
+   * @return True if user has allowed, else False
+   */
+  fun isCrashReportingAllowed(): Boolean = settingsRepository.isCrashReportingAllowed()
 }

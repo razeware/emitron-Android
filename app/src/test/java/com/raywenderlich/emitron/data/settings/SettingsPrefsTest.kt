@@ -15,8 +15,9 @@ class SettingsPrefsTest {
 
   @Before
   fun setUp() {
-    whenever(prefUtils.get(any(), ArgumentMatchers.anyString())).doReturn("")
     whenever(prefUtils.set(any(), ArgumentMatchers.anyString())).doReturn(prefUtils)
+    whenever(prefUtils.set(any(), ArgumentMatchers.anyBoolean())).doReturn(prefUtils)
+    whenever(prefUtils.set(any(), ArgumentMatchers.anyInt())).doReturn(prefUtils)
     whenever(prefUtils.commit()).doReturn(t = true)
     settingsPref = SettingsPrefs(prefUtils)
   }
@@ -34,7 +35,7 @@ class SettingsPrefsTest {
   @Test
   fun saveSearchQuery_queryExists() {
     whenever(prefUtils.get("recent_searches", "")).doReturn(
-        "Android, Kotlin, Emitron"
+      "Android, Kotlin, Emitron"
     )
 
     settingsPref.saveSearchQuery("Emitron")
@@ -46,7 +47,7 @@ class SettingsPrefsTest {
   @Test
   fun saveSearchQuery_minRecentItems() {
     whenever(prefUtils.get("recent_searches", "")).doReturn(
-        "Android, Kotlin, Emitron, Core Data, SwiftUI, Room"
+      "Android, Kotlin, Emitron, Core Data, SwiftUI, Room"
     )
 
     settingsPref.saveSearchQuery("Emitron")
@@ -58,7 +59,7 @@ class SettingsPrefsTest {
   @Test
   fun getSearchQueries() {
     whenever(prefUtils.get("recent_searches", "")).doReturn(
-        "Android, Kotlin, Emitron"
+      "Android, Kotlin, Emitron"
     )
 
     val result = settingsPref.getSearchQueries()
@@ -76,6 +77,49 @@ class SettingsPrefsTest {
     result isEqualTo emptyList<String>()
 
     verify(prefUtils).get("recent_searches", "")
+  }
+
+  @Test
+  fun saveCrashReportingAllowed() {
+    settingsPref.saveCrashReportingAllowed(true)
+
+    verify(prefUtils).init("settings")
+    verify(prefUtils).set("allow_crash_reports", true)
+    verify(prefUtils).commit()
+    verifyNoMoreInteractions(prefUtils)
+  }
+
+  @Test
+  fun saveNightMode() {
+    settingsPref.saveNightMode(1)
+
+    verify(prefUtils).init("settings")
+    verify(prefUtils).set("selected_night_mode", 1)
+    verify(prefUtils).commit()
+    verifyNoMoreInteractions(prefUtils)
+  }
+
+  @Test
+  fun isCrashReportingAllowed() {
+    whenever(prefUtils.get("allow_crash_reports", false)).doReturn(true)
+
+    val result = settingsPref.isCrashReportingAllowed()
+    result isEqualTo true
+    verify(prefUtils).init("settings")
+    verify(prefUtils).get("allow_crash_reports", false)
+    verifyNoMoreInteractions(prefUtils)
+  }
+
+
+  @Test
+  fun getNightMode() {
+    whenever(prefUtils.get("selected_night_mode", 2)).doReturn(1)
+
+    val result = settingsPref.getNightMode()
+    result isEqualTo 1
+    verify(prefUtils).init("settings")
+    verify(prefUtils).get("selected_night_mode", 2)
+    verifyNoMoreInteractions(prefUtils)
   }
 
   @Test
