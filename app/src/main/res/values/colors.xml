@@ -86,4 +86,6 @@
   <color name="colorCheckboxUnchecked">@color/light_gray_blue</color>
   <color name="colorNavDivider">@color/transparent</color>
   <color name="colorBoxStroke">@color/white</color>
+  <color name="colorContentProgressBackground">@color/white</color>
+  <color name="colorContentProgress">@color/colorPrimary</color>
 </resources>

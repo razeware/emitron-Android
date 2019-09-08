@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
   <item android:id="@android:id/background">
-    <inset android:drawable="@color/blue_grey" />
+    <inset android:drawable="@color/colorContentProgressBackground" />
   </item>
   <item
     android:id="@android:id/progress"
@@ -13,7 +13,7 @@
           android:bottomRightRadius="@dimen/card_radius"
           android:topLeftRadius="0dp"
           android:topRightRadius="0dp" />
-        <solid android:color="@color/colorPrimary" />
+        <solid android:color="@color/colorContentProgress" />
       </shape>
     </clip>
   </item>
