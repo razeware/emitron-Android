@@ -6,7 +6,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.EditorInfo.*
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -127,7 +127,8 @@ class LibraryFragment : DaggerFragment() {
     }
 
     binding.editTextLibrarySearch.setOnEditorActionListener { _, actionId, _ ->
-      if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+      val allowedImeActions = arrayOf(IME_ACTION_SEARCH, IME_ACTION_DONE, IME_ACTION_GO)
+      if (actionId in allowedImeActions) {
         handleSearchImeAction()
         true
       } else {
