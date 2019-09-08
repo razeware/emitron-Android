@@ -8,7 +8,7 @@ buildscript {
       'targetSdk'                   : 29,
       'compileSdk'                  : 29,
       'gradle'                      : '3.5.0',
-      'kotlin'                      : '1.3.41',
+      'kotlin'                      : '1.3.50',
 
       // core
       'coreKtx'                     : "1.0.2",
@@ -31,7 +31,7 @@ buildscript {
       // ui
       'constraintLayout'            : "1.1.3",
       'exoplayer'                   : "2.10.1",
-      'navigation'                  : "2.0.0",
+      'navigation'                  : "2.1.0",
       'materialDesign'              : '1.1.0-alpha09',
       'vectorDrawable'              : "1.0.1",
       'recyclerView'                : "1.0.0",
@@ -63,7 +63,7 @@ buildscript {
 
       // firebase
       'firebaseConfig'              : '18.0.0',
-      'firebasePerf'                : '18.0.1',
+      'firebasePerf'                : '19.0.0',
 
       // plugins
       'firebasePerfPlugin'          : "1.2.1",
