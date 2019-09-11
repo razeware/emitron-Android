@@ -119,11 +119,15 @@
   <string name="button_off">Off</string>
   <string name="button_system_default">System default</string>
 
-  <!-- My Tutorials -->
+  <!-- My tutorials -->
+  <string name="button_delete">Delete</string>
+  <string name="button_mark_completed">Mark completed</string>
+  <string name="button_mark_in_progress">Mark in progress</string>
   <string name="my_tutorials_tab_completed">Completed</string>
   <string name="my_tutorials_tab_in_progress">In Progress</string>
   <string name="my_tutorials_tab_bookmarks">Bookmarks</string>
   <string name="body_bookmarks_empty">You haven’t bookmarked any tutorials yet</string>
   <string name="body_progressions_empty">You haven’t started any tutorials yet</string>
   <string name="body_progressions_completed_empty">You haven’t completed any tutorials yet</string>
+
 </resources>
