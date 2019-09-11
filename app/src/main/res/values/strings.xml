@@ -53,6 +53,7 @@
   <string name="label_release_difficulty_type_duration">
     %1$s &#8226; %2$s &#8226; %3$s (%4$s%5$s)</string>
   <string name="label_recent_search">Recent Searches</string>
+  <string name="label_multi_platform">Multiplatform</string>
 
   <!-- Content Difficulty -->
   <string name="difficulty_beginner">Beginner</string>

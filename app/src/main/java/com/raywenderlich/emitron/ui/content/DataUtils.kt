@@ -6,6 +6,8 @@ import com.raywenderlich.emitron.model.ContentType
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.Difficulty
 import com.raywenderlich.emitron.model.utils.TimeUtils
+import org.threeten.bp.Clock
+import org.threeten.bp.LocalDateTime
 
 /**
  * [Data.attributes] contains release date, difficulty, and content type
@@ -19,12 +21,13 @@ fun Data.getReadableReleaseAtWithTypeAndDuration(
 ): String {
   with(context) {
 
-    val releasedAt = when (val day = getReleasedAt(withYear)) {
-      is TimeUtils.Day.Today -> getString(R.string.today)
-      is TimeUtils.Day.Yesterday -> getString(R.string.yesterday)
-      is TimeUtils.Day.Formatted -> day.readableDate
-      else -> ""
-    }
+    val releasedAt =
+      when (val day = getReleasedAt(withYear, LocalDateTime.now(Clock.systemUTC()))) {
+        is TimeUtils.Day.Today -> getString(R.string.today)
+        is TimeUtils.Day.Yesterday -> getString(R.string.yesterday)
+        is TimeUtils.Day.Formatted -> day.readableDate
+        else -> ""
+      }
 
     val contentTypeString = when (getContentType()) {
       ContentType.Collection -> getString(R.string.content_type_video_course)
@@ -33,7 +36,7 @@ fun Data.getReadableReleaseAtWithTypeAndDuration(
         ""
     }
 
-    val (hrs, mins) = getDuration()
+    val (hrs, mins) = getDurationHoursAndMinutes()
 
     val durationHrs = if (hrs > 0) {
       "${resources.getQuantityString(R.plurals.hours, hrs.toInt(), hrs)} "
@@ -90,6 +93,19 @@ fun Data.getReadableContributors(context: Context): String {
       getString(
         R.string.contributors, getContributors()
       )
+    }
+  }
+}
+
+/**
+ * @return Domain of content, or `Multiplatform` if content has multiple domains
+ */
+fun Data.getDomain(context: Context): String? {
+  with(context) {
+    return if (getDomainIds().size > 1) {
+      getString(R.string.label_multi_platform)
+    } else {
+      getDomain() ?: ""
     }
   }
 }
