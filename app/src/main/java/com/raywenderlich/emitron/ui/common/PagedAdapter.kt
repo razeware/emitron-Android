@@ -47,7 +47,9 @@ class PagedAdapter {
     val hadExtraRow = hasExtraRow()
     this.networkState = newNetworkState
 
-    if (newNetworkState == NetworkState.INIT) {
+    if (newNetworkState == NetworkState.INIT ||
+      newNetworkState == NetworkState.RUNNING
+    ) {
       uiState = null
     }
     val hasExtraRow = hasExtraRow()
