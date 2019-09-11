@@ -4,7 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.filter.FilterRepository
-import com.raywenderlich.emitron.model.*
+import com.raywenderlich.emitron.model.Attributes
+import com.raywenderlich.emitron.model.Data
+import com.raywenderlich.emitron.model.DataType
 import com.raywenderlich.emitron.utils.*
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import kotlinx.coroutines.Dispatchers
@@ -32,34 +34,35 @@ class FilterViewModelTest {
     whenever(threadManager.io).doReturn(Dispatchers.Unconfined)
     whenever(threadManager.networkExecutor).doReturn(CurrentThreadExecutor())
 
-    val domains = MutableLiveData<List<Domain>>().apply {
+    val domains = MutableLiveData<List<Data>>().apply {
       value = listOf(
-        Domain().apply {
-          domainId = "1"
-          name = "iOS and Swift"
-        },
-        Domain().apply {
-          domainId = "2"
-          name = "Android and Kotlin"
-        },
-        Domain().apply {
-          domainId = "3"
-          name = "Unreal"
-          level = "archived"
-        })
+        Data(
+          id = "1",
+          type = "domains",
+          attributes = Attributes(name = "iOS and Swift")
+        ),
+        Data(
+          id = "2",
+          type = "domains",
+          attributes = Attributes(name = "Android and Kotlin")
+        )
+      )
     }
     whenever(filterRepository.getDomains()).doReturn(domains)
 
-    val categories = MutableLiveData<List<Category>>().apply {
+    val categories = MutableLiveData<List<Data>>().apply {
       value = listOf(
-        Category().apply {
-          categoryId = "1"
-          name = "Algorithms"
-        },
-        Category().apply {
-          categoryId = "2"
-          name = "Architecture"
-        })
+        Data(
+          id = "1",
+          type = "categories",
+          attributes = Attributes(name = "Algorithms")
+        ),
+        Data(
+          id = "2",
+          type = "categories",
+          attributes = Attributes(name = "Architecture")
+        )
+      )
     }
     whenever(filterRepository.getCategories()).doReturn(categories)
     viewModel = FilterViewModel(filterRepository)
@@ -168,7 +171,7 @@ class FilterViewModelTest {
   fun hasCategories() {
 
     val result = viewModel.categories.observeForTestingResult()
-    
+
     viewModel.hasCategories() isEqualTo true
 
     result isEqualTo listOf(

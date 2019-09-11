@@ -6,7 +6,11 @@ import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.raywenderlich.emitron.data.filter.dao.CategoryDao
 import com.raywenderlich.emitron.data.filter.dao.DomainDao
-import com.raywenderlich.emitron.model.*
+import com.raywenderlich.emitron.model.Attributes
+import com.raywenderlich.emitron.model.Data
+import com.raywenderlich.emitron.model.DataType
+import com.raywenderlich.emitron.model.entity.Category
+import com.raywenderlich.emitron.model.entity.Domain
 import com.raywenderlich.emitron.utils.TestCoroutineRule
 import com.raywenderlich.emitron.utils.isEqualTo
 import org.junit.Before
@@ -34,9 +38,11 @@ class FilterDataSourceLocalTest {
       val domains = listOf(
         Data(
           "1",
+          type = DataType.Domains.toRequestFormat(),
           attributes = Attributes(name = "iOS and Swift")
         ), Data(
           "2",
+          type = DataType.Domains.toRequestFormat(),
           attributes = Attributes(name = "Android and Kotlin")
         )
       )
@@ -45,9 +51,7 @@ class FilterDataSourceLocalTest {
 
       val domainCaptor = argumentCaptor<List<Domain>>()
 
-      verify(
-        domainDao
-      ).insertDomains(domainCaptor.capture())
+      verify(domainDao).insertDomains(domainCaptor.capture())
 
       domainCaptor.allValues.size isEqualTo 1
       with(domainCaptor.allValues[0]) {
@@ -79,9 +83,7 @@ class FilterDataSourceLocalTest {
 
       val categoryCaptor = argumentCaptor<List<Category>>()
 
-      verify(
-        categoryDao
-      ).insertCategories(categoryCaptor.capture())
+      verify(categoryDao).insertCategories(categoryCaptor.capture())
 
       categoryCaptor.allValues.size isEqualTo 1
       with(categoryCaptor.allValues[0]) {

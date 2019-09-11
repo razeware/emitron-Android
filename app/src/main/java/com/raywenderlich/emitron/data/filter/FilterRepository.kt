@@ -2,8 +2,8 @@ package com.raywenderlich.emitron.data.filter
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
-import com.raywenderlich.emitron.model.Category
-import com.raywenderlich.emitron.model.Domain
+import androidx.lifecycle.Transformations
+import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -20,12 +20,15 @@ class FilterRepository @Inject constructor(
   /**
    * Get categories observer
    *
-   * @return LiveData<List<Category>> live data observer for categories table
+   * @return LiveData<List<Data>> live data observer for categories table
    */
-  fun getCategories(): LiveData<List<Category>> = filterDataSourceLocal.getCategories()
+  fun getCategories(): LiveData<List<Data>> =
+    Transformations.map(filterDataSourceLocal.getCategories()) {
+      it.map { category -> category.toData() }
+    }
 
   /**
-   * Fetch content categories from server and store it to db
+   * Fetch content categories from server and store it to database
    *
    */
   @WorkerThread
@@ -38,8 +41,7 @@ class FilterRepository @Inject constructor(
   }
 
   /**
-   * Fetch content domains from server and store it to db
-   *
+   * Fetch content domains from server and store it to database
    */
   @WorkerThread
   @Throws(Exception::class)
@@ -51,7 +53,7 @@ class FilterRepository @Inject constructor(
   }
 
   /**
-   * Fetch content domains and categories from server and store it to db
+   * Fetch content domains and categories from server and store it to database
    */
   @WorkerThread
   @Throws(Exception::class)
@@ -67,7 +69,14 @@ class FilterRepository @Inject constructor(
   /**
    * Get domains observer
    *
-   * @return LiveData<List<Category>> live data observer for domains table
+   * @return LiveData<List<Data>> live data observer for domains table
    */
-  fun getDomains(): LiveData<List<Domain>> = filterDataSourceLocal.getDomains()
+  fun getDomains(): LiveData<List<Data>> =
+    Transformations.map(filterDataSourceLocal.getDomains()) {
+      it.map { domain ->
+        domain.toData()
+      }.filter { data ->
+        !data.isLevelArchived()
+      }
+    }
 }

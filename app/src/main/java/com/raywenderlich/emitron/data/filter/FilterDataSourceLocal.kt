@@ -3,9 +3,9 @@ package com.raywenderlich.emitron.data.filter
 import androidx.lifecycle.LiveData
 import com.raywenderlich.emitron.data.filter.dao.CategoryDao
 import com.raywenderlich.emitron.data.filter.dao.DomainDao
-import com.raywenderlich.emitron.model.Category
 import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.model.Domain
+import com.raywenderlich.emitron.model.entity.Category
+import com.raywenderlich.emitron.model.entity.Domain
 import javax.inject.Inject
 
 /**
@@ -17,7 +17,7 @@ class FilterDataSourceLocal @Inject constructor(
 ) {
 
   /**
-   * Insert domains to db
+   * Save domains to database
    */
   suspend fun saveDomains(domains: List<Data>) {
     val domainList = Domain.listFrom(domains)
@@ -25,7 +25,7 @@ class FilterDataSourceLocal @Inject constructor(
   }
 
   /**
-   * Insert categories to db
+   * Save categories to database
    */
   suspend fun saveCategories(categories: List<Data>) {
     val categoryList = Category.listFrom(categories)
