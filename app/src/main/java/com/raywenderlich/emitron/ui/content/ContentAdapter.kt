@@ -193,7 +193,7 @@ class ContentAdapter private constructor(
   }
 
   private fun bindContentItem(viewHolder: ContentItemViewHolder, position: Int) {
-    val data = getItem(position)?.setIncluded(included)
+    val data = getItem(position)?.updateRelationships(included)
     if (data != null) {
       (viewHolder).bindTo(
         content = data,
