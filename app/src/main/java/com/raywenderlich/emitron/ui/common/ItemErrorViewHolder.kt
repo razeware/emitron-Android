@@ -9,6 +9,7 @@ import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.ItemErrorBinding
 import com.raywenderlich.emitron.ui.content.ContentAdapter
 import com.raywenderlich.emitron.utils.UiStateManager
+import com.raywenderlich.emitron.utils.extensions.isNetNotConnected
 
 /**
  * View holder for error
@@ -70,8 +71,13 @@ class ItemErrorViewHolder(
           buttonRetry.text =
             getRetryButtonLabelForAdapterType(adapterContentType)
         }
-        else -> textViewError.text =
-          viewDataBinding.root.resources.getString(R.string.error_generic)
+        else -> if (root.context.isNetNotConnected()) {
+          textViewError.text =
+            viewDataBinding.root.resources.getString(R.string.error_no_internet)
+        } else {
+          textViewError.text =
+            viewDataBinding.root.resources.getString(R.string.error_generic)
+        }
       }
     }
   }
