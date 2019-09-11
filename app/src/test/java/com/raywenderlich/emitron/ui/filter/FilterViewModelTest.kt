@@ -30,7 +30,7 @@ class FilterViewModelTest {
   @Before
   fun setUp() {
     whenever(threadManager.io).doReturn(Dispatchers.Unconfined)
-    whenever(threadManager.networkIo).doReturn(CurrentThreadExecutor())
+    whenever(threadManager.networkExecutor).doReturn(CurrentThreadExecutor())
 
     val domains = MutableLiveData<List<Domain>>().apply {
       value = listOf(

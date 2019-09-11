@@ -27,8 +27,4 @@ object Log {
       Crashlytics.logException(e)
     }
   }
-
-  fun initUser(userIdentifier: String) {
-    Crashlytics.setUserIdentifier(userIdentifier)
-  }
 }

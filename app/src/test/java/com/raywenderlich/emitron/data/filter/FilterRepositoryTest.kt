@@ -31,7 +31,7 @@ class FilterRepositoryTest {
   @Before
   fun setUp() {
     whenever(threadManager.io).doReturn(Dispatchers.Unconfined)
-    whenever(threadManager.networkIo).doReturn(CurrentThreadExecutor())
+    whenever(threadManager.networkExecutor).doReturn(CurrentThreadExecutor())
     repository = FilterRepository(filterApi, filterDataSourceLocal, threadManager)
   }
 
@@ -72,14 +72,45 @@ class FilterRepositoryTest {
         datum = listOf(Data("5"), Data("6"), Data("7"))
       )
       // Given
-      whenever(filterApi.getCategories()).doReturn(response)
+      whenever(filterApi.getDomains()).doReturn(response)
 
       // When
-      repository.fetchCategories()
+      repository.fetchDomains()
+
+      // Then
+      verify(filterApi).getDomains()
+      verify(filterDataSourceLocal).saveDomains(
+        listOf(Data("5"), Data("6"), Data("7"))
+      )
+      verifyNoMoreInteractions(filterApi)
+      verifyNoMoreInteractions(filterDataSourceLocal)
+    }
+  }
+
+  @Test
+  fun fetchDomainsAndCategories() {
+    testCoroutineRule.runBlockingTest {
+      val categoryResponse = Contents(
+        datum = listOf(Data("5"), Data("6"), Data("7"))
+      )
+      // Given
+      whenever(filterApi.getCategories()).doReturn(categoryResponse)
+      val domainResponse = Contents(
+        datum = listOf(Data("5"), Data("6"), Data("7"))
+      )
+      // Given
+      whenever(filterApi.getDomains()).doReturn(domainResponse)
+
+      // When
+      repository.fetchDomainsAndCategories()
 
       // Then
       verify(filterApi).getCategories()
       verify(filterDataSourceLocal).saveCategories(
+        listOf(Data("5"), Data("6"), Data("7"))
+      )
+      verify(filterApi).getDomains()
+      verify(filterDataSourceLocal).saveDomains(
         listOf(Data("5"), Data("6"), Data("7"))
       )
       verifyNoMoreInteractions(filterApi)

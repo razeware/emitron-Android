@@ -2,14 +2,20 @@ package com.raywenderlich.emitron
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
+import com.crashlytics.android.Crashlytics
 import com.raywenderlich.emitron.databinding.ActivityMainBinding
+import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import com.raywenderlich.emitron.utils.extensions.setDataBindingView
 import dagger.android.support.DaggerAppCompatActivity
+import io.fabric.sdk.android.Fabric
+import javax.inject.Inject
 
 /**
  * Parent screen from all fragments
@@ -18,6 +24,15 @@ class MainActivity : DaggerAppCompatActivity() {
 
   private lateinit var binding: ActivityMainBinding
 
+  /**
+   * Custom factory for viewmodel
+   *
+   * Custom factory provides app related dependencies
+   */
+  @Inject
+  lateinit var viewModelFactory: ViewModelFactory
+
+  private val viewModel: MainViewModel by viewModels { viewModelFactory }
   /**
    * onCreate()
    */
@@ -33,6 +48,13 @@ class MainActivity : DaggerAppCompatActivity() {
     navController.addOnDestinationChangedListener { _, destination, _ ->
       onNavDestinationChanged(destination)
     }
+
+    AppCompatDelegate.setDefaultNightMode(viewModel.getNightModeSettings())
+
+    // Collect crash reports only if user has allowed
+    if (viewModel.isCrashReportingAllowed()) {
+      Fabric.with(this, Crashlytics())
+    }
   }
 
   private fun onNavDestinationChanged(destination: NavDestination) {
@@ -42,6 +64,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
     when (destination.id) {
       R.id.navigation_settings,
+      R.id.navigation_settings_bottom_sheet,
       R.id.navigation_filter,
       R.id.navigation_collection,
       R.id.navigation_login -> {

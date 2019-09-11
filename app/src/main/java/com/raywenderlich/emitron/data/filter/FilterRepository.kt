@@ -51,6 +51,20 @@ class FilterRepository @Inject constructor(
   }
 
   /**
+   * Fetch content domains and categories from server and store it to db
+   */
+  @WorkerThread
+  @Throws(Exception::class)
+  suspend fun fetchDomainsAndCategories() {
+    withContext(threadManager.io) {
+      val categories = filterApi.getCategories()
+      filterDataSourceLocal.saveCategories(categories.datum)
+      val domains = filterApi.getDomains()
+      filterDataSourceLocal.saveDomains(domains.datum)
+    }
+  }
+
+  /**
    * Get domains observer
    *
    * @return LiveData<List<Category>> live data observer for domains table

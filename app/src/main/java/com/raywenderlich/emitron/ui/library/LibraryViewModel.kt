@@ -1,20 +1,24 @@
 package com.raywenderlich.emitron.ui.library
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.raywenderlich.emitron.data.content.ContentRepository
+import com.raywenderlich.emitron.data.filter.FilterRepository
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.ui.content.ContentPagedViewModel
+import com.raywenderlich.emitron.utils.Log
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 import javax.inject.Inject
 
 /**
  * View model for library view
  */
 class LibraryViewModel @Inject constructor(
-    private val repository: ContentRepository,
-    /**
-     * Common view model to handle pagination related code
-     */
-    val contentPagedViewModel: ContentPagedViewModel
+  private val repository: ContentRepository,
+  private val contentPagedViewModel: ContentPagedViewModel,
+  private val filterRepository: FilterRepository
 ) : ViewModel() {
 
   /**
@@ -40,4 +44,24 @@ class LibraryViewModel @Inject constructor(
    * @param query search query
    */
   fun saveSearchQuery(query: String): Unit = repository.saveSearchQuery(query)
+
+  /**
+   * Add sync for domains and categories
+   */
+  fun syncDomainsAndCategories() {
+    viewModelScope.launch {
+      try {
+        filterRepository.fetchDomainsAndCategories()
+      } catch (exception: IOException) {
+        Log.exception(exception)
+      } catch (exception: HttpException) {
+        Log.exception(exception)
+      }
+    }
+  }
+
+  /**
+   * @return ContentPagedViewModel
+   */
+  fun getPaginationViewModel(): ContentPagedViewModel = contentPagedViewModel
 }

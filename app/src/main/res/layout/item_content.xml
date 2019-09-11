@@ -65,13 +65,13 @@
         android:layout_height="wrap_content"
         android:maxLines="2"
         android:text="@{data.getName()}"
-        app:layout_constraintVertical_bias="0"
         android:textAppearance="@style/TextAppearance.Headline.4"
         app:layout_constraintBottom_toTopOf="@+id/text_language"
         app:layout_constraintEnd_toStartOf="@+id/image_collection"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintTop_toTopOf="@id/guideline_top"
+        app:layout_constraintVertical_bias="0"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="What's New in Swift 5: Types" />
 
@@ -80,7 +80,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/text_spacing_vertical_title"
-        android:text="@{data.getDomain()}"
         android:textAppearance="@style/TextAppearance.Caption"
         app:layout_constraintBottom_toTopOf="@+id/text_description"
         app:layout_constraintEnd_toEndOf="@+id/text_title"
@@ -110,9 +109,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/text_spacing_vertical_body"
+        android:ellipsize="end"
         android:maxLines="2"
         android:text="@{data.description}"
-        android:ellipsize="end"
         android:textAppearance="@style/TextAppearance.Footnote"
         app:layout_constraintBottom_toTopOf="@+id/spacer"
         app:layout_constraintEnd_toEndOf="@+id/image_collection"
@@ -138,7 +137,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/button_spacing_horizontal"
         android:text="@string/label_pro"
-        android:visibility="@{data.isProLabelVisible()? View.VISIBLE : View.GONE}"
         app:layout_constraintBottom_toBottomOf="@+id/spacer"
         app:layout_constraintEnd_toStartOf="@+id/text_duration"
         app:layout_constraintStart_toStartOf="@+id/text_title"
@@ -162,7 +160,7 @@
         tools:visibility="visible" />
 
       <ProgressBar
-        android:id="@+id/progress_library_download"
+        android:id="@+id/progress_content_download"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="@dimen/height_card_progress_round_height_width"
         android:layout_height="@dimen/height_card_progress_round_height_width"
@@ -170,13 +168,13 @@
         android:indeterminate="false"
         android:progress="@{downloadProgress}"
         android:progressDrawable="@drawable/progress_drawable"
-        app:layout_constraintBottom_toBottomOf="@+id/button_library_download"
+        app:layout_constraintBottom_toBottomOf="@+id/button_download"
         app:layout_constraintEnd_toEndOf="@id/guideline_right"
-        app:layout_constraintTop_toTopOf="@+id/button_library_download"
+        app:layout_constraintTop_toTopOf="@+id/button_download"
         tools:progress="50" />
 
       <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_library_download_stop"
+        android:id="@+id/button_download_stop"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         android:layout_width="@dimen/button_icon_height_width"
         android:layout_height="@dimen/button_icon_height_width"
@@ -194,11 +192,11 @@
 
 
       <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_library_download"
+        android:id="@+id/button_download"
         style="@style/Button.Icon"
         android:layout_width="@dimen/button_icon_height_width"
-        android:visibility="@{downloadProgress > 0? View.GONE : View.VISIBLE}"
         android:layout_height="@dimen/button_icon_height_width"
+        android:visibility="@{downloadProgress > 0? View.GONE : View.VISIBLE}"
         app:icon="@drawable/ic_material_icon_download"
         app:iconSize="@dimen/icon_height_width_2"
         app:layout_constraintBottom_toBottomOf="@+id/spacer"
@@ -213,11 +211,11 @@
         android:layout_width="@dimen/button_icon_height_width"
         android:layout_height="@dimen/button_icon_height_width"
         android:layout_marginStart="@dimen/button_spacing_horizontal"
-        app:iconSize="@dimen/icon_height_width_2"
         app:icon="@drawable/ic_material_icon_bookmark"
+        app:iconSize="@dimen/icon_height_width_2"
         app:iconTint="@{data.isBookmarked()? @color/colorButton1 : @color/colorIcon}"
         app:layout_constraintBottom_toBottomOf="@+id/spacer"
-        app:layout_constraintEnd_toStartOf="@+id/button_library_download"
+        app:layout_constraintEnd_toStartOf="@+id/button_download"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/spacer" />
@@ -226,7 +224,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="@{downloadProgress > 0? View.VISIBLE : View.GONE}"
-        app:constraint_referenced_ids="button_library_download_stop,progress_library_download"
+        app:constraint_referenced_ids="button_download_stop,progress_content_download"
         tools:visibility="visible" />
 
       <androidx.appcompat.widget.AppCompatTextView
@@ -243,7 +241,7 @@
         tools:visibility="visible" />
 
       <ProgressBar
-        android:id="@+id/progress_completion"
+        android:id="@+id/progress_content_progression"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="0dp"
         android:layout_height="@dimen/height_card_progress_height"

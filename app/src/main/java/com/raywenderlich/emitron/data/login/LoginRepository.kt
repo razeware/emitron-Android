@@ -5,7 +5,6 @@ import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.network.AuthInterceptor
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import com.raywenderlich.guardpost.data.SSOUser
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -23,14 +22,14 @@ class LoginRepository @Inject constructor(
    *
    * @return True if user is logged in, otherwise False
    */
-  fun isLoggedIn() = loginPrefs.isLoggedIn()
+  fun isLoggedIn(): Boolean = loginPrefs.isLoggedIn()
 
   /**
    * Check if user has subscription
    *
    * @return True if user has subscription, otherwise False
    */
-  fun hasSubscription() = loginPrefs.hasSubscription()
+  fun hasSubscription(): Boolean = loginPrefs.hasSubscription()
 
   /**
    * Store the user to preferences

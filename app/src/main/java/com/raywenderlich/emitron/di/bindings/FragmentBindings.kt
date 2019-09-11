@@ -10,6 +10,7 @@ import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkFragment
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionFragment
 import com.raywenderlich.emitron.ui.onboarding.OnboardingFragment
 import com.raywenderlich.emitron.ui.player.PlayerFragment
+import com.raywenderlich.emitron.ui.settings.SettingsBottomSheetDialogFragment
 import com.raywenderlich.emitron.ui.settings.SettingsFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -49,4 +50,7 @@ abstract class FragmentBindings {
 
   @ContributesAndroidInjector
   abstract fun contributeProgressionFragment(): ProgressionFragment
+
+  @ContributesAndroidInjector
+  abstract fun contributeSettingsBottomSheetDialogFragment(): SettingsBottomSheetDialogFragment
 }

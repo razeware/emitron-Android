@@ -16,3 +16,13 @@ data class PagedResponse<C, T>(
   /** represents the refresh status*/
   val retry: (() -> Unit)? = null
 )
+
+/**
+ * Data transfer object for local database backed paged list
+ */
+data class LocalPagedResponse<T>(
+  /** paged list */
+  val pagedList: LiveData<PagedList<T>>,
+  /** represents the network request status of boundary callback*/
+  val networkState: LiveData<NetworkState>? = null
+)

@@ -57,12 +57,12 @@
         style="@style/SearchTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/search_view_height_default"
-        android:minHeight="@dimen/search_view_height_default"
         android:hint="@string/label_search"
-        app:endIconDrawable="@drawable/ic_material_icon_close"
-        app:endIconMode="clear_text"
+        android:minHeight="@dimen/search_view_height_default"
         android:paddingTop="0dp"
         android:paddingBottom="0dp"
+        app:endIconDrawable="@drawable/ic_material_icon_close"
+        app:endIconMode="clear_text"
         app:startIconDrawable="@drawable/ic_material_icon_search"
         app:startIconTint="@color/colorIcon3">
 
@@ -71,10 +71,10 @@
           style="@style/SearchEditText"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:paddingTop="@null"
-          android:paddingBottom="@null"
           android:hint="@string/label_search"
-          android:imeActionLabel="@string/label_search" />
+          android:imeActionLabel="@string/label_search"
+          android:paddingTop="@null"
+          android:paddingBottom="@null" />
 
       </com.google.android.material.textfield.TextInputLayout>
 
@@ -169,7 +169,7 @@
       app:layout_constraintStart_toStartOf="@id/guideline_left"
       app:layout_constraintTop_toBottomOf="@+id/text_library_count"
       tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-      tools:listitem="@layout/item_library" />
+      tools:listitem="@layout/item_content" />
 
     <FrameLayout
       android:id="@+id/layout_shimmer_progress_container"

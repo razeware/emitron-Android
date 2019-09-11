@@ -40,7 +40,7 @@ class ContentDataSourceRemote(
     val prevRetry = retry
     retry = null
     prevRetry?.let {
-      threadManager.networkIo.execute {
+      threadManager.networkExecutor.execute {
         it.invoke()
       }
     }

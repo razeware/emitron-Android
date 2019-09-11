@@ -5,6 +5,8 @@
   android:id="@+id/mobile_navigation"
   app:startDestination="@id/navigation_library">
 
+  <include app:graph="@navigation/settings_navigation" />
+
   <fragment
     android:id="@+id/navigation_library"
     android:name="com.raywenderlich.emitron.ui.library.LibraryFragment"
@@ -71,7 +73,7 @@
     tools:layout="@layout/fragment_bookmarks">
     <action
       android:id="@+id/action_navigation_my_tutorials_to_navigation_settings"
-      app:destination="@id/navigation_settings" />
+      app:destination="@id/settings_navigation" />
     <action
       android:id="@+id/action_navigation_my_tutorials_to_navigation_library"
       app:destination="@id/navigation_library" />
@@ -95,16 +97,6 @@
       app:destination="@id/navigation_library"
       app:popUpTo="@id/navigation_library"
       app:popUpToInclusive="true" />
-  </fragment>
-
-  <fragment
-    android:id="@+id/navigation_settings"
-    android:name="com.raywenderlich.emitron.ui.settings.SettingsFragment"
-    tools:layout="@layout/fragment_settings">
-
-    <action
-      android:id="@+id/action_navigation_settings_to_navigation_login"
-      app:destination="@id/navigation_login" />
   </fragment>
 
   <fragment

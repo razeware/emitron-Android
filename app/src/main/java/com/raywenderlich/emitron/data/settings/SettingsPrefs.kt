@@ -1,5 +1,6 @@
 package com.raywenderlich.emitron.data.settings
 
+import androidx.appcompat.app.AppCompatDelegate
 import com.raywenderlich.emitron.data.prefs.PrefUtils
 import javax.inject.Inject
 
@@ -12,6 +13,8 @@ class SettingsPrefs @Inject constructor(private val prefs: PrefUtils) {
 
   companion object {
     private const val RECENT_SEARCHES = "recent_searches"
+    private const val ALLOW_CRASH_REPORTS = "allow_crash_reports"
+    private const val SELECTED_NIGHT_MODE = "selected_night_mode"
   }
 
   init {
@@ -65,4 +68,39 @@ class SettingsPrefs @Inject constructor(private val prefs: PrefUtils) {
   fun clear() {
     prefs.clear()
   }
+
+  /**
+   * Store crash reporting allowed by user in preference
+   *
+   * @param allowed True if user has allowed to store crash reporting false otherwise.
+   */
+  fun saveCrashReportingAllowed(allowed: Boolean) {
+    prefs.set(ALLOW_CRASH_REPORTS, allowed).commit()
+  }
+
+  /**
+   * Store user night mode choice in preference
+   *
+   * @param nightMode Current bight mode setting
+   */
+  fun saveNightMode(nightMode: Int) {
+    prefs.set(SELECTED_NIGHT_MODE, nightMode).commit()
+  }
+
+  /**
+   * Get if user allowed to report crashes
+   *
+   * @return True, if user has allowed crash reporting, else False
+   */
+  fun isCrashReportingAllowed(): Boolean =
+    prefs.get(ALLOW_CRASH_REPORTS, false)
+
+
+  /**
+   * Get user stored night mode from preferences
+   *
+   * @return current night mode
+   */
+  fun getNightMode(): Int =
+    prefs.get(SELECTED_NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_YES)
 }

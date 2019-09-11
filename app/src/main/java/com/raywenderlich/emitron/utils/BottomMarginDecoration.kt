@@ -11,7 +11,9 @@ import com.raywenderlich.emitron.R
 class BottomMarginDecoration : RecyclerView.ItemDecoration() {
 
   /**
-   * Override item offsets to add bottom margin
+   * Update item offsets to add bottom margin
+   *
+   * See [RecyclerView.ItemDecoration.getItemOffsets]
    */
   override fun getItemOffsets(
     outRect: Rect,
