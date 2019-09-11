@@ -2,13 +2,25 @@ package com.raywenderlich.emitron.model
 
 /**
  * Difficulty level for content
- *
- * @param resId Resource if for [Difficulty]
  */
 enum class Difficulty {
+  /**
+   * Beginner
+   */
   Beginner,
+  /**
+   * Advanced
+   */
   Advanced,
+  /**
+   * Intermediate
+   */
   Intermediate;
+
+  /**
+   * Convert the [Difficulty] name to lowercase for use in post requests or to save to db
+   */
+  fun toRequestFormat(): String = this.name.toLowerCase()
 
   companion object {
     /**

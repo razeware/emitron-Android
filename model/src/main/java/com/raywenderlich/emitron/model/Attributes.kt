@@ -39,12 +39,6 @@ data class Attributes(
   val slug: String? = "",
 
   /**
-   * Is content bookmarked?
-   */
-  @Json(name = "bookmarked?")
-  val bookmarked: Boolean? = false,
-
-  /**
    * Card artwork url
    */
   @Json(name = "card_artwork_url")
@@ -90,12 +84,12 @@ data class Attributes(
   /**
    * Content target
    */
-  val target: Long? = 0,
+  val target: Int? = 0,
 
   /**
    * Content current progress
    */
-  val progress: Long? = 0,
+  val progress: Int? = 0,
 
   /**
    * User has finished content

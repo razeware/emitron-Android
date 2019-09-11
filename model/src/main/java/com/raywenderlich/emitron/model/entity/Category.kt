@@ -1,29 +1,40 @@
-package com.raywenderlich.emitron.model
+package com.raywenderlich.emitron.model.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.raywenderlich.emitron.model.Attributes
+import com.raywenderlich.emitron.model.Data
+import com.raywenderlich.emitron.model.DataType
 
 /**
  * Entity to store categories to database
  */
 @Entity(
-    tableName = Category.TABLE_NAME
+  tableName = Category.TABLE_NAME
 )
-class Category {
+data class Category(
 
   /**
    * Category id [Data.id]
    */
   @PrimaryKey
-  @ColumnInfo(name = "id")
-  var categoryId: String = ""
+  @ColumnInfo(name = "category_id")
+  val categoryId: String,
 
   /**
    * Category name [Data.getName]
    */
-  @ColumnInfo(name = "name")
-  var name: String? = ""
+  val name: String?
+) {
+
+  fun toData(): Data = Data(
+    id = categoryId,
+    type = DataType.Categories.toRequestFormat(),
+    attributes = Attributes(
+      name = name
+    )
+  )
 
   companion object {
 
@@ -38,10 +49,10 @@ class Category {
      * @return list of [Category]
      */
     fun listFrom(domains: List<Data>): List<Category> = domains.map {
-      Category().apply {
-        categoryId = it.id!!
+      Category(
+        categoryId = it.id!!,
         name = it.getName()
-      }
+      )
     }
   }
 }

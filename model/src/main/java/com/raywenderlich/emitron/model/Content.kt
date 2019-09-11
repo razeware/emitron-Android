@@ -52,7 +52,7 @@ data class Content(
    *
    * @return String content id
    */
-  fun getChildId(): String = datum?.id ?: ""
+  fun getChildId(): String? = datum?.id
 
   /**
    * Get content data, along with included metadata.
@@ -64,7 +64,7 @@ data class Content(
       return datum
     }
 
-    return datum?.setIncluded(included)
+    return datum?.updateRelationships(included)
   }
 
   /**

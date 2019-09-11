@@ -1,13 +1,27 @@
 package com.raywenderlich.emitron.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 /**
  * Content completion status
  *
- * @param httpRequestValue Value to be use in http requests
+ * @param param Value to be use in http requests
  */
-enum class CompletionStatus(val httpRequestValue: String) {
+@Parcelize
+enum class CompletionStatus(val param: String) : Parcelable {
+
+  /**
+   * Progress in progress
+   */
   InProgress("in_progress"),
+
+  /**
+   * Progress is completed
+   */
   Completed("completed");
+
+  fun isCompleted(): Boolean = this == Completed
 
   companion object {
 
@@ -15,14 +29,5 @@ enum class CompletionStatus(val httpRequestValue: String) {
      * Map of all [CompletionStatus]
      */
     internal val map = values().associateBy(CompletionStatus::name)
-
-    /**
-     * @param type String value of [CompletionStatus]
-     *
-     * @return [CompletionStatus]
-     */
-    fun fromValue(type: String?): CompletionStatus? = type?.let {
-      map[it.capitalize()]
-    }
   }
 }
