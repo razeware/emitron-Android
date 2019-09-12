@@ -3,6 +3,7 @@ package com.raywenderlich.emitron.data.bookmarks
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
 import com.nhaarman.mockitokotlin2.*
+import com.raywenderlich.emitron.data.content.ContentDataSourceLocal
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.DataType
@@ -23,6 +24,8 @@ class BookmarkRepositoryTest {
 
   private val bookmarkApi: BookmarkApi = mock()
 
+  private val contentDataSourceLocal: ContentDataSourceLocal = mock()
+
   private val threadManager: ThreadManager = mock()
 
   @get:Rule
@@ -34,7 +37,7 @@ class BookmarkRepositoryTest {
   @Before
   fun setUp() {
     whenever(threadManager.io).doReturn(Dispatchers.Unconfined)
-    repository = BookmarkRepository(bookmarkApi, threadManager)
+    repository = BookmarkRepository(bookmarkApi, threadManager, contentDataSourceLocal)
   }
 
   @Test
@@ -78,8 +81,8 @@ class BookmarkRepositoryTest {
       whenever(bookmarkApi.deleteBookmark(ArgumentMatchers.anyString()))
         .doReturn(Response.success(200, Any()))
 
-      val result = repository.deleteBookmark("1")
-      verify(bookmarkApi).deleteBookmark("1")
+      val result = repository.deleteBookmark("1", "2")
+      verify(bookmarkApi).deleteBookmark("2")
       Truth.assertThat(result).isTrue()
       verifyNoMoreInteractions(bookmarkApi)
     }
@@ -92,9 +95,9 @@ class BookmarkRepositoryTest {
       val errorResponse: Response<Any> = Response.error(401, responseBody)
       whenever(bookmarkApi.deleteBookmark(ArgumentMatchers.anyString())).doReturn(errorResponse)
 
-      val result2 = repository.deleteBookmark("1")
+      val result2 = repository.deleteBookmark("1", "2")
 
-      verify(bookmarkApi).deleteBookmark("1")
+      verify(bookmarkApi).deleteBookmark("2")
       Truth.assertThat(result2).isFalse()
       verifyNoMoreInteractions(bookmarkApi)
     }

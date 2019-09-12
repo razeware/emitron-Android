@@ -15,6 +15,8 @@ import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import com.raywenderlich.emitron.ui.common.ShimmerProgressDelegate
 import com.raywenderlich.emitron.ui.content.getReadableContributors
 import com.raywenderlich.emitron.ui.content.getReadableReleaseAtWithTypeAndDuration
+import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
+import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
 import com.raywenderlich.emitron.utils.UiStateManager
 import com.raywenderlich.emitron.utils.extensions.*
 import com.raywenderlich.emitron.utils.getDefaultAppBarConfiguration
@@ -43,7 +45,7 @@ class CollectionFragment : DaggerFragment() {
       openPlayer()
     },
     onEpisodeCompleted = { episode, position ->
-      viewModel.toggleEpisodeCompleted(episode, position)
+      viewModel.updateContentProgression(episode, position)
     })
 
   private lateinit var binding: FragmentCollectionBinding
@@ -90,7 +92,7 @@ class CollectionFragment : DaggerFragment() {
     }
 
     binding.buttonCollectionBookmark.setOnClickListener {
-      viewModel.toggleBookmark()
+      viewModel.updateContentBookmark()
     }
 
     binding.buttonCollectionPlay.setOnClickListener {
@@ -139,15 +141,15 @@ class CollectionFragment : DaggerFragment() {
 
     viewModel.bookmarkActionResult.observe(viewLifecycleOwner) {
       when (it?.getContentIfNotHandled()) {
-        CollectionViewModel.BookmarkActionResult.BookmarkCreated -> {
+        BookmarkActionDelegate.BookmarkActionResult.BookmarkCreated -> {
           showSuccessSnackbar(getString(R.string.message_bookmark_created))
         }
-        CollectionViewModel.BookmarkActionResult.BookmarkFailedToCreate ->
+        BookmarkActionDelegate.BookmarkActionResult.BookmarkFailedToCreate ->
           showErrorSnackbar(getString(R.string.message_bookmark_failed_to_create))
-        CollectionViewModel.BookmarkActionResult.BookmarkDeleted -> {
+        BookmarkActionDelegate.BookmarkActionResult.BookmarkDeleted -> {
           showSuccessSnackbar(getString(R.string.message_bookmark_deleted))
         }
-        CollectionViewModel.BookmarkActionResult.BookmarkFailedToDelete ->
+        BookmarkActionDelegate.BookmarkActionResult.BookmarkFailedToDelete ->
           showErrorSnackbar(getString(R.string.message_bookmark_failed_to_delete))
 
         null -> {
@@ -160,16 +162,16 @@ class CollectionFragment : DaggerFragment() {
       val (event, episodePosition) =
         it ?: (null to 0)
       when (event?.getContentIfNotHandled()) {
-        CollectionViewModel.EpisodeProgressionActionResult.EpisodeMarkedCompleted -> {
+        ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeMarkedCompleted -> {
           showSuccessSnackbar(getString(R.string.message_episode_marked_completed))
         }
-        CollectionViewModel.EpisodeProgressionActionResult.EpisodeMarkedInProgress ->
+        ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeMarkedInProgress ->
           showSuccessSnackbar(getString(R.string.message_episode_marked_in_progress))
-        CollectionViewModel.EpisodeProgressionActionResult.EpisodeFailedToMarkComplete -> {
+        ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeFailedToMarkComplete -> {
           adapter.updateEpisodeCompletion(episodePosition)
           showErrorSnackbar(getString(R.string.message_episode_failed_to_mark_completed))
         }
-        CollectionViewModel.EpisodeProgressionActionResult.EpisodeFailedToMarkInProgress -> {
+        ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeFailedToMarkInProgress -> {
           adapter.updateEpisodeCompletion(episodePosition)
           showErrorSnackbar(
             getString(

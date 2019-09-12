@@ -177,7 +177,7 @@ data class Data(
   /**
    * Set the [Contents.included] meta data to this object
    *
-   * @param included list of domains, progressions, bookmarks
+   * @param updatedRelations list of domains, progressions, bookmarks
    *
    * @return this instance
    */
@@ -189,11 +189,7 @@ data class Data(
     val updatedRelationships = relationships
       ?.updateDomains(updatedRelations)
       ?.updateProgression(updatedRelations)
-      ?.updateBookmark(updatedRelations)
-      ?: Relationships()
-        .addDomains(updatedRelations)
-        .addProgression(updatedRelations)
-        .addBookmark(updatedRelations)
+      ?.updateBookmark(updatedRelations) ?: Relationships()
 
     return this.copy(relationships = updatedRelationships)
   }

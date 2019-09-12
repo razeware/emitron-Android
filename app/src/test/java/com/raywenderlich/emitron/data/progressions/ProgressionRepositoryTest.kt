@@ -3,6 +3,7 @@ package com.raywenderlich.emitron.data.progressions
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
 import com.nhaarman.mockitokotlin2.*
+import com.raywenderlich.emitron.data.content.ContentDataSourceLocal
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.DataType
@@ -25,6 +26,8 @@ class ProgressionRepositoryTest {
 
   private val threadManager: ThreadManager = mock()
 
+  private val contentDataSourceLocal: ContentDataSourceLocal = mock()
+
   @get:Rule
   val instantTaskExecutorRule: InstantTaskExecutorRule = InstantTaskExecutorRule()
 
@@ -34,7 +37,7 @@ class ProgressionRepositoryTest {
   @Before
   fun setUp() {
     whenever(threadManager.io).doReturn(Dispatchers.Unconfined)
-    repository = ProgressionRepository(progressionApi, threadManager)
+    repository = ProgressionRepository(progressionApi, threadManager, contentDataSourceLocal)
   }
 
   @Test
