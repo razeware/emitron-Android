@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
-import com.raywenderlich.emitron.model.Domain
+import com.raywenderlich.emitron.model.entity.Domain
 
 /**
  * Dao for Domains

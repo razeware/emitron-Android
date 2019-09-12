@@ -26,14 +26,14 @@ class AttributesTest {
     assertThat(attributes3.getReadableReleasedAt(false, today))
       .isEqualTo(TimeUtils.Day.Formatted("Aug 8"))
 
-    val attributes4 = Attributes(releasedAt = "2019-08-08T00:00:00.000Z")
+    val attributes4 = Attributes(releasedAt = "2018-08-08T00:00:00.000Z")
     assertThat(attributes4.getReadableReleasedAt(true, today))
-      .isEqualTo(TimeUtils.Day.Formatted("Aug 8 2019"))
+      .isEqualTo(TimeUtils.Day.Formatted("Aug 8 2018"))
   }
 
   @Test
   fun getDurationHoursAndMinutes() {
-    val attributes = Attributes()
+    val attributes = Attributes(duration = null)
     assertThat(attributes.getDurationHoursAndMinutes()).isEqualTo(0L to 0L)
 
     val attributes2 = Attributes(duration = 4080)
@@ -42,7 +42,7 @@ class AttributesTest {
 
   @Test
   fun getDurationHoursAndMinutesAndSeconds() {
-    val attributes = Attributes()
+    val attributes = Attributes(duration = null)
     assertThat(attributes.getDurationHoursAndMinutesAndSeconds())
       .isEqualTo(Triple(0L, 0L, 0L))
 

@@ -1,12 +1,11 @@
 package com.raywenderlich.emitron.data.bookmarks
 
 import com.raywenderlich.emitron.model.Content
+import com.raywenderlich.emitron.model.Contents
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 /**
  * Service to make API calls for Bookmarks
@@ -39,6 +38,19 @@ interface BookmarkApi {
     @Path("id") id: String
   ): Response<Any>
 
+  /**
+   * Fetch all bookmarks
+   */
+  @GET("bookmarks")
+  @Throws(Exception::class)
+  fun getBookmarks(
+    @Query("page[number]") pageNumber: Int,
+    @Query("page[size]") pageSize: Int,
+    @Query("filter[content_types][]") contentType: List<String> = listOf(
+      "screencast",
+      "collection"
+    )
+  ): Call<Contents>
 
   companion object {
 

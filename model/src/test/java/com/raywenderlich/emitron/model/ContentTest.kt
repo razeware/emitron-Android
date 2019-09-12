@@ -29,6 +29,9 @@ class ContentTest {
     val content = Content(datum = datum)
 
     assertThat(content.getChildId()).isEqualTo("1")
+
+    val content2 = Content()
+    assertThat(content2.getChildId()).isNull()
   }
 
   @Test

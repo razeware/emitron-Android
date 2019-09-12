@@ -1,6 +1,9 @@
 package com.raywenderlich.emitron.ui.filter
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.raywenderlich.emitron.data.filter.FilterRepository
 import com.raywenderlich.emitron.model.Attributes
 import com.raywenderlich.emitron.model.ContentType
@@ -13,7 +16,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 /**
- * View model for filter view
+ * ViewModel for filter view
  */
 class FilterViewModel @Inject constructor(private val repository: FilterRepository) : ViewModel() {
 
@@ -24,27 +27,12 @@ class FilterViewModel @Inject constructor(private val repository: FilterReposito
   /**
    * Observer for domains
    */
-  val domains: LiveData<List<Data>> = Transformations.map(
-    _domains
-  ) {
-    it?.map { domain ->
-      Data.fromDomain(domain)
-    }?.filter { data ->
-      // Filter out archived domains
-      !data.isLevelArchived()
-    }
-  }
+  val domains: LiveData<List<Data>> = _domains
 
   /**
    * Observer for categories
    */
-  val categories: LiveData<List<Data>> = Transformations.map(
-    _categories
-  ) {
-    it?.map { category ->
-      Data.fromCategory(category)
-    }
-  }
+  val categories: LiveData<List<Data>> = _categories
 
 
   /**

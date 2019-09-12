@@ -37,39 +37,124 @@ class RelationshipsTest {
   }
 
   @Test
-  fun setDomains() {
+  fun updateDomains() {
     val domains = listOf(
-      Data(id = "1", attributes = Attributes(name = "iOS & Swift")),
+      Data(
+        id = "1",
+        type = "domains",
+        attributes = Attributes(name = "iOS & Swift")
+      ),
       Data(attributes = Attributes(name = "Android & Kotlin"))
     )
     val relationShip = Relationships()
-    val result = relationShip.setDomains(emptyList())
+    val result = relationShip.updateDomains(emptyList())
     assertThat(result).isEqualTo(relationShip)
 
     val relationShip2 = Relationships(
       domains = Contents(
-        listOf(Data(id = "1"))
+        listOf(
+          Data(
+            id = "1",
+            type = "domains"
+          )
+        )
       )
     )
-    val result2 = relationShip2.setDomains(domains)
+    val result2 = relationShip2.updateDomains(domains)
     assertThat(result2.getDomainName()).isEqualTo("iOS & Swift")
   }
 
   @Test
-  fun setProgression() {
+  fun updateProgression() {
     val progressions = listOf(
       Data(attributes = Attributes(finished = true)),
       Data(attributes = Attributes(finished = false))
     )
     val relationShip = Relationships()
-    val result = relationShip.setProgression(emptyList())
+    val result = relationShip.updateProgression(emptyList())
     assertThat(result).isEqualTo(relationShip)
 
     val relationShip2 = Relationships(
       progression = Content(datum = Data(attributes = Attributes(finished = true)))
     )
-    val result2 = relationShip2.setProgression(progressions)
+    val result2 = relationShip2.updateProgression(progressions)
     assertThat(result2.hasFinishedContent()).isTrue()
+  }
+
+  @Test
+  fun updateBookmark() {
+    val bookmarks = listOf(
+      Data(
+        id = "1",
+        type = "bookmarks",
+        attributes = Attributes()
+      )
+    )
+    val relationShip = Relationships()
+    val result = relationShip.updateBookmark(emptyList())
+    assertThat(result).isEqualTo(relationShip)
+
+    val relationShip2 = Relationships(
+      bookmark = Content(datum = Data(id = "1", type = "bookmarks"))
+    )
+    val result2 = relationShip2.updateBookmark(bookmarks)
+    assertThat(result2.getBookmarkId()).isEqualTo("1")
+  }
+
+  @Test
+  fun addDomains() {
+    val domains = listOf(
+      Data(
+        id = "1",
+        type = "domains",
+        attributes = Attributes(name = "iOS & Swift")
+      ),
+      Data(attributes = Attributes(name = "Android & Kotlin"))
+    )
+    val relationShip = Relationships()
+    val result = relationShip.addDomains(emptyList())
+    assertThat(result).isEqualTo(relationShip)
+
+    val relationShip2 = Relationships()
+    val result2 = relationShip2.addDomains(domains)
+    assertThat(result2.getDomainName()).isEqualTo("iOS & Swift")
+  }
+
+  @Test
+  fun addProgression() {
+    val progressions = listOf(
+      Data(id = "1", type = "progressions", attributes = Attributes(finished = true)),
+      Data(type = "progressions", attributes = Attributes(finished = false))
+    )
+    val relationShip = Relationships()
+    val result = relationShip.addProgression(emptyList())
+    assertThat(result).isEqualTo(relationShip)
+
+    val relationShip2 = Relationships()
+    val result2 = relationShip2.addProgression(progressions)
+    assertThat(result2.hasFinishedContent()).isTrue()
+  }
+
+  @Test
+  fun addBookmark() {
+    val bookmarks = listOf(
+      Data(
+        id = "1",
+        type = "bookmarks",
+        attributes = Attributes()
+      )
+    )
+    val relationShip = Relationships()
+    val result = relationShip.addBookmark(emptyList())
+    assertThat(result).isEqualTo(relationShip)
+
+    val relationShip2 = Relationships()
+    val result2 = relationShip2.addBookmark(bookmarks)
+    assertThat(result2.getBookmarkId()).isEqualTo("1")
+
+    val relationShip3 = Relationships()
+    val result3 = relationShip3.addBookmark("1")
+    assertThat(result3.getBookmarkId()).isEqualTo("1")
   }
 
   @Test
@@ -86,6 +171,29 @@ class RelationshipsTest {
       progression = Content(datum = Data(id = "11"))
     )
     assertThat(relationShip.getProgressionId()).isEqualTo("11")
+  }
+
+  @Test
+  fun getContentId() {
+    val relationShip = Relationships(
+      content = Content(datum = Data(id = "12"))
+    )
+    assertThat(relationShip.getContentId()).isEqualTo("12")
+  }
+
+
+  @Test
+  fun getDomainIds() {
+    val relationShip = Relationships(
+      domains = Contents(
+        datum = listOf(
+          Data(id = "10"),
+          Data(id = "11"),
+          Data(id = "12")
+        )
+      )
+    )
+    assertThat(relationShip.getDomainIds()).isEqualTo(listOf("10", "11", "12"))
   }
 
   @Test
@@ -128,5 +236,8 @@ class RelationshipsTest {
         )
       )
     )
+
+    val relationships2 = Relationships()
+    assertThat(relationships2.setContents(emptyList())).isEqualTo(relationships2)
   }
 }

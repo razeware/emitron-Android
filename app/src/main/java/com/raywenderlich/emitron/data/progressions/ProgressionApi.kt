@@ -1,12 +1,11 @@
 package com.raywenderlich.emitron.data.progressions
 
 import com.raywenderlich.emitron.model.Content
+import com.raywenderlich.emitron.model.Contents
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 /**
  * Service for API calls for Progressions
@@ -39,6 +38,19 @@ interface ProgressionApi {
     @Path("id") id: String
   ): Response<Any>
 
+  /**
+   * Fetch all progressions
+   */
+  @GET("progressions")
+  fun getProgressions(
+    @Query("page[number]") pageNumber: Int,
+    @Query("page[size]") pageSize: Int,
+    @Query("filter[content_types][]") contentType: List<String> = listOf(
+      "screencast",
+      "collection"
+    ),
+    @Query("filter[completion_status]") completionStatus: String
+  ): Call<Contents>
 
   companion object {
 

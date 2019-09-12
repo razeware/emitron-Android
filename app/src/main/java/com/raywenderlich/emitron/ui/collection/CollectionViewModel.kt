@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.raywenderlich.emitron.data.bookmarks.BookmarkRepository
 import com.raywenderlich.emitron.data.content.ContentRepository
-import com.raywenderlich.emitron.data.progressions.ProgressionRepository
 import com.raywenderlich.emitron.model.ContentType
 import com.raywenderlich.emitron.model.Contents
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.ui.common.UiStateViewModel
+import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
+import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
 import com.raywenderlich.emitron.utils.Event
 import com.raywenderlich.emitron.utils.NetworkState
 import com.raywenderlich.emitron.utils.UiStateManager
@@ -26,8 +26,8 @@ import javax.inject.Inject
  */
 class CollectionViewModel @Inject constructor(
   private val repository: ContentRepository,
-  private val bookmarkRepository: BookmarkRepository,
-  private val progressionRepository: ProgressionRepository
+  private val bookmarkActionDelegate: BookmarkActionDelegate,
+  private val progressionActionDelegate: ProgressionActionDelegate
 ) : ViewModel(), UiStateViewModel {
 
   private val _networkState = MutableLiveData<NetworkState>()
@@ -45,56 +45,7 @@ class CollectionViewModel @Inject constructor(
 
   private val _collectionContentType = MutableLiveData<ContentType>()
 
-  private val _bookmarkActionResult = MutableLiveData<Event<BookmarkActionResult>>()
-
   private val _loadCollectionResult = MutableLiveData<Event<Boolean>>()
-
-  private val _completionActionResult =
-    MutableLiveData<Pair<Event<EpisodeProgressionActionResult>, Int>>()
-
-  /**
-   * Bookmark action API result
-   */
-  enum class BookmarkActionResult {
-    /**
-     * Create Bookmark request succeeded
-     */
-    BookmarkCreated,
-    /**
-     * Create Bookmark request failed
-     */
-    BookmarkFailedToCreate,
-    /**
-     * Delete Bookmark request succeeded
-     */
-    BookmarkDeleted,
-    /**
-     * Delete Bookmark request failed
-     */
-    BookmarkFailedToDelete
-  }
-
-  /**
-   * Progression action API result
-   */
-  enum class EpisodeProgressionActionResult {
-    /**
-     * Episode progression complete request succeeded
-     */
-    EpisodeMarkedCompleted,
-    /**
-     * Episode progression complete request succeeded
-     */
-    EpisodeMarkedInProgress,
-    /**
-     * Episode progression in progress request succeeded
-     */
-    EpisodeFailedToMarkComplete,
-    /**
-     * Episode progression in progress request succeeded
-     */
-    EpisodeFailedToMarkInProgress,
-  }
 
   /**
    * Observer for collection details
@@ -126,19 +77,16 @@ class CollectionViewModel @Inject constructor(
    * Observer for bookmark action
    *
    */
-  val bookmarkActionResult: LiveData<Event<BookmarkActionResult>>
-    get() {
-      return _bookmarkActionResult
-    }
+  val bookmarkActionResult: LiveData<Event<BookmarkActionDelegate.BookmarkActionResult>> =
+    bookmarkActionDelegate.bookmarkActionResult
 
   /**
    * Observer for progression action
    *
    */
-  val completionActionResult: LiveData<Pair<Event<EpisodeProgressionActionResult>, Int>>
-    get() {
-      return _completionActionResult
-    }
+  val completionActionResult:
+      LiveData<Pair<Event<ProgressionActionDelegate.EpisodeProgressionActionResult>, Int>> =
+    progressionActionDelegate.completionActionResult
 
   /**
    * Observer for progression action
@@ -178,21 +126,23 @@ class CollectionViewModel @Inject constructor(
         null
       }
 
-      _collection.value = fetchedCollection?.datum
+      fetchedCollection?.apply {
+        _collection.value = fetchedCollection.datum?.updateRelationships(fetchedCollection.included)
 
-      // If content is not screencast, set the episodes
-      if (fetchedCollection?.isTypeScreencast() == false) {
+        // If content is not screencast, set the episodes
+        if (!fetchedCollection.isTypeScreencast()) {
 
-        fetchedCollection.apply {
-          val fetchedCollectionEpisodes = getGroups().flatMap {
-            val groupedDataIds = it.getGroupedDataIds()
-            val data =
-              included?.filter { (id) -> id in groupedDataIds }
-                ?.map { data -> data.setIncluded(included) }
-            EpisodeItem.buildFrom(it.copy(relationships = it.relationships?.setContents(data)))
+          fetchedCollection.apply {
+            val fetchedCollectionEpisodes = getGroups().flatMap {
+              val groupedDataIds = it.getGroupedDataIds()
+              val data =
+                included?.filter { (id) -> id in groupedDataIds }
+                  ?.map { data -> data.updateRelationships(included) }
+              EpisodeItem.buildFrom(it.copy(relationships = it.relationships?.setContents(data)))
+            }
+
+            _collectionEpisodes.value = fetchedCollectionEpisodes
           }
-
-          _collectionEpisodes.value = fetchedCollectionEpisodes
         }
       }
       uiState.value = UiStateManager.UiState.LOADED
@@ -222,112 +172,26 @@ class CollectionViewModel @Inject constructor(
   }
 
   /**
-   * Bookmark/Un-bookmark the collection
+   * Add or remove collection from bookmarks
    */
-  fun toggleBookmark() {
-    val collection = _collection.value ?: return
-
-    val onFailure = {
-      val event = if (collection.isBookmarked()) {
-        Event(BookmarkActionResult.BookmarkFailedToDelete)
-      } else {
-        Event(BookmarkActionResult.BookmarkFailedToCreate)
-      }
-      _bookmarkActionResult.value = event
-    }
-
+  fun updateContentBookmark() {
     viewModelScope.launch {
-      try {
-        if (collection.isBookmarked()) {
-          deleteCollectionBookmark(collection.getBookmarkId())
-        } else {
-          bookmarkCollection(collection.id)
-        }
-      } catch (exception: IOException) {
-        onFailure()
-      } catch (exception: HttpException) {
-        onFailure()
-      }
+      _collection.value = bookmarkActionDelegate.updateContentBookmark(collection.value)
     }
   }
 
   /**
-   * Mark episode completed/in-progress
+   * Mark a collection episode completed or in-progress
+   *
+   * @param episode to be marked completed
+   * @param position position of episode in a list
    */
-  fun toggleEpisodeCompleted(episode: Data?, position: Int) {
-    if (null == episode) {
-      return
-    }
-
-    val onFailure = {
-      val event = if (episode.isFinished()) {
-        Event(EpisodeProgressionActionResult.EpisodeFailedToMarkInProgress)
-      } else {
-        Event(EpisodeProgressionActionResult.EpisodeFailedToMarkComplete)
-      }
-      _completionActionResult.value = event to position
-    }
-
+  fun updateContentProgression(episode: Data?, position: Int = 0) {
     viewModelScope.launch {
-      try {
-        if (episode.isFinished()) {
-          markEpisodeInProgress(episode.id, position)
-        } else {
-          markEpisodeCompleted(episode.id, position)
-        }
-      } catch (exception: IOException) {
-        onFailure()
-      } catch (exception: HttpException) {
-        onFailure()
-      }
-    }
-  }
-
-  private suspend fun bookmarkCollection(collectionId: String?) {
-    collectionId?.let {
-      val (bookmark, result) = bookmarkRepository.createBookmark(collectionId)
-      _bookmarkActionResult.value = if (result) {
-        val collection = _collection.value
-        _collection.value = collection?.addBookmark(bookmark)
-        Event(BookmarkActionResult.BookmarkCreated)
-      } else {
-        Event(BookmarkActionResult.BookmarkFailedToCreate)
-      }
-    }
-  }
-
-  private suspend fun deleteCollectionBookmark(bookmarkId: String?) {
-    bookmarkId?.let {
-      val result = bookmarkRepository.deleteBookmark(bookmarkId)
-      _bookmarkActionResult.value = if (result) {
-        val collection = _collection.value
-        _collection.value = collection?.removeBookmark()
-        Event(BookmarkActionResult.BookmarkDeleted)
-      } else {
-        Event(BookmarkActionResult.BookmarkFailedToDelete)
-      }
-    }
-  }
-
-  private suspend fun markEpisodeCompleted(episodeId: String?, position: Int) {
-    episodeId?.let {
-      val (_, result) = progressionRepository.updateProgression(episodeId)
-      _completionActionResult.value = if (result) {
-        Event(EpisodeProgressionActionResult.EpisodeMarkedCompleted) to position
-      } else {
-        Event(EpisodeProgressionActionResult.EpisodeFailedToMarkComplete) to position
-      }
-    }
-  }
-
-  private suspend fun markEpisodeInProgress(episodeId: String?, position: Int) {
-    episodeId?.let {
-      val (_, result) = progressionRepository.updateProgression(episodeId)
-      _completionActionResult.value = if (result) {
-        Event(EpisodeProgressionActionResult.EpisodeMarkedInProgress) to position
-      } else {
-        Event(EpisodeProgressionActionResult.EpisodeFailedToMarkInProgress) to position
-      }
+      progressionActionDelegate.updateContentProgression(
+        episode,
+        position
+      )
     }
   }
 }

@@ -1,7 +1,6 @@
 package com.raywenderlich.emitron.utils.extensions
 
 import android.content.Context
-import android.net.ConnectivityManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -20,12 +19,7 @@ import androidx.fragment.app.Fragment
  *
  * @return Will return True if connected, otherwise False
  */
-fun Fragment.isNetConnected(): Boolean {
-  val connectivityManager =
-    requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-  val networkInfo = connectivityManager.activeNetworkInfo
-  return !(networkInfo == null || !networkInfo.isConnected)
-}
+fun Fragment.isNetConnected(): Boolean = requireContext().isNetConnected()
 
 /**
  * Extension function to check if no connectivity

@@ -13,7 +13,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 /**
- * View model for library view
+ * ViewModel for library view
  */
 class LibraryViewModel @Inject constructor(
   private val repository: ContentRepository,

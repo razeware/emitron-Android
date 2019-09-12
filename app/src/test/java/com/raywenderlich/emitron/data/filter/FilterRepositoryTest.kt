@@ -1,12 +1,18 @@
 package com.raywenderlich.emitron.data.filter
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
 import com.nhaarman.mockitokotlin2.*
+import com.raywenderlich.emitron.model.Attributes
 import com.raywenderlich.emitron.model.Contents
 import com.raywenderlich.emitron.model.Data
+import com.raywenderlich.emitron.model.entity.Category
+import com.raywenderlich.emitron.model.entity.Domain
 import com.raywenderlich.emitron.utils.CurrentThreadExecutor
 import com.raywenderlich.emitron.utils.TestCoroutineRule
 import com.raywenderlich.emitron.utils.async.ThreadManager
+import com.raywenderlich.emitron.utils.isEqualTo
+import com.raywenderlich.emitron.utils.observeForTestingResultNullable
 import kotlinx.coroutines.Dispatchers
 import org.junit.Before
 import org.junit.Rule
@@ -37,7 +43,31 @@ class FilterRepositoryTest {
 
   @Test
   fun getCategories() {
-    repository.getCategories()
+
+    // Given
+    whenever(filterDataSourceLocal.getCategories()).doReturn(MutableLiveData<List<Category>>().apply {
+      value = listOf(
+        Category(categoryId = "1", name = "Architecture"),
+        Category(categoryId = "2", name = "Algorithms")
+      )
+    })
+
+    // When
+    val result = repository.getCategories().observeForTestingResultNullable()
+
+    // Then
+    result isEqualTo listOf(
+      Data(
+        id = "1",
+        type = "categories",
+        attributes = Attributes(name = "Architecture")
+      ),
+      Data(
+        id = "2",
+        type = "categories",
+        attributes = Attributes(name = "Algorithms")
+      )
+    )
 
     verify(filterDataSourceLocal).getCategories()
     verifyNoMoreInteractions(filterDataSourceLocal)
@@ -120,7 +150,26 @@ class FilterRepositoryTest {
 
   @Test
   fun getDomains() {
-    repository.getDomains()
+    whenever(filterDataSourceLocal.getDomains()).doReturn(MutableLiveData<List<Domain>>().apply {
+      value = listOf(
+        Domain(domainId = "1", name = "iOS & Swift"),
+        Domain(domainId = "2", name = "Android & Kotlin"),
+        Domain(domainId = "1", name = "Flutter & Dart", level = "archived")
+      )
+    })
+    val result = repository.getDomains().observeForTestingResultNullable()
+    result isEqualTo listOf(
+      Data(
+        id = "1",
+        type = "domains",
+        attributes = Attributes(name = "iOS & Swift", level = null)
+      ),
+      Data(
+        id = "2",
+        type = "domains",
+        attributes = Attributes(name = "Android & Kotlin", level = null)
+      )
+    )
 
     verify(filterDataSourceLocal).getDomains()
     verifyNoMoreInteractions(filterDataSourceLocal)

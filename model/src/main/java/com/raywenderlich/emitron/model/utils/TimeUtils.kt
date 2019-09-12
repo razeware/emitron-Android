@@ -34,7 +34,7 @@ object TimeUtils {
    * Format ISO time stamp to readable date
    *
    * @param timestamp timestamp string for parsing
-   * @param hasYear should we parse without year
+   * @param withYear should we parse without year
    * @param today LocalDateTime instance for parsing
    *
    * @return [Day]

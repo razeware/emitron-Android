@@ -68,34 +68,140 @@ data class Relationships(
   fun getPercentComplete(): Int = progression?.getPercentComplete() ?: 0
 
   /**
-   * Set domains
+   * Update domains to existing [Data.relationships] with domains
    *
-   * @return domainList List<Data> list of domains
+   * @param domainRelations list of domains
+   *
+   * @return Updated relationship
    */
-  fun setDomains(domainList: List<Data>): Relationships {
-    if (domainList.isEmpty()) {
+  fun updateDomains(domainRelations: List<Data>): Relationships {
+    val domains = domainRelations.filter {
+      it.isTypeDomain()
+    }
+
+    if (domains.isEmpty()) {
       return this
     }
 
     return run {
       val domainIds = this.domains?.getDomainIds() ?: emptyList()
-      val filteredDomainList = domainList.filter { domainIds.contains(it.id) }
+      val filteredDomainList = domains.filter { domainIds.contains(it.id) }
       this.copy(domains = Contents(datum = filteredDomainList))
     }
   }
 
   /**
-   * Set progressions
+   * Add domains to existing [Data.relationships] with no domains
    *
-   * @return domainList List<Data> list of progressions
+   * @param domainRelations list of domains
+   *
+   * @return Updated relationship
    */
-  fun setProgression(progressions: List<Data>): Relationships {
+  fun addDomains(domainRelations: List<Data>): Relationships {
+    val domains = domainRelations.filter {
+      it.isTypeDomain()
+    }
+
+    if (domains.isEmpty()) {
+      return this
+    }
+
+    return this.copy(domains = Contents(datum = domains))
+  }
+
+  /**
+   * Update progressions to existing [Data.relationships] with progressions
+   *
+   * @param progressionRelations list of progressions
+   *
+   * @return Updated relationship
+   */
+  fun updateProgression(progressionRelations: List<Data>): Relationships {
+    val progressions = progressionRelations.filter {
+      it.isTypeProgression()
+    }
+
     if (progressions.isEmpty()) {
       return this
     }
     val progressionData =
       progressions.firstOrNull { it.id == progression?.getChildId() } ?: return this
     return this.copy(progression = Content(datum = progressionData))
+  }
+
+  /**
+   * Add progressions to existing [Data.relationships]
+   *
+   * @param progressionRelations list of progressions with no progressions
+   *
+   * @return Updated relationship
+   */
+  fun addProgression(progressionRelations: List<Data>): Relationships {
+    val progressions = progressionRelations.filter {
+      it.isTypeProgression()
+    }
+
+    if (progressions.isEmpty()) {
+      return this
+    }
+
+    return this.copy(progression = Content(datum = progressions.first()))
+  }
+
+  /**
+   * Updated bookmarks to existing [Data.relationships] with bookmarks
+   *
+   * @param bookmarkRelations list of bookmarks
+   *
+   * @return Updated relationship
+   */
+  fun updateBookmark(bookmarkRelations: List<Data>): Relationships {
+    val bookmarks = bookmarkRelations.filter {
+      it.isTypeBookmark()
+    }
+
+    if (bookmarks.isEmpty()) {
+      return this
+    }
+    val bookmarkData =
+      bookmarks.firstOrNull { it.id == bookmark?.getChildId() } ?: return this
+    return this.copy(bookmark = Content(datum = bookmarkData))
+  }
+
+  /**
+   * Add bookmarks to existing [Data.relationships] with no bookmarks
+   *
+   * @param bookmarkRelations list of progressions
+   *
+   * @return Updated relationship
+   */
+  fun addBookmark(bookmarkRelations: List<Data>): Relationships {
+    val bookmarks = bookmarkRelations.filter {
+      it.isTypeBookmark()
+    }
+
+    if (bookmarks.isEmpty()) {
+      return this
+    }
+
+    return this.copy(bookmark = Content(datum = bookmarks.first()))
+  }
+
+  /**
+   * Add bookmark by id to existing [Data.relationships]
+   *
+   * @param bookmarkId Bookmark Id
+   *
+   * @return Updated relationship
+   */
+  fun addBookmark(bookmarkId: String?): Relationships {
+    val bookmark = Content(
+      datum = Data(
+        id = bookmarkId, type =
+        DataType.Bookmarks.toRequestFormat()
+      )
+    )
+    return this.copy(bookmark = bookmark)
   }
 
   /**
@@ -133,12 +239,26 @@ data class Relationships(
    *
    * @return Relationships
    */
-  fun setContents(contentList: List<Data>?): Relationships? {
+  fun setContents(contentList: List<Data>?): Relationships {
     if (contentList.isNullOrEmpty()) {
-      return null
+      return this
     }
     return this.copy(
       contents = Contents(datum = contentList)
     )
   }
+
+  /**
+   * Get child data id for content
+   *
+   * @return content id
+   */
+  fun getContentId(): String? = content?.getChildId()
+
+  /**
+   * Get domain ids
+   *
+   * @return list of domain id
+   */
+  fun getDomainIds(): List<String>? = domains?.getDomainIds()
 }

@@ -10,4 +10,10 @@ class ContentTypeTest {
     val contentType = ContentType.Screencast
     assertThat(contentType.isScreenCast()).isTrue()
   }
+
+  @Test
+  fun toRequestFormat() {
+    val contentType = ContentType.Screencast
+    assertThat(contentType.toRequestFormat()).isEqualTo("screencast")
+  }
 }

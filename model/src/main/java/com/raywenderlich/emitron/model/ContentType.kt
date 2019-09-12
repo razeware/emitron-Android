@@ -1,9 +1,7 @@
 package com.raywenderlich.emitron.model;
 
 /**
- * @param type String value of [ContentType]
- *
- * @return [ContentType]
+ * Content type
  */
 enum class ContentType {
   /**
@@ -20,6 +18,11 @@ enum class ContentType {
    */
   fun isScreenCast(): Boolean = this == Screencast
 
+  /**
+   * Convert the [ContentType] name to lowercase for use in post requests or to save to db
+   */
+  fun toRequestFormat(): String = this.name.toLowerCase()
+
   companion object {
 
     /**
@@ -34,6 +37,14 @@ enum class ContentType {
      */
     fun fromValue(type: String?): ContentType? = type?.let { map[it.capitalize()] }
 
-    fun getAllowedContentType() = values().map { it.name.toLowerCase() }.toTypedArray()
+    /**
+     * Allowed supported [ContentType]s
+     *
+     * If required you can filter out the [ContentType] not supported by the app
+     *
+     * @return List of [ContentType]
+     */
+    fun getAllowedContentType(): Array<String> =
+      values().map { it.name.toLowerCase() }.toTypedArray()
   }
 }

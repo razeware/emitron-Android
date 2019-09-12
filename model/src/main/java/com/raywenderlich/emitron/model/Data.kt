@@ -1,44 +1,47 @@
 package com.raywenderlich.emitron.model
 
 import android.os.Parcelable
+import com.raywenderlich.emitron.model.entity.Category
+import com.raywenderlich.emitron.model.entity.Domain
 import com.raywenderlich.emitron.model.utils.TimeUtils
+import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
-import org.threeten.bp.Clock
 import org.threeten.bp.LocalDateTime
 
 /**
  *  Model class for Bookmark, Domain, Progression, Content, Group.
  */
+@JsonClass(generateAdapter = true)
 @Parcelize
 data class Data(
-    /**
-     *  Id
-     */
-    val id: String? = null,
-    /**
-     * Maps to [DataType]
-     */
-    val type: String? = null,
-    /**
-     *  Attributes
-     */
-    val attributes: Attributes? = null,
-    /**
-     *  Links
-     */
-    val links: Links? = null,
-    /**
-     *  Relationships
-     */
-    val relationships: Relationships? = null,
-    /**
-     *  Meta
-     */
-    val meta: Meta? = null,
-    /**
-     *  Contents
-     */
-    val included: Contents? = null
+  /**
+   *  Id
+   */
+  val id: String? = null,
+  /**
+   * Maps to [DataType]
+   */
+  val type: String? = null,
+  /**
+   *  Attributes
+   */
+  val attributes: Attributes? = null,
+  /**
+   *  Links
+   */
+  val links: Links? = null,
+  /**
+   *  Relationships
+   */
+  val relationships: Relationships? = null,
+  /**
+   *  Meta
+   */
+  val meta: Meta? = null,
+  /**
+   *  Contents
+   */
+  val included: Contents? = null
 ) : Parcelable {
   /**
    *  Name
@@ -57,12 +60,14 @@ data class Data(
   /**
    *  @return true if type is [DataType.Progressions], else false
    */
-  private fun isTypeProgression(): Boolean = DataType.Progressions == DataType.fromValue(this.type)
+  fun isTypeProgression(): Boolean = DataType.Progressions == DataType.fromValue(this.type)
 
   /**
    *  @return true if type is [DataType.Domains], else false
    */
-  private fun isTypeDomain(): Boolean = DataType.Domains == DataType.fromValue(type)
+  fun isTypeDomain(): Boolean = DataType.Domains == DataType.fromValue(type)
+
+  fun isTypeBookmark(): Boolean = DataType.Bookmarks == DataType.fromValue(this.type)
 
   /**
    *  @return content description
@@ -105,25 +110,37 @@ data class Data(
    *  @return true if content requires subscription, else false
    */
   fun isProLabelVisible(): Boolean =
-      !isTypeProgression() && !isFreeContent() && !isFinished()
+    !isTypeProgression() && !isFreeContent() && !isFinished()
 
   /**
    *  @return [TimeUtils.Day] after parsing release date of content
    */
   fun getReleasedAt(
-      withYear: Boolean, today: LocalDateTime = LocalDateTime.now(Clock.systemUTC())
+    withYear: Boolean,
+    today: LocalDateTime
   ): TimeUtils.Day =
-      attributes?.getReadableReleasedAt(withYear, today) ?: TimeUtils.Day.None
+    attributes?.getReadableReleasedAt(withYear, today) ?: TimeUtils.Day.None
+
+  /**
+   * @return released at in ISO format
+   */
+  fun getReleasedAt(): String = attributes?.releasedAt ?: ""
 
   /**
    *  @return [Pair] of hours, minutes for watch duration content
    */
-  fun getDuration(): Pair<Long, Long> = attributes?.getDurationHoursAndMinutes() ?: 0L to 0L
+  fun getDurationHoursAndMinutes(): Pair<Long, Long> =
+    attributes?.getDurationHoursAndMinutes() ?: 0L to 0L
+
+  /**
+   * @return Content duration in millis
+   */
+  fun getDuration(): Long = attributes?.duration ?: 0
 
   /**
    *  @return true if content is bookmarked, else false
    */
-  fun isBookmarked(): Boolean = attributes?.bookmarked ?: false
+  fun isBookmarked(): Boolean = !relationships?.getBookmarkId().isNullOrEmpty()
 
   /**
    *  @return technology string for content
@@ -160,53 +177,38 @@ data class Data(
   /**
    * Set the [Contents.included] meta data to this object
    *
-   * @param included list of domains, progressions, bookmarks
+   * @param updatedRelations list of domains, progressions, bookmarks
    *
    * @return this instance
    */
-  fun setIncluded(included: List<Data>?): Data {
-    if (included.isNullOrEmpty()) {
+  fun updateRelationships(updatedRelations: List<Data>?): Data {
+    if (updatedRelations.isNullOrEmpty()) {
       return this
     }
 
-    return setDomain(included).setProgression(included)
+    val updatedRelationships = relationships
+      ?.updateDomains(updatedRelations)
+      ?.updateProgression(updatedRelations)
+      ?.updateBookmark(updatedRelations) ?: Relationships()
+
+    return this.copy(relationships = updatedRelationships)
   }
 
-  /**
-   * Set the [Contents.included] domains to this object
-   *
-   * @param included list of domains
-   *
-   * @return this instance
-   */
-  private fun setDomain(included: List<Data>): Data {
-    val domains = included.filter {
-      it.isTypeDomain()
-    }
-
-    if (domains.isEmpty()) {
+  fun addRelationships(newRelations: List<Data>?): Data {
+    if (newRelations.isNullOrEmpty()) {
       return this
     }
 
-    val relationships =
-        relationships?.setDomains(domains) ?: Relationships().setDomains(domains)
+    val newRelationShips = relationships
+      ?.addDomains(newRelations)
+      ?.addProgression(newRelations)
+      ?.addBookmark(newRelations)
+      ?: Relationships()
+        .addDomains(newRelations)
+        .addProgression(newRelations)
+        .addBookmark(newRelations)
 
-    return this.copy(relationships = relationships)
-  }
-
-  private fun setProgression(included: List<Data>): Data {
-    val progressions = included.filter {
-      it.isTypeProgression()
-    }
-
-    if (progressions.isEmpty()) {
-      return this
-    }
-
-    val relationships =
-        relationships?.setProgression(progressions) ?: Relationships().setProgression(progressions)
-
-    return this.copy(relationships = relationships)
+    return this.copy(relationships = newRelationShips)
   }
 
   /**
@@ -227,8 +229,15 @@ data class Data(
    * @return Data after adding bookmark
    */
   fun addBookmark(bookmark: Content?): Data {
-    val relationships = this.relationships?.copy(bookmark = bookmark)
-    val attributes = this.attributes?.copy(bookmarked = true) ?: Attributes(bookmarked = true)
+    val relationships =
+      this.relationships?.copy(bookmark = bookmark) ?: Relationships(bookmark = bookmark)
+    return this.copy(attributes = attributes, relationships = relationships)
+  }
+
+  fun addBookmark(bookmarkId: String?): Data {
+    val relationships =
+      this.relationships?.addBookmark(bookmarkId = bookmarkId)
+        ?: Relationships().addBookmark(bookmarkId = bookmarkId)
     return this.copy(attributes = attributes, relationships = relationships)
   }
 
@@ -239,7 +248,6 @@ data class Data(
    */
   fun removeBookmark(): Data {
     val relationships = this.relationships?.copy(bookmark = null)
-    val attributes = this.attributes?.copy(bookmarked = false)
     return this.copy(attributes = attributes, relationships = relationships)
   }
 
@@ -278,7 +286,7 @@ data class Data(
    * Mark episode finished/ or in-progress
    */
   fun toggleFinished(): Data =
-      this.copy(attributes = this.attributes?.copy(finished = !this.isFinished()))
+    this.copy(attributes = this.attributes?.copy(finished = !this.isFinished()))
 
   /**
    * Get episode number
@@ -290,7 +298,19 @@ data class Data(
    * else String of position
    */
   fun getEpisodeNumber(position: Int, episodeIsProContent: Boolean): String =
-      if (episodeIsProContent || isFinished()) "" else position.toString()
+    if (episodeIsProContent || isFinished()) "" else position.toString()
+
+  /**
+   *  @return content id for relationships
+   */
+  fun getContentId(): String = relationships?.getContentId() ?: ""
+
+  /**
+   * Get list of domain ids from relationships
+   *
+   * @return list of domain ids
+   */
+  fun getDomainIds(): List<String> = relationships?.getDomainIds() ?: emptyList()
 
   companion object {
 
@@ -301,7 +321,7 @@ data class Data(
      */
     fun getDomainIds(dataList: List<Data>): List<String> {
       return dataList.filter { it.isTypeDomain() }
-          .mapNotNull { it.id }
+        .mapNotNull { it.id }
     }
 
     /**
@@ -311,7 +331,7 @@ data class Data(
      */
     fun getCategoryIds(dataList: List<Data>): List<String> {
       return dataList.filter { DataType.Categories == DataType.fromValue(it.type) }
-          .mapNotNull { it.id }
+        .mapNotNull { it.id }
     }
 
     /**
@@ -321,7 +341,7 @@ data class Data(
      */
     fun getSearchTerm(dataList: List<Data>): String {
       return dataList.firstOrNull { DataType.Search == DataType.fromValue(it.type) }?.getName()
-          ?: ""
+        ?: ""
     }
 
     /**
@@ -331,8 +351,8 @@ data class Data(
      */
     fun getSortOrder(dataList: List<Data>): String {
       val sortOrder =
-          dataList.firstOrNull { DataType.Sort == DataType.fromValue(it.type) }?.getName()
-              ?: ""
+        dataList.firstOrNull { DataType.Sort == DataType.fromValue(it.type) }?.getName()
+          ?: ""
       return SortOrder.fromValue(sortOrder)?.param ?: SortOrder.Newest.param
     }
 
@@ -345,13 +365,13 @@ data class Data(
      * @return [Data] for passed category
      */
     fun fromCategory(category: Category): Data =
-        Data(
-            id = category.categoryId,
-            type = DataType.Categories.toRequestFormat(),
-            attributes = Attributes(
-                name = category.name
-            )
+      Data(
+        id = category.categoryId,
+        type = DataType.Categories.toRequestFormat(),
+        attributes = Attributes(
+          name = category.name
         )
+      )
 
     /**
      * Create a data object from [Domain] row
@@ -361,14 +381,15 @@ data class Data(
      * @return [Data] for passed domain
      */
     fun fromDomain(domain: Domain): Data =
-        Data(
-            id = domain.domainId,
-            type = DataType.Domains.toRequestFormat(),
-            attributes = Attributes(
-                name = domain.name,
-                level = domain.level
-            )
+      Data(
+        id = domain.domainId,
+        type = DataType.Domains.toRequestFormat(),
+        attributes = Attributes(
+          name = domain.name,
+          level = domain.level
         )
+      )
+
 
     /**
      * Create a data object for search query
@@ -378,12 +399,12 @@ data class Data(
      * @return [Data] for passed query
      */
     fun fromSearchQuery(searchTerm: String?): Data =
-        Data(
-            type = DataType.Search.toRequestFormat(),
-            attributes = Attributes(
-                name = searchTerm
-            )
+      Data(
+        type = DataType.Search.toRequestFormat(),
+        attributes = Attributes(
+          name = searchTerm
         )
+      )
 
     /**
      * Create a data object for sort order
@@ -393,11 +414,12 @@ data class Data(
      * @return [Data] for passed query
      */
     fun fromSortOrder(sortOrder: String?): Data =
-        Data(
-            type = DataType.Sort.toRequestFormat(),
-            attributes = Attributes(
-                name = sortOrder
-            )
+      Data(
+        type = DataType.Sort.toRequestFormat(),
+        attributes = Attributes(
+          name = sortOrder
         )
+      )
   }
 }
+
