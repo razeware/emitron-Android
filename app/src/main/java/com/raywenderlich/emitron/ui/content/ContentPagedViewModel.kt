@@ -15,7 +15,7 @@ import com.raywenderlich.emitron.utils.UiStateManager
 import javax.inject.Inject
 
 /**
- * Delegate view model class for common code related to paging library (pagination) integration
+ * Delegate ViewModel helper for common code related to paging library (pagination) integration
  */
 class ContentPagedViewModel @Inject constructor() : UiStateViewModel {
 

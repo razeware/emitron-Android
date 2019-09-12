@@ -2,6 +2,7 @@ package com.raywenderlich.emitron.utils
 
 import androidx.annotation.MainThread
 import androidx.paging.PagedList
+import javax.inject.Inject
 
 /**
  * Helper to pass [PagedList.BoundaryCallback] state of
@@ -9,7 +10,7 @@ import androidx.paging.PagedList
  * - when it should reset page number
  *
  */
-class BoundaryCallbackNotifier {
+class BoundaryCallbackNotifier @Inject constructor() {
   internal var requestCount = 0
   internal var pageReset = false
 }

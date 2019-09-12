@@ -16,7 +16,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 /**
- * View model for filter view
+ * ViewModel for filter view
  */
 class FilterViewModel @Inject constructor(private val repository: FilterRepository) : ViewModel() {
 
