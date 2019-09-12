@@ -138,6 +138,8 @@
     <item name="android:letterSpacing">@fraction/letter_spacing_body</item>
   </style>
 
+  <style name="TextAppearance.Body.Bold" parent="Text.Bold" />
+
   <style name="TextAppearance.Body.1" parent="TextAppearance.Body">
     <item name="android:textSize">@dimen/text_size_body_1</item>
     <item name="android:textColor">@color/textColorBody1</item>
@@ -148,6 +150,11 @@
     <item name="android:textSize">@dimen/text_size_body_2</item>
     <item name="android:textColor">@color/textColorBody2</item>
     <item name="android:lineHeight">@dimen/line_height_body_2</item>
+  </style>
+
+  <style name="TextAppearance.Body.2.Bold" parent="TextAppearance.Body.Bold">
+    <item name="android:textSize">@dimen/text_size_body_2</item>
+    <item name="android:textColor">@color/textColorBody2</item>
   </style>
 
   <style name="TextAppearance.Body.2.Inverse" parent="TextAppearance.Body.2">

@@ -26,4 +26,7 @@
   <color name="colorNavDivider">@color/bright_grey</color>
   <color name="colorBoxStroke">@color/blue_grey</color>
   <color name="colorContentProgressBackground">@color/blue_grey</color>
+
+  <color name="colorTabSelected">@color/white</color>
+  <color name="colorTabDefault">@color/bright_grey</color>
 </resources>

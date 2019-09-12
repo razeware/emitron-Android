@@ -88,4 +88,7 @@
   <color name="colorBoxStroke">@color/white</color>
   <color name="colorContentProgressBackground">@color/white</color>
   <color name="colorContentProgress">@color/colorPrimary</color>
+
+  <color name="colorTabSelected">@color/colorPrimary</color>
+  <color name="colorTabDefault">@color/transparent</color>
 </resources>

@@ -38,6 +38,9 @@
   <!-- Chip -->
   <dimen name="chip_height_default">40dp</dimen>
 
+  <!-- TabLayout -->
+  <dimen name="tab_indicator_height">2dp</dimen>
+
   <!-- Text -->
   <dimen name="text_size_h1">30sp</dimen>
   <dimen name="text_size_h2">24sp</dimen>
