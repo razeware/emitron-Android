@@ -19,6 +19,12 @@ interface ProgressionDao {
   @Update(onConflict = IGNORE)
   fun updateProgressions(contents: List<Progression>)
 
-  @Query("UPDATE progressions set finished = :finished WHERE progression_id = :progressionId")
-  suspend fun updateProgress(progressionId: String, finished: Boolean)
+  @Query(
+    """
+          UPDATE progressions set finished = :finished
+          WHERE progression_id = 
+          (SELECT progression_id from contents where content_id = :contentId)
+          """
+  )
+  suspend fun updateProgress(contentId: String, finished: Boolean)
 }

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5c2f1424cbe143f65bae03972a2e6fa3",
+    "identityHash": "59581473db1fcc1bc584a1117abcd838",
     "entities": [
       {
         "tableName": "domains",
@@ -64,7 +64,7 @@
       },
       {
         "tableName": "contents",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`content_id` TEXT NOT NULL, `description` TEXT, `contributors` TEXT, `free` INTEGER NOT NULL, `deleted` INTEGER NOT NULL, `name` TEXT, `content_type` TEXT, `difficulty` TEXT, `released_at` TEXT NOT NULL, `download_progress` INTEGER NOT NULL, `finished` INTEGER NOT NULL, `technology` TEXT, `duration` INTEGER NOT NULL, `stream_url` TEXT NOT NULL, `card_artwork_url` TEXT, `video_id` TEXT, `bookmark_id` TEXT, `progression_id` TEXT, `updated_at` TEXT NOT NULL, PRIMARY KEY(`content_id`), FOREIGN KEY(`progression_id`) REFERENCES `progressions`(`progression_id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`content_id` TEXT NOT NULL, `description` TEXT, `contributors` TEXT, `free` INTEGER NOT NULL, `deleted` INTEGER NOT NULL, `name` TEXT, `content_type` TEXT, `difficulty` TEXT, `released_at` TEXT NOT NULL, `download_progress` INTEGER NOT NULL, `technology` TEXT, `duration` INTEGER NOT NULL, `stream_url` TEXT NOT NULL, `card_artwork_url` TEXT, `video_id` TEXT, `bookmark_id` TEXT, `progression_id` TEXT, `updated_at` TEXT NOT NULL, PRIMARY KEY(`content_id`), FOREIGN KEY(`progression_id`) REFERENCES `progressions`(`progression_id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "contentId",
@@ -123,12 +123,6 @@
           {
             "fieldPath": "downloadProgress",
             "columnName": "download_progress",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "finished",
-            "columnName": "finished",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -221,7 +215,7 @@
       },
       {
         "tableName": "progressions",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`progression_id` TEXT NOT NULL, `progress` INTEGER, `finished` INTEGER NOT NULL, PRIMARY KEY(`progression_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`progression_id` TEXT NOT NULL, `percent_complete` INTEGER, `finished` INTEGER NOT NULL, PRIMARY KEY(`progression_id`))",
         "fields": [
           {
             "fieldPath": "progressionId",
@@ -230,8 +224,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "progress",
-            "columnName": "progress",
+            "fieldPath": "percentComplete",
+            "columnName": "percent_complete",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -331,7 +325,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5c2f1424cbe143f65bae03972a2e6fa3')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '59581473db1fcc1bc584a1117abcd838')"
     ]
   }
 }

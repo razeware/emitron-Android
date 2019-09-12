@@ -103,6 +103,16 @@ class BookmarkRepositoryTest {
     }
   }
 
+  @Test
+  fun updateBookmarkInDb() {
+    testCoroutineRule.runBlockingTest {
+      repository.updateBookmarkInDb("1", "2")
+
+      verify(contentDataSourceLocal).updateBookmark("1", bookmarkId = "2")
+      verifyNoMoreInteractions(contentDataSourceLocal)
+    }
+  }
+
   private fun createBookmarkStub() = Content(
     datum = Data(
       type = DataType.Bookmarks.toRequestFormat(),

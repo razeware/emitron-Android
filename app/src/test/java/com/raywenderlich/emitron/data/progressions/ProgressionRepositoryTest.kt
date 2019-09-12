@@ -103,6 +103,16 @@ class ProgressionRepositoryTest {
     }
   }
 
+  @Test
+  fun updateProgressionInDb() {
+    testCoroutineRule.runBlockingTest {
+      repository.updateProgressionInDb("1", true)
+
+      verify(contentDataSourceLocal).updateProgress("1", true)
+      verifyNoMoreInteractions(contentDataSourceLocal)
+    }
+  }
+
   private fun createProgressionStub() = Content(
     datum = Data(
       type = DataType.Progressions.toRequestFormat(),

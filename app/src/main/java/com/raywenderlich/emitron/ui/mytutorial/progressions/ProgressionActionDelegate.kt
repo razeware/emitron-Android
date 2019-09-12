@@ -85,8 +85,10 @@ class ProgressionActionDelegate @Inject constructor(
       }
 
       _completionActionResult.value = if (result) {
+        progressionRepository.updateProgressionInDb(episodeId, true)
         Event(EpisodeProgressionActionResult.EpisodeMarkedCompleted) to position
       } else {
+        progressionRepository.updateProgressionInDb(episodeId, false)
         Event(EpisodeProgressionActionResult.EpisodeFailedToMarkComplete) to position
       }
     }
@@ -102,8 +104,10 @@ class ProgressionActionDelegate @Inject constructor(
         null to false
       }
       _completionActionResult.value = if (result) {
+        progressionRepository.updateProgressionInDb(episodeId, false)
         Event(EpisodeProgressionActionResult.EpisodeMarkedInProgress) to position
       } else {
+        progressionRepository.updateProgressionInDb(episodeId, true)
         Event(EpisodeProgressionActionResult.EpisodeFailedToMarkInProgress) to position
       }
     }
