@@ -475,4 +475,182 @@ class CollectionViewModelTest {
     }
   }
 
+  @Test
+  fun updateContentProgression_markCompletedSuccess() {
+    whenever(
+      progressionActionDelegate.completionActionResult
+    ).doReturn(
+      MutableLiveData<Pair<Event<ProgressionActionDelegate.EpisodeProgressionActionResult>, Int>>().apply {
+        value =
+          Event(ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeMarkedCompleted) to 4
+      }
+    )
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+
+      val episodeData = Data(
+        id = "8", type = "contents",
+        attributes = Attributes(name = "eight"),
+        relationships = Relationships(
+          progression = Content(
+            datum = Data(
+              id = "10",
+              attributes = Attributes(finished = false),
+              type = "progression"
+            )
+          )
+        )
+      )
+
+      val episodePosition = 4
+
+      // When
+      viewModel.completionActionResult.observeForTestingResultNullable()
+      viewModel.updateContentProgression(episodeData, episodePosition)
+
+      // Then
+      verify(progressionActionDelegate).completionActionResult
+      verify(progressionActionDelegate).updateContentProgression(episodeData, episodePosition)
+      verifyNoMoreInteractions(progressionActionDelegate)
+      viewModel.completionActionResult.value?.first?.peekContent() isEqualTo
+          ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeMarkedCompleted
+      viewModel.completionActionResult.value?.second isEqualTo
+          episodePosition
+    }
+  }
+
+  @Test
+  fun updateContentProgression_markCompletedFailure() {
+    whenever(
+      progressionActionDelegate.completionActionResult
+    ).doReturn(
+      MutableLiveData<Pair<Event<ProgressionActionDelegate.EpisodeProgressionActionResult>, Int>>().apply {
+        value =
+          Event(ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeFailedToMarkComplete) to 4
+      }
+    )
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+
+      // Given
+      val episodeData = Data(
+        id = "8", type = "contents",
+        attributes = Attributes(name = "eight"),
+        relationships = Relationships(
+          progression = Content(
+            datum = Data(
+              id = "10",
+              attributes = Attributes(finished = false),
+              type = "progression"
+            )
+          )
+        )
+      )
+
+      val episodePosition = 4
+
+      // When
+      viewModel.completionActionResult.observeForTestingResultNullable()
+      viewModel.updateContentProgression(episodeData, episodePosition)
+
+      // Then
+      verify(progressionActionDelegate).completionActionResult
+      verify(progressionActionDelegate).updateContentProgression(episodeData, episodePosition)
+      verifyNoMoreInteractions(progressionActionDelegate)
+      viewModel.completionActionResult.value?.first?.peekContent() isEqualTo
+          ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeFailedToMarkComplete
+      viewModel.completionActionResult.value?.second isEqualTo
+          episodePosition
+    }
+  }
+
+  @Test
+  fun toggleEpisodeCompleted_markInProgressSuccess() {
+    whenever(
+      progressionActionDelegate.completionActionResult
+    ).doReturn(
+      MutableLiveData<Pair<Event<ProgressionActionDelegate.EpisodeProgressionActionResult>, Int>>().apply {
+        value =
+          Event(ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeMarkedInProgress) to 4
+      }
+    )
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+
+      // Given
+      val episodeData = Data(
+        id = "8", type = "contents",
+        attributes = Attributes(name = "eight"),
+        relationships = Relationships(
+          progression = Content(
+            datum = Data(
+              id = "10",
+              attributes = Attributes(finished = true),
+              type = "progression"
+            )
+          )
+        )
+      )
+
+      val episodePosition = 4
+
+      // When
+      viewModel.completionActionResult.observeForTestingResultNullable()
+      viewModel.updateContentProgression(episodeData, episodePosition)
+
+      // Then
+      verify(progressionActionDelegate).completionActionResult
+      verify(progressionActionDelegate).updateContentProgression(episodeData, episodePosition)
+      verifyNoMoreInteractions(progressionActionDelegate)
+      viewModel.completionActionResult.value?.first?.peekContent() isEqualTo
+          ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeMarkedInProgress
+      viewModel.completionActionResult.value?.second isEqualTo
+          episodePosition
+    }
+  }
+
+  @Test
+  fun updateContentProgression_markInProgressFailure() {
+    whenever(
+      progressionActionDelegate.completionActionResult
+    ).doReturn(
+      MutableLiveData<Pair<Event<ProgressionActionDelegate.EpisodeProgressionActionResult>, Int>>().apply {
+        value =
+          Event(ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeFailedToMarkInProgress) to 4
+      }
+    )
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+
+      // Given
+      val episodeData = Data(
+        id = "8", type = "contents",
+        attributes = Attributes(name = "eight"),
+        relationships = Relationships(
+          progression = Content(
+            datum = Data(
+              id = "10",
+              attributes = Attributes(finished = true),
+              type = "progression"
+            )
+          )
+        )
+      )
+
+      val episodePosition = 4
+
+      // When
+      viewModel.completionActionResult.observeForTestingResultNullable()
+      viewModel.updateContentProgression(episodeData, episodePosition)
+
+      // Then
+      verify(progressionActionDelegate).completionActionResult
+      verify(progressionActionDelegate).updateContentProgression(episodeData, episodePosition)
+      verifyNoMoreInteractions(progressionActionDelegate)
+      viewModel.completionActionResult.value?.first?.peekContent() isEqualTo
+          ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeFailedToMarkInProgress
+      viewModel.completionActionResult.value?.second isEqualTo
+          episodePosition
+    }
+  }
 }
