@@ -78,7 +78,7 @@
       android:id="@+id/action_navigation_my_tutorials_to_navigation_library"
       app:destination="@id/navigation_library" />
     <action
-      android:id="@+id/action_navigation_my_tutorials_navigation_collection"
+      android:id="@+id/action_navigation_my_tutorials_to_navigation_collection"
       app:destination="@id/navigation_collection">
       <argument
         android:name="collection"
@@ -104,9 +104,9 @@
     android:name="com.raywenderlich.emitron.ui.player.PlayerFragment"
     tools:layout="@layout/fragment_player">
     <argument
-      android:name="videos"
+      android:name="playlist"
       android:defaultValue="@null"
-      app:argType="com.raywenderlich.emitron.model.Contents"
+      app:argType="com.raywenderlich.emitron.ui.player.Playlist"
       app:nullable="true" />
   </fragment>
 </navigation>
