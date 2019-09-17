@@ -30,7 +30,7 @@ buildscript {
 
       // ui
       'constraintLayout'            : "1.1.3",
-      'exoplayer'                   : "2.10.1",
+      'exoplayer'                   : "2.10.4",
       'navigation'                  : "2.1.0",
       'materialDesign'              : '1.1.0-alpha09',
       'vectorDrawable'              : "1.0.1",
