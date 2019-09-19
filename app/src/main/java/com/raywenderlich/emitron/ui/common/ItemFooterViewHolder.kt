@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.raywenderlich.emitron.databinding.ItemFooterBinding
-import com.raywenderlich.emitron.ui.common.ItemErrorViewHolder.Companion.toVisibility
 import com.raywenderlich.emitron.utils.NetworkState
+import com.raywenderlich.emitron.utils.extensions.toVisibility
 
 /**
  * View holder for footer progress/error
@@ -29,12 +29,9 @@ class ItemFooterViewHolder(
    * @param networkState Network status
    */
   fun bindTo(networkState: NetworkState?) {
-    viewDataBinding.progressBar.visibility =
-      toVisibility(networkState == NetworkState.RUNNING)
-    viewDataBinding.textViewProgress.visibility =
-      toVisibility(networkState == NetworkState.RUNNING)
-    viewDataBinding.buttonRetry.visibility =
-      toVisibility(networkState == NetworkState.FAILED)
+    viewDataBinding.progressBar.toVisibility(networkState == NetworkState.RUNNING)
+    viewDataBinding.textViewProgress.toVisibility(networkState == NetworkState.RUNNING)
+    viewDataBinding.buttonRetry.toVisibility(networkState == NetworkState.FAILED)
   }
 
   companion object {

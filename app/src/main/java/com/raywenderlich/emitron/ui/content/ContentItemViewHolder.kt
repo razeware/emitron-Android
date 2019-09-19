@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.raywenderlich.emitron.databinding.ItemContentBinding
 import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.ui.common.ItemErrorViewHolder.Companion.toVisibility
+import com.raywenderlich.emitron.utils.extensions.toVisibility
 
 /**
  * View holder to represent content item in library, bookmark, downloads and progression UI
@@ -33,14 +33,13 @@ class ContentItemViewHolder(private val binding: ItemContentBinding) :
       content?.getReadableReleaseAtWithTypeAndDuration(binding.root.context)
     binding.textLanguage.text = content?.getDomain()
 
-    binding.progressContentProgression.visibility =
-      toVisibility(
-        !adapterContent.isContent()
-            && !adapterContent.isBookmarked()
-            && !adapterContent.isCompleted()
-      )
-    binding.textCollectionLabelPro.visibility = toVisibility(adapterContent.isContent())
-    binding.buttonBookmark.visibility = toVisibility(adapterContent.isBookmarked())
+    binding.progressContentProgression.toVisibility(
+      !adapterContent.isContent()
+          && !adapterContent.isBookmarked()
+          && !adapterContent.isCompleted()
+    )
+    binding.textCollectionLabelPro.toVisibility(adapterContent.isContent())
+    binding.buttonBookmark.toVisibility(adapterContent.isBookmarked())
     binding.buttonBookmark.setOnClickListener {
       bookmarkCallback?.invoke(adapterPosition)
     }
