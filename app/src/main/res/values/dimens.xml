@@ -40,6 +40,7 @@
   <dimen name="button_padding_internal_dense">4dp</dimen>
   <dimen name="button_inset">2dp</dimen>
   <dimen name="button_icon_height_width">48dp</dimen>
+  <dimen name="button_icon_height_width_dense">36dp</dimen>
   <dimen name="button_spacing_horizontal">8dp</dimen>
 
   <!-- Chip -->
@@ -123,12 +124,10 @@
   <dimen name="banner_play_icon_padding">12dp</dimen>
   <dimen name="banner_play_stroke_width">4dp</dimen>
   <dimen name="banner_play_corner_radius">9dp</dimen>
+  <dimen name="episode_progress_corner_radius">6dp</dimen>
 
   <!-- Card divider height -->
   <dimen name="height_card_divider">1dp</dimen>
-
-  <!-- Player settings -->
-  <dimen name="player_settings_button_row_margin_top">32dp</dimen>
 
   <!-- Login view -->
   <dimen name="login_logo_height_width">72dp</dimen>
@@ -136,5 +135,20 @@
   <!-- Filter view -->
   <dimen name="filter_progress_height">4dp</dimen>
   <dimen name="filter_progress_margin_start_end">4dp</dimen>
+
+  <!-- Player -->
+  <dimen name="button_forward_rewind_height_width">44dp</dimen>
+  <dimen name="button_play_pause_height_width">64dp</dimen>
+  <dimen name="button_play_progress_height_width">56dp</dimen>
+  <dimen name="button_player_settings_height_width">40dp</dimen>
+  <dimen name="player_progress_bar_margin_start_end">12dp</dimen>
+  <dimen name="player_progress_bar_margin_height">16dp</dimen>
+  <dimen name="player_settings_button_row_margin_top">32dp</dimen>
+  <dimen name="player_auto_play_progress_margin_top">32dp</dimen>
+  <dimen name="player_playback_token_error_margin_top">24dp</dimen>
+
+  <!-- Settings -->
+  <dimen name="settings_row_height">56dp</dimen>
+
 
 </resources>

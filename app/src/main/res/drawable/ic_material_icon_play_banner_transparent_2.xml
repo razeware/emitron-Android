@@ -3,10 +3,16 @@
 
   <item>
     <shape android:shape="rectangle">
+      <padding
+        android:bottom="@dimen/banner_play_icon_padding"
+        android:left="@dimen/banner_play_icon_padding"
+        android:right="@dimen/banner_play_icon_padding"
+        android:top="@dimen/banner_play_icon_padding" />
+
       <corners android:radius="@dimen/banner_play_corner_radius" />
       <stroke
         android:width="@dimen/banner_play_stroke_width"
-        android:color="@color/colorIconInverse" />
+        android:color="@color/colorPrimary" />
       <size
         android:width="@dimen/banner_play_icon_width_height"
         android:height="@dimen/banner_play_icon_width_height" />
@@ -14,11 +20,6 @@
   </item>
 
   <item
-    android:bottom="@dimen/banner_play_icon_padding"
-    android:drawable="@drawable/ic_material_icon_play"
-    android:gravity="center"
-    android:left="@dimen/banner_play_icon_padding"
-    android:right="@dimen/banner_play_icon_padding"
-    android:top="@dimen/banner_play_icon_padding" />
+    android:drawable="@drawable/ic_material_icon_play_primary" />
 
 </layer-list>
