@@ -15,6 +15,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentSettingsBottomsheetBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
+import com.raywenderlich.emitron.ui.player.PlayerFragment.Companion.subtitleLanguageEnglish
 import com.raywenderlich.emitron.utils.extensions.setDataBindingView
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
@@ -40,6 +41,80 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
         SettingsFragmentDirections
           .actionNavigationSettingsBottomSheet(headerResId)
       navController.navigate(settingsBottomSheetDirection)
+    }
+
+    val nightModeToResIdMap: Map<Int, Int> by lazy {
+      mapOf(
+        AppCompatDelegate.MODE_NIGHT_NO to R.string.button_off,
+        AppCompatDelegate.MODE_NIGHT_YES to R.string.button_on,
+        AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM to R.string.button_system_default
+      )
+    }
+
+    val playbackSubtitleLanguageToResIdMap: Map<String, Int> by lazy {
+      mapOf(
+        "" to R.string.button_off,
+        subtitleLanguageEnglish to R.string.button_player_label_english
+      )
+    }
+
+    val settingsPlaybackQualityOptions: List<Int> by lazy {
+      listOf(
+        R.string.playback_quality_1080p_recommended,
+        R.string.playback_quality_720p,
+        R.string.playback_quality_540p,
+        R.string.playback_quality_360p,
+        R.string.playback_quality_240p,
+        R.string.playback_quality_auto
+      )
+    }
+
+    val settingsPlaybackSpeedOptions: List<Int> by lazy {
+      listOf(
+        R.string.playback_speed_normal,
+        R.string.playback_speed_0_5x,
+        R.string.playback_speed_0_75x,
+        R.string.playback_speed_1_25x,
+        R.string.playback_speed_1_5x,
+        R.string.playback_speed_2x
+      )
+    }
+
+    val settingsSubtitleLanguageOptions: List<Int> by lazy {
+      listOf(
+        R.string.button_off,
+        R.string.button_player_label_english
+      )
+    }
+
+    val settingsNightModeOptions: List<Int> by lazy {
+      listOf(
+        R.string.button_on,
+        R.string.button_off,
+        R.string.button_system_default
+      )
+    }
+
+    val playbackQualityToResIdMap: Map<Int, Int> by lazy {
+      mapOf(
+        1080 to R.string.playback_quality_1080p_recommended,
+        720 to R.string.playback_quality_720p,
+        540 to R.string.playback_quality_540p,
+        360 to R.string.playback_quality_360p,
+        240 to R.string.playback_quality_240p,
+        1 to R.string.playback_quality_auto
+      )
+    }
+
+    val playbackSpeedToResIdMap: Map<Float, Int> by lazy {
+      mapOf(
+        1f to R.string.playback_speed_normal,
+        0.5f to R.string.playback_speed_0_5x,
+        0.75f to R.string.playback_speed_0_75x,
+        1.25f to R.string.playback_speed_1_25x,
+        1.5f to R.string.playback_speed_1_5x,
+        2f to R.string.playback_speed_2x
+      )
     }
   }
 
@@ -97,24 +172,45 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
     super.onAttach(context)
   }
 
-  private fun getSettingsOptions(@StringRes headerResId: Int): List<String> {
+  private fun getSettingsOptions(@StringRes headerResId: Int): List<Pair<String, Boolean>> {
     return when (headerResId) {
       R.string.label_night_mode -> {
-        getNightModeOptions().map { getString(it) }
+        settingsNightModeOptions.map {
+          getString(it) to (nightModeToResIdMap.getOrElse(
+            viewModel.getNightMode(),
+            { R.string.button_system_default }) == it)
+        }
+      }
+      R.string.label_video_playback_quality -> {
+        settingsPlaybackQualityOptions.map {
+          getString(it) to (playbackQualityToResIdMap.getOrElse(
+            viewModel.getPlaybackQuality(),
+            { R.string.button_player_auto }) == it)
+        }
+      }
+      R.string.label_video_playback_speed -> {
+        settingsPlaybackSpeedOptions.map {
+          getString(it) to (playbackSpeedToResIdMap.getOrElse(
+            viewModel.getPlaybackSpeed(),
+            { R.string.button_system_default }) == it)
+        }
+      }
+      R.string.label_subtitles -> {
+        settingsSubtitleLanguageOptions.map {
+          getString(it) to (playbackSubtitleLanguageToResIdMap.getOrElse(
+            viewModel.getSubtitleLanguage(),
+            { R.string.button_off }) == it)
+        }
       }
       else -> {
-        getNightModeOptions().map { getString(it) }
+        settingsNightModeOptions.map {
+          getString(it) to (nightModeToResIdMap.getOrElse(
+            it,
+            { R.string.button_system_default }) == it)
+        }
       }
     }
   }
-
-  // The order of options will define the order in options UI
-  private fun getNightModeOptions(): List<Int> =
-    listOf(
-      R.string.button_on,
-      R.string.button_off,
-      R.string.button_system_default
-    )
 
   private fun onSettingsChange(
     @StringRes headerResId: Int,
@@ -122,9 +218,64 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
   ) {
     when (headerResId) {
       R.string.label_night_mode -> {
-        updateNightModeSettings(position, getNightModeOptions())
+        updateNightModeSettings(position, settingsNightModeOptions)
+      }
+      R.string.label_video_playback_quality -> {
+        updatePlaybackQualitySettings(position, settingsPlaybackQualityOptions)
+      }
+      R.string.label_video_playback_speed -> {
+        updatePlaybackSpeedSettings(position, settingsPlaybackSpeedOptions)
+      }
+      R.string.label_subtitles -> {
+        updateSubtitleLanguage(position, settingsSubtitleLanguageOptions)
       }
     }
+  }
+
+  private fun updatePlaybackSpeedSettings(position: Int, options: List<Int>) {
+    val playbackSpeed = when (options[position]) {
+      R.string.playback_speed_0_5x -> {
+        0.5f
+      }
+      R.string.playback_speed_0_75x -> {
+        0.75f
+      }
+      R.string.playback_speed_1_25x -> {
+        1.25f
+      }
+      R.string.playback_speed_1_5x -> {
+        1.5f
+      }
+      R.string.playback_speed_2x -> {
+        2f
+      }
+      else -> 1f
+    }
+    viewModel.updatePlaybackSpeed(playbackSpeed)
+    dismiss()
+  }
+
+  private fun updatePlaybackQualitySettings(position: Int, options: List<Int>) {
+    val playbackQuality = when (options[position]) {
+      R.string.playback_quality_720p -> {
+        720
+      }
+      R.string.playback_quality_540p -> {
+        540
+      }
+      R.string.playback_quality_360p -> {
+        360
+      }
+      R.string.playback_quality_240p -> {
+        240
+      }
+      R.string.playback_quality_auto -> {
+        1
+      }
+      else -> 1080
+    }
+    viewModel.updatePlaybackQuality(playbackQuality)
+    dismiss()
   }
 
   /**
@@ -144,6 +295,19 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
       }
     }
     viewModel.updateNightMode(nightMode)
+    dismiss()
+  }
+
+  private fun updateSubtitleLanguage(position: Int, options: List<Int>) {
+    val subtitleLanguage = when (options[position]) {
+      R.string.button_player_label_english -> {
+        "en"
+      }
+      else -> {
+        ""
+      }
+    }
+    viewModel.updateSubtitlesLanguage(subtitleLanguage)
     dismiss()
   }
 }

@@ -48,25 +48,89 @@
       app:layout_constraintVertical_chainStyle="packed" />
 
     <androidx.appcompat.widget.AppCompatTextView
-      android:id="@+id/title_video_speed"
+      android:id="@+id/title_video_quality"
       style="@style/TextAppearance.Body.1"
       android:layout_width="0dp"
-      android:layout_height="56dp"
+      android:layout_height="@dimen/settings_row_height"
       android:gravity="center_vertical"
-      android:text="@string/label_video_playback_speed"
-      android:visibility="gone"
-      app:layout_constraintBottom_toTopOf="@+id/divider_1"
-      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      android:text="@string/label_video_playback_quality"
+      app:layout_constraintBottom_toTopOf="@+id/divider_0"
+      app:layout_constraintEnd_toStartOf="@id/settings_selected_video_quality"
       app:layout_constraintStart_toStartOf="@id/guideline_left"
       app:layout_constraintTop_toBottomOf="@id/toolbar"
       app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/settings_selected_video_quality"
+      style="@style/TextAppearance.Label"
+      android:layout_width="wrap_content"
+      android:layout_height="@dimen/settings_row_height"
+      android:gravity="center_vertical"
+      app:layout_constraintBottom_toTopOf="@id/divider_0"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toEndOf="@id/title_video_quality"
+      app:layout_constraintTop_toBottomOf="@+id/toolbar"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="1080p" />
+
+    <View
+      android:id="@+id/settings_video_quality"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:layout_constraintBottom_toTopOf="@id/divider_0"
+      app:layout_constraintEnd_toEndOf="@id/settings_selected_video_quality"
+      app:layout_constraintStart_toStartOf="@id/title_video_quality"
+      app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <View
+      android:id="@+id/divider_0"
+      android:layout_width="0dp"
+      android:layout_height="@dimen/height_card_divider"
+      android:background="@color/colorDivider"
+      app:layout_constraintBottom_toTopOf="@id/title_video_speed"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/title_video_quality" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/title_video_speed"
+      style="@style/TextAppearance.Body.1"
+      android:layout_width="0dp"
+      android:layout_height="@dimen/settings_row_height"
+      android:gravity="center_vertical"
+      android:text="@string/label_video_playback_speed"
+      app:layout_constraintBottom_toTopOf="@+id/divider_1"
+      app:layout_constraintEnd_toStartOf="@id/settings_selected_video_speed"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/divider_0"
+      app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/settings_selected_video_speed"
+      style="@style/TextAppearance.Label"
+      android:layout_width="wrap_content"
+      android:layout_height="@dimen/settings_row_height"
+      android:gravity="center_vertical"
+      app:layout_constraintBottom_toTopOf="@id/divider_1"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toEndOf="@id/title_video_speed"
+      app:layout_constraintTop_toBottomOf="@+id/divider_0"
+      tools:text="1x" />
+
+    <View
+      android:id="@+id/settings_video_speed"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:layout_constraintBottom_toTopOf="@id/divider_1"
+      app:layout_constraintEnd_toEndOf="@id/settings_selected_video_speed"
+      app:layout_constraintStart_toStartOf="@id/title_video_speed"
+      app:layout_constraintTop_toBottomOf="@+id/divider_0" />
 
     <View
       android:id="@+id/divider_1"
       android:layout_width="0dp"
       android:layout_height="@dimen/height_card_divider"
       android:background="@color/colorDivider"
-      android:visibility="gone"
       app:layout_constraintBottom_toTopOf="@id/title_download_network"
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintStart_toStartOf="@id/guideline_left"
@@ -76,7 +140,7 @@
       android:id="@+id/title_download_network"
       style="@style/TextAppearance.Body.1"
       android:layout_width="0dp"
-      android:layout_height="56dp"
+      android:layout_height="@dimen/settings_row_height"
       android:gravity="center_vertical"
       android:text="@string/label_downloads_wifi_only"
       android:visibility="gone"
@@ -110,7 +174,7 @@
       android:id="@+id/title_download_quality"
       style="@style/TextAppearance.Body.1"
       android:layout_width="0dp"
-      android:layout_height="56dp"
+      android:layout_height="@dimen/settings_row_height"
       android:gravity="center_vertical"
       android:text="@string/label_download_quality"
       android:visibility="gone"
@@ -134,23 +198,36 @@
       android:id="@+id/title_subtitles"
       style="@style/TextAppearance.Body.1"
       android:layout_width="0dp"
-      android:layout_height="56dp"
+      android:layout_height="@dimen/settings_row_height"
       android:gravity="center_vertical"
       android:text="@string/label_subtitles"
       app:layout_constraintBottom_toTopOf="@id/divider_4"
-      app:layout_constraintEnd_toStartOf="@+id/switch_subtitles"
+      app:layout_constraintEnd_toStartOf="@+id/settings_selected_subtitle_language"
       app:layout_constraintStart_toStartOf="@id/guideline_left"
       app:layout_constraintTop_toBottomOf="@+id/divider_3"
       app:layout_constraintVertical_chainStyle="packed" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-      android:id="@+id/switch_subtitles"
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/settings_selected_subtitle_language"
+      style="@style/TextAppearance.Label"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      app:layout_constraintBottom_toBottomOf="@id/title_subtitles"
+      android:layout_height="@dimen/settings_row_height"
+      android:gravity="center_vertical"
+      app:layout_constraintBottom_toTopOf="@id/divider_4"
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintStart_toEndOf="@id/title_subtitles"
-      app:layout_constraintTop_toTopOf="@+id/title_subtitles" />
+      app:layout_constraintTop_toBottomOf="@+id/divider_3"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="@string/button_on" />
+
+    <View
+      android:id="@+id/settings_subtitle_language"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:layout_constraintBottom_toTopOf="@id/divider_4"
+      app:layout_constraintEnd_toEndOf="@id/settings_selected_subtitle_language"
+      app:layout_constraintStart_toStartOf="@id/title_subtitles"
+      app:layout_constraintTop_toBottomOf="@+id/divider_3" />
 
     <View
       android:id="@+id/divider_4"
@@ -166,7 +243,7 @@
       android:id="@+id/title_night_mode"
       style="@style/TextAppearance.Body.1"
       android:layout_width="0dp"
-      android:layout_height="56dp"
+      android:layout_height="@dimen/settings_row_height"
       android:gravity="center_vertical"
       android:text="@string/label_night_mode"
       app:layout_constraintBottom_toTopOf="@id/divider_5"
@@ -179,14 +256,14 @@
       android:id="@+id/settings_selected_night_mode"
       style="@style/TextAppearance.Label"
       android:layout_width="wrap_content"
-      android:layout_height="56dp"
+      android:layout_height="@dimen/settings_row_height"
       android:gravity="center_vertical"
-      tools:text="@string/button_on"
       app:layout_constraintBottom_toTopOf="@id/divider_5"
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintStart_toEndOf="@id/title_night_mode"
       app:layout_constraintTop_toBottomOf="@+id/divider_4"
-      app:layout_constraintVertical_chainStyle="packed" />
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="@string/button_on" />
 
     <View
       android:id="@+id/settings_night_mode"
@@ -194,7 +271,7 @@
       android:layout_height="0dp"
       app:layout_constraintBottom_toTopOf="@id/divider_5"
       app:layout_constraintEnd_toEndOf="@id/settings_selected_night_mode"
-      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintStart_toStartOf="@id/title_night_mode"
       app:layout_constraintTop_toBottomOf="@+id/divider_4" />
 
     <View
@@ -211,7 +288,7 @@
       android:id="@+id/title_crash_reporting"
       style="@style/TextAppearance.Body.1"
       android:layout_width="0dp"
-      android:layout_height="56dp"
+      android:layout_height="@dimen/settings_row_height"
       android:gravity="center_vertical"
       android:text="@string/label_allow_crash_reporting"
       app:layout_constraintBottom_toTopOf="@id/divider_6"

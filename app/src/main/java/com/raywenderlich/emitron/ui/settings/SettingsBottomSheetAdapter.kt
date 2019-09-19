@@ -8,7 +8,7 @@ import com.raywenderlich.emitron.R
  * Settings bottom sheet to show settings option
  */
 class SettingsBottomSheetAdapter(
-  private val items: List<String>,
+  private val items: List<Pair<String, Boolean>>,
   private val onItemSelected: (Int) -> Unit
 ) :
   RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -48,8 +48,8 @@ class SettingsBottomSheetAdapter(
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when (holder) {
       is SettingsBottomSheetItemViewHolder -> {
-        val recentSearch = items[position]
-        holder.bindTo(recentSearch) { clickPosition ->
+        val (option, checked) = items[position]
+        holder.bindTo(option, checked) { clickPosition ->
           onItemSelected(clickPosition)
         }
       }

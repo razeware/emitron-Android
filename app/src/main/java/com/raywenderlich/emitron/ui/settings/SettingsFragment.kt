@@ -16,6 +16,9 @@ import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentSettingsBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import com.raywenderlich.emitron.ui.login.GuardpostDelegate
+import com.raywenderlich.emitron.ui.settings.SettingsBottomSheetDialogFragment.Companion.playbackQualityToResIdMap
+import com.raywenderlich.emitron.ui.settings.SettingsBottomSheetDialogFragment.Companion.playbackSpeedToResIdMap
+import com.raywenderlich.emitron.ui.settings.SettingsBottomSheetDialogFragment.Companion.playbackSubtitleLanguageToResIdMap
 import com.raywenderlich.emitron.utils.extensions.observe
 import com.raywenderlich.emitron.utils.extensions.setDataBindingView
 import com.raywenderlich.emitron.utils.getDefaultAppBarConfiguration
@@ -39,7 +42,7 @@ class SettingsFragment : DaggerFragment() {
   private val viewModel:
       SettingsViewModel by navGraphViewModels(R.id.settings_navigation) { viewModelFactory }
 
-  private lateinit var viewBinding: FragmentSettingsBinding
+  private lateinit var binding: FragmentSettingsBinding
 
   private val guardpostDelegate: GuardpostDelegate by lazy {
     GuardpostDelegate(requireContext())
@@ -53,25 +56,18 @@ class SettingsFragment : DaggerFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    viewBinding = setDataBindingView(inflater, R.layout.fragment_settings, container)
-    return viewBinding.root
+    binding = setDataBindingView(inflater, R.layout.fragment_settings, container)
+    return binding.root
   }
+
 
   /**
    * See [androidx.fragment.app.Fragment.onViewCreated]
    */
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    initToolbar()
     initUi()
     initObservers()
-  }
-
-  private fun initToolbar() {
-    viewBinding.toolbar.setupWithNavController(
-      findNavController(),
-      getDefaultAppBarConfiguration()
-    )
   }
 
   private fun initObservers() {
@@ -87,27 +83,73 @@ class SettingsFragment : DaggerFragment() {
           AppCompatDelegate.MODE_NIGHT_NO -> R.string.button_off
           else -> R.string.button_system_default
         }
-        viewBinding.settingsSelectedNightMode.text = getString(nightModeResId)
+        binding.settingsSelectedNightMode.text = getString(nightModeResId)
         AppCompatDelegate.setDefaultNightMode(nightMode)
       }
     }
     viewModel.crashReportingAllowed.observe(viewLifecycleOwner) {
       it?.let {
-        viewBinding.switchCrashReporting.isChecked = it
+        binding.switchCrashReporting.isChecked = it
         if (it) {
           Fabric.with(requireContext(), Crashlytics())
         }
       }
     }
+    viewModel.playbackQuality.observe(viewLifecycleOwner) {
+      it?.let { quality ->
+        binding.settingsSelectedVideoQuality.text = getString(
+          playbackQualityToResIdMap.getOrElse(
+            quality
+          ) {
+            R.string.playback_quality_1080p
+          }
+        )
+      }
+    }
+    viewModel.playbackSpeed.observe(viewLifecycleOwner) {
+      it?.let { speed ->
+        binding.settingsSelectedVideoSpeed.text = getString(
+          playbackSpeedToResIdMap.getOrElse(
+            speed
+          ) {
+            R.string.playback_speed_normal
+          }
+        )
+      }
+    }
+    viewModel.subtitlesEnabled.observe(viewLifecycleOwner) {
+      it?.let { language ->
+        binding.settingsSelectedSubtitleLanguage.text = getString(
+          playbackSubtitleLanguageToResIdMap.getOrElse(
+            language
+          ) {
+            R.string.button_off
+          })
+      }
+    }
   }
 
   private fun initUi() {
-    viewBinding.titleVersionName.text = BuildConfig.VERSION_NAME
-    viewBinding.switchCrashReporting.setOnCheckedChangeListener { _, checked ->
+    binding.toolbar.setupWithNavController(
+      findNavController(),
+      getDefaultAppBarConfiguration()
+    )
+
+    binding.titleVersionName.text = BuildConfig.VERSION_NAME
+    binding.switchCrashReporting.setOnCheckedChangeListener { _, checked ->
       viewModel.updateCrashReportingAllowed(checked)
     }
-    viewBinding.settingsNightMode.setOnClickListener {
+    binding.settingsNightMode.setOnClickListener {
       showSettingsBottomSheet(R.string.label_night_mode)
+    }
+    binding.settingsVideoQuality.setOnClickListener {
+      showSettingsBottomSheet(R.string.label_video_playback_quality)
+    }
+    binding.settingsVideoSpeed.setOnClickListener {
+      showSettingsBottomSheet(R.string.label_video_playback_speed)
+    }
+    binding.settingsSubtitleLanguage.setOnClickListener {
+      showSettingsBottomSheet(R.string.label_subtitles)
     }
   }
 

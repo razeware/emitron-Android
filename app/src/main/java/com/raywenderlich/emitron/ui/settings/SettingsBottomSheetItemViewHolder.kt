@@ -19,12 +19,13 @@ class SettingsBottomSheetItemViewHolder(private val binding: ItemSettingsBottoms
    * @param title title of recent search
    * @param onItemClick Click listener for this item layout
    */
-  fun bindTo(title: String, onItemClick: (Int) -> Unit) {
+  fun bindTo(title: String, checked: Boolean, onItemClick: (Int) -> Unit) {
     binding.root.visibility = View.VISIBLE
     binding.root.setOnClickListener {
       onItemClick(adapterPosition)
     }
     binding.title = title
+    binding.checked = checked
     binding.executePendingBindings()
   }
 

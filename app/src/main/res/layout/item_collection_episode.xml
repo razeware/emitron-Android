@@ -143,9 +143,10 @@
     <com.google.android.material.button.MaterialButton
       android:id="@+id/button_collection_episode_download"
       style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-      android:layout_width="@dimen/button_icon_height_width"
-      android:layout_height="@dimen/button_icon_height_width"
-      android:layout_marginStart="@dimen/button_spacing_horizontal"
+      android:layout_width="@dimen/button_icon_height_width_dense"
+      android:layout_height="@dimen/button_icon_height_width_dense"
+      android:layout_marginStart="@dimen/activity_horizontal_margin"
+      android:layout_marginEnd="@dimen/activity_horizontal_margin"
       android:gravity="center"
       android:paddingLeft="@null"
       android:paddingRight="@null"
@@ -154,11 +155,10 @@
       app:icon="@drawable/ic_material_icon_download"
       app:iconSize="@dimen/icon_height_width_2"
       app:iconTint="@color/colorIcon"
-      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="1"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+      app:layout_constraintTop_toTopOf="@+id/text_title" />
 
     <ProgressBar
       android:id="@+id/progress_completion"
@@ -168,7 +168,7 @@
       android:layout_marginTop="@dimen/margin_card_progress_top"
       android:indeterminate="false"
       android:progress="@{data.getProgressionPercentComplete()}"
-      android:progressDrawable="@drawable/progress_drawable_horizontal"
+      android:progressDrawable="@drawable/progress_drawable_horizontal_2"
       android:visibility="@{data.getProgressionPercentComplete() > 0? View.VISIBLE : View.GONE}"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="@+id/guideline_right"
