@@ -84,12 +84,12 @@ data class Attributes(
   /**
    * Content target
    */
-  val target: Int? = 0,
+  val target: Long? = 0,
 
   /**
    * Content current progress
    */
-  val progress: Int? = 0,
+  val progress: Long? = 0,
 
   /**
    * User has finished content
@@ -128,7 +128,13 @@ data class Attributes(
   /**
    * Content kind
    */
-  val kind: String? = ""
+  val kind: String? = "",
+
+  /**
+   * Video playback token
+   */
+  @Json(name = "video_playback_token")
+  val videoPlaybackToken: String? = ""
 ) : Parcelable {
 
   /**
@@ -191,4 +197,18 @@ data class Attributes(
    * @return [Int] percent completion value
    */
   fun getPercentComplete(): Int = percentComplete?.toInt() ?: 0
+
+  /**
+   * Get current progress for content
+   *
+   * @return progress
+   */
+  fun getProgress(): Long = progress ?: 0
+
+  /**
+   * Get content video id by parsing URI
+   *
+   * @return video id
+   */
+  fun getVideoId(): String? = uri?.split("/")?.lastOrNull()
 }

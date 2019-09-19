@@ -67,6 +67,9 @@ data class Data(
    */
   fun isTypeDomain(): Boolean = DataType.Domains == DataType.fromValue(type)
 
+  /**
+   *  @return true if type is [DataType.Bookmarks], else false
+   */
   fun isTypeBookmark(): Boolean = DataType.Bookmarks == DataType.fromValue(this.type)
 
   /**
@@ -90,6 +93,11 @@ data class Data(
    *  @return percent completion value for progression
    */
   fun getPercentComplete(): Int = attributes?.getPercentComplete() ?: 0
+
+  /**
+   * Get current progress for data
+   */
+  fun getProgress(): Long = attributes?.getProgress() ?: 0
 
   /**
    *  @return [ContentType] of content
@@ -194,6 +202,9 @@ data class Data(
     return this.copy(relationships = updatedRelationships)
   }
 
+  /**
+   * Add new relationships to data
+   */
   fun addRelationships(newRelations: List<Data>?): Data {
     if (newRelations.isNullOrEmpty()) {
       return this
@@ -234,6 +245,9 @@ data class Data(
     return this.copy(attributes = attributes, relationships = relationships)
   }
 
+  /**
+   * Add bookmark to content
+   */
   fun addBookmark(bookmarkId: String?): Data {
     val relationships =
       this.relationships?.addBookmark(bookmarkId = bookmarkId)
@@ -311,6 +325,23 @@ data class Data(
    * @return list of domain ids
    */
   fun getDomainIds(): List<String> = relationships?.getDomainIds() ?: emptyList()
+
+  /**
+   * Get video id
+   *
+   * @return video id string
+   */
+  fun getVideoId(): String? = attributes?.getVideoId()
+
+  /**
+   *  @return stream url for content
+   */
+  fun getStreamUrl(): String = attributes?.url ?: ""
+
+  /**
+   * @return Video playback token for user
+   */
+  fun getVideoPlaybackToken(): String = attributes?.videoPlaybackToken ?: ""
 
   companion object {
 

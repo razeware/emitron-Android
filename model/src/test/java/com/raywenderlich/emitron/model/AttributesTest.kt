@@ -80,4 +80,22 @@ class AttributesTest {
     val attributes2 = Attributes(percentComplete = 10.0)
     assertThat(attributes2.getPercentComplete()).isEqualTo(10)
   }
+
+  @Test
+  fun getProgress() {
+    val attributes = Attributes(progress = null)
+    assertThat(attributes.getProgress()).isEqualTo(0)
+
+    val attributes2 = Attributes(progress = 10L)
+    assertThat(attributes2.getProgress()).isEqualTo(10L)
+  }
+
+  @Test
+  fun getVideoId() {
+    val attributes = Attributes(uri = null)
+    assertThat(attributes.getVideoId()).isEqualTo(null)
+
+    val attributes2 = Attributes(uri = "rw://betamax/collections/122")
+    assertThat(attributes2.getVideoId()).isEqualTo("122")
+  }
 }
