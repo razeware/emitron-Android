@@ -52,6 +52,7 @@ class PrefUtils @Inject constructor(private val context: Application) {
       is Boolean -> editor.putBoolean(key, value)
       is String -> editor.putString(key, value)
       is Int -> editor.putInt(key, value)
+      is Float -> editor.putFloat(key, value)
       else -> throw IllegalStateException()
     }
     return this
@@ -81,6 +82,7 @@ class PrefUtils @Inject constructor(private val context: Application) {
       is Boolean -> prefs.getBoolean(key, defaultVal) as T
       is String -> prefs.getString(key, defaultVal) as T
       is Int -> prefs.getInt(key, defaultVal) as T
+      is Float -> prefs.getFloat(key, defaultVal) as T
       else -> throw IllegalStateException()
     }
   }
