@@ -29,8 +29,10 @@ object ViewBindingAdapters {
       // Outline clipping is helpful in drawing rounded corners
       imageView.clipToOutline = true
 
-      Glide.with(imageView).load(url)
+      Glide.with(imageView)
+        .load(url)
         .placeholder(placeholder)
+        .centerInside()
         .transition(
           DrawableTransitionOptions().crossFade()
         ).into(imageView)
