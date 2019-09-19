@@ -99,7 +99,7 @@ class CollectionEpisodeAdapter(
 
     viewHolder.bindTo(data, episodePosition, isProCourse, { selectedPosition ->
       val contentEpisode = items[selectedPosition]
-      val nextContentEpisode = if (selectedPosition < items.size) {
+      val nextContentEpisode = if (selectedPosition < items.size - 1) {
         items[selectedPosition + 1]
       } else {
         EpisodeItem()
