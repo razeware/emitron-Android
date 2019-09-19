@@ -6,6 +6,7 @@ import com.raywenderlich.emitron.data.content.ContentApi
 import com.raywenderlich.emitron.data.filter.FilterApi
 import com.raywenderlich.emitron.data.login.LoginApi
 import com.raywenderlich.emitron.data.progressions.ProgressionApi
+import com.raywenderlich.emitron.data.video.VideoApi
 import com.raywenderlich.emitron.network.AuthInterceptorImpl
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -18,12 +19,18 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+/**
+ * Dagger module for network ops
+ */
 @Module
 class NetModule {
 
   @Module
   companion object {
 
+    /**
+     * Provide logging interceptor
+     */
     @JvmStatic
     @Singleton
     @Provides
@@ -32,6 +39,9 @@ class NetModule {
         if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.HEADERS else HttpLoggingInterceptor.Level.NONE
     }
 
+    /**
+     * Provide OkHttp
+     */
     @JvmStatic
     @Singleton
     @Provides
@@ -45,6 +55,9 @@ class NetModule {
         .addInterceptor(loggingInterceptor)
         .build()
 
+    /**
+     * Provide Retrofit
+     */
     @Singleton
     @JvmStatic
     @Provides
@@ -61,25 +74,47 @@ class NetModule {
         .client(okHttpClient)
         .build()
 
+    /**
+     * Create [LoginApi]
+     */
     @JvmStatic
     @Provides
     fun provideLoginApi(retrofit: Retrofit): LoginApi = LoginApi.create(retrofit)
 
+    /**
+     * Create [ContentApi]
+     */
     @JvmStatic
     @Provides
     fun provideContentApi(retrofit: Retrofit): ContentApi = ContentApi.create(retrofit)
 
+    /**
+     * Create [BookmarkApi]
+     */
     @JvmStatic
     @Provides
     fun provideBookmarkApi(retrofit: Retrofit): BookmarkApi = BookmarkApi.create(retrofit)
 
+    /**
+     * Create [ProgressionApi]
+     */
     @JvmStatic
     @Provides
     fun provideProgressionApi(retrofit: Retrofit): ProgressionApi = ProgressionApi.create(retrofit)
 
+    /**
+     * Create [FilterApi]
+     */
     @JvmStatic
     @Provides
     fun provideFilterApi(retrofit: Retrofit): FilterApi = FilterApi.create(retrofit)
+
+    /**
+     * Create [VideoApi]
+     */
+    @JvmStatic
+    @Provides
+    fun provideVideoApi(retrofit: Retrofit): VideoApi = VideoApi.create(retrofit)
 
   }
 
