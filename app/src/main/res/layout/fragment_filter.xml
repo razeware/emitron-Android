@@ -30,14 +30,14 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
-      app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
+      app:layout_constraintGuide_end="@dimen/guideline_bottom_gesture" />
 
     <androidx.constraintlayout.widget.Guideline
       android:id="@+id/guideline_top"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
-      app:layout_constraintGuide_begin="0dp" />
+      app:layout_constraintGuide_begin="@dimen/guideline_top_status_bar_1" />
 
     <com.google.android.material.appbar.MaterialToolbar
       android:id="@+id/toolbar"

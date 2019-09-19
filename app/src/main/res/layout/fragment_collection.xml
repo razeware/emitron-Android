@@ -13,10 +13,12 @@
   </data>
 
   <androidx.core.widget.NestedScrollView
+    android:id="@+id/collection_scroll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/collection_container"
       android:layout_width="match_parent"
       android:layout_height="match_parent">
 
@@ -67,6 +69,7 @@
         android:layout_width="0dp"
         android:layout_height="?android:actionBarSize"
         android:background="@color/transparent"
+        android:layout_marginTop="@dimen/guideline_top_status_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline_top"

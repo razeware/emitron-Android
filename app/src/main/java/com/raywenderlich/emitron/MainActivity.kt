@@ -55,6 +55,8 @@ class MainActivity : DaggerAppCompatActivity() {
     if (viewModel.isCrashReportingAllowed()) {
       Fabric.with(this, Crashlytics())
     }
+
+    requestFullscreen()
   }
 
   private fun onNavDestinationChanged(destination: NavDestination) {
