@@ -8,6 +8,7 @@ import com.raywenderlich.emitron.data.content.ContentRepository
 import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
+import com.raywenderlich.emitron.ui.player.Playlist
 import com.raywenderlich.emitron.utils.*
 import org.junit.Rule
 import org.junit.Test
@@ -201,43 +202,46 @@ class CollectionViewModelTest {
   fun getPlaylist() {
     createViewModel()
     testCoroutineRule.runBlockingTest {
+      val contentData = createContentData()
+      val content = createContent(data = contentData, included = getIncludedDataForCollection())
       // Given
       val expectedPlaylist =
-        listOf(
-          Data(
-            id = "5",
-            type = "contents",
-            attributes = Attributes(name = "five"),
-            relationships = Relationships(
-              progression = Content(
-                datum = Data(
-                  id = "9",
-                  type = "progressions",
-                  attributes = Attributes(percentComplete = 10.0)
+        Playlist(
+          contentData,
+          episodes = listOf(
+            Data(
+              id = "5",
+              type = "contents",
+              attributes = Attributes(name = "five"),
+              relationships = Relationships(
+                progression = Content(
+                  datum = Data(
+                    id = "9",
+                    type = "progressions",
+                    attributes = Attributes(percentComplete = 10.0)
+                  )
                 )
               )
+            ),
+            Data(
+              id = "6", type = "contents",
+              attributes = Attributes(name = "six"),
+              relationships = Relationships()
+            ),
+            Data(
+              id = "7", type = "contents",
+              attributes = Attributes(name = "seven"),
+              relationships = Relationships()
             )
-          ),
-          Data(
-            id = "6", type = "contents",
-            attributes = Attributes(name = "six"),
-            relationships = Relationships()
-          ),
-          Data(
-            id = "7", type = "contents",
-            attributes = Attributes(name = "seven"),
-            relationships = Relationships()
-          )
-          ,
-          Data(
-            id = "8", type = "contents",
-            attributes = Attributes(name = "eight"),
-            relationships = Relationships()
+            ,
+            Data(
+              id = "8", type = "contents",
+              attributes = Attributes(name = "eight"),
+              relationships = Relationships()
+            )
           )
         )
 
-      val contentData = createContentData()
-      val content = createContent(data = contentData, included = getIncludedDataForCollection())
       whenever(contentRepository.getContent("1")).doReturn(content)
 
       viewModel.loadCollection(Data(id = "1"))
@@ -246,7 +250,7 @@ class CollectionViewModelTest {
       val result = viewModel.getPlaylist()
 
       // Then
-      assertThat(result).isEqualTo(Contents(datum = expectedPlaylist))
+      assertThat(result).isEqualTo(expectedPlaylist)
     }
   }
 
@@ -269,7 +273,12 @@ class CollectionViewModelTest {
       val result = viewModel.getPlaylist()
 
       // Then
-      assertThat(result).isEqualTo(Contents(datum = listOf(contentData)))
+      assertThat(result).isEqualTo(
+        Playlist(
+          collection = contentData,
+          episodes = listOf(contentData)
+        )
+      )
     }
   }
 
