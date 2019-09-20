@@ -194,4 +194,9 @@ class CollectionViewModel @Inject constructor(
       )
     }
   }
+
+  /**
+   * @return true if content is free to watch, else false
+   */
+  fun isFreeContent(): Boolean = _collection.value?.isFreeContent() ?: false
 }

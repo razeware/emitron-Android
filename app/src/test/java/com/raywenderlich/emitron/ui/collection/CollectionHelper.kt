@@ -6,11 +6,12 @@ internal fun createContentData(
   id: String = "1",
   type: String = "collection",
   groups: Contents? = Contents(datum = (1..2).map { Data(id = it.toString(), type = "groups") }),
-  bookmark: Content? = null
+  bookmark: Content? = null,
+  isFree: Boolean = false
 ) = Data(
   id = id,
   type = "contents",
-  attributes = Attributes(contentType = type),
+  attributes = Attributes(contentType = type, free = isFree),
   relationships = Relationships(
     groups = groups,
     bookmark = bookmark

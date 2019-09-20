@@ -662,4 +662,34 @@ class CollectionViewModelTest {
           episodePosition
     }
   }
+
+  @Test
+  fun isFreeContent() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      // When
+      val content = createContent(data = createContentData())
+      whenever(contentRepository.getContent("1")).doReturn(content)
+
+      viewModel.loadCollection(Data(id = "1"))
+
+      // When
+      val result = viewModel.isFreeContent()
+
+      // Then
+      result isEqualTo true
+
+      // When
+      val content2 = createContent(data = createContentData(isFree = true))
+      whenever(contentRepository.getContent("2")).doReturn(content2)
+
+      viewModel.loadCollection(Data(id = "2"))
+
+      // When
+      val result2 = viewModel.isFreeContent()
+
+      // Then
+      result2 isEqualTo true
+    }
+  }
 }

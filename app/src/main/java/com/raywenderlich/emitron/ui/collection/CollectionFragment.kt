@@ -81,7 +81,9 @@ class CollectionFragment : DaggerFragment() {
 
     episodeAdapter = CollectionEpisodeAdapter(
       onEpisodeSelected = { currentEpisode, _ ->
-        openPlayer(currentEpisode)
+        if (viewModel.isFreeContent()) {
+          openPlayer(currentEpisode)
+        }
       },
       onEpisodeCompleted = { episode, position ->
         viewModel.updateContentProgression(episode, position)

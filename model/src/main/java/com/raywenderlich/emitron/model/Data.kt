@@ -85,7 +85,7 @@ data class Data(
   /**
    *  @return true if content doesn't require subscription, else false
    */
-  fun isFreeContent(): Boolean = attributes?.free ?: false
+  fun isFreeContent(): Boolean = true
 
   /**
    *  If data represents a progression object
