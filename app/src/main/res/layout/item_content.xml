@@ -139,10 +139,10 @@
         android:text="@string/label_pro"
         app:layout_constraintBottom_toBottomOf="@+id/spacer"
         app:layout_constraintEnd_toStartOf="@+id/text_duration"
-        app:layout_constraintStart_toStartOf="@+id/text_title"
+        app:layout_constraintStart_toEndOf="@+id/text_label_completed"
         app:layout_constraintTop_toTopOf="@+id/spacer"
         tools:text="Pro"
-        tools:visibility="gone" />
+        tools:visibility="visible" />
 
       <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_duration"
@@ -185,10 +185,10 @@
         android:textAppearance="@style/TextAppearance.Button.Regular"
         app:icon="@drawable/ic_material_icon_download_pause"
         app:iconSize="@dimen/button_download_pause_height"
-        app:layout_constraintBottom_toBottomOf="@+id/progress_library_download"
-        app:layout_constraintEnd_toEndOf="@+id/progress_library_download"
-        app:layout_constraintStart_toStartOf="@+id/progress_library_download"
-        app:layout_constraintTop_toTopOf="@+id/progress_library_download" />
+        app:layout_constraintBottom_toBottomOf="@+id/button_download"
+        app:layout_constraintEnd_toEndOf="@+id/button_download"
+        app:layout_constraintStart_toStartOf="@+id/button_download"
+        app:layout_constraintTop_toTopOf="@+id/button_download" />
 
 
       <com.google.android.material.button.MaterialButton
@@ -233,10 +233,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/label_completed"
+        android:layout_marginEnd="@dimen/button_spacing_horizontal_2"
         android:visibility="@{data.isFinished()? View.VISIBLE : View.GONE}"
         app:layout_constraintBottom_toBottomOf="@+id/spacer"
         app:layout_constraintStart_toStartOf="@+id/text_title"
         app:layout_constraintTop_toTopOf="@+id/spacer"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintEnd_toStartOf="@+id/text_collection_label_pro"
         tools:text="Completed"
         tools:visibility="visible" />
 
