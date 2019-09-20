@@ -175,7 +175,6 @@ class BookmarkViewModelTest {
 
       viewModel.bookmarkDeleteActionResult.value?.peekContent() isEqualTo
           BookmarkActionDelegate.BookmarkActionResult.BookmarkFailedToDelete
-      verify(bookmarkActionDelegate).bookmarkActionResult
       verify(bookmarkActionDelegate).updateContentBookmark(contentData, boundaryCallbackNotifier)
       boundaryCallbackNotifier.hasRequests() isEqualTo false
     }
