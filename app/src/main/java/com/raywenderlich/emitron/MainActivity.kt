@@ -12,7 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.crashlytics.android.Crashlytics
 import com.raywenderlich.emitron.databinding.ActivityMainBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
-import com.raywenderlich.emitron.utils.extensions.setDataBindingView
+import com.raywenderlich.emitron.utils.extensions.*
 import dagger.android.support.DaggerAppCompatActivity
 import io.fabric.sdk.android.Fabric
 import javax.inject.Inject
@@ -56,7 +56,12 @@ class MainActivity : DaggerAppCompatActivity() {
       Fabric.with(this, Crashlytics())
     }
 
-    requestFullscreen()
+    requestGestureUi()
+    createNotificationChannels()
+  private fun createNotificationChannels() {
+    if (hasNotificationChannelSupport()) {
+      NotificationChannels.newInstance(application).createNotificationChannels()
+    }
   }
 
   private fun onNavDestinationChanged(destination: NavDestination) {

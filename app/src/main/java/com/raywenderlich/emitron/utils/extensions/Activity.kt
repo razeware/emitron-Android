@@ -76,7 +76,7 @@ fun AppCompatActivity.showSuccessSnackbar(text: String) =
 /**
  * Extension function for showing the Activity in fullscreen mode
  */
-fun AppCompatActivity.requestFullscreen() {
+fun AppCompatActivity.requestGestureUi() {
   val view = window.decorView
   view.systemUiVisibility =
     view.systemUiVisibility or
