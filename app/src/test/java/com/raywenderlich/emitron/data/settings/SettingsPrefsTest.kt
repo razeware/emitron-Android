@@ -18,6 +18,7 @@ class SettingsPrefsTest {
     whenever(prefUtils.set(any(), ArgumentMatchers.anyString())).doReturn(prefUtils)
     whenever(prefUtils.set(any(), ArgumentMatchers.anyBoolean())).doReturn(prefUtils)
     whenever(prefUtils.set(any(), ArgumentMatchers.anyInt())).doReturn(prefUtils)
+    whenever(prefUtils.set(any(), ArgumentMatchers.anyFloat())).doReturn(prefUtils)
     whenever(prefUtils.commit()).doReturn(t = true)
     settingsPref = SettingsPrefs(prefUtils)
   }
@@ -28,8 +29,11 @@ class SettingsPrefsTest {
 
     settingsPref.saveSearchQuery("Emitron")
 
+    verify(prefUtils).init("settings")
     verify(prefUtils).get("recent_searches", "")
     verify(prefUtils).set("recent_searches", "Emitron, Android, Kotlin")
+    verify(prefUtils).commit()
+    verifyNoMoreInteractions(prefUtils)
   }
 
   @Test
@@ -40,8 +44,11 @@ class SettingsPrefsTest {
 
     settingsPref.saveSearchQuery("Emitron")
 
+    verify(prefUtils).init("settings")
     verify(prefUtils).get("recent_searches", "")
     verify(prefUtils).set("recent_searches", "Emitron, Android, Kotlin")
+    verify(prefUtils).commit()
+    verifyNoMoreInteractions(prefUtils)
   }
 
   @Test
@@ -52,8 +59,11 @@ class SettingsPrefsTest {
 
     settingsPref.saveSearchQuery("Emitron")
 
+    verify(prefUtils).init("settings")
     verify(prefUtils).get("recent_searches", "")
     verify(prefUtils).set("recent_searches", "Emitron, Android, Kotlin, Core Data, SwiftUI")
+    verify(prefUtils).commit()
+    verifyNoMoreInteractions(prefUtils)
   }
 
   @Test
@@ -65,8 +75,9 @@ class SettingsPrefsTest {
     val result = settingsPref.getSearchQueries()
     result isEqualTo listOf("Android", "Kotlin", "Emitron")
 
-
+    verify(prefUtils).init("settings")
     verify(prefUtils).get("recent_searches", "")
+    verifyNoMoreInteractions(prefUtils)
   }
 
   @Test
@@ -75,8 +86,9 @@ class SettingsPrefsTest {
 
     val result = settingsPref.getSearchQueries()
     result isEqualTo emptyList<String>()
-
+    verify(prefUtils).init("settings")
     verify(prefUtils).get("recent_searches", "")
+    verifyNoMoreInteractions(prefUtils)
   }
 
   @Test
@@ -125,6 +137,94 @@ class SettingsPrefsTest {
   @Test
   fun clear() {
     settingsPref.clear()
+    verify(prefUtils).init("settings")
     verify(prefUtils).clear()
+    verifyNoMoreInteractions(prefUtils)
+  }
+
+  @Test
+  fun getPlaybackSpeed() {
+    whenever(prefUtils.get("player_playback_speed", 1.0f)).doReturn(1.0f)
+
+    val result = settingsPref.getPlaybackSpeed()
+    result isEqualTo 1.0f
+    verify(prefUtils).init("settings")
+    verify(prefUtils).get("player_playback_speed", 1.0f)
+    verifyNoMoreInteractions(prefUtils)
+  }
+
+
+  @Test
+  fun getPlaybackQuality() {
+    whenever(prefUtils.get("player_playback_quality", 1080)).doReturn(1)
+
+    val result = settingsPref.getPlaybackQuality()
+    result isEqualTo 1
+    verify(prefUtils).init("settings")
+    verify(prefUtils).get("player_playback_quality", 1080)
+    verifyNoMoreInteractions(prefUtils)
+  }
+
+  @Test
+  fun getAutoPlayAllowed() {
+    whenever(prefUtils.get("player_auto_play_next", true)).doReturn(true)
+
+    val result = settingsPref.getAutoPlayAllowed()
+    result isEqualTo true
+    verify(prefUtils).init("settings")
+    verify(prefUtils).get("player_auto_play_next", true)
+    verifyNoMoreInteractions(prefUtils)
+  }
+
+
+  @Test
+  fun getSubtitleLanguage() {
+    whenever(prefUtils.get("player_subtitles_language", "")).doReturn("en")
+
+    val result = settingsPref.getSubtitleLanguage()
+    result isEqualTo "en"
+    verify(prefUtils).init("settings")
+    verify(prefUtils).get("player_subtitles_language", "")
+    verifyNoMoreInteractions(prefUtils)
+  }
+
+  @Test
+  fun saveAutoPlayAllowed() {
+    settingsPref.saveAutoPlayAllowed(true)
+
+    verify(prefUtils).init("settings")
+    verify(prefUtils).set("player_auto_play_next", true)
+    verify(prefUtils).commit()
+    verifyNoMoreInteractions(prefUtils)
+  }
+
+  @Test
+  fun savePlaybackSpeed() {
+    settingsPref.savePlaybackSpeed(1.0f)
+
+    verify(prefUtils).init("settings")
+    verify(prefUtils).set("player_playback_speed", 1.0f)
+    verify(prefUtils).commit()
+    verifyNoMoreInteractions(prefUtils)
+  }
+
+  @Test
+  fun savePlaybackQuality() {
+    settingsPref.savePlaybackQuality(1)
+
+    verify(prefUtils).init("settings")
+    verify(prefUtils).set("player_playback_quality", 1)
+    verify(prefUtils).commit()
+    verifyNoMoreInteractions(prefUtils)
+  }
+
+  @Test
+  fun saveSubtitleLanguage() {
+    settingsPref.saveSubtitleLanguage("en")
+
+    verify(prefUtils).init("settings")
+    verify(prefUtils).set("player_subtitles_language", "en")
+    verify(prefUtils).commit()
+    verifyNoMoreInteractions(prefUtils)
   }
 }

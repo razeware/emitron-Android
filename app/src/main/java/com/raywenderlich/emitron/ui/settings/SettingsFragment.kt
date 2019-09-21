@@ -117,7 +117,7 @@ class SettingsFragment : DaggerFragment() {
         )
       }
     }
-    viewModel.subtitlesEnabled.observe(viewLifecycleOwner) {
+    viewModel.subtitlesLanguage.observe(viewLifecycleOwner) {
       it?.let { language ->
         binding.settingsSelectedSubtitleLanguage.text = getString(
           playbackSubtitleLanguageToResIdMap.getOrElse(

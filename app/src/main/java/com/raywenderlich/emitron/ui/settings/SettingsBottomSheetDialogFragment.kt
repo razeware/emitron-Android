@@ -21,7 +21,7 @@ import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
 /**
- * Settings UIr
+ * Settings UI
  */
 class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
@@ -43,6 +43,9 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
       navController.navigate(settingsBottomSheetDirection)
     }
 
+    /**
+     * Map of allowed night mode values to respective [@StringRes]
+     */
     val nightModeToResIdMap: Map<Int, Int> by lazy {
       mapOf(
         AppCompatDelegate.MODE_NIGHT_NO to R.string.button_off,
@@ -51,6 +54,9 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
       )
     }
 
+    /**
+     * Map of allowed subtitle languages to respective [@StringRes]
+     */
     val playbackSubtitleLanguageToResIdMap: Map<String, Int> by lazy {
       mapOf(
         "" to R.string.button_off,
@@ -58,6 +64,11 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
       )
     }
 
+    /**
+     * List of allowed playback quality values
+     *
+     * (In order of visibility)
+     */
     val settingsPlaybackQualityOptions: List<Int> by lazy {
       listOf(
         R.string.playback_quality_1080p_recommended,
@@ -69,6 +80,11 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
       )
     }
 
+    /**
+     * List of allowed playback speed values
+     *
+     * (In order of visibility)
+     */
     val settingsPlaybackSpeedOptions: List<Int> by lazy {
       listOf(
         R.string.playback_speed_normal,
@@ -80,6 +96,11 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
       )
     }
 
+    /**
+     * List of allowed subtitle language values
+     *
+     * (In order of visibility)
+     */
     val settingsSubtitleLanguageOptions: List<Int> by lazy {
       listOf(
         R.string.button_off,
@@ -87,6 +108,11 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
       )
     }
 
+    /**
+     * List of allowed night mode values
+     *
+     * (In order of visibility)
+     */
     val settingsNightModeOptions: List<Int> by lazy {
       listOf(
         R.string.button_on,
@@ -95,6 +121,9 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
       )
     }
 
+    /**
+     * Map of allowed playback quality to respective [@StringRes]
+     */
     val playbackQualityToResIdMap: Map<Int, Int> by lazy {
       mapOf(
         1080 to R.string.playback_quality_1080p_recommended,
@@ -106,6 +135,9 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
       )
     }
 
+    /**
+     * Map of allowed playback speed to respective [@StringRes]
+     */
     val playbackSpeedToResIdMap: Map<Float, Int> by lazy {
       mapOf(
         1f to R.string.playback_speed_normal,

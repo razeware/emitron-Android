@@ -20,9 +20,18 @@ class SettingsViewModel @Inject constructor(
 
   private val _crashReportingAllowed = MutableLiveData<Boolean>()
 
+  private val _playbackSpeed = MutableLiveData<Float>()
+
+  private val _playbackQuality = MutableLiveData<Int>()
+
+  private val _subtitlesLanguage = MutableLiveData<String>()
+
   init {
     _nightMode.value = settingsRepository.getNightMode()
     _crashReportingAllowed.value = settingsRepository.isCrashReportingAllowed()
+    _playbackSpeed.value = settingsRepository.getPlaybackSpeed()
+    _playbackQuality.value = settingsRepository.getPlaybackQuality()
+    _subtitlesLanguage.value = settingsRepository.getSubtitleLanguage()
   }
 
   /**
@@ -36,6 +45,24 @@ class SettingsViewModel @Inject constructor(
    */
   val crashReportingAllowed: LiveData<Boolean>
     get() = _crashReportingAllowed
+
+  /**
+   * Observer for playback speed
+   */
+  val playbackSpeed: LiveData<Float>
+    get() = _playbackSpeed
+
+  /**
+   * Observer for playback quality
+   */
+  val playbackQuality: LiveData<Int>
+    get() = _playbackQuality
+
+  /**
+   * Observer for subtitle language
+   */
+  val subtitlesLanguage: LiveData<String>
+    get() = _subtitlesLanguage
 
 
   /**
@@ -64,4 +91,54 @@ class SettingsViewModel @Inject constructor(
     settingsRepository.updateNightMode(nightMode)
     _nightMode.value = nightMode
   }
+
+  /**
+   * Update selected playback speed in preferences
+   *
+   * @param speed Playback speed
+   */
+  fun updatePlaybackSpeed(speed: Float) {
+    settingsRepository.updateSelectedPlaybackSpeed(speed)
+    _playbackSpeed.value = speed
+  }
+
+  /**
+   * Update selected playback quality in preferences
+   *
+   * @param quality Playback quality
+   */
+  fun updatePlaybackQuality(quality: Int) {
+    settingsRepository.updateSelectedPlaybackQuality(quality)
+    _playbackQuality.value = quality
+  }
+
+  /**
+   * Update selected subtitle language in preferences
+   *
+   * @param language Subtitle language
+   */
+  fun updateSubtitlesLanguage(language: String) {
+    settingsRepository.updateSubtitleLanguage(language)
+    _subtitlesLanguage.value = language
+  }
+
+  /**
+   * Get saved night mode
+   */
+  fun getNightMode(): Int = settingsRepository.getNightMode()
+
+  /**
+   * Get saved playback quality
+   */
+  fun getPlaybackQuality(): Int = settingsRepository.getPlaybackQuality()
+
+  /**
+   * Get saved playback speed
+   */
+  fun getPlaybackSpeed(): Float = settingsRepository.getPlaybackSpeed()
+
+  /**
+   * Get saved subtitle language
+   */
+  fun getSubtitleLanguage(): String = settingsRepository.getSubtitleLanguage()
 }
