@@ -190,7 +190,6 @@ class MainViewModelTest {
 
     // Then
     viewModel.sortOrder.observeForTestingResult() isEqualTo "popularity"
-
   }
 
   @Test
@@ -238,5 +237,23 @@ class MainViewModelTest {
     expected isEqualTo true
     verify(settingsRepository).isCrashReportingAllowed()
     verifyNoMoreInteractions(settingsRepository)
+  }
+
+  @Test
+  fun updateIsPlaying() {
+    // When
+    viewModel.updateIsPlaying(true)
+
+    // Then
+    viewModel.isPlaying.observeForTestingResult() isEqualTo true
+  }
+
+  @Test
+  fun isPlaying() {
+    // When
+    viewModel.updateIsPlaying(true)
+
+    // Then
+    viewModel.isPlaying() isEqualTo true
   }
 }

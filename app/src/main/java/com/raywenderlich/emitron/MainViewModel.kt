@@ -48,16 +48,25 @@ class MainViewModel @Inject constructor(
     get() = _selectedFilters
 
   /**
-   * Observer for selected filters
+   * Observer for current query
    */
   val query: LiveData<String>
     get() = _query
 
   /**
-   * Observer for selected filters
+   * Observer for sort order
    */
   val sortOrder: LiveData<String>
     get() = _sortOrder
+
+
+  private val _isPlaying = MutableLiveData<Boolean>()
+
+  /**
+   * Observer for playback state
+   */
+  val isPlaying: LiveData<Boolean>
+    get() = _isPlaying
 
   /**
    * Set selected filter
@@ -160,4 +169,20 @@ class MainViewModel @Inject constructor(
    * @return True if user has allowed, else False
    */
   fun isCrashReportingAllowed(): Boolean = settingsRepository.isCrashReportingAllowed()
+
+  /**
+   * Check if a content is being played
+   *
+   * @return true if playing a content, else false
+   */
+  fun isPlaying(): Boolean = _isPlaying.value ?: false
+
+  /**
+   * Update playback status
+   *
+   * @param isPlaying true if playing a content, else false
+   */
+  fun updateIsPlaying(isPlaying: Boolean = false) {
+    _isPlaying.value = isPlaying
+  }
 }
