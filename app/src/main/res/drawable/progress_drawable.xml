@@ -1,33 +1,10 @@
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+  android:shape="line"
+  android:thickness="@dimen/download_progress_thickness"
+  android:useLevel="true">
 
-  <!-- Define the background properties like color etc -->
-  <item android:id="@android:id/background">
-    <layer-list>
+  <corners android:radius="@dimen/download_progress_radius" />
+  <solid android:color="@color/colorButton1" />
 
-      <item>
-        <shape android:shape="rectangle">
-
-          <corners android:radius="@dimen/banner_play_corner_radius" />
-          <stroke
-            android:width="@dimen/banner_play_stroke_width"
-            android:color="@color/colorIconInverse" />
         </shape>
-      </item>
-
-      <item
-        android:bottom="@dimen/banner_play_icon_padding"
-        android:drawable="@drawable/ic_material_icon_play"
-        android:left="@dimen/banner_play_icon_padding"
-        android:right="@dimen/banner_play_icon_padding"
-        android:top="@dimen/banner_play_icon_padding" />
-
-    </layer-list>
-  </item>
-
-  <!-- Define the progress properties like start color, end color etc -->
-  <item android:id="@android:id/progress">
-    <clip android:drawable="@drawable/ic_material_icon_play_banner_transparent_2">
-
-    </clip>
-  </item>
-</layer-list>
