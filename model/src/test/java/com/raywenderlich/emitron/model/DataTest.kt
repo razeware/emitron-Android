@@ -645,4 +645,14 @@ class DataTest {
     val data = Data(attributes = attributes)
     data.getStreamUrl() isEqualTo "WubbaLubbaDubDub"
   }
+
+  @Test
+  fun setVideoUrl() {
+    val dataWithUrl = Data(attributes = Attributes(url = "WubbaLubbaDubDub"))
+    val data = Data(id = "1", attributes = Attributes())
+
+    val result = data.setVideoUrl(dataWithUrl)
+
+    result?.getStreamUrl() isEqualTo "WubbaLubbaDubDub"
+  }
 }

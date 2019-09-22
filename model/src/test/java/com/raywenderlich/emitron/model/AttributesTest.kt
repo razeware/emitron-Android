@@ -2,6 +2,7 @@ package com.raywenderlich.emitron.model
 
 import com.google.common.truth.Truth.assertThat
 import com.raywenderlich.emitron.model.utils.TimeUtils
+import com.raywenderlich.emitron.model.utils.isEqualTo
 import org.junit.Test
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.Month
@@ -96,6 +97,15 @@ class AttributesTest {
     assertThat(attributes.getVideoId()).isEqualTo(null)
 
     val attributes2 = Attributes(uri = "rw://betamax/collections/122")
-    assertThat(attributes2.getVideoId()).isEqualTo("122")
+    attributes2.getVideoId() isEqualTo "122"
+  }
+
+  @Test
+  fun setVideoUrl() {
+    val attributesWithUrl = Attributes(url = "WubbaLubbaDubDub")
+    val attributes = Attributes()
+    val result = attributes.setVideoUrl(attributesWithUrl)
+
+    result.url isEqualTo "WubbaLubbaDubDub"
   }
 }
