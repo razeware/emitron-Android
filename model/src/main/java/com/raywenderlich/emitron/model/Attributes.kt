@@ -211,4 +211,11 @@ data class Attributes(
    * @return video id
    */
   fun getVideoId(): String? = uri?.split("/")?.lastOrNull()
+
+  /**
+   * Set video url
+   *
+   * @param attributes attribute with video url
+   */
+  fun setVideoUrl(attributes: Attributes?): Attributes = this.copy(url = attributes?.url)
 }

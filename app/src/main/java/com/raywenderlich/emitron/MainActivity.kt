@@ -4,6 +4,7 @@ import android.annotation.TargetApi
 import android.app.PictureInPictureParams
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
 import com.crashlytics.android.Crashlytics
+import com.google.android.gms.cast.framework.CastButtonFactory
+import com.google.android.gms.cast.framework.CastContext
 import com.raywenderlich.emitron.databinding.ActivityMainBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import com.raywenderlich.emitron.notifications.NotificationChannels
@@ -68,6 +71,7 @@ class MainActivity : DaggerAppCompatActivity() {
     createNotificationChannels()
 
     initObservers()
+    CastContext.getSharedInstance(this)
   }
 
   private fun createNotificationChannels() {
@@ -127,4 +131,14 @@ class MainActivity : DaggerAppCompatActivity() {
     .setAspectRatio(PipActionDelegate.getPipRatio(this))
     .setActions(PipActionDelegate.getPipActions(this, viewModel.isPlaying()))
     .build()
+
+  override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    menuInflater.inflate(R.menu.menu_cast, menu)
+    CastButtonFactory.setUpMediaRouteButton(
+      this,
+      menu,
+      R.id.media_route_menu_item
+    )
+    return true
+  }
 }

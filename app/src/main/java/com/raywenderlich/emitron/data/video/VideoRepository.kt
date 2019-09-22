@@ -20,6 +20,7 @@ class VideoRepository @Inject constructor(
   /**
    * Get video stream
    */
+  @Throws(Exception::class)
   suspend fun getVideoStream(id: String): Content {
     return withContext(threadManager.io) {
       api.getVideoStream(id)
@@ -29,6 +30,7 @@ class VideoRepository @Inject constructor(
   /**
    * Get video playback token
    */
+  @Throws(Exception::class)
   suspend fun getVideoPlaybackToken(): Content {
     return withContext(threadManager.io) {
       contentApi.getPlaybackToken()
@@ -38,6 +40,7 @@ class VideoRepository @Inject constructor(
   /**
    * Update content Playback
    */
+  @Throws(Exception::class)
   suspend fun updateContentPlayback(
     playbackToken: String,
     contentId: String,

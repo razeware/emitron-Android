@@ -7,5 +7,4 @@
     android:title="@string/title_cast"
     app:actionProviderClass="androidx.mediarouter.app.MediaRouteActionProvider"
     app:showAsAction="always"/>
-
 </menu>

@@ -7,4 +7,4 @@
   <corners android:radius="@dimen/download_progress_radius" />
   <solid android:color="@color/colorButton1" />
 
-        </shape>
+</shape>

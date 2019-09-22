@@ -4,24 +4,75 @@
   xmlns:tools="http://schemas.android.com/tools"
   tools:orientation="horizontal">
 
-  <data />
+  <data>
+
+    <variable
+      name="data"
+      type="androidx.lifecycle.LiveData&lt;com.raywenderlich.emitron.model.Data&gt;" />
+
+  </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.appcompat.widget.AppCompatImageView
+      android:id="@+id/cast_control_cover_art"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:imageUrl="@{data.cardArtworkUrl}"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:background="@drawable/bg_gradient_collection_banner"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+      android:id="@+id/cast_control_title"
+      style="@style/TextAppearance.Label"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/activity_horizontal_margin"
+      android:layout_marginEnd="@dimen/activity_horizontal_margin"
+      android:layout_marginBottom="@dimen/activity_vertical_margin"
+      android:gravity="center"
+      android:maxLines="1"
+      android:text="@{data.getName()}"
+      app:layout_constraintBottom_toTopOf="@id/cast_control_view"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="1"
+      app:layout_constraintVertical_chainStyle="packed" />
+
     <com.google.android.exoplayer2.ui.PlayerControlView
       android:id="@+id/cast_control_view"
       android:layout_width="match_parent"
       android:layout_height="@dimen/button_height_default"
+      android:layout_marginBottom="@dimen/guideline_bottom_gesture"
       android:visibility="gone"
-      app:controller_layout_id="@layout/layout_playback_controls"
+      app:controller_layout_id="@layout/layout_playback_controls_cast"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/cast_control_title"
       app:repeat_toggle_modes="all|one"
       app:show_timeout="-1"
-      tools:visibility="gone" />
+      tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+      android:id="@+id/cast_control_group"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:constraint_referenced_ids="cast_control_cover_art,cast_control_title,cast_control_view" />
 
     <com.google.android.exoplayer2.ui.PlayerView
       android:id="@+id/player_view"
@@ -33,8 +84,10 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="@+id/toolbar"
-      app:rewind_increment="10000" />
+      app:layout_constraintTop_toTopOf="parent"
+      app:resize_mode="fill"
+      app:rewind_increment="10000"
+      tools:visibility="gone" />
 
     <View
       android:id="@+id/player_auto_play_view"
@@ -64,7 +117,7 @@
       android:layout_height="@dimen/button_play_pause_height_width"
       android:layout_marginTop="@dimen/player_auto_play_progress_margin_top"
       android:indeterminate="false"
-      android:progressDrawable="@drawable/progress_drawable"
+      android:progressDrawable="@drawable/progress_drawable_2"
       app:layout_constraintBottom_toTopOf="@id/button_auto_play_cancel"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"

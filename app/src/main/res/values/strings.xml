@@ -163,7 +163,7 @@
   <string name="next_episode">Next: %1$s</string>
   <string name="progress_next_episode">Next episode in %1$s…</string>
   <string name="button_cancel">Cancel</string>
-  <string name="player_volume_low">Volume too low!</string>
+  <string name="player_volume_low">Please increase media volume.</string>
   <string name="player_playback_token_error">You are only allowed to play on a single device.</string>
 
   <!-- Notifications -->

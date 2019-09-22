@@ -343,6 +343,10 @@ data class Data(
    */
   fun getVideoPlaybackToken(): String = attributes?.videoPlaybackToken ?: ""
 
+  fun setVideoUrl(data: Data?): Data? {
+    return data?.copy(attributes = attributes?.setVideoUrl(data.attributes))
+  }
+
   companion object {
 
     /**
