@@ -138,6 +138,7 @@ class CollectionFragment : DaggerFragment() {
       it?.let {
         if (it.isScreenCast()) {
           binding.groupCollectionContent.visibility = View.GONE
+          binding.buttonCollectionPlay.toVisibility(true)
         }
       }
     }
