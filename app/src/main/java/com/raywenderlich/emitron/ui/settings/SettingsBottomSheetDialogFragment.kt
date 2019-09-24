@@ -16,6 +16,19 @@ import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentSettingsBottomsheetBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import com.raywenderlich.emitron.ui.player.PlayerFragment.Companion.subtitleLanguageEnglish
+import com.raywenderlich.emitron.ui.player.PlayerFragment.Playback.Quality.AUTO
+import com.raywenderlich.emitron.ui.player.PlayerFragment.Playback.Quality.FHD
+import com.raywenderlich.emitron.ui.player.PlayerFragment.Playback.Quality.HD
+import com.raywenderlich.emitron.ui.player.PlayerFragment.Playback.Quality.NHD
+import com.raywenderlich.emitron.ui.player.PlayerFragment.Playback.Quality.QHD
+import com.raywenderlich.emitron.ui.player.PlayerFragment.Playback.Quality.QVGA
+import com.raywenderlich.emitron.ui.player.PlayerFragment.Playback.Speed.DOUBLE
+import com.raywenderlich.emitron.ui.player.PlayerFragment.Playback.Speed.HALF
+import com.raywenderlich.emitron.ui.player.PlayerFragment.Playback.Speed.NORMAL
+import com.raywenderlich.emitron.ui.player.PlayerFragment.Playback.Speed.NORMALx0_75
+import com.raywenderlich.emitron.ui.player.PlayerFragment.Playback.Speed.NORMALx1_25
+import com.raywenderlich.emitron.ui.player.PlayerFragment.Playback.Speed.NORMALx1_50
+import com.raywenderlich.emitron.ui.player.PlayerFragment.Playback.Subtitle.ENGLISH
 import com.raywenderlich.emitron.utils.extensions.setDataBindingView
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
@@ -126,12 +139,12 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
      */
     val playbackQualityToResIdMap: Map<Int, Int> by lazy {
       mapOf(
-        1080 to R.string.playback_quality_1080p_recommended,
-        720 to R.string.playback_quality_720p,
-        540 to R.string.playback_quality_540p,
-        360 to R.string.playback_quality_360p,
-        240 to R.string.playback_quality_240p,
-        1 to R.string.playback_quality_auto
+        FHD to R.string.playback_quality_1080p_recommended,
+        HD to R.string.playback_quality_720p,
+        QHD to R.string.playback_quality_540p,
+        NHD to R.string.playback_quality_360p,
+        QVGA to R.string.playback_quality_240p,
+        AUTO to R.string.playback_quality_auto
       )
     }
 
@@ -140,12 +153,12 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
      */
     val playbackSpeedToResIdMap: Map<Float, Int> by lazy {
       mapOf(
-        1f to R.string.playback_speed_normal,
-        0.5f to R.string.playback_speed_0_5x,
-        0.75f to R.string.playback_speed_0_75x,
-        1.25f to R.string.playback_speed_1_25x,
-        1.5f to R.string.playback_speed_1_5x,
-        2f to R.string.playback_speed_2x
+        NORMAL to R.string.playback_speed_normal,
+        HALF to R.string.playback_speed_0_5x,
+        NORMALx0_75 to R.string.playback_speed_0_75x,
+        NORMALx1_25 to R.string.playback_speed_1_25x,
+        NORMALx1_50 to R.string.playback_speed_1_5x,
+        DOUBLE to R.string.playback_speed_2x
       )
     }
   }
@@ -267,21 +280,21 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
   private fun updatePlaybackSpeedSettings(position: Int, options: List<Int>) {
     val playbackSpeed = when (options[position]) {
       R.string.playback_speed_0_5x -> {
-        0.5f
+        HALF
       }
       R.string.playback_speed_0_75x -> {
-        0.75f
+        NORMALx0_75
       }
       R.string.playback_speed_1_25x -> {
-        1.25f
+        NORMALx1_25
       }
       R.string.playback_speed_1_5x -> {
-        1.5f
+        NORMALx1_50
       }
       R.string.playback_speed_2x -> {
-        2f
+        DOUBLE
       }
-      else -> 1f
+      else -> NORMAL
     }
     viewModel.updatePlaybackSpeed(playbackSpeed)
     dismiss()
@@ -290,21 +303,21 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
   private fun updatePlaybackQualitySettings(position: Int, options: List<Int>) {
     val playbackQuality = when (options[position]) {
       R.string.playback_quality_720p -> {
-        720
+        HD
       }
       R.string.playback_quality_540p -> {
-        540
+        QHD
       }
       R.string.playback_quality_360p -> {
-        360
+        NHD
       }
       R.string.playback_quality_240p -> {
-        240
+        QVGA
       }
       R.string.playback_quality_auto -> {
-        1
+        AUTO
       }
-      else -> 1080
+      else -> FHD
     }
     viewModel.updatePlaybackQuality(playbackQuality)
     dismiss()
@@ -333,7 +346,7 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
   private fun updateSubtitleLanguage(position: Int, options: List<Int>) {
     val subtitleLanguage = when (options[position]) {
       R.string.button_player_label_english -> {
-        "en"
+        ENGLISH
       }
       else -> {
         ""

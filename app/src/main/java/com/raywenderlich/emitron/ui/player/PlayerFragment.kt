@@ -49,34 +49,142 @@ import javax.inject.Inject
  */
 class PlayerFragment : DaggerFragment() {
 
+  /**
+   * Playback constants
+   */
+  object Playback {
+
+    /**
+     * Supported playback speed
+     */
+    object Speed {
+      /**
+       * 0.5 times of normal speed
+       */
+      const val HALF: Float = 0.5f
+      /**
+       * 0.75 times of normal speed
+       */
+      const val NORMALx0_75: Float = 0.5f
+      /**
+       * Normal playback speed
+       */
+      const val NORMAL: Float = 1.0f
+      /**
+       * 1.25 times of normal speed
+       */
+      const val NORMALx1_25: Float = 1.25f
+      /**
+       * 1.5 times of normal speed
+       */
+      const val NORMALx1_50: Float = 1.75f
+      /**
+       * Double of normal speed
+       */
+      const val DOUBLE: Float = 2.0f
+    }
+
+    /**
+     * Supported playback quality
+     */
+    object Quality {
+      /**
+       * Full HD
+       */
+      const val FHD: Int = 1080
+      /**
+       * HD
+       */
+      const val HD: Int = 720
+
+      /**
+       * quarter of a Full HD
+       */
+      const val QHD: Int = 540
+      /**
+       * one ninth of a Full HD
+       */
+      const val NHD: Int = 360
+      /**
+       * quarter of VGA
+       */
+      const val QVGA: Int = 240
+      /**
+       * AUTO
+       */
+      const val AUTO: Int = 1
+    }
+
+    /**
+     * Supported subtitle language
+     */
+    object Subtitle {
+
+      /**
+       * English
+       */
+      const val ENGLISH: String = "en"
+    }
+  }
+
   companion object {
 
     /**
      * Subtitle english ISO format
      */
-    const val subtitleLanguageEnglish: String = "en"
+    const val subtitleLanguageEnglish: String = Playback.Subtitle.ENGLISH
 
     /**
      * Default playback quality (Auto)
      */
-    const val defaultPlaybackQuality: Int = 1 // Auto
+    const val defaultPlaybackQuality: Int = Playback.Quality.AUTO // Auto
 
     /**
      * Playback speed options in order shown in view
      */
-    val playerPlaybackSpeedOptions: List<Float> = listOf(0.5f, 0.75f, 1.0f, 1.25f, 1.5f, 2.0f)
+    val playerPlaybackSpeedOptions: List<Float> =
+      listOf(
+        Playback.Speed.HALF,
+        Playback.Speed.NORMALx0_75,
+        Playback.Speed.NORMAL,
+        Playback.Speed.NORMALx1_25,
+        Playback.Speed.NORMALx1_50,
+        Playback.Speed.DOUBLE
+      )
 
     /**
      * Playback quality options in order shown in view
      */
     val playerPlaybackQualityOptions: List<Int> =
-      listOf(1, 240, 360, 540, 720, 1080)
+      listOf(
+        Playback.Quality.AUTO,
+        Playback.Quality.QVGA,
+        Playback.Quality.NHD,
+        Playback.Quality.QHD,
+        Playback.Quality.HD,
+        Playback.Quality.FHD
+      )
 
     /**
      * Playback subtitle language options in order shown in view
      */
     val playerSubtitleLanguageOptions: List<String> =
       listOf("", subtitleLanguageEnglish)
+
+    /**
+     * No. of millis after which the auto-playback UI will update progress
+     */
+    const val AUTO_PLAYBACK_COUNTDOWN_INTERVAL: Long = 1000
+
+    /**
+     * No. of millis for which the auto-playback view will be shown
+     */
+    const val AUTO_PLAYBACK_COUNTDOWN_DURATION: Long = 5000
+
+    /**
+     * Playback Notification Id
+     */
+    const val PLAYBACK_NOTIFICATION_ID: Int = 8287
   }
 
 
@@ -96,18 +204,22 @@ class PlayerFragment : DaggerFragment() {
 
   private var isInPictureInPictureMode = false
 
-  private val countDownTimer: CountDownTimer = createCountDownTimer(5000, 1000, { timeInterval ->
-    updateAutoPlaybackProgress(timeInterval)
-  }, {
-    binding.groupAutoPlayProgress.visibility = View.GONE
-    viewModel.playNextEpisode()
-  })
+  private val countDownTimer: CountDownTimer =
+    createCountDownTimer(
+      AUTO_PLAYBACK_COUNTDOWN_DURATION,
+      AUTO_PLAYBACK_COUNTDOWN_INTERVAL,
+      { timeInterval ->
+        updateAutoPlaybackProgress(timeInterval)
+      }, {
+        binding.groupAutoPlayProgress.visibility = View.GONE
+        viewModel.playNextEpisode()
+      })
 
   private val playbackNotificationManager: PlayerNotificationManager by lazy {
     PlayerNotificationManager(
       requireActivity(),
       NotificationChannels.channelIdPlayback,
-      1,
+      PLAYBACK_NOTIFICATION_ID,
       NotificationDescriptionAdapter(requireActivity(), viewModel),
       null,
       PlayerNotificationActionAdapter(viewModel)
