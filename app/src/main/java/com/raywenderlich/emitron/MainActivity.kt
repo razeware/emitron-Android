@@ -1,8 +1,13 @@
 package com.raywenderlich.emitron
 
+import android.annotation.TargetApi
+import android.app.PictureInPictureParams
+import android.os.Build
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
@@ -10,12 +15,17 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
 import com.crashlytics.android.Crashlytics
+import com.google.android.gms.cast.framework.CastButtonFactory
+import com.google.android.gms.cast.framework.CastContext
 import com.raywenderlich.emitron.databinding.ActivityMainBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
-import com.raywenderlich.emitron.utils.extensions.setDataBindingView
+import com.raywenderlich.emitron.notifications.NotificationChannels
+import com.raywenderlich.emitron.ui.player.PipActionDelegate
+import com.raywenderlich.emitron.utils.extensions.*
 import dagger.android.support.DaggerAppCompatActivity
 import io.fabric.sdk.android.Fabric
 import javax.inject.Inject
+
 
 /**
  * Parent screen from all fragments
@@ -33,6 +43,7 @@ class MainActivity : DaggerAppCompatActivity() {
   lateinit var viewModelFactory: ViewModelFactory
 
   private val viewModel: MainViewModel by viewModels { viewModelFactory }
+
   /**
    * onCreate()
    */
@@ -55,6 +66,18 @@ class MainActivity : DaggerAppCompatActivity() {
     if (viewModel.isCrashReportingAllowed()) {
       Fabric.with(this, Crashlytics())
     }
+
+    requestGestureUi()
+    createNotificationChannels()
+
+    initObservers()
+    CastContext.getSharedInstance(this)
+  }
+
+  private fun createNotificationChannels() {
+    if (hasNotificationChannelSupport()) {
+      NotificationChannels.newInstance(application).createNotificationChannels()
+    }
   }
 
   private fun onNavDestinationChanged(destination: NavDestination) {
@@ -67,10 +90,19 @@ class MainActivity : DaggerAppCompatActivity() {
       R.id.navigation_settings_bottom_sheet,
       R.id.navigation_filter,
       R.id.navigation_collection,
-      R.id.navigation_login -> {
+      R.id.navigation_login,
+      R.id.navigation_player -> {
         // Hide bottom nav on login screen
         binding.navDivider.visibility = View.GONE
         binding.navView.visibility = View.GONE
+      }
+    }
+  }
+
+  private fun initObservers() {
+    viewModel.isPlaying.observe(this) {
+      if (hasPipSupport()) {
+        setPictureInPictureParams(updatePipParameters())
       }
     }
   }
@@ -84,4 +116,29 @@ class MainActivity : DaggerAppCompatActivity() {
         super.onSupportNavigateUp()
   }
 
+  /**
+   * See [AppCompatActivity.onUserLeaveHint]
+   */
+  override fun onUserLeaveHint() {
+    super.onUserLeaveHint()
+    if (hasPipSupport() && viewModel.isPlaying()) {
+      enterPictureInPictureMode(updatePipParameters())
+    }
+  }
+
+  @TargetApi(Build.VERSION_CODES.O)
+  private fun updatePipParameters() = PictureInPictureParams.Builder()
+    .setAspectRatio(PipActionDelegate.getPipRatio(this))
+    .setActions(PipActionDelegate.getPipActions(this, viewModel.isPlaying()))
+    .build()
+
+  override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    menuInflater.inflate(R.menu.menu_cast, menu)
+    CastButtonFactory.setUpMediaRouteButton(
+      this,
+      menu,
+      R.id.media_route_menu_item
+    )
+    return true
+  }
 }

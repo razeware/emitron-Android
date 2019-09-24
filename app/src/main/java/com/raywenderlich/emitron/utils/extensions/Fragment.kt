@@ -1,6 +1,7 @@
 package com.raywenderlich.emitron.utils.extensions
 
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -94,5 +95,13 @@ fun Fragment.hideKeyboard() {
   }
   if (view != null) {
     requireView().clearFocus()
+  }
+}
+
+fun Fragment.requestLandscapeOrientation(isLandscape: Boolean = true) {
+  requireActivity().requestedOrientation = if (isLandscape) {
+    ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+  } else {
+    ActivityInfo.SCREEN_ORIENTATION_USER
   }
 }

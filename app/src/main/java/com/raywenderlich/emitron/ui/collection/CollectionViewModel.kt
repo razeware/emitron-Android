@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.raywenderlich.emitron.data.content.ContentRepository
 import com.raywenderlich.emitron.model.ContentType
-import com.raywenderlich.emitron.model.Contents
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.ui.common.UiStateViewModel
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
+import com.raywenderlich.emitron.ui.player.Playlist
 import com.raywenderlich.emitron.utils.Event
 import com.raywenderlich.emitron.utils.NetworkState
 import com.raywenderlich.emitron.utils.UiStateManager
@@ -152,7 +152,7 @@ class CollectionViewModel @Inject constructor(
   /**
    * Create playlist to be forwarded to video player
    */
-  fun getPlaylist(): Contents? {
+  fun getPlaylist(): Playlist {
     val collection = _collection.value
 
     return when (collection?.getContentType()) {
@@ -160,10 +160,10 @@ class CollectionViewModel @Inject constructor(
         val playlist = collectionEpisodes.value?.let {
           it.mapNotNull { (_, data) -> data }
         }
-        Contents(datum = playlist ?: emptyList())
+        Playlist(collection = collection, episodes = playlist ?: emptyList())
       }
       ContentType.Screencast -> {
-        Contents(datum = listOf(collection))
+        Playlist(collection = collection, episodes = listOf(collection))
       }
       null -> {
         throw IllegalStateException("Invalid type for collection or screencast")
@@ -194,4 +194,9 @@ class CollectionViewModel @Inject constructor(
       )
     }
   }
+
+  /**
+   * @return true if content is free to watch, else false
+   */
+  fun isFreeContent(): Boolean = _collection.value?.isFreeContent() ?: false
 }

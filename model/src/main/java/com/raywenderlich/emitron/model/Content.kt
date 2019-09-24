@@ -43,6 +43,11 @@ data class Content(
   fun getPercentComplete(): Int? = datum?.getPercentComplete() ?: 0
 
   /**
+   *  @return progress for content
+   */
+  fun getProgress(): Long = datum?.getProgress() ?: 0
+
+  /**
    *  @return true if user has finished content, else false
    */
   fun isFinished(): Boolean = datum?.isFinished() ?: false
@@ -53,6 +58,12 @@ data class Content(
    * @return String content id
    */
   fun getChildId(): String? = datum?.id
+
+  /**
+   * Get video playback token
+   *
+   */
+  fun getPlayerToken(): String? = datum?.getVideoPlaybackToken()
 
   /**
    * Get content data, along with included metadata.

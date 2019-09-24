@@ -68,6 +68,7 @@ class ProgressionActionDelegateTest {
 
       // Then
       verify(progressionRepository).updateProgression("8")
+      verify(progressionRepository).updateProgressionInDb("8", true)
       verifyNoMoreInteractions(progressionRepository)
 
       boundaryCallbackNotifier.hasRequests() isEqualTo false
@@ -112,6 +113,7 @@ class ProgressionActionDelegateTest {
 
       // Then
       verify(progressionRepository).updateProgression("8")
+      verify(progressionRepository).updateProgressionInDb("8", false)
       verifyNoMoreInteractions(progressionRepository)
 
       viewModel.completionActionResult.value?.first?.peekContent() isEqualTo
@@ -150,6 +152,7 @@ class ProgressionActionDelegateTest {
 
       // Then
       verify(progressionRepository).updateProgression("8")
+      verify(progressionRepository).updateProgressionInDb("8", false)
       verifyNoMoreInteractions(progressionRepository)
 
       viewModel.completionActionResult.value?.first?.peekContent() isEqualTo
@@ -193,6 +196,7 @@ class ProgressionActionDelegateTest {
 
       // Then
       verify(progressionRepository).updateProgression("8")
+      verify(progressionRepository).updateProgressionInDb("8", false)
       verifyNoMoreInteractions(progressionRepository)
 
       viewModel.completionActionResult.value?.first?.peekContent() isEqualTo
@@ -236,6 +240,7 @@ class ProgressionActionDelegateTest {
 
       // Then
       verify(progressionRepository).updateProgression("8")
+      verify(progressionRepository).updateProgressionInDb("8", true)
       verifyNoMoreInteractions(progressionRepository)
 
       viewModel.completionActionResult.value?.first?.peekContent() isEqualTo
@@ -272,6 +277,7 @@ class ProgressionActionDelegateTest {
 
       // Then
       verify(progressionRepository).updateProgression("8")
+      verify(progressionRepository).updateProgressionInDb("8", true)
       verifyNoMoreInteractions(progressionRepository)
       viewModel.completionActionResult.value?.first?.peekContent() isEqualTo
           ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeFailedToMarkInProgress

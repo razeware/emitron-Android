@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
   <item android:id="@android:id/background">
-    <inset android:drawable="@color/colorContentProgressBackground" />
+    <clip>
+      <shape>
+        <corners
+          android:bottomLeftRadius="@dimen/episode_progress_corner_radius"
+          android:bottomRightRadius="@dimen/episode_progress_corner_radius"
+          android:topLeftRadius="0dp"
+          android:topRightRadius="0dp" />
+        <solid android:color="@color/colorContentProgressBackground" />
+      </shape>
+    </clip>
   </item>
   <item
     android:id="@android:id/progress"
@@ -9,8 +18,8 @@
     <clip>
       <shape>
         <corners
-          android:bottomLeftRadius="@dimen/card_radius"
-          android:bottomRightRadius="@dimen/card_radius"
+          android:bottomLeftRadius="@dimen/episode_progress_corner_radius"
+          android:bottomRightRadius="@dimen/episode_progress_corner_radius"
           android:topLeftRadius="0dp"
           android:topRightRadius="0dp" />
         <solid android:color="@color/colorContentProgress" />

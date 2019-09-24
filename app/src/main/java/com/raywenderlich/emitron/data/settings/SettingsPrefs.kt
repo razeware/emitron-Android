@@ -15,6 +15,10 @@ class SettingsPrefs @Inject constructor(private val prefs: PrefUtils) {
     private const val RECENT_SEARCHES = "recent_searches"
     private const val ALLOW_CRASH_REPORTS = "allow_crash_reports"
     private const val SELECTED_NIGHT_MODE = "selected_night_mode"
+    private const val PLAYER_AUTO_PLAY_NEXT = "player_auto_play_next"
+    private const val PLAYER_PLAYBACK_SPEED = "player_playback_speed"
+    private const val PLAYER_PLAYBACK_QUALITY = "player_playback_quality"
+    private const val PLAYER_SUBTITLES_LANGUAGE = "player_subtitles_language"
   }
 
   init {
@@ -103,4 +107,72 @@ class SettingsPrefs @Inject constructor(private val prefs: PrefUtils) {
    */
   fun getNightMode(): Int =
     prefs.get(SELECTED_NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_YES)
+
+  /**
+   * Save auto play preference
+   *
+   * @param allowed true if user has allowed auto play else false
+   */
+  fun saveAutoPlayAllowed(allowed: Boolean) {
+    prefs.set(PLAYER_AUTO_PLAY_NEXT, allowed).commit()
+  }
+
+  /**
+   * Save playback speed
+   *
+   * @param speed playback speed
+   */
+  fun savePlaybackSpeed(speed: Float) {
+    prefs.set(PLAYER_PLAYBACK_SPEED, speed).commit()
+  }
+
+  /**
+   * Save playback quality
+   *
+   * @param quality playback quality
+   */
+  fun savePlaybackQuality(quality: Int) {
+    prefs.set(PLAYER_PLAYBACK_QUALITY, quality).commit()
+  }
+
+  /**
+   * Save subtitle language
+   *
+   * @param language subtitle language
+   */
+  fun saveSubtitleLanguage(language: String) {
+    prefs.set(PLAYER_SUBTITLES_LANGUAGE, language).commit()
+  }
+
+  /**
+   * Get playback speed from preference
+   *
+   * @return playback speed
+   */
+  fun getPlaybackSpeed(): Float =
+    prefs.get(PLAYER_PLAYBACK_SPEED, 1f)
+
+  /**
+   * Get playback speed from preference
+   *
+   * @return playback quality
+   */
+  fun getPlaybackQuality(): Int =
+    prefs.get(PLAYER_PLAYBACK_QUALITY, 1080)
+
+  /**
+   * Get playback speed from preference
+   *
+   * @return auto play allowed, true if user has allowed auto play else false
+   */
+  fun getAutoPlayAllowed(): Boolean =
+    prefs.get(PLAYER_AUTO_PLAY_NEXT, true)
+
+  /**
+   * Get subtitle language from preference
+   *
+   * @return subtitle language in ISO format ex. "en"
+   */
+  fun getSubtitleLanguage(): String =
+    prefs.get(PLAYER_SUBTITLES_LANGUAGE, "")
 }

@@ -110,6 +110,7 @@
 
   <!-- Settings -->
   <string name="label_video_playback_speed">Video Playback Speed</string>
+  <string name="label_video_playback_quality">Video Playback Quality</string>
   <string name="label_downloads_wifi_only">Downloads (WiFi only)</string>
   <string name="label_download_quality">Download Quality</string>
   <string name="label_subtitles">Subtitles</string>
@@ -129,5 +130,52 @@
   <string name="body_bookmarks_empty">You haven’t bookmarked any tutorials yet</string>
   <string name="body_progressions_empty">You haven’t started any tutorials yet</string>
   <string name="body_progressions_completed_empty">You haven’t completed any tutorials yet</string>
+
+  <!-- Player screen -->
+  <string name="player_rew">Rewind</string>
+  <string name="player_play">Play</string>
+  <string name="player_pause">Pause</string>
+  <string name="player_ffwd">Forward</string>
+  <string name="title_cast">Cast</string>
+  <string name="button_player_quality">Quality</string>
+  <string name="button_player_play_back_speed">Speed</string>
+  <string name="button_player_auto_play">Autoplay</string>
+  <string name="button_player_auto">Auto</string>
+  <!-- We can also have an array of labels and dynamically inflate the buttons,
+  and handle click based on label text -->
+  <string name="playback_quality_240p">240p</string>
+  <string name="playback_quality_auto">Auto</string>
+  <string name="playback_quality_360p">360p</string>
+  <string name="playback_quality_540p">540p</string>
+  <string name="playback_quality_720p">720p</string>
+  <string name="playback_quality_1080p_recommended">1080p (Recommended)</string>
+  <string name="playback_quality_1080p">1080p</string>
+  <string name="playback_speed_normal">Normal</string>
+  <string name="playback_speed_0_5x">0.5x</string>
+  <string name="playback_speed_0_75x">0.75x</string>
+  <string name="playback_speed_1_25x">1.25x</string>
+  <string name="playback_speed_1_5x">1.5x</string>
+  <string name="playback_speed_2x">2x</string>
+  <string name="button_player_label_english">English</string>
+  <string name="subtitles">Subtitles</string>
+  <string name="button_play">Resume playback</string>
+  <string name="episodes">Episodes</string>
+  <string name="next_episode">Next: %1$s</string>
+  <string name="progress_next_episode">Next episode in %1$s…</string>
+  <string name="button_cancel">Cancel</string>
+  <string name="player_volume_low">Please increase media volume.</string>
+  <string name="player_playback_token_error">You are only allowed to play on a single device.</string>
+
+  <!-- Notifications -->
+  <string name="notification_channel_playback">Playback</string>
+  <string name="notification_channel_others">Others</string>
+
+  <!-- Pip -->
+  <string name="pip_action_next">Next</string>
+  <string name="pip_action_next_description">Play next episode</string>
+  <string name="pip_action_pause">Pause</string>
+  <string name="pip_action_pause_description">Pause playback</string>
+  <string name="pip_action_play">Play</string>
+  <string name="pip_action_play_description">Resume playback</string>
 
 </resources>

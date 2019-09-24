@@ -115,6 +115,7 @@
     <item name="iconGravity">textStart</item>
     <item name="android:textColor">@color/colorIcon</item>
     <item name="android:textAppearance">@style/TextAppearance.Button.Regular</item>
+    <item name="rippleColor">@color/colorButtonIconRipple</item>
   </style>
 
   <style name="Text" />
@@ -153,12 +154,19 @@
     <item name="android:letterSpacing">@fraction/letter_spacing_body</item>
   </style>
 
+  <style name="TextAppearance.Body.Bold" parent="Text.Bold" />
+
   <style name="TextAppearance.Body.1" parent="TextAppearance.Body">
     <item name="android:textSize">@dimen/text_size_body_1</item>
     <item name="android:textColor">@color/textColorBody1</item>
   </style>
 
   <style name="TextAppearance.Body.2" parent="TextAppearance.Body">
+    <item name="android:textSize">@dimen/text_size_body_2</item>
+    <item name="android:textColor">@color/textColorBody2</item>
+  </style>
+
+  <style name="TextAppearance.Body.2.Bold" parent="TextAppearance.Body.Bold">
     <item name="android:textSize">@dimen/text_size_body_2</item>
     <item name="android:textColor">@color/textColorBody2</item>
   </style>
@@ -292,5 +300,29 @@
     <item name="android:inputType">textNoSuggestions</item>
   </style>
 
+  <style name="Button.Player" parent="ExoMediaButton.Next">
+    <item name="android:minHeight">@dimen/button_height_default</item>
+    <item name="android:paddingStart">@null</item>
+    <item name="android:paddingEnd">@null</item>
+    <item name="iconTint">@color/colorIcon</item>
+    <item name="iconPadding">@dimen/button_padding_internal</item>
+    <item name="iconGravity">textStart</item>
+    <item name="android:textColor">@color/colorIcon</item>
+    <item name="elevation">0dp</item>
+    <item name="android:textAppearance">@style/TextAppearance.Button.Regular</item>
+  </style>
+
+  <style name="Button.Radio" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
+    <item name="android:minHeight">@dimen/button_player_settings_height_width</item>
+    <item name="android:background">@drawable/selector_radio_button_player_settings</item>
+    <item name="android:button">@color/transparent</item>
+    <item name="buttonCompat">@color/transparent</item>
+    <item name="android:gravity">center</item>
+    <item name="android:textColor">@color/white</item>
+    <item name="android:minWidth">72dp</item>
+    <item name="android:textAppearance">@style/TextAppearance.Button.Regular</item>
+    <item name="android:paddingStart">@dimen/button_padding_internal_dense</item>
+    <item name="android:paddingEnd">@dimen/button_padding_internal_dense</item>
+  </style>
 
 </resources>

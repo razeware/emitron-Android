@@ -30,9 +30,7 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
     onEpisodeCompleted: (Int) -> Unit
   ) {
     binding.root.setOnClickListener {
-      if (episodeIsProContent) {
-        onEpisodeSelected(adapterPosition)
-      }
+      onEpisodeSelected(adapterPosition)
     }
     binding.buttonCollectionEpisode.setOnClickListener {
       onEpisodeCompleted(adapterPosition)

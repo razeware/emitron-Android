@@ -82,6 +82,16 @@ class DataTest {
   }
 
   @Test
+  fun getProgress() {
+    val attributes = Attributes(progress = 10L)
+    val data = Data(attributes = attributes)
+    data.getProgress() isEqualTo 10L
+
+    val data2 = Data()
+    data2.getProgress() isEqualTo 0
+  }
+
+  @Test
   fun getProgressionPercentComplete() {
     val progression = Content(datum = Data(attributes = Attributes(percentComplete = 10.0)))
     val relationShip = Relationships(progression = progression)
@@ -210,7 +220,7 @@ class DataTest {
     val data = Data(
       relationships = Relationships(
         domains = Contents(
-          datum = listOf(Data(id = "1"))
+          datum = listOf(Data(id = "1"), Data(id = "1"))
         ),
         progression = Content(datum = Data(id = "4")),
         bookmark = Content(Data(id = "9"))
@@ -232,9 +242,9 @@ class DataTest {
     val data3 = Data()
     val result3 = data3.updateRelationships(domainsAndProgressions)
 
-    result3.getDomain() isEqualTo "iOS & Swift, Android & Kotlin"
-    result3.isFinished() isEqualTo true
-    result3.isBookmarked() isEqualTo true
+    result3.getDomain() isEqualTo null
+    result3.isFinished() isEqualTo false
+    result3.isBookmarked() isEqualTo false
   }
 
   @Test
@@ -613,5 +623,36 @@ class DataTest {
     val result = Data.fromSortOrder("popularity")
 
     result isEqualTo expected
+  }
+
+  @Test
+  fun getVideoId() {
+    val attributes = Attributes(uri = "rw://betamax/collections/122")
+    val data = Data(attributes = attributes)
+    data.getVideoId() isEqualTo "122"
+  }
+
+  @Test
+  fun getVideoPlaybackToken() {
+    val attributes = Attributes(videoPlaybackToken = "RickAndMorty")
+    val data = Data(attributes = attributes)
+    data.getVideoPlaybackToken() isEqualTo "RickAndMorty"
+  }
+
+  @Test
+  fun getStreamUrl() {
+    val attributes = Attributes(url = "WubbaLubbaDubDub")
+    val data = Data(attributes = attributes)
+    data.getStreamUrl() isEqualTo "WubbaLubbaDubDub"
+  }
+
+  @Test
+  fun setVideoUrl() {
+    val dataWithUrl = Data(attributes = Attributes(url = "WubbaLubbaDubDub"))
+    val data = Data(id = "1", attributes = Attributes())
+
+    val result = data.setVideoUrl(dataWithUrl)
+
+    result?.getStreamUrl() isEqualTo "WubbaLubbaDubDub"
   }
 }

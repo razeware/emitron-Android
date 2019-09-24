@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentCollectionBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
+import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.ui.common.ShimmerProgressDelegate
 import com.raywenderlich.emitron.ui.content.getReadableContributors
 import com.raywenderlich.emitron.ui.content.getReadableReleaseAtWithTypeAndDuration
@@ -40,13 +41,7 @@ class CollectionFragment : DaggerFragment() {
 
   private val args by navArgs<CollectionFragmentArgs>()
 
-  private val adapter = CollectionEpisodeAdapter(
-    onEpisodeSelected = { currentEpisode, nextEpisode ->
-      openPlayer()
-    },
-    onEpisodeCompleted = { episode, position ->
-      viewModel.updateContentProgression(episode, position)
-    })
+  private lateinit var episodeAdapter: CollectionEpisodeAdapter
 
   private lateinit var binding: FragmentCollectionBinding
 
@@ -84,11 +79,21 @@ class CollectionFragment : DaggerFragment() {
 
     binding.textCollectionBodyPro.removeUnderline()
 
+    episodeAdapter = CollectionEpisodeAdapter(
+      onEpisodeSelected = { currentEpisode, _ ->
+        if (viewModel.isFreeContent()) {
+          openPlayer(currentEpisode)
+        }
+      },
+      onEpisodeCompleted = { episode, position ->
+        viewModel.updateContentProgression(episode, position)
+      })
+
     with(binding.recyclerViewCollectionEpisode) {
       layoutManager = object : LinearLayoutManager(requireContext()) {
         override fun canScrollVertically(): Boolean = false
       }
-      adapter = this@CollectionFragment.adapter
+      adapter = episodeAdapter
     }
 
     binding.buttonCollectionBookmark.setOnClickListener {
@@ -104,8 +109,12 @@ class CollectionFragment : DaggerFragment() {
   private fun initObservers() {
     viewModel.collectionEpisodes.observe(viewLifecycleOwner) {
       it?.let {
-        adapter.submitList(it)
-        binding.groupCollectionContent.visibility = View.VISIBLE
+        episodeAdapter.submitList(it)
+        binding.groupCollectionContent.toVisibility(true)
+
+        if (viewModel.isFreeContent()) {
+          binding.buttonCollectionPlay.toVisibility(true)
+        }
       }
     }
 
@@ -117,7 +126,7 @@ class CollectionFragment : DaggerFragment() {
           withYear = false
         )
 
-        adapter.isProCourse = !it.isFreeContent()
+        episodeAdapter.isProCourse = !it.isFreeContent()
 
         val contributors = it.getReadableContributors(requireContext())
         binding.textCollectionDuration.text = releaseDateWithTypeAndDuration
@@ -129,6 +138,7 @@ class CollectionFragment : DaggerFragment() {
       it?.let {
         if (it.isScreenCast()) {
           binding.groupCollectionContent.visibility = View.GONE
+          binding.buttonCollectionPlay.toVisibility(true)
         }
       }
     }
@@ -151,7 +161,6 @@ class CollectionFragment : DaggerFragment() {
         }
         BookmarkActionDelegate.BookmarkActionResult.BookmarkFailedToDelete ->
           showErrorSnackbar(getString(R.string.message_bookmark_failed_to_delete))
-
         null -> {
           // Houston, We Have a Problem!
         }
@@ -168,11 +177,11 @@ class CollectionFragment : DaggerFragment() {
         ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeMarkedInProgress ->
           showSuccessSnackbar(getString(R.string.message_episode_marked_in_progress))
         ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeFailedToMarkComplete -> {
-          adapter.updateEpisodeCompletion(episodePosition)
+          episodeAdapter.updateEpisodeCompletion(episodePosition)
           showErrorSnackbar(getString(R.string.message_episode_failed_to_mark_completed))
         }
         ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeFailedToMarkInProgress -> {
-          adapter.updateEpisodeCompletion(episodePosition)
+          episodeAdapter.updateEpisodeCompletion(episodePosition)
           showErrorSnackbar(
             getString(
               R.string.message_episode_failed_to_mark_in_progress
@@ -202,8 +211,14 @@ class CollectionFragment : DaggerFragment() {
     }
   }
 
-  private fun openPlayer() {
-    // Open player
+  private fun openPlayer(currentEpisode: Data? = null) {
+    val playList = viewModel.getPlaylist()
+    val playlistWithSelectedEpisode = playList.copy(currentEpisode = currentEpisode)
+    val action =
+      CollectionFragmentDirections.actionNavigationCollectionToNavigationPlayer(
+        playlistWithSelectedEpisode
+      )
+    findNavController().navigate(action)
   }
 
   private fun handleProgress(showProgress: Boolean = false) {
@@ -214,5 +229,4 @@ class CollectionFragment : DaggerFragment() {
       progressDelegate.hideProgressView()
     }
   }
-
 }

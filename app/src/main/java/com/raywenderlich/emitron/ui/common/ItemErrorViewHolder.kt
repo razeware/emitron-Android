@@ -10,6 +10,7 @@ import com.raywenderlich.emitron.databinding.ItemErrorBinding
 import com.raywenderlich.emitron.ui.content.ContentAdapter
 import com.raywenderlich.emitron.utils.UiStateManager
 import com.raywenderlich.emitron.utils.extensions.isNetNotConnected
+import com.raywenderlich.emitron.utils.extensions.toVisibility
 
 /**
  * View holder for error
@@ -35,14 +36,10 @@ class ItemErrorViewHolder(
   ) {
 
     with(viewDataBinding) {
-      progressBar.visibility =
-        toVisibility(uiState == UiStateManager.UiState.LOADING)
-      textViewProgress.visibility =
-        toVisibility(uiState == UiStateManager.UiState.LOADING)
-      textViewError.visibility =
-        toVisibility(uiState?.hasError() == true)
-      buttonRetry.visibility =
-        toVisibility(uiState?.hasError() == true)
+      progressBar.toVisibility(uiState == UiStateManager.UiState.LOADING)
+      textViewProgress.toVisibility(uiState == UiStateManager.UiState.LOADING)
+      textViewError.toVisibility(uiState?.hasError() == true)
+      buttonRetry.toVisibility(uiState?.hasError() == true)
       viewDataBinding.buttonRetry.setOnClickListener {
         if (uiState?.isEmpty() == true) {
           emptyCallback?.invoke()
@@ -64,10 +61,8 @@ class ItemErrorViewHolder(
           textViewError.text = getEmptyErrorForAdapterType(adapterContentType)
           textViewErrorBody.text =
             viewDataBinding.root.resources.getString(R.string.error_library_no_content_body)
-          textViewErrorBody.visibility =
-            toVisibility(adapterContentType.isContentWithFilters())
-          buttonRetry.visibility =
-            toVisibility(!adapterContentType.isContentWithFilters())
+          textViewErrorBody.toVisibility(adapterContentType.isContentWithFilters())
+          buttonRetry.toVisibility(!adapterContentType.isContentWithFilters())
           buttonRetry.text =
             getRetryButtonLabelForAdapterType(adapterContentType)
         }
@@ -144,18 +139,5 @@ class ItemErrorViewHolder(
           layoutId, parent, false
         ), retryCallback, emptyCallback
       )
-
-    /**
-     * Return visibility based on constraint
-     *
-     * @param constraint True/False
-     *
-     * @return [View.VISIBLE] if constraint is true, else [View.GONE]
-     */
-    fun toVisibility(constraint: Boolean): Int = if (constraint) {
-      View.VISIBLE
-    } else {
-      View.GONE
-    }
   }
 }

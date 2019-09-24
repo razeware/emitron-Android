@@ -13,7 +13,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
-      app:layout_constraintGuide_begin="@dimen/guideline_top_dense" />
+      app:layout_constraintGuide_begin="@dimen/guideline_top_status_bar_1" />
 
     <androidx.constraintlayout.widget.Guideline
       android:id="@+id/guideline_left"
@@ -40,7 +40,7 @@
       android:id="@+id/toolbar"
       android:layout_width="match_parent"
       android:layout_height="?android:actionBarSize"
-      app:layout_constraintBottom_toTopOf="@+id/view_pager"
+      app:layout_constraintBottom_toTopOf="@+id/tab_layout"
       app:layout_constraintTop_toTopOf="@+id/guideline_top">
 
       <LinearLayout
@@ -67,6 +67,25 @@
       </LinearLayout>
     </com.google.android.material.appbar.MaterialToolbar>
 
+
+    <com.google.android.material.tabs.TabLayout
+      android:id="@+id/tab_layout"
+      style="@style/Widget.MaterialComponents.TabLayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/transparent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:tabSelectedTextColor="@color/colorTabSelected"
+      app:tabIndicatorColor="@color/colorTabSelected"
+      app:tabMode="fixed"
+      android:layout_marginStart="@dimen/activity_horizontal_margin"
+      android:layout_marginEnd="@dimen/activity_horizontal_margin"
+      app:layout_constraintBottom_toTopOf="@+id/view_pager"
+      app:layout_constraintTop_toBottomOf="@id/toolbar"
+      app:tabBackground="@drawable/selector_tab_indicator"
+      app:tabTextAppearance="@style/TextAppearance.Body.2.Bold" />
+
     <androidx.viewpager.widget.ViewPager
       android:id="@+id/view_pager"
       android:layout_width="0dp"
@@ -74,21 +93,7 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/toolbar">
-
-      <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_layout"
-        style="@style/Widget.MaterialComponents.TabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:background="@color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:tabTextAppearance="@style/TextAppearance.Body.2" />
+      app:layout_constraintTop_toBottomOf="@id/tab_layout">
 
     </androidx.viewpager.widget.ViewPager>
 

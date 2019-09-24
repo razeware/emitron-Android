@@ -202,7 +202,7 @@ class ProgressionFragment : DaggerFragment() {
   private fun openCollection(collection: Data?) {
     collection?.let {
       val action = MyTutorialFragmentDirections
-        .actionNavigationMyTutorialsNavigationCollection(collection = collection)
+        .actionNavigationMyTutorialsToNavigationCollection(collection = collection)
       findNavController().navigate(action)
     }
   }

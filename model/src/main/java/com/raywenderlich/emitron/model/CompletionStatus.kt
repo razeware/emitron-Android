@@ -21,6 +21,9 @@ enum class CompletionStatus(val param: String) : Parcelable {
    */
   Completed("completed");
 
+  /**
+   * Check is completion status is [Completed]
+   */
   fun isCompleted(): Boolean = this == Completed
 
   companion object {

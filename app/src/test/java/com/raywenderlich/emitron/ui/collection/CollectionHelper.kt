@@ -6,11 +6,26 @@ internal fun createContentData(
   id: String = "1",
   type: String = "collection",
   groups: Contents? = Contents(datum = (1..2).map { Data(id = it.toString(), type = "groups") }),
-  bookmark: Content? = null
+  bookmark: Content? = null,
+  isFree: Boolean = false,
+  videoId: Int = 1,
+  videoUrl: String = "",
+  playbackToken: String = "",
+  progress: Long = 0
 ) = Data(
   id = id,
   type = "contents",
-  attributes = Attributes(contentType = type),
+  attributes = Attributes(
+    name = "Introduction to Kotlin Lambdas",
+    description = "Lambda expression is simplified representation of a function.",
+    cardArtworkUrl = "https://koenig-media.raywenderlich.com/KotlinLambdas-feature.png",
+    contentType = type,
+    free = isFree,
+    uri = "rw://betamax/collections/$videoId",
+    videoPlaybackToken = playbackToken,
+    url = videoUrl,
+    progress = progress
+  ),
   relationships = Relationships(
     groups = groups,
     bookmark = bookmark

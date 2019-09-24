@@ -13,6 +13,21 @@ class ContentTest {
   }
 
   @Test
+  fun getProgress() {
+    val datum = Data(attributes = Attributes(progress = 10L))
+    val content = Content(datum = datum)
+    assertThat(content.getProgress()).isEqualTo(10L)
+  }
+
+  @Test
+  fun getPlayerToken() {
+    val datum = Data(attributes = Attributes(videoPlaybackToken = "Sam D"))
+    val content = Content(datum = datum)
+    assertThat(content.getPlayerToken()).isEqualTo("Sam D")
+  }
+
+
+  @Test
   fun isFinished() {
     val datum = Data()
     val content = Content(datum = datum)

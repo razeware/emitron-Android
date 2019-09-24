@@ -57,6 +57,10 @@ android {
   sourceSets {
     androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
   }
+
+  androidExtensions {
+    experimental = true
+  }
 }
 
 dependencies {
@@ -67,7 +71,7 @@ dependencies {
 
   implementation "androidx.appcompat:appcompat:${versions.appCompat}"
   implementation "androidx.fragment:fragment-ktx:${versions.fragmentKtx}"
-  implementation "androidx.preference:preference-ktx:${versions.fragmentKtx}"
+  implementation "androidx.preference:preference-ktx:${versions.preferenceKtx}"
 
   implementation "androidx.core:core-ktx:${versions.coreKtx}"
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
@@ -115,6 +119,7 @@ dependencies {
   implementation "com.google.android.exoplayer:exoplayer-ui:${versions.exoplayer}"
   implementation "com.google.android.exoplayer:exoplayer-hls:${versions.exoplayer}"
   implementation "com.google.android.exoplayer:extension-cast:${versions.exoplayer}"
+  implementation "com.google.android.exoplayer:extension-mediasession:${versions.exoplayer}"
 
 
   // Retrofit
@@ -150,6 +155,9 @@ dependencies {
   kapt "com.google.dagger:dagger-android-processor:${versions.dagger}"
   kapt "androidx.room:room-compiler:${versions.room}"
   kapt "com.github.bumptech.glide:compiler:${versions.glide}"
+
+  implementation "androidx.mediarouter:mediarouter:${versions.mediarouter}"
+  implementation "com.google.android.gms:play-services-cast-framework:${versions.castFramework}"
 
   // Test libraries
 

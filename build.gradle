@@ -11,13 +11,14 @@ buildscript {
       'kotlin'                      : '1.3.50',
 
       // core
-      'coreKtx'                     : "1.0.2",
+      'coreKtx'                     : "1.1.0",
       'fragmentKtx'                 : "1.1.0-rc01",
+      'preferenceKtx'               : "1.1.0",
       'architectureComponents'      : "2.1.0-rc01",
       'architectureComponentsPaging': "2.1.0",
       'workManager'                 : '2.2.0',
       'annotations'                 : "1.1.0",
-      'appCompat'                   : "1.1.0-rc01",
+      'appCompat'                   : "1.1.0",
       'multidex'                    : "2.0.1",
       'browser'                     : "1.0.0", // Chrome custom tabs
 
@@ -25,15 +26,15 @@ buildscript {
       'coroutines'                  : "1.2.1",
 
       // cast
-      'mediarouter'                 : "1.0.0",
-      'castFramework'               : "17.0.0", // Google cast
+      'mediarouter'                 : "1.1.0",
+      'castFramework'               : '17.1.0', // Google cast
 
       // ui
       'constraintLayout'            : "1.1.3",
-      'exoplayer'                   : "2.10.1",
+      'exoplayer'                   : "2.10.4",
       'navigation'                  : "2.1.0",
-      'materialDesign'              : '1.1.0-alpha09',
-      'vectorDrawable'              : "1.0.1",
+      'materialDesign'              : '1.1.0-alpha10',
+      'vectorDrawable'              : '1.1.0',
       'recyclerView'                : "1.0.0",
 
       // db
@@ -45,7 +46,7 @@ buildscript {
       //network
       'retrofit'                    : '2.6.1',
       'moshi'                       : "1.8.0",
-      'okHttp'                      : '4.1.0',
+      'okHttp'                      : '4.2.0',
       'glide'                       : "4.9.0",
 
       //quality
