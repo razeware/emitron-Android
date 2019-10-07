@@ -2,6 +2,7 @@ package com.raywenderlich.emitron.di.modules
 
 import android.app.Application
 import android.content.Context
+import com.raywenderlich.emitron.di.bindings.WorkerBindings
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelModule
 import dagger.Module
 import dagger.Provides
@@ -14,7 +15,8 @@ import javax.inject.Singleton
     ViewModelModule::class,
     NetModule::class,
     DataModule::class,
-    SessionModule::class
+    SessionModule::class,
+    WorkerBindings::class
   ]
 )
 class AppModule {

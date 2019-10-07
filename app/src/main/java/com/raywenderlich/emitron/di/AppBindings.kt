@@ -14,7 +14,12 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class AppBindings {
 
-  @ContributesAndroidInjector(modules = [FragmentBindings::class, ViewModelBindings::class])
+  @ContributesAndroidInjector(
+    modules = [
+      FragmentBindings::class,
+      ViewModelBindings::class
+    ]
+  )
   abstract fun contributeMainActivity(): MainActivity
 
   @Binds

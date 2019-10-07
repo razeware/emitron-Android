@@ -43,6 +43,11 @@
       </intent-filter>
     </activity>
 
+    <provider
+      android:name="androidx.work.impl.WorkManagerInitializer"
+      android:authorities="com.raywenderlich.emitron.workmanager-init"
+      android:exported="false"
+      tools:node="remove" />
   </application>
 
 </manifest>
