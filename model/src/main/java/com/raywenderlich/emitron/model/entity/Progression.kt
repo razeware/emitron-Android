@@ -4,10 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.raywenderlich.emitron.model.Attributes
+import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.model.Content
-import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.model.DataType
 
 /**
  * Entity to store contents to database
