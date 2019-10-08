@@ -82,7 +82,7 @@ class PlayerViewModelTest {
 
       nextEpisode isEqualTo expectedPlaylist.episodes[1]
       currentEpisode isEqualTo createContentData(videoUrl = "TheSongOfLife")
-      currentEpisode.getStreamUrl() isEqualTo "TheSongOfLife"
+      currentEpisode.getUrl() isEqualTo "TheSongOfLife"
       playbackToken isEqualTo "WubbaLubbaDubDub"
       playlist isEqualTo expectedPlaylist
     }
@@ -124,7 +124,7 @@ class PlayerViewModelTest {
 
       nextEpisode isEqualTo expectedPlaylist.episodes[3]
       currentEpisode isEqualTo createContentData("3", videoId = 3, videoUrl = "TheSongOfLife2")
-      currentEpisode.getStreamUrl() isEqualTo "TheSongOfLife2"
+      currentEpisode.getUrl() isEqualTo "TheSongOfLife2"
       playbackToken isEqualTo "WubbaLubbaDubDub"
       playlist isEqualTo expectedPlaylist
     }
@@ -166,7 +166,7 @@ class PlayerViewModelTest {
 
       nextEpisode isEqualTo null
       currentEpisode isEqualTo createContentData("4", videoId = 4, videoUrl = "TheSongOfLife3")
-      currentEpisode.getStreamUrl() isEqualTo "TheSongOfLife3"
+      currentEpisode.getUrl() isEqualTo "TheSongOfLife3"
       playbackToken isEqualTo "WubbaLubbaDubDub"
       playlist isEqualTo expectedPlaylist
     }
@@ -210,7 +210,7 @@ class PlayerViewModelTest {
 
       nextEpisode isEqualTo expectedPlaylist.episodes[2]
       currentEpisode isEqualTo createContentData("2", videoId = 2, videoUrl = "TheSongOfLife2")
-      currentEpisode.getStreamUrl() isEqualTo "TheSongOfLife2"
+      currentEpisode.getUrl() isEqualTo "TheSongOfLife2"
       playbackToken isEqualTo "WubbaLubbaDubDub"
       playlist isEqualTo expectedPlaylist
     }

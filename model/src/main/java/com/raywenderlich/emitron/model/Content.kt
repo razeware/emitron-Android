@@ -74,9 +74,21 @@ data class Content(
   /**
    * Get included groups
    */
-  fun getGroups(): List<Data> {
-    return included?.filter { it.isTypeGroup() } ?: emptyList()
-  }
+  fun getContentGroupIds(): List<String> = datum?.getContentGroupIds() ?: emptyList()
+
+  /**
+   *  The following function will return all the episode ids only
+   *  if the [Content.getContentType] is [ContentType.Collection]
+   */
+  fun getEpisodeIds(): List<String> = getContentGroupIds()
+    .mapNotNull { id ->
+      getIncludedContentById(id)
+    }.flatMap {
+      it.getChildContentIds()
+    }.mapNotNull { id ->
+      val includedContent = getIncludedContentById(id)
+      includedContent?.id
+    }
 
   /**
    * Get type of Content
@@ -90,7 +102,50 @@ data class Content(
    *
    * @return True if content is [ContentType.Screencast], else False
    */
-  fun isTypeScreencast(): Boolean = getContentType()?.isScreenCast() ?: false
+  fun isTypeScreencast(): Boolean = getContentType().isScreencast()
+
+  /**
+   * Get if content type is collection
+   *
+   * @return True if content is [ContentType.Collection], else False
+   */
+  fun isTypeCollection(): Boolean = getContentType().isCollection()
+
+  /**
+   * Get included progressions
+   *
+   * @return list of included progressions
+   */
+  fun getIncludedProgressions(): List<Data> =
+    included?.filter { it.isTypeProgression() } ?: emptyList()
+
+  /**
+   * Get included content by id
+   *
+   * @return data found by id or null
+   */
+  fun getIncludedContentById(id: String?): Data? = included?.firstOrNull { it.id == id }
+
+  /**
+   * Get included groups
+   *
+   * @return list of included groups
+   */
+  fun getIncludedGroups(): List<Data> = included?.filter { it.isTypeGroup() } ?: emptyList()
+
+  /**
+   * Get video id
+   *
+   * @return video id
+   */
+  fun getVideoId(): String? = getData()?.getVideoId()
+
+  /**
+   * Get name
+   *
+   * @return name of content from [Content.datum]
+   */
+  fun getName(): String? = getData()?.getName()
 
   companion object {
 

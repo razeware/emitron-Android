@@ -46,5 +46,5 @@ data class Contents(
   /**
    * @return list of [Data.id] for included content items
    */
-  fun getDomainIds(): List<String> = datum.mapNotNull { it.id }
+  fun getChildIds(): List<String> = datum.mapNotNull { it.id }
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.raywenderlich.emitron.data.content.ContentRepository
 import com.raywenderlich.emitron.data.settings.SettingsRepository
+import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.ContentType
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.ui.common.UiStateViewModel
@@ -103,52 +104,63 @@ class CollectionViewModel @Inject constructor(
   /**
    * Get collection episodes
    */
-  fun loadCollection(collection: Data) {
+  fun loadCollection(content: Data) {
     uiState.value = UiStateManager.UiState.LOADING
-    _collection.value = collection
-    _collectionContentType.value = collection.getContentType()
+    _collection.value = content
+    _collectionContentType.value = content.getContentType()
 
-    val collectionId = collection.id
-    if (collectionId.isNullOrBlank()) {
+    val contentId = content.id
+    if (contentId.isNullOrBlank()) {
       uiState.value = UiStateManager.UiState.ERROR
       return
     }
+
+    viewModelScope.launch {
+      loadContentFromApi(contentId)
+      uiState.value = UiStateManager.UiState.LOADED
+    }
+  }
+
+  /**
+   * Get collection episodes
+   */
+  private suspend fun loadContentFromApi(contentId: String) {
 
     val onFailure = {
       _loadCollectionResult.value = Event(false)
     }
 
-    viewModelScope.launch {
-      val fetchedCollection = try {
-        repository.getContent(collectionId)
-      } catch (exception: IOException) {
-        onFailure()
-        null
-      } catch (exception: HttpException) {
-        onFailure()
-        null
-      }
+    val content = try {
+      repository.getContent(contentId)
+    } catch (exception: IOException) {
+      onFailure()
+      null
+    } catch (exception: HttpException) {
+      onFailure()
+      null
+    }
+    updateContentEpisodes(content)
+  }
 
-      fetchedCollection?.apply {
-        _collection.value = fetchedCollection.datum?.updateRelationships(fetchedCollection.included)
+  private fun updateContentEpisodes(content: Content?) {
+    content?.apply {
+      _collection.value = content.datum?.updateRelationships(content.included)
 
-        // If content is not screencast, set the episodes
-        if (!fetchedCollection.isTypeScreencast()) {
+      // If content is not screencast, set the episodes
+      if (!content.isTypeScreencast()) {
 
-          fetchedCollection.apply {
-            val fetchedCollectionEpisodes = getGroups().flatMap {
-              val groupedDataIds = it.getGroupedDataIds()
-              val data =
-                included?.filter { (id) -> id in groupedDataIds }
-                  ?.map { data -> data.updateRelationships(included) }
-              EpisodeItem.buildFrom(it.copy(relationships = it.relationships?.setContents(data)))
-            }
-
-            _collectionEpisodes.value = fetchedCollectionEpisodes
+        content.apply {
+          val fetchedCollectionEpisodes = getIncludedGroups().flatMap {
+            val childContentIds = it.getChildContentIds()
+            val data =
+              included?.filter { (id) -> id in childContentIds }
+                ?.map { data -> data.updateRelationships(included) }
+            EpisodeItem.buildFrom(it.copy(relationships = it.relationships?.setContents(data)))
           }
+
+          _collectionEpisodes.value = fetchedCollectionEpisodes
         }
       }
-      uiState.value = UiStateManager.UiState.LOADED
     }
   }
 
@@ -168,7 +180,7 @@ class CollectionViewModel @Inject constructor(
       ContentType.Screencast -> {
         Playlist(collection = collection, episodes = listOf(collection))
       }
-      null -> {
+      else -> {
         throw IllegalStateException("Invalid type for collection or screencast")
       }
     }

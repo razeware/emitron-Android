@@ -30,6 +30,6 @@ class ContentsTest {
   fun getDomainIds() {
     val data = (1..10).map { Data(id = it.toString()) }
     val contents = Contents(datum = data)
-    assertThat(contents.getDomainIds()).isEqualTo(data.map { it.id })
+    assertThat(contents.getChildIds()).isEqualTo(data.map { it.id })
   }
 }

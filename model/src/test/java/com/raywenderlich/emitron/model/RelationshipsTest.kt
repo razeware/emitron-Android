@@ -121,6 +121,25 @@ class RelationshipsTest {
   }
 
   @Test
+  fun addContents() {
+    val contents = listOf(
+      Data(
+        id = "1",
+        type = "contents",
+        attributes = Attributes(name = "Content1")
+      ),
+      Data(attributes = Attributes(name = "Content2"))
+    )
+    val relationShip = Relationships()
+    val result = relationShip.addContents(emptyList())
+    assertThat(result).isEqualTo(relationShip)
+
+    val relationShip2 = Relationships()
+    val result2 = relationShip2.addContents(contents)
+    assertThat(result2.getChildContentIds()).isEqualTo(listOf("1"))
+  }
+
+  @Test
   fun addProgression() {
     val progressions = listOf(
       Data(id = "1", type = "progressions", attributes = Attributes(finished = true)),
@@ -201,7 +220,7 @@ class RelationshipsTest {
     val relationShip = Relationships(
       contents = Contents(datum = listOf(Data(id = "10"), Data(id = "11"), Data(id = "12")))
     )
-    assertThat(relationShip.getGroupedData()).isEqualTo(
+    assertThat(relationShip.getChildContents()).isEqualTo(
       listOf(
         Data(id = "10"),
         Data(id = "11"),
@@ -216,7 +235,7 @@ class RelationshipsTest {
     val relationShip = Relationships(
       contents = Contents(datum = listOf(Data(id = "10"), Data(id = "11"), Data(id = "12")))
     )
-    assertThat(relationShip.getGroupedDataIds()).isEqualTo(
+    assertThat(relationShip.getChildContentIds()).isEqualTo(
       listOf("10", "11", "12")
     )
   }
