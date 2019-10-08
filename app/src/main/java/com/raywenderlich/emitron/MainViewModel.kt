@@ -28,12 +28,12 @@ class MainViewModel @Inject constructor(
   /**
    * @return True if user has subscription, otherwise False
    */
-  private fun hasSubscription(): Boolean = loginRepository.hasSubscription()
+  private fun hasPermissions(): Boolean = loginRepository.hasPermissions()
 
   /**
    * @return True if user is allowed to use app, otherwise False
    */
-  fun isAllowed(): Boolean = isLoggedIn() && hasSubscription()
+  fun isAllowed(): Boolean = isLoggedIn() && hasPermissions()
 
   private val _selectedFilters = MutableLiveData<List<Data>>()
 

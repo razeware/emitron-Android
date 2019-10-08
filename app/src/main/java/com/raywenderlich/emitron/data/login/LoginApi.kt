@@ -1,6 +1,6 @@
 package com.raywenderlich.emitron.data.login
 
-import com.raywenderlich.emitron.model.Content
+import com.raywenderlich.emitron.model.Contents
 import retrofit2.Retrofit
 import retrofit2.http.GET
 
@@ -12,8 +12,8 @@ interface LoginApi {
   /**
    * Request a subscription
    */
-  @GET("subscription")
-  suspend fun getSubscription(): Content
+  @GET("permissions")
+  suspend fun getPermissions(): Contents
 
   companion object {
 

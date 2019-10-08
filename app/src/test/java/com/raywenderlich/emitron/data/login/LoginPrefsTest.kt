@@ -32,12 +32,6 @@ class LoginPrefsTest {
   }
 
   @Test
-  fun storeHasSubscription() {
-    loginPrefs.storeHasSubscription(true)
-    verify(prefUtils).set("user_has_subscription", true)
-  }
-
-  @Test
   fun clear() {
     loginPrefs.clear()
     verify(prefUtils).clear()
@@ -50,14 +44,23 @@ class LoginPrefsTest {
   }
 
   @Test
-  fun hasSubscription() {
-    loginPrefs.hasSubscription()
-    verify(prefUtils).get("user_has_subscription", false)
-  }
-
-  @Test
   fun authToken() {
     loginPrefs.authToken()
     verify(prefUtils).get("user_auth_token", "")
+  }
+
+  @Test
+  fun storePermissions() {
+    loginPrefs.savePermissions(listOf("download-videos"))
+    verify(prefUtils).set("user_permissions", "download-videos")
+    verify(prefUtils).commit()
+    verifyNoMoreInteractions(prefUtils)
+  }
+
+  @Test
+  fun getPermissions() {
+    loginPrefs.getPermissions()
+    verify(prefUtils).get("user_auth_token", "")
+    verifyNoMoreInteractions(prefUtils)
   }
 }

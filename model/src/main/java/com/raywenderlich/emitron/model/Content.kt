@@ -3,7 +3,6 @@ package com.raywenderlich.emitron.model
 import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -30,12 +29,6 @@ data class Content(
    */
   val included: List<Data>? = null
 ) : Parcelable {
-
-  /**
-   * User has subscription
-   */
-  @IgnoredOnParcel
-  var hasSubscription: Boolean = false
 
   /**
    *  @return percentage completion for content

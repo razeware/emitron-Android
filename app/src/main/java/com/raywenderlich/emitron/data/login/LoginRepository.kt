@@ -1,10 +1,10 @@
 package com.raywenderlich.emitron.data.login
 
-import androidx.annotation.WorkerThread
-import com.raywenderlich.emitron.model.Content
+import com.raywenderlich.emitron.model.Contents
 import com.raywenderlich.emitron.network.AuthInterceptor
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import com.raywenderlich.guardpost.data.SSOUser
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -25,11 +25,11 @@ class LoginRepository @Inject constructor(
   fun isLoggedIn(): Boolean = loginPrefs.isLoggedIn()
 
   /**
-   * Check if user has subscription
+   * Check if user has permissions
    *
-   * @return True if user has subscription, otherwise False
+   * @return True if user has permissions, otherwise False
    */
-  fun hasSubscription(): Boolean = loginPrefs.hasSubscription()
+  fun hasPermissions(): Boolean = loginPrefs.getPermissions().isNotEmpty()
 
   /**
    * Store the user to preferences
@@ -44,10 +44,10 @@ class LoginRepository @Inject constructor(
   /**
    * Store if user has subscription
    *
-   * @param hasSubscription subscription status
+   * @param subscriptions List of subscriptions
    */
-  fun storeHasSubscription(hasSubscription: Boolean) {
-    loginPrefs.storeHasSubscription(hasSubscription)
+  fun updatePermissions(subscriptions: List<String>) {
+    loginPrefs.savePermissions(subscriptions)
   }
 
   /**
@@ -60,13 +60,14 @@ class LoginRepository @Inject constructor(
   }
 
   /**
-   * Get subscription for current user
+   * Get permissions for current user
    *
-   * @return Subscription API response
+   * @return Permission API response
    */
-  @WorkerThread
   @Throws(Exception::class)
-  suspend fun getSubscription(): Content {
-    return Content().apply { hasSubscription = true }
+  suspend fun getPermissions(): Contents {
+    return withContext(threadManager.io) {
+      loginApi.getPermissions()
+    }
   }
 }

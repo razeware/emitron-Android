@@ -3,7 +3,7 @@ package com.raywenderlich.emitron.data.login
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
-import com.raywenderlich.emitron.model.Content
+import com.raywenderlich.emitron.model.Contents
 import com.raywenderlich.emitron.network.AuthInterceptor
 import com.raywenderlich.emitron.utils.TestCoroutineRule
 import com.raywenderlich.emitron.utils.async.ThreadManager
@@ -46,15 +46,6 @@ class LoginRepositoryTest {
   }
 
   @Test
-  fun hasSubscription() {
-    whenever(loginPrefs.hasSubscription()).doReturn(true)
-    val result = repository.hasSubscription()
-    verify(loginPrefs).hasSubscription()
-    verifyNoMoreInteractions(loginPrefs)
-    assertThat(result).isTrue()
-  }
-
-  @Test
   fun storeUser() {
     whenever(loginPrefs.authToken()).doReturn("Raywenderlich")
     val user = SSOUser(token = "Raywenderlich")
@@ -64,15 +55,6 @@ class LoginRepositoryTest {
     verify(authInterceptor).updateAuthToken("Raywenderlich")
     verifyNoMoreInteractions(loginPrefs)
     verifyNoMoreInteractions(authInterceptor)
-  }
-
-  @Test
-  fun storeHasSubscription() {
-    repository.storeHasSubscription(false)
-    verify(loginPrefs).storeHasSubscription(false)
-    repository.storeHasSubscription(true)
-    verify(loginPrefs).storeHasSubscription(true)
-    verifyNoMoreInteractions(loginPrefs)
   }
 
   @Test
@@ -87,11 +69,11 @@ class LoginRepositoryTest {
   @Test
   fun getSubscription() {
     testCoroutineRule.runBlockingTest {
-      val expectedContent = Content()
-      whenever(loginApi.getSubscription()).doReturn(expectedContent)
+      val expectedContent = Contents()
+      whenever(loginApi.getPermissions()).doReturn(expectedContent)
       whenever(threadManager.io).doReturn(Dispatchers.Unconfined)
-      val result = repository.getSubscription()
-      verify(loginApi).getSubscription()
+      val result = repository.getPermissions()
+      verify(loginApi).getPermissions()
       assertThat(result).isEqualTo(expectedContent)
       verifyNoMoreInteractions(loginApi)
     }

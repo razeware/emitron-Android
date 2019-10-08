@@ -4,7 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.login.LoginRepository
-import com.raywenderlich.emitron.model.Content
+import com.raywenderlich.emitron.model.Attributes
+import com.raywenderlich.emitron.model.Contents
+import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.utils.TestCoroutineRule
 import com.raywenderlich.guardpost.data.SSOUser
 import org.junit.Before
@@ -42,12 +44,11 @@ class LoginViewModelTest {
   }
 
   @Test
-  fun getSubscription_noSubscription() {
+  fun getPermissions_noPermissions() {
     testCoroutineRule.runBlockingTest {
-      whenever(loginRepository.getSubscription()).doReturn(Content())
-
-      viewModel.getSubscription()
-      verify(loginRepository).getSubscription()
+      whenever(loginRepository.getPermissions()).doReturn(Contents())
+      viewModel.getPermissions()
+      verify(loginRepository).getPermissions()
       assertThat(viewModel.loginActionResult.value)
         .isEqualTo(LoginViewModel.LoginActionResult.NoSubscription)
       verifyNoMoreInteractions(loginRepository)
@@ -55,28 +56,30 @@ class LoginViewModelTest {
   }
 
   @Test
-  fun getSubscription_hasSubscription() {
+  fun getPermissions_hasPermissions() {
     testCoroutineRule.runBlockingTest {
-      whenever(loginRepository.getSubscription()).doReturn(Content().apply {
-        hasSubscription = true
-      })
+      whenever(loginRepository.getPermissions()).doReturn(
+        Contents(
+          datum = listOf(Data(attributes = Attributes(tag = "stream-beginner-videos")))
+        )
+      )
 
-      viewModel.getSubscription()
-      verify(loginRepository).getSubscription()
+      viewModel.getPermissions()
+      verify(loginRepository).getPermissions()
       assertThat(viewModel.loginActionResult.value)
         .isEqualTo(LoginViewModel.LoginActionResult.LoggedIn)
-      verify(loginRepository).storeHasSubscription(true)
+      verify(loginRepository).updatePermissions(listOf("stream-beginner-videos"))
       verifyNoMoreInteractions(loginRepository)
     }
   }
 
   @Test
-  fun getSubscription_apiError() {
+  fun getPermissions_apiError() {
     testCoroutineRule.runBlockingTest {
-      whenever(loginRepository.getSubscription()).doThrow(RuntimeException())
+      whenever(loginRepository.getPermissions()).doThrow(RuntimeException())
 
-      viewModel.getSubscription()
-      verify(loginRepository).getSubscription()
+      viewModel.getPermissions()
+      verify(loginRepository).getPermissions()
       assertThat(viewModel.loginActionResult.value)
         .isEqualTo(LoginViewModel.LoginActionResult.SubscriptionRequestFailed)
       verifyNoMoreInteractions(loginRepository)
