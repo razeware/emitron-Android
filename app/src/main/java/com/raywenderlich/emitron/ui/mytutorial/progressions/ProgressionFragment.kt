@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentBookmarksBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
@@ -112,14 +111,13 @@ class ProgressionFragment : DaggerFragment() {
   }
 
   private fun addSwipeToUpdateProgress() {
-    val swipeHandler = object : SwipeActionCallback(
+    val swipeHandler = SwipeActionCallback.build(
       R.drawable.bg_swipe_progression,
-      getSwipeText()
-    ) {
-      override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        updateContentProgression(adapter.getItemFor(viewHolder))
+      getSwipeText(),
+      onSwipe = {
+        updateContentProgression(adapter.getItemFor(it))
       }
-    }
+    )
     val itemTouchHelper = ItemTouchHelper(swipeHandler)
     itemTouchHelper.attachToRecyclerView(binding.recyclerView)
   }
@@ -137,7 +135,7 @@ class ProgressionFragment : DaggerFragment() {
       ContentAdapter.AdapterContentType.ContentInProgress
     }
 
-  internal fun updateContentProgression(data: Data?) {
+  private fun updateContentProgression(data: Data?) {
     viewModel.updateContentProgression(data)
   }
 

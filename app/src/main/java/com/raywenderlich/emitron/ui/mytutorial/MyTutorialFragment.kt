@@ -11,10 +11,16 @@ import com.raywenderlich.emitron.databinding.FragmentMyTutorialsBinding
 import com.raywenderlich.emitron.utils.extensions.setDataBindingView
 import kotlinx.android.synthetic.main.fragment_my_tutorials.*
 
+/**
+ * My tutorials view
+ */
 class MyTutorialFragment : Fragment() {
 
-  lateinit var binding: FragmentMyTutorialsBinding
+  private lateinit var binding: FragmentMyTutorialsBinding
 
+  /**
+   * See [androidx.fragment.app.Fragment.onCreateView]
+   */
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -24,6 +30,9 @@ class MyTutorialFragment : Fragment() {
     return binding.root
   }
 
+  /**
+   * See [androidx.fragment.app.Fragment.onViewCreated]
+   */
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     initView()

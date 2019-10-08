@@ -18,9 +18,24 @@ internal abstract class SwipeActionCallback(
   @DrawableRes
   val background: Int,
   @StringRes
-  val buttonText: Int
+  val buttonText: Int,
+  val onSwipe: (Int) -> Unit
 ) :
   ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
+  companion object {
+
+    fun build(
+      @DrawableRes
+      background: Int,
+      @StringRes
+      buttonText: Int,
+      onSwipe: (Int) -> Unit
+    ): SwipeActionCallback {
+      return object : SwipeActionCallback(background, buttonText, onSwipe) {
+      }
+    }
+  }
 
   override fun onMove(
     recyclerView: RecyclerView,
@@ -31,7 +46,7 @@ internal abstract class SwipeActionCallback(
   }
 
   override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
+    onSwipe(viewHolder.adapterPosition)
   }
 
   override fun onChildDraw(
