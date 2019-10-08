@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import com.raywenderlich.emitron.data.content.dao.ContentDao
 import com.raywenderlich.emitron.data.content.dao.ContentDomainJoinDao
+import com.raywenderlich.emitron.data.filter.dao.CategoryDao
+import com.raywenderlich.emitron.data.filter.dao.DomainDao
 import com.raywenderlich.emitron.data.progressions.dao.ProgressionDao
 import com.raywenderlich.emitron.model.ContentType
 import com.raywenderlich.emitron.model.Data
@@ -17,7 +19,9 @@ import javax.inject.Inject
 class ContentDataSourceLocal @Inject constructor(
   private val contentDao: ContentDao,
   private val contentDomainJoinDao: ContentDomainJoinDao,
-  private val progressionDao: ProgressionDao
+  private val progressionDao: ProgressionDao,
+  private val domainDao: DomainDao,
+  private val categoryDao: CategoryDao
 ) {
 
   /**
@@ -87,6 +91,11 @@ class ContentDataSourceLocal @Inject constructor(
    * Delete all tables
    */
   fun deleteAll() {
-    contentDao.deleteAll()
+    contentDao.deleteAll(
+      domainDao,
+      categoryDao,
+      contentDomainJoinDao,
+      progressionDao
+    )
   }
 }

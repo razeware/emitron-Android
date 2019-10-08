@@ -153,10 +153,10 @@ interface ContentDao {
     contentDomainJoinDao: ContentDomainJoinDao,
     progressionDao: ProgressionDao
   ) {
-    deleteAll()
+    contentDomainJoinDao.deleteAll()
     domainDao.deleteAll()
     categoryDao.deleteAll()
-    contentDomainJoinDao.deleteAll()
     progressionDao.deleteAll()
+    deleteAll()
   }
 }

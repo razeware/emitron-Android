@@ -147,6 +147,9 @@ class SettingsRepository @Inject constructor(
     settingsPrefs.saveDownloadsWifiOnly(wifiOnly)
   }
 
+  /**
+   * Logout
+   */
   @WorkerThread
   fun logout() {
     contentDataSourceLocal.deleteAll()
