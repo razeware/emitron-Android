@@ -2,11 +2,11 @@ package com.raywenderlich.emitron.data.content
 
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.Contents
-import com.raywenderlich.emitron.model.PlaybackProgress
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.http.*
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 /**
  * Service to make API calls for contents
@@ -44,28 +44,6 @@ interface ContentApi {
   suspend fun getContent(
     @Path("id") id: String
   ): Content
-
-  /**
-   * Get playback token for user
-   *
-   * @return [Content]
-   */
-  @POST("contents/begin_playback")
-  @Throws(Exception::class)
-  suspend fun getPlaybackToken(
-  ): Content
-
-  /**
-   * Get playback token for user
-   *
-   * @return [Content]
-   */
-  @POST("contents/{id}/playback")
-  @Throws(Exception::class)
-  suspend fun updateContentPlayback(
-    @Path("id") id: String,
-    @Body data: PlaybackProgress
-  ): Response<Content>
 
   companion object {
 

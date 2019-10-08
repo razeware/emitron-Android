@@ -70,6 +70,8 @@ class ContentDataSourceRemote(
       getContent(pageNumber = params.key)
     } catch (exception: IOException) {
       null
+    } catch (exception: RuntimeException) {
+      null
     }
 
     if (response == null || !response.isSuccessful) {
@@ -121,6 +123,8 @@ class ContentDataSourceRemote(
       getContent(pageNumber = 1)
     } catch (exception: IOException) {
       null
+    } catch (exception: RuntimeException) {
+      null
     }
 
     if (response == null || !response.isSuccessful) {
@@ -149,7 +153,7 @@ class ContentDataSourceRemote(
   private fun getContent(pageNumber: Int): Response<Contents>? = contentApi.getContents(
     pageNumber = pageNumber,
     pageSize = pageSize,
-    contentType = ContentType.getAllowedContentType().toList(),
+    contentType = ContentType.getAllowedContentTypes().toList(),
     domain = Data.getDomainIds(filters),
     category = Data.getCategoryIds(filters),
     search = Data.getSearchTerm(filters),

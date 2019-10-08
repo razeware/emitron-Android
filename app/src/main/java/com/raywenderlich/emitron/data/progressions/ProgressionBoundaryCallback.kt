@@ -7,7 +7,12 @@ import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.DataType
 import com.raywenderlich.emitron.utils.*
 import com.raywenderlich.emitron.utils.async.ThreadManager
+import java.io.IOException
 
+/**
+ * Progressions boundary callback to fetch progressions when no data is in database,
+ * or last item of database has been queried.
+ */
 class ProgressionBoundaryCallback(
   private val progressionApi: ProgressionApi,
   private val contentLocalDataSource: ContentDataSourceLocal,
@@ -58,9 +63,9 @@ class ProgressionBoundaryCallback(
 
     threadManager.networkExecutor.execute {
       updateRunning(true)
-      val (bookmarks, nextPage, isSuccessFul) = getProgressions()
+      val (progressions, nextPage, isSuccessFul) = getProgressions()
       if (isSuccessFul) {
-        saveBookmarks(bookmarks)
+        saveProgressions(progressions)
         handleSuccess()
       }
       updatePageNumber(nextPage)
@@ -70,19 +75,25 @@ class ProgressionBoundaryCallback(
 
   private fun getProgressions(): Triple<List<Data>?, Int?, Boolean> {
     val pageNumber = pageNumber() ?: return Triple(null, null, true)
-    val bookmarkResponse =
+    val progressionsResponse = try {
       progressionApi.getProgressions(
         pageNumber,
         NETWORK_PAGE_SIZE,
         completionStatus = completionStatus.param
       ).execute()
 
-    if (!bookmarkResponse.isSuccessful) {
+    } catch (exception: IOException) {
+      null
+    } catch (exception: RuntimeException) {
+      null
+    }
+
+    if (null == progressionsResponse || !progressionsResponse.isSuccessful) {
       handleError()
       return Triple(null, 0, false)
     }
 
-    val contentBody = bookmarkResponse.body()
+    val contentBody = progressionsResponse.body()
     if (contentBody == null) {
       handleError()
       return Triple(null, 0, false)
@@ -102,11 +113,11 @@ class ProgressionBoundaryCallback(
     return Triple(items, contentBody.getNextPage(), true)
   }
 
-  private fun saveBookmarks(progressions: List<Data>?) {
+  private fun saveProgressions(progressions: List<Data>?) {
     if (progressions.isNullOrEmpty()) {
       handleEmpty()
       return
     }
-    contentLocalDataSource.insertContent(DataType.Progressions, progressions)
+    contentLocalDataSource.insertContents(DataType.Progressions, progressions)
   }
 }

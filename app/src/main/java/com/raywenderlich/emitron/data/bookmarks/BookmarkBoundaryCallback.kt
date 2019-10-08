@@ -6,6 +6,7 @@ import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.DataType
 import com.raywenderlich.emitron.utils.*
 import com.raywenderlich.emitron.utils.async.ThreadManager
+import java.io.IOException
 import javax.inject.Inject
 
 /**
@@ -92,10 +93,15 @@ class BookmarkBoundaryCallback @Inject constructor(
     // If page number is null, we have loaded all the pages.
     val pageNumber = pageNumber() ?: return Triple(null, null, true)
 
-    val bookmarkResponse =
+    val bookmarkResponse = try {
       bookmarkApi.getBookmarks(pageNumber, NETWORK_PAGE_SIZE).execute()
+    } catch (exception: IOException) {
+      null
+    } catch (exception: RuntimeException) {
+      null
+    }
 
-    if (!bookmarkResponse.isSuccessful) {
+    if (null == bookmarkResponse || !bookmarkResponse.isSuccessful) {
       handleError()
       return Triple(null, 0, false)
     }
@@ -124,6 +130,6 @@ class BookmarkBoundaryCallback @Inject constructor(
     if (bookmarks.isNullOrEmpty()) {
       return
     }
-    contentLocalDataSource.insertContent(DataType.Bookmarks, bookmarks)
+    contentLocalDataSource.insertContents(DataType.Bookmarks, bookmarks)
   }
 }

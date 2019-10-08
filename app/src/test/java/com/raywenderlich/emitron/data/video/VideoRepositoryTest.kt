@@ -3,7 +3,6 @@ package com.raywenderlich.emitron.data.video
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
 import com.nhaarman.mockitokotlin2.*
-import com.raywenderlich.emitron.data.content.ContentApi
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.PlaybackProgress
 import com.raywenderlich.emitron.utils.CurrentThreadExecutor
@@ -20,8 +19,6 @@ class VideoRepositoryTest {
 
   private lateinit var repository: VideoRepository
 
-  private val contentApi: ContentApi = mock()
-
   private val videoApi: VideoApi = mock()
 
   private val threadManager: ThreadManager = mock()
@@ -36,7 +33,7 @@ class VideoRepositoryTest {
   fun setUp() {
     whenever(threadManager.io).doReturn(Dispatchers.Unconfined)
     whenever(threadManager.networkExecutor).doReturn(CurrentThreadExecutor())
-    repository = VideoRepository(videoApi, contentApi, threadManager)
+    repository = VideoRepository(videoApi, threadManager)
   }
 
   @Test
@@ -80,14 +77,14 @@ class VideoRepositoryTest {
       val expectedContent = Content()
 
       // When
-      whenever(contentApi.getPlaybackToken()).doReturn(expectedContent)
+      whenever(videoApi.getPlaybackToken()).doReturn(expectedContent)
 
       // Then
       val result = repository.getVideoPlaybackToken()
       Truth.assertThat(result).isEqualTo(expectedContent)
 
-      verify(contentApi).getPlaybackToken()
-      verifyNoMoreInteractions(contentApi)
+      verify(videoApi).getPlaybackToken()
+      verifyNoMoreInteractions(videoApi)
     }
   }
 
@@ -96,14 +93,14 @@ class VideoRepositoryTest {
     testCoroutineRule.runBlockingTest {
       // Given
       val expected = RuntimeException()
-      whenever(contentApi.getPlaybackToken()).doThrow(expected)
+      whenever(videoApi.getPlaybackToken()).doThrow(expected)
 
       // When
       repository.getVideoPlaybackToken()
 
       // Then
-      verify(contentApi).getPlaybackToken()
-      verifyNoMoreInteractions(contentApi)
+      verify(videoApi).getPlaybackToken()
+      verifyNoMoreInteractions(videoApi)
     }
   }
 
@@ -117,7 +114,7 @@ class VideoRepositoryTest {
         expectedContent
       )
       // When
-      whenever(contentApi.updateContentPlayback(anyString(), any())).doReturn(expectedResponse)
+      whenever(videoApi.updateContentPlayback(anyString(), any())).doReturn(expectedResponse)
 
       // Then
       val result = repository.updateContentPlayback(
@@ -127,10 +124,10 @@ class VideoRepositoryTest {
         10
       )
       Truth.assertThat(result).isEqualTo(expectedResponse)
-      verify(contentApi).updateContentPlayback(
+      verify(videoApi).updateContentPlayback(
         "1", PlaybackProgress("RickAndMorty", 10, 10)
       )
-      verifyNoMoreInteractions(contentApi)
+      verifyNoMoreInteractions(videoApi)
     }
   }
 }

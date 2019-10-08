@@ -2,12 +2,14 @@ package com.raywenderlich.emitron.data.content.dao
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import androidx.room.*
 import androidx.room.OnConflictStrategy.IGNORE
+import com.raywenderlich.emitron.data.filter.dao.CategoryDao
+import com.raywenderlich.emitron.data.filter.dao.DomainDao
 import com.raywenderlich.emitron.data.progressions.dao.ProgressionDao
-import com.raywenderlich.emitron.model.entity.Content
-import com.raywenderlich.emitron.model.entity.ContentDomainJoin
-import com.raywenderlich.emitron.model.entity.Progression
+import com.raywenderlich.emitron.model.ContentType
+import com.raywenderlich.emitron.model.entity.*
 
 /**
  * Dao for contents
@@ -96,4 +98,40 @@ interface ContentDao {
    */
   @Query("UPDATE contents set bookmark_id = :bookmarkId WHERE content_id = :contentId")
   suspend fun updateBookmark(contentId: String, bookmarkId: String?)
+
+  /**
+   * Get bookmarks
+   *
+   * @param contentTypes [ContentType]s to filter on
+   */
+  @Query(
+    """
+         SELECT * FROM contents
+         WHERE contents.bookmark_id IS NOT NULL
+         AND contents.content_type in(:contentTypes)
+         ORDER BY contents.bookmark_id DESC
+         """
+  )
+  @Transaction
+  fun getBookmarks(contentTypes: Array<String>): DataSource.Factory<Int, ContentWithDomain>
+
+  /**
+   * Get progressions
+   *
+   * @param contentTypes [ContentType]s to filter on
+   */
+  @Query(
+    """
+          SELECT * FROM contents
+          INNER JOIN progressions
+          ON progressions.progression_id = contents.progression_id
+          WHERE progressions.finished = :completed
+          AND contents.content_type in(:contentTypes)
+          ORDER BY progression_id DESC
+          """
+  )
+  @Transaction
+  fun getProgressions(completed: Boolean, contentTypes: Array<String>):
+      DataSource.Factory<Int, ContentWithDomainAndProgression>
+
 }

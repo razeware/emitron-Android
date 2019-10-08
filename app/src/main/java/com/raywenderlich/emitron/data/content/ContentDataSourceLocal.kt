@@ -5,6 +5,7 @@ import androidx.paging.DataSource
 import com.raywenderlich.emitron.data.content.dao.ContentDao
 import com.raywenderlich.emitron.data.content.dao.ContentDomainJoinDao
 import com.raywenderlich.emitron.data.progressions.dao.ProgressionDao
+import com.raywenderlich.emitron.model.ContentType
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.DataType
 import com.raywenderlich.emitron.model.entity.*
@@ -22,7 +23,7 @@ class ContentDataSourceLocal @Inject constructor(
   /**
    * Insert contents to db
    */
-  fun insertContent(
+  fun insertContents(
     dataType: DataType,
     contents: List<Data>
   ) {
@@ -55,7 +56,7 @@ class ContentDataSourceLocal @Inject constructor(
    * Get bookmarks DataSource.Factory
    */
   fun getBookmarks(): DataSource.Factory<Int, ContentWithDomain> =
-    contentDomainJoinDao.getBookmarks()
+    contentDao.getBookmarks(ContentType.getAllowedContentTypes())
 
   /**
    * Update content bookmark
@@ -71,7 +72,7 @@ class ContentDataSourceLocal @Inject constructor(
    */
   fun getProgressions(completed: Boolean):
       DataSource.Factory<Int, ContentWithDomainAndProgression> =
-    contentDomainJoinDao.getProgressions(completed)
+    contentDao.getProgressions(completed, ContentType.getAllowedContentTypes())
 
   /**
    * Update content progress
