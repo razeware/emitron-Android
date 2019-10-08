@@ -317,9 +317,8 @@ class LibraryFragment : DaggerFragment() {
 
   private fun applyDefaultChipStyle(chip: Chip) {
     val shapeAppearanceModel =
-      ShapeAppearanceModel().apply {
-        this.withCornerRadius(9.0f.toInt().toPx().toFloat())
-      }
+      ShapeAppearanceModel.builder().setCornerRadius(9.0f.toInt().toPx().toFloat()).build()
+
     with(chip) {
       this.shapeAppearanceModel = shapeAppearanceModel
       isCloseIconVisible = true
