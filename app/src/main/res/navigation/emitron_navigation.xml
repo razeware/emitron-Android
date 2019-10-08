@@ -108,7 +108,7 @@
       app:destination="@id/settings_navigation" />
     <action
       android:id="@+id/action_navigation_my_tutorials_to_navigation_library"
-      app:destination="@id/navigation_library" />
+      app:destination="@id/navigation_library"
       app:popUpTo="@id/navigation_library"
       app:popUpToInclusive="true" />
     <action
