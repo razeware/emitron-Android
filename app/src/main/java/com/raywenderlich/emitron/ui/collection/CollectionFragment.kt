@@ -13,11 +13,13 @@ import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentCollectionBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import com.raywenderlich.emitron.model.Data
+import com.raywenderlich.emitron.model.isScreencast
 import com.raywenderlich.emitron.ui.common.ShimmerProgressDelegate
 import com.raywenderlich.emitron.ui.content.getReadableContributors
 import com.raywenderlich.emitron.ui.content.getReadableReleaseAtWithTypeAndDuration
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
+import com.raywenderlich.emitron.ui.onboarding.OnboardingView
 import com.raywenderlich.emitron.utils.UiStateManager
 import com.raywenderlich.emitron.utils.extensions.*
 import com.raywenderlich.emitron.utils.getDefaultAppBarConfiguration
@@ -68,6 +70,7 @@ class CollectionFragment : DaggerFragment() {
     initUi()
     initObservers()
     loadCollection()
+    checkAndShowOnboarding()
   }
 
   private fun initUi() {
@@ -83,7 +86,11 @@ class CollectionFragment : DaggerFragment() {
       },
       onEpisodeCompleted = { episode, position ->
         viewModel.updateContentProgression(episode, position)
-      })
+      },
+      onEpisodeDownload = { episode, _ ->
+
+      }
+    )
 
     with(binding.recyclerViewCollectionEpisode) {
       layoutManager = object : LinearLayoutManager(requireContext()) {
@@ -132,7 +139,7 @@ class CollectionFragment : DaggerFragment() {
 
     viewModel.collectionContentType.observe(viewLifecycleOwner) {
       it?.let {
-        if (it.isScreenCast()) {
+        if (it.isScreencast()) {
           binding.groupCollectionContent.visibility = View.GONE
           binding.buttonCollectionPlay.toVisibility(true)
         }
@@ -218,11 +225,22 @@ class CollectionFragment : DaggerFragment() {
   }
 
   private fun handleProgress(showProgress: Boolean = false) {
-    if (showProgress) {
-      progressDelegate.showProgressView()
-      binding.groupCollectionContent.visibility = View.GONE
-    } else {
-      progressDelegate.hideProgressView()
+    with(binding) {
+      progressViewEpisode.toVisibility(showProgress)
+      groupCollectionContent.toVisibility(!showProgress)
+    }
+  }
+
+  private fun checkAndShowOnboarding() {
+    val canShowCollectionOnboarding =
+      viewModel.isOnboardingAllowed() &&
+          !viewModel.isOnboardedForType(OnboardingView.Collection)
+
+    if (canShowCollectionOnboarding) {
+      val action = CollectionFragmentDirections.actionNavigationCollectionToNavigationOnboarding(
+        OnboardingView.Collection
+      )
+      findNavController().navigate(action)
     }
   }
 }

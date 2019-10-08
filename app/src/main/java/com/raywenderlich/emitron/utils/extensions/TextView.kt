@@ -1,6 +1,7 @@
 package com.raywenderlich.emitron.utils.extensions
 
 import android.text.Spannable
+import android.text.SpannableString
 import android.text.TextPaint
 import android.text.style.URLSpan
 import android.text.style.UnderlineSpan
@@ -28,6 +29,16 @@ fun AppCompatTextView.removeUnderline() {
       val end = it.getSpanEnd(span)
       val noUnderline = NoUnderlineSpan()
       it.setSpan(noUnderline, start, end, 0)
+    }
+  }
+}
+
+fun AppCompatTextView.applyUnderline() {
+  val spannableText = this.text
+  spannableText?.let {
+    val content = SpannableString(spannableText)
+    text = SpannableString(spannableText).apply {
+      setSpan(UnderlineSpan(), 0, content.length, 0)
     }
   }
 }

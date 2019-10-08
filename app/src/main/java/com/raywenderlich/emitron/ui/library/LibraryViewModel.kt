@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.raywenderlich.emitron.data.content.ContentRepository
 import com.raywenderlich.emitron.data.filter.FilterRepository
+import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.ui.content.ContentPagedViewModel
 import com.raywenderlich.emitron.utils.Log

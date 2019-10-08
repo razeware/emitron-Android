@@ -185,4 +185,27 @@
   <string name="pip_action_play">Play</string>
   <string name="pip_action_play_description">Resume playback</string>
 
+  <!-- On-boarding -->
+  <string name="on_boarding_download_card_title">Mobile UX Design Tips &amp; Tricks</string>
+  <string name="on_boarding_download_card_body">Learn useful UX design practices you can use immediately to improve the design of your mobile apps!</string>
+  <string name="on_boarding_download_card_language">@string/label_multi_platform</string>
+  <string name="on_boarding_download_card_course_type">Video Course (19 mins)</string>
+  <string name="on_boarding_download_card_img_url">https://files.betamax.raywenderlich.com/attachments/collections/202/c8cef063-f1ee-41b4-88e5-33698f3a4e2e.png</string>
+  <string name="on_boarding_download_title">Swipe left to delete a download</string>
+  <string name="on_boarding_download_body">Swipe on your downloads to remove them.</string>
+  <string name="button_label_got_it">Got it!</string>
+  <string name="button_label_on_boarding_close">Don’t show me any more tips</string>
+  <string name="on_boarding_episode_title_1">Do Competitive Research and Find Inspiration</string>
+  <string name="on_boarding_episode_title_2">Wireframe an App with Sketch</string>
+  <string name="on_boarding_episode_title_3">Build a Clickable Prototype With Sketch + InVision
+</string>
+  <string name="on_boarding_episode_duration_1">5:34</string>
+  <string name="on_boarding_episode_duration_2">9:08</string>
+  <string name="on_boarding_episode_duration_3">4:16</string>
+  <string name="on_boarding_episode_number_1">1</string>
+  <string name="on_boarding_episode_number_2">2</string>
+  <string name="on_boarding_episode_number_3">3</string>
+  <string name="on_boarding_collection_title">Mark episodes complete</string>
+  <string name="on_boarding_collection_body">Tap the number next to an episode to mark it as complete.</string>
+
 </resources>

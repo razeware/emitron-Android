@@ -5,11 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.raywenderlich.emitron.data.content.ContentRepository
+import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.model.ContentType
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.ui.common.UiStateViewModel
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
+import com.raywenderlich.emitron.ui.onboarding.OnboardingView
 import com.raywenderlich.emitron.ui.player.Playlist
 import com.raywenderlich.emitron.utils.Event
 import com.raywenderlich.emitron.utils.NetworkState
@@ -27,7 +29,8 @@ import javax.inject.Inject
 class CollectionViewModel @Inject constructor(
   private val repository: ContentRepository,
   private val bookmarkActionDelegate: BookmarkActionDelegate,
-  private val progressionActionDelegate: ProgressionActionDelegate
+  private val progressionActionDelegate: ProgressionActionDelegate,
+  private val settingsRepository: SettingsRepository
 ) : ViewModel(), UiStateViewModel {
 
   private val _networkState = MutableLiveData<NetworkState>()
@@ -199,4 +202,15 @@ class CollectionViewModel @Inject constructor(
    * @return true if content is free to watch, else false
    */
   fun isFreeContent(): Boolean = _collection.value?.isFreeContent() ?: false
+
+  /**
+   * @return id for video course, screencast
+   */
+  fun isOnboardedForType(view: OnboardingView): Boolean =
+    settingsRepository.getOnboardedViews().contains(view)
+
+  /**
+   * @return true if onboarding can be shown, else false
+   */
+  fun isOnboardingAllowed(): Boolean = settingsRepository.isOnboardingAllowed()
 }

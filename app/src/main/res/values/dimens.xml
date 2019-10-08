@@ -154,5 +154,12 @@
   <!-- Settings -->
   <dimen name="settings_row_height">56dp</dimen>
 
+  <!-- On-boarding -->
+  <dimen name="on_boarding_title_margin_top">32dp</dimen>
+  <dimen name="on_boarding_button_close_margin_top">24dp</dimen>
+  <dimen name="on_boarding_button_submit_margin_top">40dp</dimen>
+  <dimen name="on_boarding_episode_item_margin_top">24dp</dimen>
+  <dimen name="onboarding_download_content_margin_end">96dp</dimen>
+  <dimen name="onboarding_download_content_margin_start">48dp</dimen>
 
 </resources>

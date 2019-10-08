@@ -285,10 +285,10 @@ class ContentAdapter private constructor(
   /**
    * Get item for given view holder
    *
-   * @param viewHolder ViewHolder to be removed
+   * @param position Adapter position
    */
-  fun getItemFor(viewHolder: RecyclerView.ViewHolder): Data? {
-    return viewHolder.adapterPosition.run {
+  fun getItemFor(position: Int): Data? {
+    return position.run {
       notifyItemRemoved(this)
       getItem(this)
     }
