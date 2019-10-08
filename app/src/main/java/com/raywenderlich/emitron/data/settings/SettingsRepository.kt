@@ -185,7 +185,12 @@ class SettingsRepository @Inject constructor(
    *
    * @return list of onboarded views [OnboardingView]
    */
-  fun getOnboardedViews(): List<OnboardingView> = settingsPrefs.getOnboardedViews().map {
-    OnboardingView.valueOf(it)
-  }
+  fun getOnboardedViews(): List<OnboardingView> =
+    settingsPrefs.getOnboardedViews().mapNotNull {
+      if (it.isNotEmpty()) {
+        OnboardingView.valueOf(it)
+      } else {
+        null
+      }
+    }
 }
