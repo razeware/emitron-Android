@@ -19,6 +19,10 @@ class SettingsPrefs @Inject constructor(private val prefs: PrefUtils) {
     private const val PLAYER_PLAYBACK_SPEED = "player_playback_speed"
     private const val PLAYER_PLAYBACK_QUALITY = "player_playback_quality"
     private const val PLAYER_SUBTITLES_LANGUAGE = "player_subtitles_language"
+    private const val DOWNLOAD_WIFI_ONLY = "download_wifi_only"
+    private const val DOWNLOAD_QUALITY = "download_quality"
+    private const val ALLOW_TIPS = "allow_tips"
+    private const val ONBOARDED_VIEWS = "onboarded_views"
   }
 
   init {
@@ -169,10 +173,89 @@ class SettingsPrefs @Inject constructor(private val prefs: PrefUtils) {
     prefs.get(PLAYER_AUTO_PLAY_NEXT, true)
 
   /**
+   * Get downloads wifi only from preference
+   *
+   * @return true if download allowed only on wifi else false
+   */
+  fun getDownloadsWifiOnly(): Boolean =
+    prefs.get(DOWNLOAD_WIFI_ONLY, true)
+
+  /**
+   * Get download quality from preference
+   *
+   * @return download quality
+   */
+  fun getDownloadQuality(): String =
+    prefs.get(DOWNLOAD_QUALITY, "sd")
+
+  /**
    * Get subtitle language from preference
    *
    * @return subtitle language in ISO format ex. "en"
    */
   fun getSubtitleLanguage(): String =
     prefs.get(PLAYER_SUBTITLES_LANGUAGE, "")
+
+  /**
+   * Save download quality
+   *
+   * @param quality download quality (hd/sd)
+   */
+  fun saveDownloadQuality(quality: String) {
+    prefs.set(DOWNLOAD_QUALITY, quality).commit()
+  }
+
+  /**
+   * Save downloads wifi only preference
+   *
+   * @param wifiOnly true if user has allowed wifi only downloads else false
+   */
+  fun saveDownloadsWifiOnly(wifiOnly: Boolean) {
+    prefs.set(DOWNLOAD_WIFI_ONLY, wifiOnly).commit()
+  }
+
+  /**
+   * Get onboarding allowed
+   *
+   * @return true if user has allowed tips to be shown else false
+   */
+  fun isOnboardingAllowed(): Boolean =
+    prefs.get(ALLOW_TIPS, true)
+
+  /**
+   * Save onboarding allowed
+   *
+   * @param allowed true of user has allowed tips else false,
+   * default value is false as user can only dismiss tips.
+   */
+  fun saveOnboardingAllowed(allowed: Boolean = false): Boolean =
+    prefs.set(ALLOW_TIPS, allowed).commit()
+
+  /**
+   * Save onboarded view
+   *
+   * @param view Onboarded view
+   */
+  fun saveOnboardedView(view: String) {
+    val onboardedViews = getOnboardedViews()
+    val updatedOnboardedTypes =
+      if (onboardedViews.contains(view)) {
+        onboardedViews.toString()
+          .replace("[", "")
+          .replace("]", "")
+      } else {
+        onboardedViews.plus(view).toString()
+          .replace("[", "")
+          .replace("]", "")
+      }
+    prefs.set(ONBOARDED_VIEWS, updatedOnboardedTypes).commit()
+  }
+
+  /**
+   * Get onboarded views
+   *
+   * @return list of onboarded views
+   */
+  fun getOnboardedViews(): List<String> =
+    prefs.get(ONBOARDED_VIEWS, "").split(",").map { it.trim() }
 }

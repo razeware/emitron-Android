@@ -24,4 +24,7 @@ interface CategoryDao {
    */
   @Insert(onConflict = REPLACE)
   suspend fun insertCategories(categories: List<Category>)
+
+  @Query("DELETE from categories")
+  fun deleteAll()
 }

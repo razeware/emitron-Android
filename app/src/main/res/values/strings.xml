@@ -118,7 +118,14 @@
   <string name="label_allow_crash_reporting">Allow crash reporting</string>
   <string name="button_on">On</string>
   <string name="button_off">Off</string>
+  <string name="label_send_feedback">Send feedback</string>
+  <string name="label_rate_app">Rate us</string>
+  <string name="label_share_app">Share app</string>
   <string name="button_system_default">System default</string>
+  <string name="title_feedback_email">[Android] Raywenderlich.com support requested</string>
+  <string name="share_app_title">Share Raywenderlich.com App</string>
+  <string name="share_app_body">High quality programming tutorials: iOS, Android, Swift, Kotlin, Flutter, Server Side Swift, Unity, and more!
+  Download the App at market://com.raywenderlich.com/emitron</string>
 
   <!-- My tutorials -->
   <string name="button_delete">Delete</string>

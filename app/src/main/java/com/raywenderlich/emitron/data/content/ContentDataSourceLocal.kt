@@ -83,4 +83,10 @@ class ContentDataSourceLocal @Inject constructor(
   suspend fun updateProgress(contentId: String, finished: Boolean): Unit =
     progressionDao.updateProgress(contentId, finished)
 
+  /**
+   * Delete all tables
+   */
+  fun deleteAll() {
+    contentDao.deleteAll()
+  }
 }

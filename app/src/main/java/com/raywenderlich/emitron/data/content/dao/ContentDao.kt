@@ -122,7 +122,7 @@ interface ContentDao {
    */
   @Query(
     """
-          SELECT * FROM contents
+          SELECT * FROM contents 
           INNER JOIN progressions
           ON progressions.progression_id = contents.progression_id
           WHERE progressions.finished = :completed
@@ -134,4 +134,29 @@ interface ContentDao {
   fun getProgressions(completed: Boolean, contentTypes: Array<String>):
       DataSource.Factory<Int, ContentWithDomainAndProgression>
 
+  /**
+   * Delete contents tables
+   *
+   */
+  @Query("DELETE from contents")
+  fun deleteAll()
+
+  /**
+   * Delete all tables
+   *
+   */
+  @WorkerThread
+  @Transaction
+  fun deleteAll(
+    domainDao: DomainDao,
+    categoryDao: CategoryDao,
+    contentDomainJoinDao: ContentDomainJoinDao,
+    progressionDao: ProgressionDao
+  ) {
+    deleteAll()
+    domainDao.deleteAll()
+    categoryDao.deleteAll()
+    contentDomainJoinDao.deleteAll()
+    progressionDao.deleteAll()
+  }
 }

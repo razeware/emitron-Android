@@ -26,12 +26,18 @@ class SettingsViewModel @Inject constructor(
 
   private val _subtitlesLanguage = MutableLiveData<String>()
 
+  private val _downloadQuality = MutableLiveData<String>()
+
+  private val _downloadsWifiOnly = MutableLiveData<Boolean>()
+
   init {
     _nightMode.value = settingsRepository.getNightMode()
     _crashReportingAllowed.value = settingsRepository.isCrashReportingAllowed()
     _playbackSpeed.value = settingsRepository.getPlaybackSpeed()
     _playbackQuality.value = settingsRepository.getPlaybackQuality()
     _subtitlesLanguage.value = settingsRepository.getSubtitleLanguage()
+    _downloadQuality.value = settingsRepository.getDownloadQuality()
+    _downloadsWifiOnly.value = settingsRepository.getDownloadsWifiOnly()
   }
 
   /**
@@ -63,6 +69,18 @@ class SettingsViewModel @Inject constructor(
    */
   val subtitlesLanguage: LiveData<String>
     get() = _subtitlesLanguage
+
+  /**
+   * Observer for subtitle language
+   */
+  val downloadQuality: LiveData<String>
+    get() = _downloadQuality
+
+  /**
+   * Observer for subtitle language
+   */
+  val downloadsWifiOnly: LiveData<Boolean>
+    get() = _downloadsWifiOnly
 
 
   /**
@@ -123,6 +141,25 @@ class SettingsViewModel @Inject constructor(
   }
 
   /**
+   * Update selected download quality in preferences
+   *
+   * @param quality download quality (hd/sd)
+   */
+  fun updateDownloadQuality(quality: String) {
+    settingsRepository.updateSelectedDownloadQuality(quality)
+    _downloadQuality.value = quality
+  }
+
+  /**
+   * Update crash reporting allowed in preferences
+   *
+   * @param wifiOnly true if downloads allowed only on wifi else false
+   */
+  fun updateDownloadsWifiOnly(wifiOnly: Boolean) {
+    settingsRepository.updateDownloadsWifiOnly(wifiOnly)
+  }
+
+  /**
    * Get saved night mode
    */
   fun getNightMode(): Int = settingsRepository.getNightMode()
@@ -141,4 +178,9 @@ class SettingsViewModel @Inject constructor(
    * Get saved subtitle language
    */
   fun getSubtitleLanguage(): String = settingsRepository.getSubtitleLanguage()
+
+  /**
+   * Get download quality from preference
+   */
+  fun getDownloadQuality(): String = settingsRepository.getDownloadQuality()
 }

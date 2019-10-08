@@ -30,6 +30,8 @@ class SettingsViewModelTest {
     whenever(settingsRepository.getPlaybackSpeed()).doReturn(1.0f)
     whenever(settingsRepository.getPlaybackQuality()).doReturn(1)
     whenever(settingsRepository.getSubtitleLanguage()).doReturn("en")
+    whenever(settingsRepository.getDownloadQuality()).doReturn("hd")
+    whenever(settingsRepository.getDownloadsWifiOnly()).doReturn(true)
 
     viewModel = SettingsViewModel(loginRepository, settingsRepository)
   }
@@ -42,6 +44,8 @@ class SettingsViewModelTest {
     val playbackSpeed = viewModel.playbackSpeed.observeForTestingResult()
     val playbackQuality = viewModel.playbackQuality.observeForTestingResult()
     val subtitleLanguage = viewModel.subtitlesLanguage.observeForTestingResult()
+    val downloadQuality = viewModel.downloadQuality.observeForTestingResult()
+    val downloadWifiOnly = viewModel.downloadsWifiOnly.observeForTestingResult()
 
     // Then
     verify(settingsRepository).getNightMode()
@@ -49,6 +53,8 @@ class SettingsViewModelTest {
     verify(settingsRepository).getPlaybackQuality()
     verify(settingsRepository).getSubtitleLanguage()
     verify(settingsRepository).getPlaybackSpeed()
+    verify(settingsRepository).getDownloadQuality()
+    verify(settingsRepository).getDownloadsWifiOnly()
     verifyNoMoreInteractions(settingsRepository)
 
     nightMode isEqualTo 1
@@ -56,6 +62,8 @@ class SettingsViewModelTest {
     playbackSpeed isEqualTo 1.0f
     playbackQuality isEqualTo 1
     subtitleLanguage isEqualTo "en"
+    downloadQuality isEqualTo "hd"
+    downloadWifiOnly isEqualTo true
   }
 
   @Test
@@ -73,6 +81,8 @@ class SettingsViewModelTest {
     verify(settingsRepository).getSubtitleLanguage()
     verify(settingsRepository).getPlaybackSpeed()
     verify(settingsRepository).getNightMode()
+    verify(settingsRepository).getDownloadQuality()
+    verify(settingsRepository).getDownloadsWifiOnly()
     verify(settingsRepository).updateCrashReportingAllowed(true)
     verifyNoMoreInteractions(settingsRepository)
   }
@@ -87,6 +97,8 @@ class SettingsViewModelTest {
     verify(settingsRepository).getSubtitleLanguage()
     verify(settingsRepository).getPlaybackSpeed()
     verify(settingsRepository).getNightMode()
+    verify(settingsRepository).getDownloadQuality()
+    verify(settingsRepository).getDownloadsWifiOnly()
     verify(settingsRepository).updateNightMode(1)
     verifyNoMoreInteractions(settingsRepository)
     assertThat(nightMode).isEqualTo(1)
@@ -103,6 +115,8 @@ class SettingsViewModelTest {
     verify(settingsRepository).getPlaybackSpeed()
     verify(settingsRepository).getNightMode()
     verify(settingsRepository).getPlaybackSpeed()
+    verify(settingsRepository).getDownloadQuality()
+    verify(settingsRepository).getDownloadsWifiOnly()
     verify(settingsRepository).updateSelectedPlaybackSpeed(1.0f)
     verifyNoMoreInteractions(settingsRepository)
     assertThat(playbackSpeed).isEqualTo(1.0f)
@@ -118,6 +132,8 @@ class SettingsViewModelTest {
     verify(settingsRepository).getSubtitleLanguage()
     verify(settingsRepository).getPlaybackSpeed()
     verify(settingsRepository).getNightMode()
+    verify(settingsRepository).getDownloadQuality()
+    verify(settingsRepository).getDownloadsWifiOnly()
     verify(settingsRepository).updateSelectedPlaybackQuality(1)
     verifyNoMoreInteractions(settingsRepository)
     assertThat(playbackQuality).isEqualTo(1)
@@ -133,6 +149,8 @@ class SettingsViewModelTest {
     verify(settingsRepository).getSubtitleLanguage()
     verify(settingsRepository).getPlaybackSpeed()
     verify(settingsRepository).getNightMode()
+    verify(settingsRepository).getDownloadQuality()
+    verify(settingsRepository).getDownloadsWifiOnly()
     verify(settingsRepository).updateSubtitleLanguage("en")
     verifyNoMoreInteractions(settingsRepository)
     assertThat(subtitleLanguage).isEqualTo("en")
@@ -146,6 +164,8 @@ class SettingsViewModelTest {
     verify(settingsRepository).getPlaybackSpeed()
     verify(settingsRepository).getNightMode()
     verify(settingsRepository).getNightMode()
+    verify(settingsRepository).getDownloadQuality()
+    verify(settingsRepository).getDownloadsWifiOnly()
     verifyNoMoreInteractions(settingsRepository)
   }
 
@@ -157,6 +177,8 @@ class SettingsViewModelTest {
     verify(settingsRepository).getPlaybackSpeed()
     verify(settingsRepository).getPlaybackQuality()
     verify(settingsRepository).getPlaybackQuality()
+    verify(settingsRepository).getDownloadQuality()
+    verify(settingsRepository).getDownloadsWifiOnly()
     verifyNoMoreInteractions(settingsRepository)
   }
 
@@ -168,6 +190,8 @@ class SettingsViewModelTest {
     verify(settingsRepository).getSubtitleLanguage()
     verify(settingsRepository).getPlaybackSpeed()
     verify(settingsRepository).getPlaybackSpeed()
+    verify(settingsRepository).getDownloadQuality()
+    verify(settingsRepository).getDownloadsWifiOnly()
     verifyNoMoreInteractions(settingsRepository)
   }
 
@@ -179,6 +203,74 @@ class SettingsViewModelTest {
     verify(settingsRepository).getPlaybackSpeed()
     verify(settingsRepository).getSubtitleLanguage()
     verify(settingsRepository).getSubtitleLanguage()
+    verify(settingsRepository).getDownloadQuality()
+    verify(settingsRepository).getDownloadsWifiOnly()
+    verifyNoMoreInteractions(settingsRepository)
+  }
+
+  @Test
+  fun updateDownloadQuality() {
+
+    val downloadQuality = viewModel.downloadQuality.observeForTestingResult()
+
+    verify(settingsRepository).getNightMode()
+    verify(settingsRepository).isCrashReportingAllowed()
+    verify(settingsRepository).getPlaybackQuality()
+    verify(settingsRepository).getPlaybackSpeed()
+    verify(settingsRepository).getSubtitleLanguage()
+    verify(settingsRepository).getDownloadQuality()
+    verify(settingsRepository).getDownloadsWifiOnly()
+
+    viewModel.updateDownloadQuality("hd")
+    verify(settingsRepository).updateSelectedDownloadQuality("hd")
+    assertThat(downloadQuality).isEqualTo("hd")
+    verifyNoMoreInteractions(settingsRepository)
+  }
+
+  @Test
+  fun updateDownloadsWifiOnly() {
+    val downloadsWifiOnly = viewModel.downloadsWifiOnly.observeForTestingResult()
+
+    verify(settingsRepository).getNightMode()
+    verify(settingsRepository).isCrashReportingAllowed()
+    verify(settingsRepository).getPlaybackQuality()
+    verify(settingsRepository).getPlaybackSpeed()
+    verify(settingsRepository).getSubtitleLanguage()
+    verify(settingsRepository).getDownloadQuality()
+    verify(settingsRepository).getDownloadsWifiOnly()
+
+    viewModel.updateDownloadsWifiOnly(true)
+    verify(settingsRepository).updateDownloadsWifiOnly(true)
+    assertThat(downloadsWifiOnly).isEqualTo(true)
+    verifyNoMoreInteractions(settingsRepository)
+  }
+
+  @Test
+  fun getDownloadQuality() {
+
+    verify(settingsRepository).getNightMode()
+    verify(settingsRepository).isCrashReportingAllowed()
+    verify(settingsRepository).getPlaybackQuality()
+    verify(settingsRepository).getPlaybackSpeed()
+    verify(settingsRepository).getSubtitleLanguage()
+    verify(settingsRepository).getDownloadQuality()
+    verify(settingsRepository).getDownloadsWifiOnly()
+
+    verify(settingsRepository).getDownloadQuality()
+    verifyNoMoreInteractions(settingsRepository)
+  }
+
+  @Test
+  fun getDownloadsWifiOnly() {
+    verify(settingsRepository).getNightMode()
+    verify(settingsRepository).isCrashReportingAllowed()
+    verify(settingsRepository).getPlaybackQuality()
+    verify(settingsRepository).getPlaybackSpeed()
+    verify(settingsRepository).getSubtitleLanguage()
+    verify(settingsRepository).getDownloadQuality()
+    verify(settingsRepository).getDownloadsWifiOnly()
+
+    verify(settingsRepository).getDownloadsWifiOnly()
     verifyNoMoreInteractions(settingsRepository)
   }
 }

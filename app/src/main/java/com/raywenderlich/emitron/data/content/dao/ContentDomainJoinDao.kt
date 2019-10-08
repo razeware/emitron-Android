@@ -18,4 +18,9 @@ interface ContentDomainJoinDao {
   @Insert(onConflict = REPLACE)
   fun insertContentDomainJoin(contents: List<ContentDomainJoin>)
 
+  /**
+   * Delete all content domain joins
+   */
+  @Query("DELETE from content_domain_join")
+  fun deleteAll()
 }

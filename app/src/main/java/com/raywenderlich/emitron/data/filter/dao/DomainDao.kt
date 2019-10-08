@@ -24,4 +24,7 @@ interface DomainDao {
    */
   @Insert(onConflict = REPLACE)
   suspend fun insertDomains(domains: List<Domain>)
+
+  @Query("DELETE from domains")
+  fun deleteAll()
 }
