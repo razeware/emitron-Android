@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <declare-styleable name="DownloadButton">
+    <attr name="downloadIcon" format="reference" />
+    <attr name="downloadIconTint" format="color" />
+    <attr name="downloadStopIcon" format="reference" />
+    <attr name="downloadStopIconTint" format="color" />
+    <attr name="progressDrawable" format="reference" />
+  </declare-styleable>
+</resources>

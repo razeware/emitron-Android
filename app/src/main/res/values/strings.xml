@@ -13,6 +13,7 @@
   <string name="label_completed">Completed</string>
   <string name="label_pro">Pro</string>
   <string name="error_no_internet">No internet available</string>
+  <string name="button_explore_tutorials">Explore Tutorials</string>
 
   <plurals name="hours">
     <item quantity="one">1 hr, </item>
@@ -37,10 +38,6 @@
   <string name="headline_login_no_subscription">The raywenderlich.com app is for subscribers only.</string>
   <string name="body_login_no_subscription">For more information on how to become a raywenderlich.com subscriber please visit: store.raywenderlich.com/products/subscription</string>
   <string name="error_login_subscription">Failed to login.</string>
-
-  <!-- Downloads -->
-  <string name="button_explore_tutorials">Explore Tutorials</string>
-  <string name="body_downloads_empty">You haven’t downloaded any tutorials yet</string>
 
   <!-- Library -->
   <string name="button_newest">Newest</string>
@@ -176,6 +173,8 @@
   <!-- Notifications -->
   <string name="notification_channel_playback">Playback</string>
   <string name="notification_channel_others">Others</string>
+  <string name="notification_channel_downloads">Downloads</string>
+  <string name="notification_channel_downloads_description">In progress downloads</string>
 
   <!-- Pip -->
   <string name="pip_action_next">Next</string>
@@ -184,6 +183,11 @@
   <string name="pip_action_pause_description">Pause playback</string>
   <string name="pip_action_play">Play</string>
   <string name="pip_action_play_description">Resume playback</string>
+
+  <!-- Downloads -->
+  <string name="download_quality_high">High</string>
+  <string name="download_quality_normal">Normal</string>
+  <string name="body_downloads_empty">You haven’t downloaded any tutorials yet</string>
 
   <!-- On-boarding -->
   <string name="on_boarding_download_card_title">Mobile UX Design Tips &amp; Tricks</string>

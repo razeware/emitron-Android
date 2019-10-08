@@ -14,8 +14,8 @@
       type="String" />
 
     <variable
-      name="downloadProgress"
-      type="Integer" />
+      name="downloadState"
+      type="com.raywenderlich.emitron.model.Download" />
 
     <import type="android.text.TextUtils" />
 
@@ -60,16 +60,16 @@
       style="@style/Button.Icon"
       android:layout_width="@dimen/button_episode_number_height_width"
       android:layout_height="@dimen/button_episode_number_height_width"
-      android:minHeight="@dimen/button_episode_number_height_width"
-      android:minWidth="@dimen/button_episode_number_height_width"
       android:layout_marginEnd="@dimen/button_episode_number_margin_end"
-      android:text="@{episodePosition}"
       android:insetTop="0dp"
       android:insetBottom="0dp"
+      android:minWidth="@dimen/button_episode_number_height_width"
+      android:minHeight="@dimen/button_episode_number_height_width"
+      android:text="@{episodePosition}"
       android:visibility="visible"
       app:cornerRadius="9dp"
-      app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@+id/text_title"
       app:layout_constraintStart_toStartOf="@id/guideline_left"
       app:layout_constraintTop_toTopOf="@id/text_title"
@@ -107,58 +107,20 @@
       app:layout_constraintTop_toBottomOf="@+id/text_title"
       tools:text="1:31" />
 
-    <ProgressBar
-      android:id="@+id/progress_library_download"
-      style="?android:attr/progressBarStyleHorizontal"
-      android:layout_width="@dimen/height_card_progress_round_height_width"
-      android:layout_height="@dimen/height_card_progress_round_height_width"
-      android:layout_marginStart="@dimen/button_spacing_horizontal"
-      android:indeterminate="false"
-      android:progress="@{downloadProgress}"
-      android:progressDrawable="@drawable/progress_drawable"
-      android:visibility="@{downloadProgress > 0? View.VISIBLE : View.GONE}"
-      app:layout_constraintBottom_toBottomOf="@+id/button_collection_episode_download"
-      app:layout_constraintEnd_toEndOf="@id/guideline_right"
-      app:layout_constraintTop_toTopOf="@+id/button_collection_episode_download" />
-
-    <com.google.android.material.button.MaterialButton
-      android:id="@+id/button_library_download_stop"
-      style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-      android:layout_width="@dimen/button_download_pause_height"
-      android:layout_height="@dimen/button_download_pause_height"
-      android:layout_marginStart="@dimen/button_spacing_horizontal"
-      android:gravity="center"
-      android:paddingLeft="@null"
-      android:paddingRight="@null"
-      android:textAppearance="@style/TextAppearance.Button.Regular"
-      android:visibility="@{downloadProgress > 0? View.VISIBLE : View.GONE}"
-      app:icon="@drawable/ic_material_icon_download_pause"
-      app:iconSize="6dp"
-      app:layout_constraintBottom_toBottomOf="@+id/progress_library_download"
-      app:layout_constraintEnd_toEndOf="@+id/progress_library_download"
-      app:layout_constraintStart_toStartOf="@+id/progress_library_download"
-      app:layout_constraintTop_toTopOf="@+id/progress_library_download" />
-
-
-    <com.google.android.material.button.MaterialButton
+    <com.raywenderlich.emitron.utils.DownloadButton
       android:id="@+id/button_collection_episode_download"
-      style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-      android:layout_width="@dimen/button_icon_height_width_dense"
-      android:layout_height="@dimen/button_icon_height_width_dense"
-      android:layout_marginStart="@dimen/activity_horizontal_margin"
-      android:layout_marginEnd="@dimen/activity_horizontal_margin"
-      android:gravity="center"
-      android:paddingLeft="@null"
-      android:paddingRight="@null"
-      android:textAppearance="@style/TextAppearance.Button.Regular"
-      android:visibility="@{downloadProgress > 0? View.GONE : View.VISIBLE}"
-      app:icon="@drawable/ic_material_icon_download"
-      app:iconSize="@dimen/icon_height_width_2"
-      app:iconTint="@color/colorIcon"
-      app:layout_constraintEnd_toEndOf="parent"
+      android:layout_width="@dimen/button_icon_height_width_4"
+      android:layout_height="@dimen/button_icon_height_width_4"
+      app:downloadIcon="@drawable/ic_material_icon_download_2"
+      app:downloadIconTint="@color/colorIcon"
+      app:downloadStopIcon="@drawable/ic_material_icon_download_pause_2"
+      app:downloadStopIconTint="@color/colorPrimary"
+      app:layout_constraintEnd_toEndOf="@+id/guideline_right"
       app:layout_constraintHorizontal_bias="1"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="@+id/text_title" />
+      app:layout_constraintTop_toTopOf="parent"
+      android:layout_marginTop="@dimen/collection_episode_download_button_margin_top"
+      app:progressDrawable="@drawable/progress_drawable" />
 
     <ProgressBar
       android:id="@+id/progress_completion"

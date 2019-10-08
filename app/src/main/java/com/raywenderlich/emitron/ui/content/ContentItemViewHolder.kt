@@ -43,6 +43,7 @@ class ContentItemViewHolder(private val binding: ItemContentBinding) :
           content?.isFinished() != true &&
           content?.isFreeContent() != true
     )
+    binding.buttonDownload.toVisibility(!adapterContent.isDownloaded())
     binding.buttonBookmark.toVisibility(adapterContent.isBookmarked())
     binding.buttonBookmark.setOnClickListener {
       bookmarkCallback?.invoke(adapterPosition)
