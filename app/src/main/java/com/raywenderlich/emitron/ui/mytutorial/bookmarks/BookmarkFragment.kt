@@ -60,7 +60,7 @@ class BookmarkFragment : DaggerFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    binding = setDataBindingView(inflater, R.layout.fragment_bookmarks, container)
+    binding = setDataBindingView(R.layout.fragment_bookmarks, container)
     return binding.root
   }
 

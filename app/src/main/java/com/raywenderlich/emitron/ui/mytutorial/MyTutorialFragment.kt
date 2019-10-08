@@ -20,7 +20,7 @@ class MyTutorialFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    binding = setDataBindingView(inflater, R.layout.fragment_my_tutorials, container)
+    binding = setDataBindingView(R.layout.fragment_my_tutorials, container)
     return binding.root
   }
 

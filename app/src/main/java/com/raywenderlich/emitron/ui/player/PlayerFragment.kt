@@ -273,7 +273,7 @@ class PlayerFragment : DaggerFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    binding = setDataBindingView(inflater, R.layout.fragment_player, container)
+    binding = setDataBindingView(R.layout.fragment_player, container)
     binding.data = viewModel.currentEpisode
     return binding.root
   }

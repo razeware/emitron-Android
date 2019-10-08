@@ -53,7 +53,7 @@ class FilterFragment : DaggerFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    binding = setDataBindingView(inflater, R.layout.fragment_filter, container)
+    binding = setDataBindingView(R.layout.fragment_filter, container)
     return binding.root
   }
 

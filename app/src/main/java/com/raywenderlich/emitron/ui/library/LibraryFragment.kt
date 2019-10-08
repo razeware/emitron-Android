@@ -77,7 +77,7 @@ class LibraryFragment : DaggerFragment() {
     savedInstanceState: Bundle?
   ): View? {
     binding = setDataBindingView(
-      inflater, R.layout.fragment_library, container
+      R.layout.fragment_library, container
     )
     return binding.root
   }

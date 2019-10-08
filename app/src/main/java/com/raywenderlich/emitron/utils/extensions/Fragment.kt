@@ -2,7 +2,6 @@ package com.raywenderlich.emitron.utils.extensions
 
 import android.content.Context
 import android.content.pm.ActivityInfo
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
@@ -44,13 +43,12 @@ fun Fragment.isNetNotConnected(): Boolean = !isNetConnected()
  * @return ViewDataBinding binding for layout resource
  */
 fun <T : ViewDataBinding> Fragment.setDataBindingView(
-  inflater: LayoutInflater,
   @LayoutRes
   layoutId: Int,
   container: ViewGroup?
 ): T =
   (DataBindingUtil.inflate(
-    inflater,
+    layoutInflater,
     layoutId,
     container,
     false

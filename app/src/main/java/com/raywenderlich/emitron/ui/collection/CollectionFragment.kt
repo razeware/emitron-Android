@@ -55,11 +55,7 @@ class CollectionFragment : DaggerFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    binding = setDataBindingView(
-      inflater,
-      R.layout.fragment_collection,
-      container
-    )
+    binding = setDataBindingView(R.layout.fragment_collection, container)
     binding.data = viewModel.collection
     return binding.root
   }

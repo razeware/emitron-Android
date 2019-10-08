@@ -42,7 +42,7 @@ class LoginFragment : DaggerFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    binding = setDataBindingView(inflater, R.layout.fragment_login, container)
+    binding = setDataBindingView(R.layout.fragment_login, container)
     return binding.root
   }
 
