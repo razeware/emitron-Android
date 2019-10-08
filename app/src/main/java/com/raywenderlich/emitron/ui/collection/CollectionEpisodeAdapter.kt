@@ -13,7 +13,8 @@ class CollectionEpisodeAdapter(
   /**
    * Handle to mark episode complete/in-progress
    */
-  private val onEpisodeCompleted: (Data?, Int) -> Unit
+  private val onEpisodeCompleted: (Data?, Int) -> Unit,
+  private val onEpisodeDownload: (Data?, Int) -> Unit
 ) :
   RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -97,6 +98,7 @@ class CollectionEpisodeAdapter(
       cachedEpisodePosition
     }
 
+    val episodeId = data?.id
     viewHolder.bindTo(data, episodePosition, isProCourse, { selectedPosition ->
       val contentEpisode = items[selectedPosition]
       val nextContentEpisode = if (selectedPosition < items.size - 1) {
@@ -111,6 +113,9 @@ class CollectionEpisodeAdapter(
         contentEpisode.copy(data = contentEpisode.data?.toggleFinished())
       onEpisodeCompleted(contentEpisode.data, selectedPosition)
       notifyItemChanged(selectedPosition)
+    }, { selectedPosition ->
+      val contentEpisode = items[selectedPosition]
+      onEpisodeDownload(contentEpisode.data, selectedPosition)
     })
   }
 
@@ -159,7 +164,7 @@ data class EpisodeItem(
   companion object {
 
     private fun getContentItems(data: Data): List<EpisodeItem> =
-      data.getGroupedData().map { childData ->
+      data.getChildContents().map { childData ->
         EpisodeItem(data = childData)
       }
 
