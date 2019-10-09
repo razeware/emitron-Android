@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.content.dao.ContentDao
 import com.raywenderlich.emitron.data.content.dao.ContentDomainJoinDao
+import com.raywenderlich.emitron.data.filter.dao.CategoryDao
+import com.raywenderlich.emitron.data.filter.dao.DomainDao
 import com.raywenderlich.emitron.data.progressions.dao.ProgressionDao
 import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.model.entity.ContentDomainJoin
@@ -21,6 +23,8 @@ class ContentDataSourceLocalTest {
   private val contentDao: ContentDao = mock()
   private val contentDomainJoinDao: ContentDomainJoinDao = mock()
   private val progressionDao: ProgressionDao = mock()
+  private val domainDao: DomainDao = mock()
+  private val categoryDao: CategoryDao = mock()
 
   private lateinit var contentDataSourceLocal: ContentDataSourceLocal
 
@@ -33,7 +37,13 @@ class ContentDataSourceLocalTest {
   @Before
   fun setUp() {
     contentDataSourceLocal =
-      ContentDataSourceLocal(contentDao, contentDomainJoinDao, progressionDao)
+      ContentDataSourceLocal(
+        contentDao,
+        contentDomainJoinDao,
+        progressionDao,
+        domainDao,
+        categoryDao
+      )
   }
 
   @Test

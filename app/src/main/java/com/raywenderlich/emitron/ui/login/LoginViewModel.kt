@@ -70,7 +70,9 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
         }
 
         if (permissions.isNotEmpty()) {
-          loginRepository.updatePermissions(PermissionTag.values().map { it.param }.toList())
+          val userPermissions = PermissionTag.values().map { it.param }.toSet()
+            .intersect(permissions).toList()
+          loginRepository.updatePermissions(userPermissions)
           _loginActionResult.value = LoginActionResult.LoggedIn
         } else {
           _loginActionResult.value = LoginActionResult.NoSubscription

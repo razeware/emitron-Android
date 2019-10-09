@@ -6,6 +6,7 @@ import com.raywenderlich.guardpost.data.SSOUser
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyBoolean
+import org.mockito.ArgumentMatchers.anyString
 
 class LoginPrefsTest {
 
@@ -15,8 +16,10 @@ class LoginPrefsTest {
 
   @Before
   fun setUp() {
-    whenever(prefUtils.get(any(), anyBoolean())).doReturn(true)
-    whenever(prefUtils.set(any(), anyBoolean())).doReturn(prefUtils)
+    whenever(prefUtils.get(anyString(), anyBoolean())).doReturn(true)
+    whenever(prefUtils.set(anyString(), anyBoolean())).doReturn(prefUtils)
+    whenever(prefUtils.set(anyString(), anyString())).doReturn(prefUtils)
+    whenever(prefUtils.get(anyString(), anyString())).doReturn("")
     whenever(prefUtils.commit()).doReturn(t = true)
     loginPrefs = LoginPrefs(prefUtils)
   }
@@ -52,6 +55,7 @@ class LoginPrefsTest {
   @Test
   fun storePermissions() {
     loginPrefs.savePermissions(listOf("download-videos"))
+    verify(prefUtils).init("accounts")
     verify(prefUtils).set("user_permissions", "download-videos")
     verify(prefUtils).commit()
     verifyNoMoreInteractions(prefUtils)
@@ -59,8 +63,10 @@ class LoginPrefsTest {
 
   @Test
   fun getPermissions() {
+    whenever(prefUtils.get("user_permissions", "")).doReturn("")
     loginPrefs.getPermissions()
-    verify(prefUtils).get("user_auth_token", "")
+    verify(prefUtils).init("accounts")
+    verify(prefUtils).get("user_permissions", "")
     verifyNoMoreInteractions(prefUtils)
   }
 }

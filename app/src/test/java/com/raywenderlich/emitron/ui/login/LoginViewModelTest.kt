@@ -68,6 +68,7 @@ class LoginViewModelTest {
       verify(loginRepository).getPermissions()
       assertThat(viewModel.loginActionResult.value)
         .isEqualTo(LoginViewModel.LoginActionResult.LoggedIn)
+      verify(loginRepository).getPermissions()
       verify(loginRepository).updatePermissions(listOf("stream-beginner-videos"))
       verifyNoMoreInteractions(loginRepository)
     }
