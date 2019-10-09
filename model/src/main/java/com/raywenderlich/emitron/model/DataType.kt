@@ -27,12 +27,9 @@ enum class DataType {
    */
   Sort,
   /** Contents */
-  Contents;
-
-  /**
-   * Convert the [DataType] name to lowercase for use in post requests
-   */
-  fun toRequestFormat(): String = this.name.toLowerCase()
+  Contents,
+  /** Permissions */
+  Permissions;
 
   companion object {
 
@@ -49,3 +46,28 @@ enum class DataType {
     fun fromValue(type: String?): DataType? = type?.let { map[it.capitalize()] }
   }
 }
+
+/**
+ *  @return true if type is [DataType.Progressions], else false
+ */
+fun DataType?.isProgression(): Boolean = this == DataType.Progressions
+
+/**
+ *  @return true if type is [DataType.Contents], else false
+ */
+fun DataType?.isContent(): Boolean = this == DataType.Contents
+
+/**
+ *  @return true if type is [DataType.Domains], else false
+ */
+fun DataType?.isDomain(): Boolean = this == DataType.Domains
+
+/**
+ *  @return true if type is [DataType.Bookmarks], else false
+ */
+fun DataType?.isBookmark(): Boolean = this == DataType.Bookmarks
+
+/**
+ * Convert the [DataType] name to lowercase for use in post requests
+ */
+fun DataType.toRequestFormat(): String = this.name.toLowerCase()

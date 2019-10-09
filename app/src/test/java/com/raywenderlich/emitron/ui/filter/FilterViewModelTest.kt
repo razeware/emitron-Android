@@ -7,6 +7,7 @@ import com.raywenderlich.emitron.data.filter.FilterRepository
 import com.raywenderlich.emitron.model.Attributes
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.DataType
+import com.raywenderlich.emitron.model.toRequestFormat
 import com.raywenderlich.emitron.utils.*
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import kotlinx.coroutines.Dispatchers

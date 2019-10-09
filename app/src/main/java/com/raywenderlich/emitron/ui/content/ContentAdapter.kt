@@ -29,6 +29,9 @@ class ContentAdapter private constructor(
 
   companion object {
 
+    /**
+     * Factory function for [ContentAdapter]
+     */
     fun build(
       adapterContentType: AdapterContentType = AdapterContentType.Content,
       pagedAdapter: PagedAdapter = PagedAdapter(),
@@ -115,8 +118,21 @@ class ContentAdapter private constructor(
     fun isBookmarked(): Boolean =
       this == ContentBookmarked
 
+    /**
+     * Adapter is part of completed progression view
+     *
+     * @return True if adapter is part of completed progression view else False
+     */
     fun isCompleted(): Boolean =
       this == ContentCompleted
+
+    /**
+     * Adapter is part of downloads view
+     *
+     * @return True if adapter is part of downloads view else False
+     */
+    fun isDownloaded(): Boolean =
+      this == ContentDownloaded
   }
 
   /**
@@ -285,10 +301,10 @@ class ContentAdapter private constructor(
   /**
    * Get item for given view holder
    *
-   * @param viewHolder ViewHolder to be removed
+   * @param position Adapter position
    */
-  fun getItemFor(viewHolder: RecyclerView.ViewHolder): Data? {
-    return viewHolder.adapterPosition.run {
+  fun getItemFor(position: Int): Data? {
+    return position.run {
       notifyItemRemoved(this)
       getItem(this)
     }

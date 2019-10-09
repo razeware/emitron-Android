@@ -38,7 +38,7 @@ class DataModule {
 
     @JvmStatic
     @Provides
-    fun provideProressionDao(application: Application): ProgressionDao =
+    fun provideProgressionDao(application: Application): ProgressionDao =
       EmitronDatabase.getInstance(application).progressionDao()
   }
 }

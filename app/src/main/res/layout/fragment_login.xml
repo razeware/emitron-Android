@@ -7,7 +7,9 @@
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clipToPadding="true"
+    app:paddingBottomSystemWindowInsets="@{true}">
 
     <androidx.constraintlayout.widget.Guideline
       android:id="@+id/guideline_top"
@@ -161,8 +163,8 @@
       android:id="@+id/layout_login_no_subscription"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      app:constraint_referenced_ids="text_login_error_title,text_login_error_description,button_sign_out"
       android:visibility="gone"
+      app:constraint_referenced_ids="text_login_error_title,text_login_error_description,button_sign_out"
       tools:visibility="gone" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>

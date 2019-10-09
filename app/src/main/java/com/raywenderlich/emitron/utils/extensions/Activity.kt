@@ -77,10 +77,12 @@ fun AppCompatActivity.showSuccessSnackbar(text: String) =
  * Extension function for showing the Activity in fullscreen mode
  */
 fun AppCompatActivity.requestGestureUi() {
-  val view = window.decorView
-  view.systemUiVisibility =
-    view.systemUiVisibility or
-        View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+  if (hasGestureUiSupport()) {
+    val view = window.decorView
+    view.systemUiVisibility =
+      view.systemUiVisibility or
+          View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+  }
 }
 
 /**
@@ -95,3 +97,9 @@ fun AppCompatActivity.hasPipSupport(): Boolean =
  */
 fun hasNotificationChannelSupport(): Boolean =
   Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+
+/**
+ * Check if gesture UI is supported on device
+ */
+fun hasGestureUiSupport(): Boolean =
+  Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q

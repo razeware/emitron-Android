@@ -90,7 +90,7 @@ class ItemErrorViewHolder(
       ContentAdapter.AdapterContentType.ContentCompleted ->
         viewDataBinding.root.resources.getString(R.string.body_progressions_completed_empty)
       ContentAdapter.AdapterContentType.ContentDownloaded ->
-        viewDataBinding.root.resources.getString(R.string.body_bookmarks_empty)
+        viewDataBinding.root.resources.getString(R.string.body_downloads_empty)
     }
 
   private fun getRetryButtonLabelForAdapterType(

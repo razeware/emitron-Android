@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 import com.raywenderlich.emitron.model.Attributes
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.DataType
+import com.raywenderlich.emitron.model.toRequestFormat
 
 /**
  * Entity to store domains to database
@@ -33,6 +34,9 @@ data class Domain(
   var level: String? = null
 ) {
 
+  /**
+   * Build [Data] from [Domain]
+   */
   fun toData(): Data = Data(
     id = domainId,
     type = DataType.Domains.toRequestFormat(),

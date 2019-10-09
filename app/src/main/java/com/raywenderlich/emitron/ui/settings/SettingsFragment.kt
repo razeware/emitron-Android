@@ -10,12 +10,14 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.WorkManager
 import com.crashlytics.android.Crashlytics
 import com.raywenderlich.emitron.BuildConfig
 import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentSettingsBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import com.raywenderlich.emitron.ui.login.GuardpostDelegate
+import com.raywenderlich.emitron.ui.settings.SettingsBottomSheetDialogFragment.Companion.downloadQualityToResIdMap
 import com.raywenderlich.emitron.ui.settings.SettingsBottomSheetDialogFragment.Companion.playbackQualityToResIdMap
 import com.raywenderlich.emitron.ui.settings.SettingsBottomSheetDialogFragment.Companion.playbackSpeedToResIdMap
 import com.raywenderlich.emitron.ui.settings.SettingsBottomSheetDialogFragment.Companion.playbackSubtitleLanguageToResIdMap
@@ -56,7 +58,7 @@ class SettingsFragment : DaggerFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    binding = setDataBindingView(inflater, R.layout.fragment_settings, container)
+    binding = setDataBindingView(R.layout.fragment_settings, container)
     return binding.root
   }
 
@@ -74,6 +76,7 @@ class SettingsFragment : DaggerFragment() {
     val result = guardpostDelegate.registerReceiver()
     result.logout.observe(this, Observer {
       viewModel.logout()
+      SignOutWorker.enqueue(WorkManager.getInstance(requireContext()))
       findNavController().navigate(R.id.action_navigation_settings_to_navigation_login)
     })
     viewModel.nightMode.observe(viewLifecycleOwner) {
@@ -127,6 +130,21 @@ class SettingsFragment : DaggerFragment() {
           })
       }
     }
+    viewModel.downloadQuality.observe(viewLifecycleOwner) {
+      it?.let { quality ->
+        binding.settingsSelectedDownloadQuality.text = getString(
+          downloadQualityToResIdMap.getOrElse(
+            quality
+          ) {
+            R.string.download_quality_high
+          })
+      }
+    }
+    viewModel.downloadsWifiOnly.observe(viewLifecycleOwner) {
+      it?.let {
+        binding.switchDownloadNetwork.isChecked = it
+      }
+    }
   }
 
   private fun initUi() {
@@ -150,6 +168,21 @@ class SettingsFragment : DaggerFragment() {
     }
     binding.settingsSubtitleLanguage.setOnClickListener {
       showSettingsBottomSheet(R.string.label_subtitles)
+    }
+    binding.switchDownloadNetwork.setOnCheckedChangeListener { _, checked ->
+      viewModel.updateDownloadsWifiOnly(checked)
+    }
+    binding.settingsDownloadQuality.setOnClickListener {
+      showSettingsBottomSheet(R.string.label_download_quality)
+    }
+    binding.buttonLogout.setOnClickListener {
+      guardpostDelegate.logout()
+    }
+    binding.settingsShareApp.setOnClickListener {
+      Support.shareApp(requireContext())
+    }
+    binding.settingsSendFeedback.setOnClickListener {
+      Support.sendFeedback(requireContext())
     }
   }
 

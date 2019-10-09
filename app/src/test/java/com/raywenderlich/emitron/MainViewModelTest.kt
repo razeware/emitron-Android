@@ -8,6 +8,7 @@ import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.model.Attributes
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.DataType
+import com.raywenderlich.emitron.model.toRequestFormat
 import com.raywenderlich.emitron.utils.isEqualTo
 import com.raywenderlich.emitron.utils.observeForTestingResult
 import org.junit.Before
@@ -35,7 +36,7 @@ class MainViewModelTest {
 
     // Given
     whenever(loginRepository.isLoggedIn()).doReturn(true)
-    whenever(loginRepository.hasSubscription()).doReturn(true)
+    whenever(loginRepository.hasPermissions()).doReturn(true)
 
     // When
     val result = viewModel.isAllowed()
@@ -43,7 +44,7 @@ class MainViewModelTest {
     // Then
     assertThat(result).isTrue()
     verify(loginRepository).isLoggedIn()
-    verify(loginRepository).hasSubscription()
+    verify(loginRepository).hasPermissions()
   }
 
   @Test
@@ -52,7 +53,7 @@ class MainViewModelTest {
 
     // Given
     whenever(loginRepository.isLoggedIn()).doReturn(true)
-    whenever(loginRepository.hasSubscription()).doReturn(false)
+    whenever(loginRepository.hasPermissions()).doReturn(false)
 
     // When
     val result = viewModel.isAllowed()
@@ -60,7 +61,7 @@ class MainViewModelTest {
     // Then
     assertThat(result).isFalse()
     verify(loginRepository).isLoggedIn()
-    verify(loginRepository).hasSubscription()
+    verify(loginRepository).hasPermissions()
   }
 
   @Test

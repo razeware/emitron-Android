@@ -1,4 +1,4 @@
-package com.raywenderlich.emitron.model;
+package com.raywenderlich.emitron.model
 
 /**
  * Content type
@@ -11,17 +11,11 @@ enum class ContentType {
   /**
    * Screencast
    */
-  Screencast;
-
+  Screencast,
   /**
-   * @return True if the current content is screencast, otherwise False
+   * Episode
    */
-  fun isScreenCast(): Boolean = this == Screencast
-
-  /**
-   * Convert the [ContentType] name to lowercase for use in post requests or to save to db
-   */
-  fun toRequestFormat(): String = this.name.toLowerCase()
+  Episode;
 
   companion object {
 
@@ -44,7 +38,27 @@ enum class ContentType {
      *
      * @return List of [ContentType]
      */
-    fun getAllowedContentType(): Array<String> =
-      values().map { it.name.toLowerCase() }.toTypedArray()
+    fun getAllowedContentTypes(): Array<String> =
+      values().filter { !it.isEpisode() }.map { it.name.toLowerCase() }.toTypedArray()
   }
 }
+
+/**
+ * @return True if the current content is screencast, otherwise False
+ */
+fun ContentType?.isScreencast(): Boolean = this == ContentType.Screencast
+
+/**
+ * @return True if the current content is collection, otherwise False
+ */
+fun ContentType?.isCollection(): Boolean = this == ContentType.Collection
+
+/**
+ * @return True if the current content is episode, otherwise False
+ */
+fun ContentType?.isEpisode(): Boolean = this == ContentType.Episode
+
+/**
+ * Convert the [ContentType] name to lowercase for use in post requests or to save to db
+ */
+fun ContentType.toRequestFormat(): String = this.name.toLowerCase()

@@ -42,7 +42,7 @@ class LoginFragment : DaggerFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    binding = setDataBindingView(inflater, R.layout.fragment_login, container)
+    binding = setDataBindingView(R.layout.fragment_login, container)
     return binding.root
   }
 
@@ -59,20 +59,16 @@ class LoginFragment : DaggerFragment() {
   private fun initObservers() {
     val result = guardpostDelegate.registerReceiver()
 
-    val showLoginScreen = {
-      binding.layoutLogin.visibility = View.GONE
-      binding.layoutLoginNoSubscription.visibility = View.VISIBLE
-    }
     result.login.observe(this) { user ->
       user?.let {
         viewModel.storeUser(user)
-        checkSubscription()
+        checkPermissions()
       }
     }
 
     result.logout.observe(this) {
       viewModel.deleteUser()
-      showLoginScreen()
+      handleNoSubscription(false)
     }
 
     viewModel.loginActionResult.observe(viewLifecycleOwner) {
@@ -81,7 +77,7 @@ class LoginFragment : DaggerFragment() {
         LoginViewModel.LoginActionResult.LoggedIn ->
           findNavController().navigate(R.id.action_navigation_login_to_navigation_library)
         LoginViewModel.LoginActionResult.NoSubscription -> {
-          showLoginScreen()
+          handleNoSubscription()
         }
         LoginViewModel.LoginActionResult.SubscriptionRequestFailed ->
           showErrorSnackbar(getString(R.string.error_login_subscription))
@@ -103,6 +99,13 @@ class LoginFragment : DaggerFragment() {
     }
   }
 
+  private fun handleNoSubscription(show: Boolean = true) {
+    with(binding) {
+      layoutLogin.toVisibility(!show)
+      layoutLoginNoSubscription.toVisibility(show)
+    }
+  }
+
   /**
    * Clear guardpost delegate
    */
@@ -111,13 +114,13 @@ class LoginFragment : DaggerFragment() {
     guardpostDelegate.clear()
   }
 
-  private fun checkSubscription() {
+  private fun checkPermissions() {
     if (isNetNotConnected()) {
       showErrorSnackbar(getString(R.string.error_no_connection))
       return
     }
 
     binding.buttonSignIn.isEnabled = false
-    viewModel.getSubscription()
+    viewModel.getPermissions()
   }
 }

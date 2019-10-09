@@ -16,12 +16,11 @@ class ContentTest {
       name = "Introduction to Kotlin Lambdas: Getting Started",
       description = "In this tutorial you will learn how to use lambda.",
       contributors = "Luke",
-      free = false,
+      professional = false,
       deleted = false,
       contentType = "screencast",
       difficulty = "beginner",
       releasedAt = "2019-08-08T00:00:00.000Z",
-      downloadProgress = 0,
       technology = "Swift, iOS",
       duration = 408,
       streamUrl = "https://koenig-media.raywenderlich.com/",
@@ -37,12 +36,11 @@ class ContentTest {
     content.name isEqualTo "Introduction to Kotlin Lambdas: Getting Started"
     content.description isEqualTo "In this tutorial you will learn how to use lambda."
     content.contributors isEqualTo "Luke"
-    content.free isEqualTo false
+    content.professional isEqualTo false
     content.deleted isEqualTo false
     content.contentType isEqualTo "screencast"
     content.difficulty isEqualTo "beginner"
     content.releasedAt isEqualTo "2019-08-08T00:00:00.000Z"
-    content.downloadProgress isEqualTo 0
     content.technology isEqualTo "Swift, iOS"
     content.duration isEqualTo 408
     content.streamUrl isEqualTo "https://koenig-media.raywenderlich.com/"
@@ -60,12 +58,11 @@ class ContentTest {
       name = "Introduction to Kotlin Lambdas: Getting Started",
       description = "In this tutorial you will learn how to use lambda.",
       contributors = "Luke",
-      free = false,
+      professional = false,
       deleted = false,
       contentType = "screencast",
       difficulty = "beginner",
       releasedAt = "2019-08-08T00:00:00.000Z",
-      downloadProgress = 0,
       technology = "Swift, iOS",
       duration = 408,
       streamUrl = "https://koenig-media.raywenderlich.com/",
@@ -82,11 +79,11 @@ class ContentTest {
       id = "1",
       type = "contents",
       attributes = Attributes(
-        createdAt = "",
+        createdAt = null,
         description = "In this tutorial you will learn how to use lambda.",
-        level = "",
+        level = null,
         name = "Introduction to Kotlin Lambdas: Getting Started",
-        slug = "",
+        slug = null,
         cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
         contentType = "screencast",
         difficulty = "beginner",
@@ -94,16 +91,16 @@ class ContentTest {
         free = false,
         popularity = 0.0,
         releasedAt = "2019-08-08T00:00:00.000Z",
-        uri = "",
+        uri = null,
         target = 0,
         progress = 0,
         finished = false,
         percentComplete = 0.0,
-        updatedAt = "",
+        updatedAt = null,
         technology = "Swift, iOS",
         contributors = "Luke",
         url = "https://koenig-media.raywenderlich.com/",
-        kind = ""
+        kind = null
       ),
       links = null,
       relationships = Relationships(
@@ -202,12 +199,11 @@ class ContentTest {
           name = "Introduction to Kotlin Lambdas: Getting Started",
           description = "In this tutorial you will learn how to use lambda.",
           contributors = "Luke",
-          free = false,
+          professional = true,
           deleted = false,
           contentType = "screencast",
           difficulty = "beginner",
           releasedAt = "2019-08-08T00:00:00.000Z",
-          downloadProgress = 0,
           technology = "Swift, iOS",
           duration = 408,
           streamUrl = "",

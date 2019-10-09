@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "59581473db1fcc1bc584a1117abcd838",
+    "identityHash": "8e2da04af3ba99cd37075c8e51db0fbb",
     "entities": [
       {
         "tableName": "domains",
@@ -64,7 +64,7 @@
       },
       {
         "tableName": "contents",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`content_id` TEXT NOT NULL, `description` TEXT, `contributors` TEXT, `free` INTEGER NOT NULL, `deleted` INTEGER NOT NULL, `name` TEXT, `content_type` TEXT, `difficulty` TEXT, `released_at` TEXT NOT NULL, `download_progress` INTEGER NOT NULL, `technology` TEXT, `duration` INTEGER NOT NULL, `stream_url` TEXT NOT NULL, `card_artwork_url` TEXT, `video_id` TEXT, `bookmark_id` TEXT, `progression_id` TEXT, `updated_at` TEXT NOT NULL, PRIMARY KEY(`content_id`), FOREIGN KEY(`progression_id`) REFERENCES `progressions`(`progression_id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`content_id` TEXT NOT NULL, `description` TEXT, `contributors` TEXT, `professional` INTEGER NOT NULL, `deleted` INTEGER NOT NULL, `name` TEXT, `content_type` TEXT, `difficulty` TEXT, `released_at` TEXT NOT NULL, `technology` TEXT, `duration` INTEGER NOT NULL, `stream_url` TEXT NOT NULL, `card_artwork_url` TEXT, `video_id` TEXT, `bookmark_id` TEXT, `progression_id` TEXT, `updated_at` TEXT NOT NULL, PRIMARY KEY(`content_id`), FOREIGN KEY(`progression_id`) REFERENCES `progressions`(`progression_id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "contentId",
@@ -85,8 +85,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "free",
-            "columnName": "free",
+            "fieldPath": "professional",
+            "columnName": "professional",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -118,12 +118,6 @@
             "fieldPath": "releasedAt",
             "columnName": "released_at",
             "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "downloadProgress",
-            "columnName": "download_progress",
-            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -325,7 +319,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '59581473db1fcc1bc584a1117abcd838')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8e2da04af3ba99cd37075c8e51db0fbb')"
     ]
   }
 }

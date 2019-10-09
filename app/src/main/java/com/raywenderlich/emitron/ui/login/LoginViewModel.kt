@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.raywenderlich.emitron.data.login.LoginRepository
+import com.raywenderlich.emitron.model.PermissionTag
 import com.raywenderlich.guardpost.data.SSOUser
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -58,15 +59,20 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
   }
 
   /**
-   * Get subscriptions for the current logged in user
+   * Get permissions for the current logged in user
    */
-  fun getSubscription() {
+  fun getPermissions() {
     viewModelScope.launch {
       try {
-        val response = loginRepository.getSubscription()
-        val hasSubscription = response.hasSubscription
-        if (hasSubscription) {
-          loginRepository.storeHasSubscription(hasSubscription)
+        val response = loginRepository.getPermissions()
+        val permissions = response.datum.mapNotNull {
+          it.getTag()
+        }
+
+        if (permissions.isNotEmpty()) {
+          val userPermissions = PermissionTag.values().map { it.param }.toSet()
+            .intersect(permissions).toList()
+          loginRepository.updatePermissions(userPermissions)
           _loginActionResult.value = LoginActionResult.LoggedIn
         } else {
           _loginActionResult.value = LoginActionResult.NoSubscription

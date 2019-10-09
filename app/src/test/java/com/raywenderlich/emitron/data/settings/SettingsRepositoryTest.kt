@@ -2,6 +2,8 @@ package com.raywenderlich.emitron.data.settings
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.*
+import com.raywenderlich.emitron.data.content.ContentDataSourceLocal
+import com.raywenderlich.emitron.ui.onboarding.OnboardingView
 import com.raywenderlich.emitron.utils.isEqualTo
 import org.junit.Before
 import org.junit.Rule
@@ -13,12 +15,14 @@ class SettingsRepositoryTest {
 
   private val settingsPrefs: SettingsPrefs = mock()
 
+  private val contentDataSourceLocal: ContentDataSourceLocal = mock()
+
   @get:Rule
   val instantTaskExecutorRule: InstantTaskExecutorRule = InstantTaskExecutorRule()
 
   @Before
   fun setUp() {
-    settingsRepository = SettingsRepository(settingsPrefs)
+    settingsRepository = SettingsRepository(settingsPrefs, contentDataSourceLocal)
   }
 
   @Test
@@ -114,6 +118,79 @@ class SettingsRepositoryTest {
     val result = settingsRepository.getAutoPlayNextAllowed()
     result isEqualTo true
     verify(settingsPrefs).getAutoPlayAllowed()
+    verifyNoMoreInteractions(settingsPrefs)
+  }
+
+  @Test
+  fun getDownloadQuality() {
+    whenever(settingsPrefs.getDownloadQuality()).doReturn("hd")
+    val result = settingsRepository.getDownloadQuality()
+    result isEqualTo "hd"
+    verify(settingsPrefs).getDownloadQuality()
+    verifyNoMoreInteractions(settingsPrefs)
+  }
+
+  @Test
+  fun getDownloadsWifiOnly() {
+    whenever(settingsPrefs.getDownloadsWifiOnly()).doReturn(true)
+    val result = settingsRepository.getDownloadsWifiOnly()
+    result isEqualTo true
+    verify(settingsPrefs).getDownloadsWifiOnly()
+    verifyNoMoreInteractions(settingsPrefs)
+  }
+
+  @Test
+  fun isOnboardingAllowed() {
+    whenever(settingsPrefs.isOnboardingAllowed()).doReturn(true)
+    val result = settingsRepository.isOnboardingAllowed()
+    result isEqualTo true
+    verify(settingsPrefs).isOnboardingAllowed()
+    verifyNoMoreInteractions(settingsPrefs)
+  }
+
+  @Test
+  fun getOnboardedViews() {
+    whenever(settingsPrefs.getOnboardedViews()).doReturn(listOf("Download"))
+    val result = settingsRepository.getOnboardedViews()
+    result isEqualTo listOf(OnboardingView.Download)
+    verify(settingsPrefs).getOnboardedViews()
+    verifyNoMoreInteractions(settingsPrefs)
+  }
+
+  @Test
+  fun logout() {
+    settingsRepository.logout()
+    verify(contentDataSourceLocal).deleteAll()
+    verify(settingsPrefs).clear()
+    verifyNoMoreInteractions(contentDataSourceLocal)
+    verifyNoMoreInteractions(settingsPrefs)
+  }
+
+  @Test
+  fun updateSelectedDownloadQuality() {
+    settingsRepository.updateSelectedDownloadQuality("hd")
+    verify(settingsPrefs).saveDownloadQuality("hd")
+    verifyNoMoreInteractions(settingsPrefs)
+  }
+
+  @Test
+  fun updateDownloadsWifiOnly() {
+    settingsRepository.updateDownloadsWifiOnly(true)
+    verify(settingsPrefs).saveDownloadsWifiOnly(true)
+    verifyNoMoreInteractions(settingsPrefs)
+  }
+
+  @Test
+  fun updateOnboardingAllowed() {
+    settingsRepository.updateOnboardingAllowed(false)
+    verify(settingsPrefs).saveOnboardingAllowed(false)
+    verifyNoMoreInteractions(settingsPrefs)
+  }
+
+  @Test
+  fun updateOnboardedView() {
+    settingsRepository.updateOnboardedView(OnboardingView.Download)
+    verify(settingsPrefs).saveOnboardedView("Download")
     verifyNoMoreInteractions(settingsPrefs)
   }
 }

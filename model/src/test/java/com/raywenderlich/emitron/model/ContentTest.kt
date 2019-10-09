@@ -1,6 +1,7 @@
 package com.raywenderlich.emitron.model
 
 import com.google.common.truth.Truth.assertThat
+import com.raywenderlich.emitron.model.utils.isEqualTo
 import org.junit.Test
 
 class ContentTest {
@@ -79,13 +80,19 @@ class ContentTest {
   }
 
   @Test
-  fun getGroups() {
-    val datum = Data(id = "1")
+  fun getContentGroupIds() {
+    val datum = Data(
+      id = "1", relationships = Relationships(
+        groups = Contents(
+          datum = listOf(Data(id = "1"), Data("2"))
+        )
+      )
+    )
     val groups = Data("2", type = "groups")
     val included = listOf(groups, Data(id = "3"))
     val content = Content(datum = datum, included = included)
 
-    assertThat(content.getGroups()).isEqualTo(listOf(groups))
+    assertThat(content.getContentGroupIds()).isEqualTo(listOf("1", "2"))
   }
 
   @Test
@@ -99,6 +106,92 @@ class ContentTest {
     val content2 = Content(datum = datum2)
 
     assertThat(content2.isTypeScreencast()).isFalse()
+  }
+
+  @Test
+  fun isTypeCollection() {
+    val datum = Data(id = "1", attributes = Attributes(contentType = "collection"))
+    val content = Content(datum = datum)
+
+    assertThat(content.isTypeCollection()).isTrue()
+
+    val datum2 = Data(id = "1")
+    val content2 = Content(datum = datum2)
+
+    assertThat(content2.isTypeCollection()).isFalse()
+  }
+
+  @Test
+  fun getEpisodeIds() {
+    val datum = Data(
+      id = "1",
+      attributes = Attributes(contentType = "screencast"),
+      relationships = Relationships(
+        groups = Contents(
+          datum = listOf(Data(id = "1"), Data("2"))
+        )
+      )
+    )
+    val content = Content(
+      datum = datum,
+      included = listOf(
+        Data(
+          id = "1", type = "groups", relationships = Relationships(
+            contents = Contents(
+              datum = listOf(
+                Data(id = "7", type = "contents")
+              )
+            )
+          )
+        ),
+        Data(
+          id = "2", type = "groups", relationships = Relationships(
+            contents = Contents(
+              datum = listOf(
+                Data(id = "8", type = "contents")
+              )
+            )
+          )
+        ),
+        Data(id = "7", type = "contents"),
+        Data(id = "8", type = "contents")
+      )
+    )
+
+    content.getEpisodeIds() isEqualTo listOf("7", "8")
+  }
+
+  @Test
+  fun getIncludedProgressions() {
+    val datum = Data(
+      id = "1",
+      attributes = Attributes(contentType = "screencast"),
+      relationships = Relationships(
+        groups = Contents(
+          datum = listOf(Data(id = "1"), Data("2"))
+        )
+      )
+    )
+    val content = Content(
+      datum = datum,
+      included = listOf(
+        Data(id = "7", type = "progressions"),
+        Data(id = "8", type = "progressions")
+      )
+    )
+
+    content.getIncludedProgressions() isEqualTo listOf(
+      Data(id = "7", type = "progressions"),
+      Data(id = "8", type = "progressions")
+    )
+  }
+
+  @Test
+  fun getVideoId() {
+    val datum = Data(id = "1", attributes = Attributes(uri = "rw://betamax/collections/122"))
+    val content = Content(datum = datum)
+
+    content.getVideoId() isEqualTo "122"
   }
 
   @Test

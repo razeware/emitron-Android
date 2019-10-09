@@ -4,10 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
 import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.content.ContentDataSourceLocal
-import com.raywenderlich.emitron.model.Content
-import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.model.DataType
-import com.raywenderlich.emitron.model.Relationships
+import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.utils.TestCoroutineRule
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import kotlinx.coroutines.Dispatchers

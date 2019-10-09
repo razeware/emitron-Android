@@ -9,7 +9,7 @@
   <!-- Status bar height (24dp)+ 16dp margin -->
   <dimen name="guideline_top_status_bar_2">40dp</dimen>
 
-  <dimen name="guideline_bottom_gesture">24dp</dimen>
+  <dimen name="guideline_bottom_gesture">16dp</dimen>
 
   <!-- Card View -->
   <dimen name="card_radius">6dp</dimen>
@@ -41,7 +41,8 @@
   <dimen name="button_inset">2dp</dimen>
   <dimen name="button_icon_height_width">48dp</dimen>
   <dimen name="button_icon_height_width_2">44dp</dimen>
-  <dimen name="button_icon_height_width_dense">36dp</dimen>
+  <dimen name="button_icon_height_width_3">36dp</dimen>
+  <dimen name="button_icon_height_width_4">28dp</dimen>
   <dimen name="button_spacing_horizontal">8dp</dimen>
   <dimen name="button_spacing_horizontal_2">12dp</dimen>
 
@@ -100,7 +101,8 @@
   <dimen name="margin_card_progress_top">16dp</dimen>
   <dimen name="height_card_progress_height">4dp</dimen>
   <dimen name="height_card_progress_round_height_width">32dp</dimen>
-  <dimen name="button_download_pause_height">6dp</dimen>
+  <dimen name="button_download_pause_height">10dp</dimen>
+  <dimen name="button_download_pause_height_2">8dp</dimen>
   <dimen name="view_height_spacer">24dp</dimen>
   <dimen name="card_icon_height_width">60dp</dimen>
   <dimen name="card_icon_margin_start">32dp</dimen>
@@ -129,6 +131,9 @@
   <dimen name="episode_progress_corner_radius">6dp</dimen>
   <dimen name="collection_completed_margin_start">14dp</dimen>
   <dimen name="collection_download_button_margin_start">4dp</dimen>
+  <dimen name="collection_episode_download_button_margin_top">16dp</dimen>
+  <dimen name="episode_progress_height_width">42dp</dimen>
+  <dimen name="episode_progress_margin_top">20dp</dimen>
 
   <!-- Card divider height -->
   <dimen name="height_card_divider">1dp</dimen>
@@ -154,5 +159,12 @@
   <!-- Settings -->
   <dimen name="settings_row_height">56dp</dimen>
 
+  <!-- On-boarding -->
+  <dimen name="on_boarding_title_margin_top">32dp</dimen>
+  <dimen name="on_boarding_button_close_margin_top">24dp</dimen>
+  <dimen name="on_boarding_button_submit_margin_top">40dp</dimen>
+  <dimen name="on_boarding_episode_item_margin_top">24dp</dimen>
+  <dimen name="onboarding_download_content_margin_end">96dp</dimen>
+  <dimen name="onboarding_download_content_margin_start">48dp</dimen>
 
 </resources>

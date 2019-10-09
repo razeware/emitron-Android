@@ -16,7 +16,7 @@ class LoginPrefs @Inject constructor(private val prefs: PrefUtils) {
     private const val USER_AUTH_TOKEN = "user_auth_token"
     private const val USER_USERNAME = "user_username"
     private const val USER_AVATAR_URL = "user_avatar_url"
-    private const val USER_HAS_SUBSCRIPTION = "user_has_subscription"
+    private const val USER_PERMISSIONS = "user_permissions"
   }
 
   init {
@@ -39,15 +39,6 @@ class LoginPrefs @Inject constructor(private val prefs: PrefUtils) {
   }
 
   /**
-   * Store if user has subscription
-   *
-   * @param hasSubscription subscription status
-   */
-  fun storeHasSubscription(hasSubscription: Boolean) {
-    prefs.set(USER_HAS_SUBSCRIPTION, hasSubscription).commit()
-  }
-
-  /**
    * Clear preferences
    */
   fun clear() {
@@ -62,16 +53,30 @@ class LoginPrefs @Inject constructor(private val prefs: PrefUtils) {
   fun isLoggedIn(): Boolean = prefs.get(IS_LOGGED_IN, false)
 
   /**
-   * Check if user has subscription
-   *
-   * @return True if user has subscription, otherwise False
-   */
-  fun hasSubscription(): Boolean = prefs.get(USER_HAS_SUBSCRIPTION, false)
-
-  /**
    * Get the auth token for logged in user
    *
    * @return authToken if the user is logged in or empty string
    */
   fun authToken(): String = prefs.get(USER_AUTH_TOKEN, "")
+
+  /**
+   * Save user permissions
+   *
+   * @param permissions Allowed permissions
+   */
+  fun savePermissions(permissions: List<String>) {
+    val permissionsStr =
+      permissions.toString()
+        .replace("[", "")
+        .replace("]", "")
+    prefs.set(USER_PERMISSIONS, permissionsStr).commit()
+  }
+
+  /**
+   * Get saved permissions
+   *
+   * @return List of permissions
+   */
+  fun getPermissions(): List<String> =
+    prefs.get(USER_PERMISSIONS, "").split(",").map { it.trim() }
 }

@@ -8,7 +8,7 @@ class ContentTypeTest {
   @Test
   fun isScreenCast() {
     val contentType = ContentType.Screencast
-    assertThat(contentType.isScreenCast()).isTrue()
+    assertThat(contentType.isScreencast()).isTrue()
   }
 
   @Test

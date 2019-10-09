@@ -111,7 +111,7 @@ class DataTest {
   @Test
   fun isProLabelVisible() {
     val data = Data(attributes = Attributes(free = false, finished = false), type = "contents")
-    data.isProLabelVisible() isEqualTo true
+    data.isProLabelVisible() isEqualTo false
 
     val data2 = Data(attributes = Attributes(free = true, finished = false), type = "progressions")
     data2.isProLabelVisible() isEqualTo false
@@ -396,7 +396,7 @@ class DataTest {
       )
     )
     val data = Data(relationships = relationships)
-    assertThat(data.getGroupedData()).isEqualTo(
+    assertThat(data.getChildContents()).isEqualTo(
       listOf(
         Data(id = "1"),
         Data(id = "2")
@@ -405,14 +405,14 @@ class DataTest {
 
     val relationships2 = Relationships()
     val data2 = Data(relationships = relationships2)
-    assertThat(data2.getGroupedData().isEmpty()).isTrue()
+    assertThat(data2.getChildContents().isEmpty()).isTrue()
 
     val data3 = Data()
-    assertThat(data3.getGroupedData().isEmpty()).isTrue()
+    assertThat(data3.getChildContents().isEmpty()).isTrue()
   }
 
   @Test
-  fun getGroupedDataIds() {
+  fun getChildContentsIds() {
     val relationships = Relationships(
       contents = Contents(
         datum = listOf(
@@ -422,7 +422,7 @@ class DataTest {
       )
     )
     val data = Data(relationships = relationships)
-    assertThat(data.getGroupedDataIds()).isEqualTo(
+    assertThat(data.getChildContentIds()).isEqualTo(
       listOf(
         "1",
         "2"
@@ -431,10 +431,10 @@ class DataTest {
 
     val relationships2 = Relationships()
     val data2 = Data(relationships = relationships2)
-    assertThat(data2.getGroupedData().isEmpty()).isTrue()
+    assertThat(data2.getChildContents().isEmpty()).isTrue()
 
     val data3 = Data()
-    assertThat(data3.getGroupedData().isEmpty()).isTrue()
+    assertThat(data3.getChildContents().isEmpty()).isTrue()
   }
 
   @Test
@@ -643,7 +643,7 @@ class DataTest {
   fun getStreamUrl() {
     val attributes = Attributes(url = "WubbaLubbaDubDub")
     val data = Data(attributes = attributes)
-    data.getStreamUrl() isEqualTo "WubbaLubbaDubDub"
+    data.getUrl() isEqualTo "WubbaLubbaDubDub"
   }
 
   @Test
@@ -653,6 +653,6 @@ class DataTest {
 
     val result = data.setVideoUrl(dataWithUrl)
 
-    result?.getStreamUrl() isEqualTo "WubbaLubbaDubDub"
+    result?.getUrl() isEqualTo "WubbaLubbaDubDub"
   }
 }

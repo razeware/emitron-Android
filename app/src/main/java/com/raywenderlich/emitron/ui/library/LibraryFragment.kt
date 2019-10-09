@@ -77,7 +77,7 @@ class LibraryFragment : DaggerFragment() {
     savedInstanceState: Bundle?
   ): View? {
     binding = setDataBindingView(
-      inflater, R.layout.fragment_library, container
+      R.layout.fragment_library, container
     )
     return binding.root
   }
@@ -317,9 +317,8 @@ class LibraryFragment : DaggerFragment() {
 
   private fun applyDefaultChipStyle(chip: Chip) {
     val shapeAppearanceModel =
-      ShapeAppearanceModel().apply {
-        this.withCornerRadius(9.0f.toInt().toPx().toFloat())
-      }
+      ShapeAppearanceModel.builder().setCornerRadius(9.0f.toInt().toPx().toFloat()).build()
+
     with(chip) {
       this.shapeAppearanceModel = shapeAppearanceModel
       isCloseIconVisible = true

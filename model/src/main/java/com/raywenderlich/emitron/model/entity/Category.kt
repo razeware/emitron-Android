@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 import com.raywenderlich.emitron.model.Attributes
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.DataType
+import com.raywenderlich.emitron.model.toRequestFormat
 
 /**
  * Entity to store categories to database
@@ -28,6 +29,9 @@ data class Category(
   val name: String?
 ) {
 
+  /**
+   * Build [Data] from [Category]
+   */
   fun toData(): Data = Data(
     id = categoryId,
     type = DataType.Categories.toRequestFormat(),

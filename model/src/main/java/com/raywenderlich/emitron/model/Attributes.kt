@@ -16,44 +16,45 @@ data class Attributes(
    * Created at
    */
   @Json(name = "created_at")
-  val createdAt: String? = "",
+  val createdAt: String? = null,
 
   /**
    * Readable description
    */
-  val description: String? = "",
+  @Json(name = "description_plain_text")
+  val description: String? = null,
 
   /**
    * Level [DomainLevel]
    */
-  val level: String? = "",
+  val level: String? = null,
 
   /**
    * Readable name
    */
-  val name: String? = "",
+  val name: String? = null,
 
   /**
    * Slug
    */
-  val slug: String? = "",
+  val slug: String? = null,
 
   /**
    * Card artwork url
    */
   @Json(name = "card_artwork_url")
-  val cardArtworkUrl: String? = "",
+  val cardArtworkUrl: String? = null,
 
   /**
    * Type of content [ContentType]
    */
   @Json(name = "content_type")
-  val contentType: String? = "",
+  val contentType: String? = null,
 
   /**
    * Content difficulty [Difficulty]
    */
-  val difficulty: String? = "",
+  val difficulty: String? = null,
 
   /**
    * Content duration
@@ -66,6 +67,11 @@ data class Attributes(
   val free: Boolean? = false,
 
   /**
+   * Is content free?
+   */
+  val professional: Boolean? = false,
+
+  /**
    * Content popularity
    */
   val popularity: Double? = 0.0,
@@ -74,12 +80,12 @@ data class Attributes(
    * Content released at date
    */
   @Json(name = "released_at")
-  val releasedAt: String? = "",
+  val releasedAt: String? = null,
 
   /**
    * Content url
    */
-  val uri: String? = "",
+  val uri: String? = null,
 
   /**
    * Content target
@@ -106,35 +112,45 @@ data class Attributes(
    * Content updated at
    */
   @Json(name = "updated_at")
-  val updatedAt: String? = "",
+  val updatedAt: String? = null,
 
   /**
    * Content technology
    */
   @Json(name = "technology_triple_string")
-  val technology: String? = "",
+  val technology: String? = null,
 
   /**
    * Content authors
    */
   @Json(name = "contributor_string")
-  val contributors: String? = "",
+  val contributors: String? = null,
 
   /**
    * Content url
    */
-  val url: String? = "",
+  val url: String? = null,
 
   /**
    * Content kind
    */
-  val kind: String? = "",
+  val kind: String? = null,
 
   /**
    * Video playback token
    */
   @Json(name = "video_playback_token")
-  val videoPlaybackToken: String? = ""
+  val videoPlaybackToken: String? = null,
+
+  /**
+   * Content position
+   */
+  val ordinal: Int? = 0,
+
+  /**
+   * Tag
+   */
+  val tag: String? = null
 ) : Parcelable {
 
   /**

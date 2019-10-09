@@ -41,7 +41,11 @@ data class Data(
   /**
    *  Contents
    */
-  val included: Contents? = null
+  val included: Contents? = null,
+  /**
+   * Download
+   */
+  val download: Download? = null
 ) : Parcelable {
   /**
    *  Name
@@ -58,19 +62,31 @@ data class Data(
   fun getLevel(): String? = attributes?.level
 
   /**
+   * Ordinal
+   *
+   * @return content position
+   */
+  fun getOrdinal(): Int = attributes?.ordinal ?: 0
+
+  /**
    *  @return true if type is [DataType.Progressions], else false
    */
-  fun isTypeProgression(): Boolean = DataType.Progressions == DataType.fromValue(this.type)
+  fun isTypeProgression(): Boolean = DataType.fromValue(this.type).isProgression()
+
+  /**
+   *  @return true if type is [DataType.Contents], else false
+   */
+  fun isTypeContent(): Boolean = DataType.fromValue(this.type).isContent()
 
   /**
    *  @return true if type is [DataType.Domains], else false
    */
-  fun isTypeDomain(): Boolean = DataType.Domains == DataType.fromValue(type)
+  fun isTypeDomain(): Boolean = DataType.fromValue(type).isDomain()
 
   /**
    *  @return true if type is [DataType.Bookmarks], else false
    */
-  fun isTypeBookmark(): Boolean = DataType.Bookmarks == DataType.fromValue(this.type)
+  fun isTypeBookmark(): Boolean = DataType.fromValue(this.type).isBookmark()
 
   /**
    *  @return content description
@@ -85,7 +101,7 @@ data class Data(
   /**
    *  @return true if content doesn't require subscription, else false
    */
-  fun isFreeContent(): Boolean = true
+  fun isFreeContent(): Boolean = attributes?.professional != true
 
   /**
    *  If data represents a progression object
@@ -218,6 +234,7 @@ data class Data(
         .addDomains(newRelations)
         .addProgression(newRelations)
         .addBookmark(newRelations)
+        .addContents(newRelations)
 
     return this.copy(relationships = newRelationShips)
   }
@@ -273,7 +290,7 @@ data class Data(
   /**
    *  @return true if type is [ContentType.Screencast], otherwise false
    */
-  fun isTypeScreencast(): Boolean = getContentType()?.isScreenCast() ?: false
+  fun isTypeScreencast(): Boolean = getContentType()?.isScreencast() ?: false
 
   /**
    *  @return formatted episode duration string
@@ -289,12 +306,12 @@ data class Data(
   /**
    *  @return grouped data list
    */
-  fun getGroupedData(): List<Data> = relationships?.getGroupedData() ?: emptyList()
+  fun getChildContents(): List<Data> = relationships?.getChildContents() ?: emptyList()
 
   /**
    *  @return ids of grouped data list
    */
-  fun getGroupedDataIds(): List<String> = relationships?.getGroupedDataIds() ?: emptyList()
+  fun getChildContentIds(): List<String> = relationships?.getChildContentIds() ?: emptyList()
 
   /**
    * Mark episode finished/ or in-progress
@@ -334,9 +351,14 @@ data class Data(
   fun getVideoId(): String? = attributes?.getVideoId()
 
   /**
-   *  @return stream url for content
+   *  @return stream/download url for content
    */
-  fun getStreamUrl(): String = attributes?.url ?: ""
+  fun getUrl(): String = attributes?.url ?: ""
+
+  /**
+   *  @return uri for content
+   */
+  fun getUri(): String = attributes?.uri ?: ""
 
   /**
    * @return Video playback token for user
@@ -348,6 +370,18 @@ data class Data(
    */
   fun setVideoUrl(data: Data?): Data? {
     return this.copy(attributes = attributes?.setVideoUrl(data?.attributes))
+  }
+
+  /**
+   * @return Tag for data
+   */
+  fun getTag(): String? = attributes?.tag
+
+  /**
+   * @return list of content group ids
+   */
+  fun getContentGroupIds(): List<String> {
+    return this.relationships?.getContentGroupIds() ?: emptyList()
   }
 
   companion object {

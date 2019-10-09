@@ -4,7 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import com.raywenderlich.emitron.data.content.dao.ContentDao
 import com.raywenderlich.emitron.data.content.dao.ContentDomainJoinDao
+import com.raywenderlich.emitron.data.filter.dao.CategoryDao
+import com.raywenderlich.emitron.data.filter.dao.DomainDao
 import com.raywenderlich.emitron.data.progressions.dao.ProgressionDao
+import com.raywenderlich.emitron.model.ContentType
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.DataType
 import com.raywenderlich.emitron.model.entity.*
@@ -16,13 +19,15 @@ import javax.inject.Inject
 class ContentDataSourceLocal @Inject constructor(
   private val contentDao: ContentDao,
   private val contentDomainJoinDao: ContentDomainJoinDao,
-  private val progressionDao: ProgressionDao
+  private val progressionDao: ProgressionDao,
+  private val domainDao: DomainDao,
+  private val categoryDao: CategoryDao
 ) {
 
   /**
    * Insert contents to db
    */
-  fun insertContent(
+  fun insertContents(
     dataType: DataType,
     contents: List<Data>
   ) {
@@ -55,7 +60,7 @@ class ContentDataSourceLocal @Inject constructor(
    * Get bookmarks DataSource.Factory
    */
   fun getBookmarks(): DataSource.Factory<Int, ContentWithDomain> =
-    contentDomainJoinDao.getBookmarks()
+    contentDao.getBookmarks(ContentType.getAllowedContentTypes())
 
   /**
    * Update content bookmark
@@ -71,7 +76,7 @@ class ContentDataSourceLocal @Inject constructor(
    */
   fun getProgressions(completed: Boolean):
       DataSource.Factory<Int, ContentWithDomainAndProgression> =
-    contentDomainJoinDao.getProgressions(completed)
+    contentDao.getProgressions(completed, ContentType.getAllowedContentTypes())
 
   /**
    * Update content progress
@@ -82,4 +87,15 @@ class ContentDataSourceLocal @Inject constructor(
   suspend fun updateProgress(contentId: String, finished: Boolean): Unit =
     progressionDao.updateProgress(contentId, finished)
 
+  /**
+   * Delete all tables
+   */
+  fun deleteAll() {
+    contentDao.deleteAll(
+      domainDao,
+      categoryDao,
+      contentDomainJoinDao,
+      progressionDao
+    )
+  }
 }

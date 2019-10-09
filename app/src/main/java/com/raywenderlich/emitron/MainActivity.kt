@@ -91,6 +91,7 @@ class MainActivity : DaggerAppCompatActivity() {
       R.id.navigation_filter,
       R.id.navigation_collection,
       R.id.navigation_login,
+      R.id.navigation_onboarding,
       R.id.navigation_player -> {
         // Hide bottom nav on login screen
         binding.navDivider.visibility = View.GONE
@@ -132,6 +133,9 @@ class MainActivity : DaggerAppCompatActivity() {
     .setActions(PipActionDelegate.getPipActions(this, viewModel.isPlaying()))
     .build()
 
+  /**
+   * See [AppCompatActivity.onCreateOptionsMenu]
+   */
   override fun onCreateOptionsMenu(menu: Menu?): Boolean {
     menuInflater.inflate(R.menu.menu_cast, menu)
     CastButtonFactory.setUpMediaRouteButton(

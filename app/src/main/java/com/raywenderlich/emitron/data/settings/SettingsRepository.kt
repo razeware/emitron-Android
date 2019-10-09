@@ -1,11 +1,17 @@
 package com.raywenderlich.emitron.data.settings
 
+import androidx.annotation.WorkerThread
+import com.raywenderlich.emitron.data.content.ContentDataSourceLocal
+import com.raywenderlich.emitron.ui.onboarding.OnboardingView
 import javax.inject.Inject
 
 /**
  * Repository for settings data
  */
-class SettingsRepository @Inject constructor(private val settingsPrefs: SettingsPrefs) {
+class SettingsRepository @Inject constructor(
+  private val settingsPrefs: SettingsPrefs,
+  private val contentDataSourceLocal: ContentDataSourceLocal
+) {
 
   /**
    * Store crash reporting allowed by user in preference
@@ -109,4 +115,85 @@ class SettingsRepository @Inject constructor(private val settingsPrefs: Settings
    */
   fun getAutoPlayNextAllowed(): Boolean = settingsPrefs.getAutoPlayAllowed()
 
+  /**
+   * Get download quality from preference
+   *
+   * @return download quality
+   */
+  fun getDownloadQuality(): String = settingsPrefs.getDownloadQuality()
+
+  /**
+   * Get downloads wifi only from preference
+   *
+   * @return true if download allowed only on wifi else false
+   */
+  fun getDownloadsWifiOnly(): Boolean = settingsPrefs.getDownloadsWifiOnly()
+
+  /**
+   * Store user download quality selection in preference
+   *
+   * @param quality download quality (hd/sd)
+   */
+  fun updateSelectedDownloadQuality(quality: String) {
+    settingsPrefs.saveDownloadQuality(quality)
+  }
+
+  /**
+   * Store user download network preference
+   *
+   * @param wifiOnly true if downloads allowed only on wifi else false
+   */
+  fun updateDownloadsWifiOnly(wifiOnly: Boolean) {
+    settingsPrefs.saveDownloadsWifiOnly(wifiOnly)
+  }
+
+  /**
+   * Logout
+   */
+  @WorkerThread
+  fun logout() {
+    contentDataSourceLocal.deleteAll()
+    settingsPrefs.clear()
+  }
+
+  /**
+   * Get if user allowed to report crashes
+   *
+   * @return True, if user has allowed crash reporting, else False
+   */
+  fun isOnboardingAllowed(): Boolean {
+    return settingsPrefs.isOnboardingAllowed()
+  }
+
+  /**
+   * Get if user allowed to report crashes
+   *
+   * @return True, if user has allowed crash reporting, else False
+   */
+  fun updateOnboardingAllowed(allowed: Boolean) {
+    settingsPrefs.saveOnboardingAllowed(allowed)
+  }
+
+  /**
+   * Save onboarded view
+   *
+   * @param view onboarded view [OnboardingView]
+   */
+  fun updateOnboardedView(view: OnboardingView) {
+    settingsPrefs.saveOnboardedView(view.toString())
+  }
+
+  /**
+   * Get all onboarded views
+   *
+   * @return list of onboarded views [OnboardingView]
+   */
+  fun getOnboardedViews(): List<OnboardingView> =
+    settingsPrefs.getOnboardedViews().mapNotNull {
+      if (it.isNotEmpty()) {
+        OnboardingView.valueOf(it)
+      } else {
+        null
+      }
+    }
 }

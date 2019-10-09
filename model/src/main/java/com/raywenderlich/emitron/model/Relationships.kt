@@ -84,7 +84,7 @@ data class Relationships(
     }
 
     return run {
-      val domainIds = this.domains?.getDomainIds() ?: emptyList()
+      val domainIds = this.domains?.getChildIds() ?: emptyList()
       val filteredDomainList = domains.filter { domainIds.contains(it.id) }
       this.copy(domains = Contents(datum = filteredDomainList))
     }
@@ -107,6 +107,25 @@ data class Relationships(
     }
 
     return this.copy(domains = Contents(datum = domains))
+  }
+
+  /**
+   * Add child contents to existing [Data.relationships] with no contents
+   *
+   * @param contentRelations list of contents
+   *
+   * @return Updated relationship
+   */
+  fun addContents(contentRelations: List<Data>): Relationships {
+    val contents = contentRelations.filter {
+      it.isTypeContent()
+    }
+
+    if (contents.isEmpty()) {
+      return this
+    }
+
+    return this.copy(contents = Contents(datum = contents))
   }
 
   /**
@@ -223,14 +242,14 @@ data class Relationships(
    *
    * @return List<Data>
    */
-  fun getGroupedData(): List<Data> = contents?.datum ?: emptyList()
+  fun getChildContents(): List<Data> = contents?.datum ?: emptyList()
 
   /**
    * Return ids of grouped data list
    *
    * @return List<String>
    */
-  fun getGroupedDataIds(): List<String> = contents?.datum?.mapNotNull { it.id } ?: emptyList()
+  fun getChildContentIds(): List<String> = contents?.datum?.mapNotNull { it.id } ?: emptyList()
 
   /**
    * Set related contents
@@ -260,5 +279,12 @@ data class Relationships(
    *
    * @return list of domain id
    */
-  fun getDomainIds(): List<String>? = domains?.getDomainIds()
+  fun getDomainIds(): List<String>? = domains?.getChildIds()
+
+  /**
+   * Get content group ids
+   *
+   * @return list of content group ids
+   */
+  fun getContentGroupIds(): List<String> = groups?.getChildIds() ?: emptyList()
 }

@@ -15,8 +15,8 @@
     <com.google.android.material.button.MaterialButton
       android:id="@+id/button_player_settings_close"
       style="@style/Button.Icon"
-      android:layout_width="@dimen/button_icon_height_width_dense"
-      android:layout_height="@dimen/button_icon_height_width_dense"
+      android:layout_width="@dimen/button_icon_height_width_3"
+      android:layout_height="@dimen/button_icon_height_width_3"
       app:icon="@drawable/ic_material_icon_chevron"
       app:iconTint="@color/colorIcon"
       app:layout_constraintBottom_toTopOf="@+id/player_auto_playback_radio_group"

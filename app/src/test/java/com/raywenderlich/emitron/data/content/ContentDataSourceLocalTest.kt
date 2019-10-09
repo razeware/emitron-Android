@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.content.dao.ContentDao
 import com.raywenderlich.emitron.data.content.dao.ContentDomainJoinDao
+import com.raywenderlich.emitron.data.filter.dao.CategoryDao
+import com.raywenderlich.emitron.data.filter.dao.DomainDao
 import com.raywenderlich.emitron.data.progressions.dao.ProgressionDao
 import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.model.entity.ContentDomainJoin
@@ -21,6 +23,8 @@ class ContentDataSourceLocalTest {
   private val contentDao: ContentDao = mock()
   private val contentDomainJoinDao: ContentDomainJoinDao = mock()
   private val progressionDao: ProgressionDao = mock()
+  private val domainDao: DomainDao = mock()
+  private val categoryDao: CategoryDao = mock()
 
   private lateinit var contentDataSourceLocal: ContentDataSourceLocal
 
@@ -33,12 +37,18 @@ class ContentDataSourceLocalTest {
   @Before
   fun setUp() {
     contentDataSourceLocal =
-      ContentDataSourceLocal(contentDao, contentDomainJoinDao, progressionDao)
+      ContentDataSourceLocal(
+        contentDao,
+        contentDomainJoinDao,
+        progressionDao,
+        domainDao,
+        categoryDao
+      )
   }
 
   @Test
   fun insertContent() {
-    contentDataSourceLocal.insertContent(
+    contentDataSourceLocal.insertContents(
       DataType.Bookmarks,
       listOf(
         Data(
@@ -184,12 +194,11 @@ class ContentDataSourceLocalTest {
             name = "Introduction to Kotlin Lambdas: Getting Started",
             description = "In this tutorial you will learn how to use lambda.",
             contributors = "Luke",
-            free = true,
+            professional = true,
             deleted = false,
             contentType = "screencast",
             difficulty = "beginner",
             releasedAt = "2019-08-08T00:00:00.000Z",
-            downloadProgress = 0,
             technology = "Swift, iOS",
             duration = 408,
             streamUrl = "",
@@ -204,12 +213,11 @@ class ContentDataSourceLocalTest {
             name = "Introduction to Kotlin Lambdas: Getting Started",
             description = "In this tutorial you will learn how to use lambda.",
             contributors = "Luke",
-            free = true,
+            professional = true,
             deleted = false,
             contentType = "screencast",
             difficulty = "beginner",
             releasedAt = "2019-08-08T00:00:00.000Z",
-            downloadProgress = 0,
             technology = "Swift, iOS",
             duration = 408,
             streamUrl = "",
@@ -233,7 +241,7 @@ class ContentDataSourceLocalTest {
 
   @Test
   fun insertContent_fromProgressions() {
-    contentDataSourceLocal.insertContent(
+    contentDataSourceLocal.insertContents(
       DataType.Progressions,
       listOf(
         Data(
@@ -379,12 +387,11 @@ class ContentDataSourceLocalTest {
             name = "Introduction to Kotlin Lambdas: Getting Started",
             description = "In this tutorial you will learn how to use lambda.",
             contributors = "Luke",
-            free = true,
+            professional = true,
             deleted = false,
             contentType = "screencast",
             difficulty = "beginner",
             releasedAt = "2019-08-08T00:00:00.000Z",
-            downloadProgress = 0,
             technology = "Swift, iOS",
             duration = 408,
             streamUrl = "",
@@ -399,12 +406,11 @@ class ContentDataSourceLocalTest {
             name = "Introduction to Kotlin Lambdas: Getting Started",
             description = "In this tutorial you will learn how to use lambda.",
             contributors = "Luke",
-            free = true,
+            professional = true,
             deleted = false,
             contentType = "screencast",
             difficulty = "beginner",
             releasedAt = "2019-08-08T00:00:00.000Z",
-            downloadProgress = 0,
             technology = "Swift, iOS",
             duration = 408,
             streamUrl = "",
@@ -436,12 +442,11 @@ class ContentDataSourceLocalTest {
       name = "Introduction to Kotlin Lambdas: Getting Started",
       description = "In this tutorial you will learn how to use lambda.",
       contributors = "Luke",
-      free = false,
+      professional = false,
       deleted = false,
       contentType = "screencast",
       difficulty = "beginner",
       releasedAt = "2019-08-08T00:00:00.000Z",
-      downloadProgress = 0,
       technology = "Swift, iOS",
       duration = 408,
       streamUrl = "https://koenig-media.raywenderlich.com/",
@@ -463,8 +468,8 @@ class ContentDataSourceLocalTest {
 
   @Test
   fun getBookmarks() {
-    contentDomainJoinDao.getBookmarks()
-    verify(contentDomainJoinDao).getBookmarks()
+    contentDao.getBookmarks(arrayOf())
+    verify(contentDao).getBookmarks(arrayOf())
     verifyNoMoreInteractions(contentDomainJoinDao)
   }
 
@@ -480,8 +485,8 @@ class ContentDataSourceLocalTest {
 
   @Test
   fun getProgressions() {
-    contentDomainJoinDao.getProgressions(true)
-    verify(contentDomainJoinDao).getProgressions(true)
+    contentDao.getProgressions(false, arrayOf())
+    verify(contentDao).getProgressions(false, arrayOf())
     verifyNoMoreInteractions(contentDomainJoinDao)
   }
 

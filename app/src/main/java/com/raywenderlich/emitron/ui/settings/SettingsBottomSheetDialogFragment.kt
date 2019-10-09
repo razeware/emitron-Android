@@ -161,6 +161,28 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
         DOUBLE to R.string.playback_speed_2x
       )
     }
+
+    /**
+     * List of allowed download quality values
+     *
+     * (In order of visibility)
+     */
+    val settingsDownloadQualityOptions: List<Int> by lazy {
+      listOf(
+        R.string.download_quality_high,
+        R.string.download_quality_normal
+      )
+    }
+
+    /**
+     * Map of allowed download quality to respective [@StringRes]
+     */
+    val downloadQualityToResIdMap: Map<String, Int> by lazy {
+      mapOf(
+        "hd" to R.string.download_quality_high,
+        "sd" to R.string.download_quality_normal
+      )
+    }
   }
 
   /**
@@ -186,7 +208,7 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    viewBinding = setDataBindingView(inflater, R.layout.fragment_settings_bottomsheet, container)
+    viewBinding = setDataBindingView(R.layout.fragment_settings_bottomsheet, container)
     return viewBinding.root
   }
 
@@ -247,6 +269,13 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
             { R.string.button_off }) == it)
         }
       }
+      R.string.label_download_quality -> {
+        settingsDownloadQualityOptions.map {
+          getString(it) to (downloadQualityToResIdMap.getOrElse(
+            viewModel.getDownloadQuality(),
+            { R.string.download_quality_high }) == it)
+        }
+      }
       else -> {
         settingsNightModeOptions.map {
           getString(it) to (nightModeToResIdMap.getOrElse(
@@ -273,6 +302,9 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
       }
       R.string.label_subtitles -> {
         updateSubtitleLanguage(position, settingsSubtitleLanguageOptions)
+      }
+      R.string.label_download_quality -> {
+        updateDownloadQuality(position, settingsDownloadQualityOptions)
       }
     }
   }
@@ -353,6 +385,19 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
       }
     }
     viewModel.updateSubtitlesLanguage(subtitleLanguage)
+    dismiss()
+  }
+
+  private fun updateDownloadQuality(position: Int, options: List<Int>) {
+    val quality = when (options[position]) {
+      R.string.download_quality_high -> {
+        "hd"
+      }
+      else -> {
+        "sd"
+      }
+    }
+    viewModel.updateDownloadQuality(quality)
     dismiss()
   }
 }

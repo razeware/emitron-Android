@@ -1,7 +1,7 @@
 package com.raywenderlich.emitron.data.content
 
+import androidx.annotation.AnyThread
 import androidx.annotation.MainThread
-import androidx.annotation.WorkerThread
 import androidx.lifecycle.Transformations
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
@@ -80,9 +80,9 @@ class ContentRepository @Inject constructor(
    *
    * @return [Content] Response Content
    */
-  @WorkerThread
+  @AnyThread
   @Throws(Exception::class)
-  suspend fun getContent(id: String): Content {
+  suspend fun getContent(id: String): Content? {
     return withContext(threadManager.io) {
       api.getContent(id)
     }

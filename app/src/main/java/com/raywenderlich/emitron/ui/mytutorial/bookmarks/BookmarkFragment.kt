@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentBookmarksBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
@@ -24,9 +23,16 @@ import com.raywenderlich.emitron.utils.extensions.*
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-
+/**
+ * Bookmark view
+ */
 class BookmarkFragment : DaggerFragment() {
 
+  /**
+   * Custom factory for viewmodel
+   *
+   * Custom factory provides app related dependencies
+   */
   @Inject
   lateinit var viewModelFactory: ViewModelFactory
 
@@ -51,19 +57,25 @@ class BookmarkFragment : DaggerFragment() {
     )
   }
 
-  lateinit var binding: FragmentBookmarksBinding
+  private lateinit var binding: FragmentBookmarksBinding
 
   private lateinit var progressDelegate: ShimmerProgressDelegate
 
+  /**
+   * See [androidx.fragment.app.Fragment.onCreateView]
+   */
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    binding = setDataBindingView(inflater, R.layout.fragment_bookmarks, container)
+    binding = setDataBindingView(R.layout.fragment_bookmarks, container)
     return binding.root
   }
 
+  /**
+   * See [androidx.fragment.app.Fragment.onViewCreated]
+   */
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     initUi()
@@ -79,19 +91,18 @@ class BookmarkFragment : DaggerFragment() {
   }
 
   private fun addSwipeToDelete() {
-    val swipeHandler = object : SwipeActionCallback(
+    val swipeHandler = SwipeActionCallback.build(
       R.drawable.bg_swipe_bookmark,
-      R.string.button_delete
-    ) {
-      override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        updateContentBookmark(adapter.getItemFor(viewHolder))
+      R.string.button_delete,
+      onSwipe = {
+        updateContentBookmark(adapter.getItemFor(it))
       }
-    }
+    )
     val itemTouchHelper = ItemTouchHelper(swipeHandler)
     itemTouchHelper.attachToRecyclerView(binding.recyclerView)
   }
 
-  internal fun updateContentBookmark(data: Data?) {
+  private fun updateContentBookmark(data: Data?) {
     viewModel.updateContentBookmark(data)
   }
 

@@ -5,9 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.content.ContentRepository
+import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
+import com.raywenderlich.emitron.ui.onboarding.OnboardingView
 import com.raywenderlich.emitron.ui.player.Playlist
 import com.raywenderlich.emitron.utils.*
 import org.junit.Rule
@@ -22,6 +24,8 @@ class CollectionViewModelTest {
 
   private val progressionActionDelegate: ProgressionActionDelegate = mock()
 
+  private val settingsRepository: SettingsRepository = mock()
+
   private lateinit var viewModel: CollectionViewModel
 
   @get:Rule
@@ -32,7 +36,12 @@ class CollectionViewModelTest {
 
   private fun createViewModel() {
     viewModel =
-      CollectionViewModel(contentRepository, bookmarkActionDelegate, progressionActionDelegate)
+      CollectionViewModel(
+        contentRepository,
+        bookmarkActionDelegate,
+        progressionActionDelegate,
+        settingsRepository
+      )
   }
 
   /**
@@ -691,5 +700,29 @@ class CollectionViewModelTest {
       // Then
       result2 isEqualTo true
     }
+  }
+
+  @Test
+  fun isOnboardedForType() {
+    createViewModel()
+
+    whenever(settingsRepository.getOnboardedViews()).doReturn(listOf(OnboardingView.Download))
+
+    val result = viewModel.isOnboardedForType(OnboardingView.Download)
+    result isEqualTo true
+    verify(settingsRepository).getOnboardedViews()
+    verifyNoMoreInteractions(settingsRepository)
+  }
+
+  @Test
+  fun isOnboardingAllowed() {
+    createViewModel()
+
+    whenever(settingsRepository.isOnboardingAllowed()).doReturn(true)
+
+    val result = viewModel.isOnboardingAllowed()
+    result isEqualTo true
+    verify(settingsRepository).isOnboardingAllowed()
+    verifyNoMoreInteractions(settingsRepository)
   }
 }

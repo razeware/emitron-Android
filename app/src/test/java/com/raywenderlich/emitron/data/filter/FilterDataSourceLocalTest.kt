@@ -11,6 +11,7 @@ import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.DataType
 import com.raywenderlich.emitron.model.entity.Category
 import com.raywenderlich.emitron.model.entity.Domain
+import com.raywenderlich.emitron.model.toRequestFormat
 import com.raywenderlich.emitron.utils.TestCoroutineRule
 import com.raywenderlich.emitron.utils.isEqualTo
 import org.junit.Before

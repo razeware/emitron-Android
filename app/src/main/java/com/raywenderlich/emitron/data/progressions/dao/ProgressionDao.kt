@@ -27,4 +27,7 @@ interface ProgressionDao {
           """
   )
   suspend fun updateProgress(contentId: String, finished: Boolean)
+
+  @Query("DELETE from progressions")
+  fun deleteAll()
 }

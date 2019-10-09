@@ -27,7 +27,8 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
     position: Int,
     episodeIsProContent: Boolean,
     onEpisodeSelected: (Int) -> Unit,
-    onEpisodeCompleted: (Int) -> Unit
+    onEpisodeCompleted: (Int) -> Unit,
+    onEpisodeDownload: (Int) -> Unit
   ) {
     binding.root.setOnClickListener {
       onEpisodeSelected(adapterPosition)
@@ -35,6 +36,10 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
     binding.buttonCollectionEpisode.setOnClickListener {
       onEpisodeCompleted(adapterPosition)
     }
+    binding.buttonCollectionEpisodeDownload.setOnClickListener {
+      onEpisodeDownload(adapterPosition)
+    }
+    binding.buttonCollectionEpisodeDownload.setDownloadState(episode?.download)
     binding.data = episode
     binding.episodePosition = episode?.getEpisodeNumber(position, episodeIsProContent)
 

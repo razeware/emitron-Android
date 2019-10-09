@@ -5,6 +5,7 @@ import androidx.room.ForeignKey.CASCADE
 import com.raywenderlich.emitron.model.Attributes
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.DataType
+import com.raywenderlich.emitron.model.toRequestFormat
 
 
 /**
@@ -25,55 +26,106 @@ import com.raywenderlich.emitron.model.DataType
 )
 data class Content(
 
+  /**
+   * Content id
+   */
   @PrimaryKey
   @ColumnInfo(name = "content_id")
   val contentId: String,
 
+  /**
+   * Description
+   */
   val description: String?,
 
+  /**
+   * Contributors
+   */
   val contributors: String?,
 
-  val free: Boolean = false,
+  /**
+   * Professional
+   */
+  val professional: Boolean = false,
 
+  /**
+   * Deleted
+   */
   val deleted: Boolean,
 
+  /**
+   * Name
+   */
   val name: String?,
 
+  /**
+   * Content type
+   */
   @ColumnInfo(name = "content_type")
   val contentType: String?,
 
+  /**
+   * Difficulty
+   */
   @ColumnInfo(name = "difficulty")
   val difficulty: String?,
 
+  /**
+   * Released At
+   */
   @ColumnInfo(name = "released_at")
   val releasedAt: String,
 
-  @ColumnInfo(name = "download_progress")
-  val downloadProgress: Int,
-
+  /**
+   * Technology
+   */
   val technology: String?,
 
+  /**
+   * Duration
+   */
   val duration: Long,
 
+  /**
+   * Stream url
+   */
   @ColumnInfo(name = "stream_url")
   val streamUrl: String,
 
+  /**
+   * Card artwork url
+   */
   @ColumnInfo(name = "card_artwork_url")
   val cardArtworkUrl: String?,
 
+  /**
+   * Video Id
+   */
   @ColumnInfo(name = "video_id")
   val videoId: String?,
 
+  /**
+   * Bookmark Id
+   */
   @ColumnInfo(name = "bookmark_id")
   val bookmarkId: String?,
 
+  /**
+   * Progression Id
+   */
   @ColumnInfo(name = "progression_id")
   val progressionId: String?,
 
+  /**
+   * Updated at
+   */
   @ColumnInfo(name = "updated_at")
   val updatedAt: String
 ) {
 
+  /**
+   * Build [Data] from [Content]
+   */
   fun toData(): Data = Data(
     id = contentId,
     type = DataType.Contents.toRequestFormat(),
@@ -81,7 +133,7 @@ data class Content(
       name = name,
       description = description,
       contributors = contributors,
-      free = free,
+      free = professional,
       duration = duration,
       contentType = contentType,
       difficulty = difficulty,
@@ -110,12 +162,11 @@ data class Content(
         name = it.getName(),
         description = it.getDescription(),
         contributors = it.getContributors(),
-        free = it.isFreeContent(),
+        professional = it.isFreeContent(),
         deleted = false,
         contentType = it.getContentType()?.toRequestFormat(),
         difficulty = it.getDifficulty()?.toRequestFormat(),
         releasedAt = it.getReleasedAt(),
-        downloadProgress = 0,
         technology = it.getTechnology(),
         duration = it.getDuration(),
         streamUrl = "",
