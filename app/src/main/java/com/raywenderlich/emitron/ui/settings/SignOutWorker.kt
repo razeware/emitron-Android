@@ -1,12 +1,10 @@
 package com.raywenderlich.emitron.ui.settings
 
 import android.content.Context
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.Worker
-import androidx.work.WorkerParameters
+import androidx.work.*
 import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.di.modules.worker.ChildWorkerFactory
+import com.raywenderlich.emitron.ui.download.DownloadService
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 
@@ -17,12 +15,12 @@ class SignOutWorker @AssistedInject constructor(
   @Assisted private val appContext: Context,
   @Assisted private val workerParameters: WorkerParameters,
   private val settingsRepository: SettingsRepository
-) : Worker(appContext, workerParameters) {
+) : CoroutineWorker(appContext, workerParameters) {
 
   /**
    * See [Worker.doWork]
    */
-  override fun doWork(): Result {
+  override suspend fun doWork(): Result {
     // Clear tables and preferences
     settingsRepository.logout()
     return Result.success()
