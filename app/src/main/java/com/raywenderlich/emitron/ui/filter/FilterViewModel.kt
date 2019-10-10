@@ -5,10 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.raywenderlich.emitron.data.filter.FilterRepository
-import com.raywenderlich.emitron.model.Attributes
-import com.raywenderlich.emitron.model.ContentType
-import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.model.Difficulty
+import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.utils.Event
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -113,8 +110,13 @@ class FilterViewModel @Inject constructor(private val repository: FilterReposito
    *
    * @return list of content types [ContentType] as [List<Data>]
    */
-  fun getContentTypeList(contentTypeArray: Array<String>): List<Data> {
-    return contentTypeArray.map { Data(attributes = Attributes(name = it)) }
+  fun getContentTypeList(contentTypeArray: Map<ContentType, String>): List<Data> {
+    return contentTypeArray.map {
+      Data(
+        type = FilterType.ContentType.toRequestFormat(),
+        attributes = Attributes(name = it.value, contentType = it.key.toRequestFormat())
+      )
+    }
   }
 
   /**
@@ -125,7 +127,12 @@ class FilterViewModel @Inject constructor(private val repository: FilterReposito
    * @return list of difficulty [Difficulty] as [List<Data>]
    */
   fun getDifficultyList(difficultyArray: Array<String>): List<Data> {
-    return difficultyArray.map { Data(attributes = Attributes(name = it)) }
+    return difficultyArray.map {
+      Data(
+        type = FilterType.Difficulty.toRequestFormat(),
+        attributes = Attributes(name = it)
+      )
+    }
   }
 
   /**

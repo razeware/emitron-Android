@@ -66,13 +66,7 @@ class ContentDataSourceRemote(
       networkState.postValue(NetworkState.FAILED)
     }
 
-    val response = try {
-      getContent(pageNumber = params.key)
-    } catch (exception: IOException) {
-      null
-    } catch (exception: RuntimeException) {
-      null
-    }
+    val response = getContent(pageNumber = params.key)
 
     if (response == null || !response.isSuccessful) {
       loadAfterError()
@@ -119,13 +113,7 @@ class ContentDataSourceRemote(
       networkState.postValue(NetworkState.INIT_EMPTY)
     }
 
-    val response = try {
-      getContent(pageNumber = 1)
-    } catch (exception: IOException) {
-      null
-    } catch (exception: RuntimeException) {
-      null
-    }
+    val response = getContent(pageNumber = 1)
 
     if (response == null || !response.isSuccessful) {
       loadInitialError()
@@ -150,13 +138,28 @@ class ContentDataSourceRemote(
     callback.onResult(items, null, (contentBody.getNextPage()))
   }
 
-  private fun getContent(pageNumber: Int): Response<Contents>? = contentApi.getContents(
-    pageNumber = pageNumber,
-    pageSize = pageSize,
-    contentType = ContentType.getAllowedContentTypes().toList(),
-    domain = Data.getDomainIds(filters),
-    category = Data.getCategoryIds(filters),
-    search = Data.getSearchTerm(filters),
-    sort = Data.getSortOrder(filters)
-  ).execute()
+  private fun getContent(pageNumber: Int): Response<Contents>? {
+    val contentTypesFromFilter = Data.getContentTypes(filters)
+    val contentTypes = if (contentTypesFromFilter.isEmpty()) {
+      ContentType.getAllowedContentTypes().toList()
+    } else {
+      contentTypesFromFilter
+    }
+    return try {
+      contentApi.getContents(
+        pageNumber = pageNumber,
+        pageSize = pageSize,
+        contentType = contentTypes,
+        domain = Data.getDomainIds(filters),
+        category = Data.getCategoryIds(filters),
+        search = Data.getSearchTerm(filters),
+        sort = Data.getSortOrder(filters),
+        difficulty = Data.getDifficulty(filters)
+      ).execute()
+    } catch (exception: IOException) {
+      null
+    } catch (exception: RuntimeException) {
+      null
+    }
+  }
 }

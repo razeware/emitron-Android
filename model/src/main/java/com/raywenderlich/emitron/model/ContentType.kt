@@ -40,6 +40,8 @@ enum class ContentType {
      */
     fun getAllowedContentTypes(): Array<String> =
       values().filter { !it.isEpisode() }.map { it.name.toLowerCase() }.toTypedArray()
+    fun getFilterContentTypes(): List<ContentType> =
+      values().filter { !it.isEpisode() }
   }
 }
 

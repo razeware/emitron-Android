@@ -392,7 +392,7 @@ data class Data(
      *  @return list of domain ids from input list
      */
     fun getDomainIds(dataList: List<Data>): List<String> {
-      return dataList.filter { it.isTypeDomain() }
+      return dataList.filter { FilterType.fromType(it.type).isDomain() }
         .mapNotNull { it.id }
     }
 
@@ -402,7 +402,7 @@ data class Data(
      *  @return list of category ids from input list
      */
     fun getCategoryIds(dataList: List<Data>): List<String> {
-      return dataList.filter { DataType.Categories == DataType.fromValue(it.type) }
+      return dataList.filter { FilterType.fromType(it.type).isCategory() }
         .mapNotNull { it.id }
     }
 
@@ -412,8 +412,28 @@ data class Data(
      *  @return list of category ids from input list
      */
     fun getSearchTerm(dataList: List<Data>): String {
-      return dataList.firstOrNull { DataType.Search == DataType.fromValue(it.type) }?.getName()
+      return dataList.firstOrNull { FilterType.fromType(it.type).isSearch() }?.getName()
         ?: ""
+    }
+
+    /**
+     *  @param dataList List of content type
+     *
+     *  @return list of content types from input list
+     */
+    fun getContentTypes(dataList: List<Data>): List<String> {
+      return dataList.filter { FilterType.fromType(it.type).isContentType() }
+        .mapNotNull { it.getContentType()?.toString()?.toLowerCase() }
+    }
+
+    /**
+     *  @param dataList List of difficulty
+     *
+     *  @return list of difficulty from input list
+     */
+    fun getDifficulty(dataList: List<Data>): List<String> {
+      return dataList.filter { FilterType.fromType(it.type).isDifficulty() }
+        .mapNotNull { it.getName()?.toLowerCase() }
     }
 
     /**
@@ -423,7 +443,7 @@ data class Data(
      */
     fun getSortOrder(dataList: List<Data>): String {
       val sortOrder =
-        dataList.firstOrNull { DataType.Sort == DataType.fromValue(it.type) }?.getName()
+        dataList.firstOrNull { FilterType.fromType(it.type).isSort() }?.getName()
           ?: ""
       return SortOrder.fromValue(sortOrder)?.param ?: SortOrder.Newest.param
     }
@@ -472,7 +492,7 @@ data class Data(
      */
     fun fromSearchQuery(searchTerm: String?): Data =
       Data(
-        type = DataType.Search.toRequestFormat(),
+        type = FilterType.Search.toRequestFormat(),
         attributes = Attributes(
           name = searchTerm
         )
@@ -487,7 +507,7 @@ data class Data(
      */
     fun fromSortOrder(sortOrder: String?): Data =
       Data(
-        type = DataType.Sort.toRequestFormat(),
+        type = FilterType.Sort.toRequestFormat(),
         attributes = Attributes(
           name = sortOrder
         )

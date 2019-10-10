@@ -16,6 +16,7 @@ import com.raywenderlich.emitron.MainViewModel
 import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentFilterBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
+import com.raywenderlich.emitron.model.ContentType
 import com.raywenderlich.emitron.utils.extensions.observe
 import com.raywenderlich.emitron.utils.extensions.setDataBindingView
 import com.raywenderlich.emitron.utils.extensions.showErrorSnackbar
@@ -168,8 +169,17 @@ class FilterFragment : DaggerFragment() {
   }
 
   private fun loadContentTypes() {
+    val contentTypes =
+      ContentType.getFilterContentTypes()
+        .associateBy({ contentType: ContentType -> contentType }, { contentType ->
+          when (contentType) {
+            ContentType.Collection -> getString(R.string.content_type_video_course)
+            ContentType.Screencast -> getString(R.string.content_type_screencast)
+            ContentType.Episode -> getString(R.string.content_type_episode)
+          }
+        })
     val contentTypeList =
-      viewModel.getContentTypeList(resources.getStringArray(R.array.filter_content_type))
+      viewModel.getContentTypeList(contentTypes)
     filterAdapter.setFilterOptions(
       contentTypeList,
       FilterCategory.ContentType

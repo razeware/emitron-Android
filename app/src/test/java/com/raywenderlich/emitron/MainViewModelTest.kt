@@ -7,7 +7,7 @@ import com.raywenderlich.emitron.data.login.LoginRepository
 import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.model.Attributes
 import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.model.DataType
+import com.raywenderlich.emitron.model.FilterType
 import com.raywenderlich.emitron.model.toRequestFormat
 import com.raywenderlich.emitron.utils.isEqualTo
 import com.raywenderlich.emitron.utils.observeForTestingResult
@@ -111,8 +111,8 @@ class MainViewModelTest {
     val expectedList = listOf(
       Data("1"),
       Data("2"),
-      Data(type = DataType.Search.toRequestFormat(), attributes = Attributes(name = "Emitron")),
-      Data(type = DataType.Sort.toRequestFormat(), attributes = Attributes(name = "popularity"))
+      Data(type = FilterType.Search.toRequestFormat(), attributes = Attributes(name = "Emitron")),
+      Data(type = FilterType.Sort.toRequestFormat(), attributes = Attributes(name = "popularity"))
     )
     viewModel.getSelectedFilters(true, withSort = true) isEqualTo expectedList
   }
@@ -215,7 +215,7 @@ class MainViewModelTest {
   @Test
   fun getNightModeSettings() {
     // Given
-    whenever(settingsRepository.getNightMode()).thenReturn(1)
+    whenever(settingsRepository.getNightMode()).doReturn(1)
 
     // When
     val expected = viewModel.getNightModeSettings()
@@ -229,7 +229,7 @@ class MainViewModelTest {
   @Test
   fun isCrashReportingAllowed() {
     // Given
-    whenever(settingsRepository.isCrashReportingAllowed()).thenReturn(true)
+    whenever(settingsRepository.isCrashReportingAllowed()).doReturn(true)
 
     // When
     val expected = viewModel.isCrashReportingAllowed()

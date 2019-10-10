@@ -521,7 +521,7 @@ class DataTest {
   fun getSearchTerm() {
     val filters = listOf(
       Data(
-        type = DataType.Search.toRequestFormat(),
+        type = FilterType.Search.toRequestFormat(),
         attributes = Attributes(name = "Emitron")
       )
     )
@@ -531,10 +531,36 @@ class DataTest {
   }
 
   @Test
+  fun getContentTypes() {
+    val filters = listOf(
+      Data(
+        type = FilterType.ContentType.toRequestFormat(),
+        attributes = Attributes(name = "Video Course", contentType = "collection")
+      )
+    )
+    val contentTypes = Data.getContentTypes(filters)
+
+    contentTypes isEqualTo listOf("collection")
+  }
+
+  @Test
+  fun getDifficultyFilter() {
+    val filters = listOf(
+      Data(
+        type = FilterType.Difficulty.toRequestFormat(),
+        attributes = Attributes(name = "Beginner")
+      )
+    )
+    val contentTypes = Data.getDifficulty(filters)
+
+    contentTypes isEqualTo listOf("beginner")
+  }
+
+  @Test
   fun getSortOrder() {
     val filters = listOf(
       Data(
-        type = DataType.Sort.toRequestFormat(),
+        type = FilterType.Sort.toRequestFormat(),
         attributes = Attributes(name = "popularity")
       )
     )
@@ -544,7 +570,7 @@ class DataTest {
 
     val filters2 = listOf(
       Data(
-        type = DataType.Sort.toRequestFormat(),
+        type = FilterType.Sort.toRequestFormat(),
         attributes = Attributes(name = "newest")
       )
     )
@@ -600,7 +626,7 @@ class DataTest {
   @Test
   fun fromSearchQuery() {
     val expected = Data(
-      type = DataType.Search.toRequestFormat(),
+      type = FilterType.Search.toRequestFormat(),
       attributes = Attributes(
         name = "Emitron"
       )
@@ -614,7 +640,7 @@ class DataTest {
   @Test
   fun fromSortOrder() {
     val expected = Data(
-      type = DataType.Sort.toRequestFormat(),
+      type = FilterType.Sort.toRequestFormat(),
       attributes = Attributes(
         name = "popularity"
       )

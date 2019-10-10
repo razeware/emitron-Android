@@ -4,10 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.filter.FilterRepository
-import com.raywenderlich.emitron.model.Attributes
-import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.model.DataType
-import com.raywenderlich.emitron.model.toRequestFormat
+import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.utils.*
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import kotlinx.coroutines.Dispatchers
@@ -125,11 +122,22 @@ class FilterViewModelTest {
   @Test
   fun getContentTypeList() {
     val expected = listOf(
-      Data(attributes = Attributes(name = "Video Course")),
-      Data(attributes = Attributes(name = "Screencast"))
+      Data(
+        type = FilterType.ContentType.toRequestFormat(),
+        attributes = Attributes(name = "Video Course", contentType = "collection")
+      ),
+      Data(
+        type = FilterType.ContentType.toRequestFormat(),
+        attributes = Attributes(name = "Screencast", contentType = "screencast")
+      )
     )
 
-    val result = viewModel.getDifficultyList(arrayOf("Video Course", "Screencast"))
+    val result = viewModel.getContentTypeList(
+      mapOf(
+        ContentType.Collection to "Video Course",
+        ContentType.Screencast to "Screencast"
+      )
+    )
 
     result isEqualTo expected
   }
@@ -137,8 +145,14 @@ class FilterViewModelTest {
   @Test
   fun getDifficultyList() {
     val expected = listOf(
-      Data(attributes = Attributes(name = "Beginner")),
-      Data(attributes = Attributes(name = "Advanced"))
+      Data(
+        type = FilterType.Difficulty.toRequestFormat(),
+        attributes = Attributes(name = "Beginner")
+      ),
+      Data(
+        type = FilterType.Difficulty.toRequestFormat(),
+        attributes = Attributes(name = "Advanced")
+      )
     )
 
     val result = viewModel.getDifficultyList(arrayOf("Beginner", "Advanced"))
