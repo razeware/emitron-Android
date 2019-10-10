@@ -1,4 +1,4 @@
-package com.raywenderlich.emitron.utils
+package com.raywenderlich.emitron.ui.common
 
 import androidx.navigation.ui.AppBarConfiguration
 import com.raywenderlich.emitron.R

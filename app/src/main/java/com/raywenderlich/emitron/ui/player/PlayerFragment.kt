@@ -39,7 +39,7 @@ import com.raywenderlich.emitron.utils.Log
 import com.raywenderlich.emitron.utils.createCountDownTimer
 import com.raywenderlich.emitron.utils.createMainThreadScheduledHandler
 import com.raywenderlich.emitron.utils.extensions.*
-import com.raywenderlich.emitron.utils.getDefaultAppBarConfiguration
+import com.raywenderlich.emitron.ui.common.getDefaultAppBarConfiguration
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 

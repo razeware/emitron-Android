@@ -16,6 +16,7 @@ import com.raywenderlich.emitron.BuildConfig
 import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentSettingsBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
+import com.raywenderlich.emitron.ui.common.getDefaultAppBarConfiguration
 import com.raywenderlich.emitron.ui.login.GuardpostDelegate
 import com.raywenderlich.emitron.ui.settings.SettingsBottomSheetDialogFragment.Companion.downloadQualityToResIdMap
 import com.raywenderlich.emitron.ui.settings.SettingsBottomSheetDialogFragment.Companion.playbackQualityToResIdMap
@@ -23,7 +24,6 @@ import com.raywenderlich.emitron.ui.settings.SettingsBottomSheetDialogFragment.C
 import com.raywenderlich.emitron.ui.settings.SettingsBottomSheetDialogFragment.Companion.playbackSubtitleLanguageToResIdMap
 import com.raywenderlich.emitron.utils.extensions.observe
 import com.raywenderlich.emitron.utils.extensions.setDataBindingView
-import com.raywenderlich.emitron.utils.getDefaultAppBarConfiguration
 import dagger.android.support.DaggerFragment
 import io.fabric.sdk.android.Fabric
 import javax.inject.Inject

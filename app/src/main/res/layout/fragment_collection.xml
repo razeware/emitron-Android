@@ -211,7 +211,7 @@ Values and References" />
         app:layout_constraintTop_toBottomOf="@id/text_collection_title"
         tools:text="11 Apr · Beginner · Video Course (56 min)" />
 
-      <com.raywenderlich.emitron.utils.DownloadButton
+      <com.raywenderlich.emitron.ui.common.DownloadButton
         android:id="@+id/button_collection_download"
         android:layout_width="@dimen/button_icon_height_width_3"
         android:layout_height="@dimen/button_icon_height_width_3"

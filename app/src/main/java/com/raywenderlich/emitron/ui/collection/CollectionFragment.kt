@@ -22,7 +22,7 @@ import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDel
 import com.raywenderlich.emitron.ui.onboarding.OnboardingView
 import com.raywenderlich.emitron.utils.UiStateManager
 import com.raywenderlich.emitron.utils.extensions.*
-import com.raywenderlich.emitron.utils.getDefaultAppBarConfiguration
+import com.raywenderlich.emitron.ui.common.getDefaultAppBarConfiguration
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
