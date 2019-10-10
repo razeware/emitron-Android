@@ -15,6 +15,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentSettingsBottomsheetBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
+import com.raywenderlich.emitron.model.DownloadQuality
 import com.raywenderlich.emitron.ui.player.PlayerFragment.Companion.subtitleLanguageEnglish
 import com.raywenderlich.emitron.ui.player.PlayerFragment.Playback.Quality.AUTO
 import com.raywenderlich.emitron.ui.player.PlayerFragment.Playback.Quality.FHD
@@ -179,8 +180,8 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
      */
     val downloadQualityToResIdMap: Map<String, Int> by lazy {
       mapOf(
-        "hd" to R.string.download_quality_high,
-        "sd" to R.string.download_quality_normal
+        DownloadQuality.HD.pref to R.string.download_quality_high,
+        DownloadQuality.SD.pref to R.string.download_quality_normal
       )
     }
   }
@@ -391,10 +392,10 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
   private fun updateDownloadQuality(position: Int, options: List<Int>) {
     val quality = when (options[position]) {
       R.string.download_quality_high -> {
-        "hd"
+        DownloadQuality.HD.pref
       }
       else -> {
-        "sd"
+        DownloadQuality.SD.pref
       }
     }
     viewModel.updateDownloadQuality(quality)
