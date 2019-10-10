@@ -317,7 +317,7 @@ class LibraryFragment : DaggerFragment() {
 
   private fun applyDefaultChipStyle(chip: Chip) {
     val shapeAppearanceModel =
-      ShapeAppearanceModel.builder().setCornerRadius(9.0f.toInt().toPx().toFloat()).build()
+      ShapeAppearanceModel.builder().setAllCornerSizes(9.0f.toInt().toPx().toFloat()).build()
 
     with(chip) {
       this.shapeAppearanceModel = shapeAppearanceModel
