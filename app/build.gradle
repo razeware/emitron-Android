@@ -30,6 +30,7 @@ android {
     multiDexEnabled true
     javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
     resValue 'string', "client_api_key", "${client_api_key}"
+    resValue 'string', "app_token", "${app_token}"
 
     kapt {
       arguments {
