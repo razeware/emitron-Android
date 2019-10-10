@@ -132,7 +132,7 @@
   <dimen name="collection_completed_margin_start">14dp</dimen>
   <dimen name="collection_download_button_margin_start">4dp</dimen>
   <dimen name="collection_episode_download_button_margin_top">16dp</dimen>
-  <dimen name="episode_progress_height_width">42dp</dimen>
+  <dimen name="episode_progress_height_width">32dp</dimen>
   <dimen name="episode_progress_margin_top">20dp</dimen>
 
   <!-- Card divider height -->
