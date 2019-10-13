@@ -14,8 +14,7 @@ class ShimmerProgressDelegate(private val view: View) {
 
   private fun getProgressViews() = arrayOf<View>(
     view.findViewById(R.id.layout_progress_item_1),
-    view.findViewById(R.id.layout_progress_item_2),
-    view.findViewById(R.id.layout_progress_item_3)
+    view.findViewById(R.id.layout_progress_item_2)
   )
 
   /**
