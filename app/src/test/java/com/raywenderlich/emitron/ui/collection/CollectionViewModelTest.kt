@@ -430,9 +430,11 @@ class CollectionViewModelTest {
     testCoroutineRule.runBlockingTest {
 
       // Given
-      whenever(contentRepository.getContent("1")).doReturn(Content(
-        datum = createContentData()
-      ))
+      whenever(contentRepository.getContent("1")).doReturn(
+        Content(
+          datum = createContentData()
+        )
+      )
       viewModel.loadCollection(Data(id = "1"))
 
 
