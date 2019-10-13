@@ -3,12 +3,13 @@ package com.raywenderlich.emitron.ui.player
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.nhaarman.mockitokotlin2.*
+import com.raywenderlich.emitron.data.createContent
+import com.raywenderlich.emitron.data.createContentData
 import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.data.video.VideoRepository
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.ui.collection.createContent
-import com.raywenderlich.emitron.ui.collection.createContentData
+import com.raywenderlich.emitron.model.Download
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.utils.*
 import okhttp3.ResponseBody
@@ -51,6 +52,34 @@ class PlayerViewModelTest {
       currentEpisode = currentEpisode
     )
 
+  private fun createOfflinePlaylist() =
+    Playlist(
+      createContentData(
+        type = "screencast"
+      ),
+      listOf(
+        createContentData(
+          id = "1", videoId = 1, download =
+          Download(
+            progress = 25,
+            state = 3,
+            failureReason = 0,
+            url = "download/1"
+          )
+        ),
+        createContentData(id = "2", videoId = 2)
+      ),
+      currentEpisode = createContentData(
+        type = "collection",
+        download = Download(
+          progress = 25,
+          state = 3,
+          failureReason = 0,
+          url = "download/1"
+        )
+      )
+    )
+
   @Test
   fun startPlayback() {
     createViewModel()
@@ -84,6 +113,39 @@ class PlayerViewModelTest {
       currentEpisode isEqualTo createContentData(videoUrl = "TheSongOfLife")
       currentEpisode.getUrl() isEqualTo "TheSongOfLife"
       playbackToken isEqualTo "WubbaLubbaDubDub"
+      playlist isEqualTo expectedPlaylist
+    }
+  }
+
+  @Test
+  fun startPlayback_offline() {
+    createViewModel()
+
+    testCoroutineRule.runBlockingTest {
+
+      val expectedPlaylist = createOfflinePlaylist()
+
+      // When
+      viewModel.startPlayback(expectedPlaylist)
+      val playlist =
+        viewModel.playlist.observeForTestingResult()
+      val currentEpisode =
+        viewModel.currentEpisode.observeForTestingResult()
+      val nextEpisode =
+        viewModel.nextEpisode.observeForTestingResult()
+
+      // Then
+      verifyNoMoreInteractions(videoRepository)
+      nextEpisode isEqualTo expectedPlaylist.episodes[1]
+      currentEpisode isEqualTo createContentData(
+        download = Download(
+          progress = 25,
+          state = 3,
+          failureReason = 0,
+          url = "download/1"
+        )
+      )
+      currentEpisode.getUrl() isEqualTo "download/1"
       playlist isEqualTo expectedPlaylist
     }
   }

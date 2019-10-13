@@ -17,6 +17,7 @@ import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource
 import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
@@ -26,12 +27,15 @@ import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
+import com.google.android.exoplayer2.upstream.cache.Cache
+import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.gms.cast.MediaInfo
 import com.google.android.gms.cast.MediaMetadata
 import com.google.android.gms.cast.MediaQueueItem
 import com.google.android.gms.cast.framework.CastContext
 import com.raywenderlich.emitron.R
+import com.raywenderlich.emitron.ui.download.DownloadService.Companion.buildCacheDataSourceFactory
 import com.raywenderlich.emitron.ui.player.PlayerFragment.Companion.defaultPlaybackQuality
 import com.raywenderlich.emitron.ui.player.cast.Episode
 import com.raywenderlich.emitron.utils.extensions.toVisibility
@@ -61,21 +65,11 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
   var hasPlaybackStarted: Boolean = false
     private set
 
-  private val bandWidthMeter: DefaultBandwidthMeter by lazy(LazyThreadSafetyMode.NONE) {
-    DefaultBandwidthMeter.Builder(localPlayerView.context).build()
-  }
+  private lateinit var trackSelector: DefaultTrackSelector
 
-  private val trackSelector: DefaultTrackSelector by lazy(LazyThreadSafetyMode.NONE) {
-    val trackSelectionFactory = AdaptiveTrackSelection.Factory()
-    DefaultTrackSelector(trackSelectionFactory).apply {
-      parameters = DefaultTrackSelector.ParametersBuilder().build()
-    }
-  }
+  private lateinit var dataSourceFactory: DefaultHttpDataSourceFactory
 
-  private val dataSourceFactory: DefaultHttpDataSourceFactory by lazy(LazyThreadSafetyMode.NONE) {
-    val sourceFactory = DefaultHttpDataSourceFactory(userAgent, bandWidthMeter)
-    sourceFactory
-  }
+  private lateinit var cacheDataSourceFactory: CacheDataSourceFactory
 
   /**
    * Returns the index of the currently played item.
@@ -100,7 +94,8 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     playbackControlView: PlayerView,
     castControlView: PlayerControlView,
     castControlGroup: View,
-    eventObserver: Observer<MediaPlaybackState>
+    eventObserver: Observer<MediaPlaybackState>,
+    cache: Cache
   ) {
     this.localPlayerView = playbackControlView
     this.castControlView = castControlView
@@ -108,6 +103,9 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     this.playerNotificationManager = playerNotificationManager
     this.mediaSessionCompat = MediaSessionCompat(context.applicationContext, context.packageName)
     this.castControlGroup = castControlGroup
+    this.trackSelector = buildTrackSelector()
+    this.dataSourceFactory = buildDataSourceFactory(context, userAgent)
+    this.cacheDataSourceFactory = buildCacheDataSourceFactory(cache, userAgent)
     stateObserver.observeForever(eventObserver)
     reinitialize(castContext)
   }
@@ -136,7 +134,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
         setUseStopAction(false)
         setUseChronometer(true)
         setUsePlayPauseActions(true)
-        setSmallIcon(R.mipmap.ic_launcher_foreground)
+        setSmallIcon(R.drawable.ic_logo)
         setBadgeIconType(NotificationCompat.BADGE_ICON_NONE)
         setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
         setMediaSessionToken(mediaSessionCompat.sessionToken)
@@ -155,7 +153,9 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     episode?.let {
       mediaQueue.add(episode)
       if (currentPlayer == mediaPlayer) {
-        concatenatingMediaSource?.addMediaSource(buildMediaSource(episode, dataSourceFactory))
+        concatenatingMediaSource?.addMediaSource(
+          buildMediaSource(episode, dataSourceFactory, cacheDataSourceFactory)
+        )
       } else {
         castPlayer?.addItems(buildMediaQueueItem(episode))
       }
@@ -287,7 +287,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     var playbackPositionMs = C.TIME_UNSET
     var windowIndex = C.INDEX_UNSET
     var playWhenReady = false
-    if (this.currentPlayer != null) {
+    if (null != this.currentPlayer) {
       val playbackState = this.currentPlayer?.playbackState
       if (playbackState != Player.STATE_ENDED) {
         playbackPositionMs = this.currentPlayer?.currentPosition ?: C.TIME_UNSET
@@ -307,7 +307,8 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
         concatenatingMediaSource?.addMediaSource(
           buildMediaSource(
             mediaQueue[i],
-            dataSourceFactory
+            dataSourceFactory,
+            cacheDataSourceFactory
           )
         )
       }
@@ -316,6 +317,8 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
       if (playbackPositionMs != C.TIME_UNSET) {
         mediaPlayer?.seekTo(playbackPositionMs)
         mediaPlayer?.playWhenReady = overridePlayWhenReady || playWhenReady
+      } else {
+        mediaPlayer?.playWhenReady = overridePlayWhenReady
       }
     } else {
       val items = arrayOfNulls<MediaQueueItem>(mediaQueue.size)
@@ -340,7 +343,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
   }
 
   private fun warnLowVolume() {
-    if (localPlayerView.context != null) {
+    if (null != localPlayerView.context) {
       val audio =
         localPlayerView.context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
       val currentVolume = audio.getStreamVolume(AudioManager.STREAM_MUSIC)
@@ -407,7 +410,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
    */
   fun updateSubtitles(subtitleLanguage: String) {
     val mappedTrackInfo = trackSelector.currentMappedTrackInfo
-    if (mappedTrackInfo != null) {
+    if (null != mappedTrackInfo) {
       val builder = trackSelector.buildUponParameters()
       for (rendererIndex in 0 until mappedTrackInfo.rendererCount) {
         if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_TEXT) {
@@ -437,7 +440,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
    */
   fun updatePlaybackQuality(quality: Int) {
     val mappedTrackInfo = trackSelector.currentMappedTrackInfo
-    if (mappedTrackInfo != null) {
+    if (null != mappedTrackInfo) {
       val builder = trackSelector.buildUponParameters()
       for (rendererIndex in 0 until mappedTrackInfo.rendererCount) {
         if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
@@ -479,7 +482,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     builder.setViewportSizeToPhysicalDisplaySize(activity, false)
 
     val mappedTrackInfo = trackSelector.currentMappedTrackInfo
-    if (mappedTrackInfo != null) {
+    if (null != mappedTrackInfo) {
 
       for (rendererIndex in 0 until mappedTrackInfo.rendererCount) {
         builder.clearSelectionOverrides(rendererIndex)
@@ -571,6 +574,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
 
   companion object {
 
+
     internal fun createMediaPlayer(
       playerView: PlayerView,
       trackSelector: DefaultTrackSelector
@@ -595,12 +599,16 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
 
     internal fun buildMediaSource(
       episode: Episode,
-      dataSourceFactory: DefaultHttpDataSourceFactory
+      dataSourceFactory: DefaultHttpDataSourceFactory,
+      cacheDataSourceFactory: CacheDataSourceFactory
     ): MediaSource {
       val uri = Uri.parse(episode.uri)
       when (episode.mimeType) {
         MimeTypes.APPLICATION_M3U8 -> return HlsMediaSource.Factory(dataSourceFactory)
           .setAllowChunklessPreparation(true)
+          .createMediaSource(uri)
+        MimeTypes.APPLICATION_MP4 -> return ProgressiveMediaSource
+          .Factory(cacheDataSourceFactory)
           .createMediaSource(uri)
         else -> {
           throw IllegalStateException("Unsupported type: " + episode.mimeType)
@@ -615,6 +623,22 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
         .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED).setContentType(episode.mimeType)
         .setMetadata(movieMetadata).build()
       return MediaQueueItem.Builder(mediaInfo).build()
+    }
+
+    internal fun buildTrackSelector(): DefaultTrackSelector {
+      val trackSelectionFactory = AdaptiveTrackSelection.Factory()
+      return DefaultTrackSelector(trackSelectionFactory).apply {
+        parameters = DefaultTrackSelector.ParametersBuilder().build()
+      }
+    }
+
+    internal fun buildDataSourceFactory(
+      context: Context,
+      userAgent: String
+    ): DefaultHttpDataSourceFactory {
+      val bandWidthMeter =
+        DefaultBandwidthMeter.Builder(context).build()
+      return DefaultHttpDataSourceFactory(userAgent, bandWidthMeter)
     }
   }
 }

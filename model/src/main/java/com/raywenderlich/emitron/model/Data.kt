@@ -359,11 +359,6 @@ data class Data(
   fun getUrl(): String = attributes?.url ?: download?.url ?: ""
 
   /**
-   *  @return uri for content
-   */
-  fun getUri(): String = attributes?.uri ?: ""
-
-  /**
    * @return Video playback token for user
    */
   fun getVideoPlaybackToken(): String = attributes?.videoPlaybackToken ?: ""

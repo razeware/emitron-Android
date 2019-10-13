@@ -22,3 +22,13 @@ data class Playlist(
    */
   val currentEpisode: Data? = null
 ) : Parcelable
+
+/**
+ * Check if playlist is available offline
+ *
+ * @return false if neither the collection, or any of it's episode are downloaded
+ */
+fun Playlist?.isNotDownloaded(): Boolean =
+  null != this &&
+      this.collection?.isDownloaded() != true &&
+      this.episodes.any { !it.isDownloaded() }
