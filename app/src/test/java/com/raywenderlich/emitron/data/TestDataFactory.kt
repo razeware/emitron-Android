@@ -8,7 +8,7 @@ import com.raywenderlich.emitron.model.entity.Download
 /**
  * Factory function to test downloads
  */
-fun createExpectedContent(type: String = "screencast"): com.raywenderlich.emitron.model.Content =
+fun createContent(type: String = "screencast"): com.raywenderlich.emitron.model.Content =
   com.raywenderlich.emitron.model.Content(
     datum = buildContentData(
       withRelationship(
@@ -97,7 +97,6 @@ fun buildContentData(
     contentType = contentType,
     difficulty = "beginner",
     duration = 408,
-    free = false,
     popularity = 0.0,
     releasedAt = "2019-08-08T00:00:00.000Z",
     videoId = null,
@@ -108,7 +107,8 @@ fun buildContentData(
     updatedAt = null,
     technology = "Swift, iOS",
     contributors = "Luke",
-    kind = null
+    kind = null,
+    professional = false
   ),
   relationships = relationships,
   download = download

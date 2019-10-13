@@ -16,11 +16,11 @@ interface GroupEpisodeJoinDao {
    * Insert collection episode group to episode (content) join
    */
   @Insert(onConflict = REPLACE)
-  fun insertGroupEpisodeJoin(contents: List<GroupEpisodeJoin>)
+  suspend fun insertGroupEpisodeJoin(contents: List<GroupEpisodeJoin>)
 
   /**
    * Delete all group episode joins
    */
   @Query("DELETE from group_content_join")
-  fun deleteAll()
+  suspend fun deleteAll()
 }

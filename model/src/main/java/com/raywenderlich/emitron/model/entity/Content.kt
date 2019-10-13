@@ -89,7 +89,7 @@ data class Content(
    * Stream url
    */
   @ColumnInfo(name = "stream_url")
-  val streamUrl: String,
+  val streamUrl: String?,
 
   /**
    * Card artwork url

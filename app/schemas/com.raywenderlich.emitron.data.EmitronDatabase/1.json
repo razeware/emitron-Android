@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5d7a6af821fa85241ab8ed7e3ef5bb4f",
+    "identityHash": "780c0a9480dada8910fada37f62a8519",
     "entities": [
       {
         "tableName": "domains",
@@ -64,7 +64,7 @@
       },
       {
         "tableName": "contents",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`content_id` TEXT NOT NULL, `description` TEXT, `contributors` TEXT, `professional` INTEGER NOT NULL, `deleted` INTEGER NOT NULL, `name` TEXT, `content_type` TEXT, `difficulty` TEXT, `released_at` TEXT NOT NULL, `technology` TEXT, `duration` INTEGER NOT NULL, `stream_url` TEXT NOT NULL, `card_artwork_url` TEXT, `video_id` TEXT, `bookmark_id` TEXT, `progression_id` TEXT, `updated_at` TEXT NOT NULL, PRIMARY KEY(`content_id`), FOREIGN KEY(`progression_id`) REFERENCES `progressions`(`progression_id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`content_id` TEXT NOT NULL, `description` TEXT, `contributors` TEXT, `professional` INTEGER NOT NULL, `deleted` INTEGER NOT NULL, `name` TEXT, `content_type` TEXT, `difficulty` TEXT, `released_at` TEXT NOT NULL, `technology` TEXT, `duration` INTEGER NOT NULL, `stream_url` TEXT, `card_artwork_url` TEXT, `video_id` TEXT, `bookmark_id` TEXT, `progression_id` TEXT, `updated_at` TEXT NOT NULL, PRIMARY KEY(`content_id`), FOREIGN KEY(`progression_id`) REFERENCES `progressions`(`progression_id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "contentId",
@@ -136,7 +136,7 @@
             "fieldPath": "streamUrl",
             "columnName": "stream_url",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "cardArtworkUrl",
@@ -535,7 +535,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5d7a6af821fa85241ab8ed7e3ef5bb4f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '780c0a9480dada8910fada37f62a8519')"
     ]
   }
 }

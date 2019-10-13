@@ -60,7 +60,7 @@ class ContentDataSourceLocal @Inject constructor(
   /**
    * Insert a screencast or video course to db
    */
-  fun insertContent(content: com.raywenderlich.emitron.model.Content) {
+  suspend fun insertContent(content: com.raywenderlich.emitron.model.Content) {
 
     val contentData = content.datum ?: return
     val groups = Group.listFrom(content)

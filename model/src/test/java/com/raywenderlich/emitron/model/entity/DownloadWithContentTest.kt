@@ -1,8 +1,7 @@
 package com.raywenderlich.emitron.model.entity
 
-import com.raywenderlich.emitron.data.download.*
+import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.model.Download
-import com.raywenderlich.emitron.model.DownloadState
 import com.raywenderlich.emitron.model.utils.isEqualTo
 import org.junit.Test
 

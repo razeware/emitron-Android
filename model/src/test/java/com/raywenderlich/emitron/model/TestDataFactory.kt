@@ -4,8 +4,8 @@ import com.raywenderlich.emitron.model.entity.*
 import com.raywenderlich.emitron.model.entity.Content
 import com.raywenderlich.emitron.model.entity.Download
 
-fun createExpectedContent(): com.raywenderlich.emitron.model.Content =
-  com.raywenderlich.emitron.model.Content(
+fun createContent(): com.raywenderlich.emitron.model.Content =
+  Content(
     datum = buildContentData(
       withRelationship(
         withRelatedBookmark(),
@@ -110,7 +110,7 @@ fun buildContentData(
 )
 
 fun withRelatedProgression(): com.raywenderlich.emitron.model.Content =
-  com.raywenderlich.emitron.model.Content(
+  Content(
     datum = withProgression()
   )
 
@@ -124,7 +124,7 @@ fun withProgression(): Data = Data(
 )
 
 fun withDownload(): com.raywenderlich.emitron.model.Download =
-  com.raywenderlich.emitron.model.Download(
+  Download(
     progress = 25,
     state = 3,
     failureReason = 0,
@@ -132,7 +132,7 @@ fun withDownload(): com.raywenderlich.emitron.model.Download =
   )
 
 fun withRelatedBookmark(): com.raywenderlich.emitron.model.Content =
-  com.raywenderlich.emitron.model.Content(
+  Content(
     datum = Data(
       id = "1",
       type = "bookmarks",
@@ -248,11 +248,12 @@ fun createDownloadWithContent(
   )
 )
 
-fun createDownload(state: Int = DownloadState.COMPLETED.ordinal): Download = Download(
-  "1",
-  "download/1",
-  25,
-  state,
-  0,
-  "createdAt"
-)
+fun createDownload(state: Int = DownloadState.COMPLETED.ordinal): Download =
+  Download(
+    "1",
+    "download/1",
+    25,
+    state,
+    0,
+    "createdAt"
+  )

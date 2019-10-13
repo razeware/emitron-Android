@@ -8,9 +8,9 @@ import com.raywenderlich.emitron.data.filter.dao.CategoryDao
 import com.raywenderlich.emitron.data.filter.dao.DomainDao
 import com.raywenderlich.emitron.data.progressions.dao.ProgressionDao
 import com.raywenderlich.emitron.model.*
-import com.raywenderlich.emitron.model.entity.ContentDomainJoin
+import com.raywenderlich.emitron.model.Content
+import com.raywenderlich.emitron.model.entity.*
 import com.raywenderlich.emitron.model.entity.Download
-import com.raywenderlich.emitron.model.entity.Progression
 import com.raywenderlich.emitron.utils.TestCoroutineRule
 import com.raywenderlich.emitron.utils.isEqualTo
 import com.raywenderlich.emitron.utils.observeForTestingResultNullable
@@ -58,7 +58,7 @@ class ContentDataSourceLocalTest {
   }
 
   @Test
-  fun insertContent() {
+  fun insertContents() {
     contentDataSourceLocal.insertContents(
       DataType.Bookmarks,
       listOf(
@@ -635,6 +635,68 @@ class ContentDataSourceLocalTest {
       contentDataSourceLocal.getDownloadsById(downloadIds)
       verify(downloadDao).getDownloadsById(downloadIds)
       verifyNoMoreInteractions(downloadDao)
+    }
+  }
+
+  @Test
+  fun insertContent() {
+    testCoroutineRule.runBlockingTest {
+      val content = com.raywenderlich.emitron.data.createContent()
+      contentDataSourceLocal.insertContent(content)
+      verify(contentDao).insertOrUpdateContent(
+        listOf(
+          com.raywenderlich.emitron.model.entity.Content(
+            contentId = "1",
+            name = "Introduction to Kotlin Lambdas: Getting Started",
+            description = "In this tutorial you will learn how to use lambda.",
+            contributors = "Luke",
+            professional = true,
+            deleted = false,
+            contentType = "screencast",
+            difficulty = "beginner",
+            releasedAt = "2019-08-08T00:00:00.000Z",
+            technology = "Swift, iOS",
+            duration = 408,
+            streamUrl = "",
+            cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
+            videoId = null,
+            bookmarkId = "1",
+            progressionId = null,
+            updatedAt = ""
+          )
+        ),
+        listOf(
+          Progression(progressionId = "1", percentComplete = 99, finished = true)
+        ),
+        progressionDao,
+        listOf(ContentDomainJoin("1", "2")),
+        contentDomainJoinDao,
+        listOf(
+          Group(
+            "1",
+            "The basics",
+            1
+          )
+        ),
+        groupDao,
+        listOf(ContentGroupJoin("1", "1")),
+        contentGroupJoinDao,
+        listOf(GroupEpisodeJoin("1", "1")),
+        groupEpisodeJoinDao
+      )
+      verifyNoMoreInteractions(contentDao)
+    }
+  }
+
+  @Test
+  fun getContent() {
+    testCoroutineRule.runBlockingTest {
+      val expected = com.raywenderlich.emitron.data.createContentDetail()
+      whenever(contentDao.getContentDetail("1")).doReturn(expected)
+      val result = contentDataSourceLocal.getContent("1")
+      result isEqualTo expected
+      verify(contentDao).getContentDetail("1")
+      verifyNoMoreInteractions(contentDao)
     }
   }
 }

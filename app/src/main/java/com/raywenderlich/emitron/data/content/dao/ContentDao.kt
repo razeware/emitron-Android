@@ -72,7 +72,7 @@ interface ContentDao {
    */
   @WorkerThread
   @Transaction
-  fun insertOrUpdateContent(
+  suspend fun insertOrUpdateContent(
     contents: List<Content>,
     progressions: List<Progression>,
     progressionDao: ProgressionDao,

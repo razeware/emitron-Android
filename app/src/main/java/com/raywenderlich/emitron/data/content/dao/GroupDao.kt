@@ -16,11 +16,11 @@ interface GroupDao {
    * Insert collection episode groups
    */
   @Insert(onConflict = IGNORE)
-  fun insertGroups(contents: List<Group>): List<Long>
+  suspend fun insertGroups(contents: List<Group>): List<Long>
 
   /**
    * Delete all collection episode groups
    */
   @Query("DELETE from groups")
-  fun deleteAll()
+  suspend fun deleteAll()
 }

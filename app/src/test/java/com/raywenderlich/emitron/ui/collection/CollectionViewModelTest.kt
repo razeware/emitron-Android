@@ -384,7 +384,11 @@ class CollectionViewModelTest {
     testCoroutineRule.runBlockingTest {
 
       // Given
-      whenever(contentRepository.getContent("1")).doReturn(createContent())
+      whenever(contentRepository.getContent("1")).doReturn(
+        Content(
+          datum = createContentData()
+        )
+      )
       viewModel.loadCollection(Data(id = "1"))
 
 
@@ -426,7 +430,9 @@ class CollectionViewModelTest {
     testCoroutineRule.runBlockingTest {
 
       // Given
-      whenever(contentRepository.getContent("1")).doReturn(createContent())
+      whenever(contentRepository.getContent("1")).doReturn(Content(
+        datum = createContentData()
+      ))
       viewModel.loadCollection(Data(id = "1"))
 
 
@@ -911,7 +917,7 @@ class CollectionViewModelTest {
     createViewModel()
     testCoroutineRule.runBlockingTest {
       // Given
-      val contentData = com.raywenderlich.emitron.data.createExpectedContent()
+      val contentData = com.raywenderlich.emitron.data.createContent()
       whenever(contentRepository.getContent("1")).doReturn(contentData)
       viewModel.loadCollection(Data(id = "1"))
 
@@ -965,7 +971,7 @@ class CollectionViewModelTest {
     testCoroutineRule.runBlockingTest {
       // Given
       val contentData =
-        com.raywenderlich.emitron.data.createExpectedContent(type = "collection")
+        com.raywenderlich.emitron.data.createContent(type = "collection")
       whenever(contentRepository.getContent("1")).doReturn(contentData)
       viewModel.loadCollection(Data(id = "1"))
 
