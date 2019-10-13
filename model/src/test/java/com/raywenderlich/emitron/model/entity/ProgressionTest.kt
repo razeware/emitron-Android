@@ -54,4 +54,38 @@ class ProgressionTest {
       listOf(Progression(progressionId = "1", percentComplete = 99, finished = true))
     )
   }
+
+  @Test
+  fun listFromIncluded() {
+    val dataList = listOf(
+      Data(
+        id = "1",
+        type = "progressions",
+        attributes = Attributes(
+          percentComplete = 99.0,
+          finished = true
+        )
+      ),
+      Data(
+        id = "1",
+        type = "groups"
+      ),
+      Data(
+        id = "3",
+        type = "progressions",
+        attributes = Attributes(
+          percentComplete = 11.0,
+          finished = false
+        )
+      )
+    )
+
+    val result = Progression.listFromIncluded(dataList)
+
+    result isEqualTo
+        listOf(
+          Progression(progressionId = "1", percentComplete = 99, finished = true),
+          Progression(progressionId = "3", percentComplete = 11, finished = false)
+        )
+  }
 }

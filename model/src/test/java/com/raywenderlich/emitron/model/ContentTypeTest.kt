@@ -1,6 +1,7 @@
 package com.raywenderlich.emitron.model
 
 import com.google.common.truth.Truth.assertThat
+import com.raywenderlich.emitron.model.utils.isEqualTo
 import org.junit.Test
 
 class ContentTypeTest {
@@ -15,5 +16,26 @@ class ContentTypeTest {
   fun toRequestFormat() {
     val contentType = ContentType.Screencast
     assertThat(contentType.toRequestFormat()).isEqualTo("screencast")
+  }
+
+  @Test
+  fun getAllowedContentTypes() {
+    val result = ContentType.getAllowedContentTypes()
+
+    result isEqualTo arrayOf("collection", "screencast")
+  }
+
+  @Test
+  fun getAllowedDownloadTypes() {
+    val result = ContentType.getAllowedDownloadTypes()
+
+    result isEqualTo arrayOf("screencast", "episode")
+  }
+
+  @Test
+  fun getFilterContentTypes() {
+    val result = ContentType.getFilterContentTypes()
+
+    result isEqualTo listOf(ContentType.Collection, ContentType.Screencast)
   }
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.content.ContentRepository
+import com.raywenderlich.emitron.data.download.DownloadRepository
 import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
@@ -24,6 +25,8 @@ class CollectionViewModelTest {
 
   private val progressionActionDelegate: ProgressionActionDelegate = mock()
 
+  private val downloadRepository: DownloadRepository = mock()
+
   private val settingsRepository: SettingsRepository = mock()
 
   private lateinit var viewModel: CollectionViewModel
@@ -40,6 +43,7 @@ class CollectionViewModelTest {
         contentRepository,
         bookmarkActionDelegate,
         progressionActionDelegate,
+        downloadRepository,
         settingsRepository
       )
   }
@@ -134,6 +138,78 @@ class CollectionViewModelTest {
       assertThat(viewModel.collectionEpisodes.value).isEqualTo(expectedEpisodes)
 
 
+      verify(uiStateObserver).onChanged(UiStateManager.UiState.LOADING)
+      verify(uiStateObserver).onChanged(UiStateManager.UiState.LOADED)
+      verifyNoMoreInteractions(uiStateObserver)
+    }
+  }
+
+  @Test
+  fun loadCollectionOffline() {
+    createViewModel()
+
+    testCoroutineRule.runBlockingTest {
+      val contentData = createContentData()
+      val content = createContent(data = contentData, included = getIncludedDataForCollection())
+      val expectedEpisodes =
+        listOf(
+          EpisodeItem(title = "one"),
+          EpisodeItem(
+            data = Data(
+              id = "5",
+              type = "contents",
+              attributes = Attributes(name = "five"),
+              relationships = Relationships(
+                progression = Content(
+                  datum = Data(
+                    id = "9",
+                    type = "progressions",
+                    attributes = Attributes(percentComplete = 10.0)
+                  )
+                )
+              )
+            )
+          ),
+          EpisodeItem(
+            data = Data(
+              id = "6", type = "contents",
+              attributes = Attributes(name = "six"),
+              relationships = Relationships()
+            )
+          ),
+          EpisodeItem(title = "two"),
+          EpisodeItem(
+            data = Data(
+              id = "7", type = "contents",
+              attributes = Attributes(name = "seven"),
+              relationships = Relationships()
+            )
+          ),
+          EpisodeItem(
+            data = Data(
+              id = "8", type = "contents",
+              attributes = Attributes(name = "eight"),
+              relationships = Relationships()
+            )
+          )
+        )
+      whenever(contentRepository.getContentFromDb("1")).doReturn(content)
+
+      val data = Data(
+        id = "1", attributes = Attributes(contentType = "collection"),
+        download = Download(progress = 100)
+      )
+
+      viewModel.collection.observeForTestingResultNullable()
+      viewModel.collectionEpisodes.observeForTestingResultNullable()
+      val uiStateObserver = viewModel.uiState.observeForTestingObserver()
+
+      viewModel.loadCollection(data)
+
+      assertThat(viewModel.collection.value).isEqualTo(contentData)
+      assertThat(viewModel.collectionEpisodes.value).isEqualTo(expectedEpisodes)
+
+      verify(contentRepository).getContentFromDb("1")
       verify(uiStateObserver).onChanged(UiStateManager.UiState.LOADING)
       verify(uiStateObserver).onChanged(UiStateManager.UiState.LOADED)
       verifyNoMoreInteractions(uiStateObserver)

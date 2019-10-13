@@ -2,10 +2,9 @@ package com.raywenderlich.emitron.model.entity
 
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
-import com.raywenderlich.emitron.model.Attributes
-import com.raywenderlich.emitron.model.Data
+import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.model.DataType
-import com.raywenderlich.emitron.model.toRequestFormat
+import com.raywenderlich.emitron.model.Download
 
 
 /**
@@ -126,7 +125,7 @@ data class Content(
   /**
    * Build [Data] from [Content]
    */
-  fun toData(): Data = Data(
+  fun toData(downloadState: Download? = null): Data = Data(
     id = contentId,
     type = DataType.Contents.toRequestFormat(),
     attributes = Attributes(
@@ -139,10 +138,25 @@ data class Content(
       difficulty = difficulty,
       releasedAt = releasedAt,
       technology = technology,
-      cardArtworkUrl = cardArtworkUrl,
-      url = streamUrl
-    )
+      cardArtworkUrl = cardArtworkUrl
+    ),
+    download = downloadState
   ).addBookmark(bookmarkId)
+
+  /**
+   * Build [Data] from [Content]
+   */
+  fun toGroupData(): Data = Data(
+    id = contentId,
+    type = DataType.Contents.toRequestFormat()
+  )
+
+  /**
+   * Is content screencast or episode
+   */
+  fun isScreencastOrEpisode(): Boolean = ContentType.fromValue(contentType).run {
+    this.isScreencast() || this.isEpisode()
+  }
 
   companion object {
 
@@ -171,11 +185,52 @@ data class Content(
         duration = it.getDuration(),
         streamUrl = "",
         cardArtworkUrl = it.getCardArtworkUrl(),
-        videoId = "",
+        videoId = it.getVideoId(),
         bookmarkId = it.getBookmarkId(),
         progressionId = it.getProgressionId(),
         updatedAt = ""
       )
     }
+
+    /**
+     * Create [Content] from [Data]
+     */
+    fun from(data: Data): Content = Content(
+      contentId = data.id!!,
+      name = data.getName(),
+      description = data.getDescription(),
+      contributors = data.getContributors(),
+      professional = data.isFreeContent(),
+      deleted = false,
+      contentType = data.getContentType()?.toRequestFormat(),
+      difficulty = data.getDifficulty()?.toRequestFormat(),
+      releasedAt = data.getReleasedAt(),
+      technology = data.getTechnology(),
+      duration = data.getDuration(),
+      streamUrl = data.getUrl(),
+      cardArtworkUrl = data.getCardArtworkUrl(),
+      videoId = data.getVideoId(),
+      bookmarkId = data.getBookmarkId(),
+      progressionId = data.getProgressionId(),
+      updatedAt = ""
+    )
+
+    /**
+     * List of episodes from content
+     */
+    fun episodesFrom(
+      content: com.raywenderlich.emitron.model.Content
+    ): List<Content> =
+      content.getContentGroupIds()
+        .mapNotNull { id ->
+          content.getIncludedContentById(id)
+        }.flatMap {
+          it.getChildContentIds()
+        }.mapNotNull { id ->
+          val includedContent = content.getIncludedContentById(id)
+          includedContent?.let {
+            from(includedContent)
+          }
+        }
   }
 }

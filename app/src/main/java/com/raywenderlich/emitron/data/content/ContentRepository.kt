@@ -20,7 +20,8 @@ import javax.inject.Inject
 class ContentRepository @Inject constructor(
   private val api: ContentApi,
   private val threadManager: ThreadManager,
-  private val settingsPref: SettingsPrefs
+  private val settingsPref: SettingsPrefs,
+  private val contentDataSourceLocal: ContentDataSourceLocal
 ) {
 
   /**
@@ -85,6 +86,20 @@ class ContentRepository @Inject constructor(
   suspend fun getContent(id: String): Content? {
     return withContext(threadManager.io) {
       api.getContent(id)
+    }
+  }
+
+  /**
+   * Load content from database
+   *
+   * @param id content id
+   *
+   * @return Content with id, null if not found in db
+   */
+  @AnyThread
+  suspend fun getContentFromDb(id: String): Content? {
+    return withContext(threadManager.io) {
+      contentDataSourceLocal.getContent(id).toContent()
     }
   }
 

@@ -4,8 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.raywenderlich.emitron.data.content.dao.ContentDao
-import com.raywenderlich.emitron.data.content.dao.ContentDomainJoinDao
+import com.raywenderlich.emitron.data.content.dao.*
 import com.raywenderlich.emitron.data.filter.dao.CategoryDao
 import com.raywenderlich.emitron.data.filter.dao.DomainDao
 import com.raywenderlich.emitron.data.progressions.dao.ProgressionDao
@@ -20,7 +19,11 @@ import com.raywenderlich.emitron.model.entity.*
     Category::class,
     Content::class,
     Progression::class,
-    ContentDomainJoin::class
+    ContentDomainJoin::class,
+    Group::class,
+    ContentGroupJoin::class,
+    GroupEpisodeJoin::class,
+    Download::class
   ],
   version = 1,
   exportSchema = true
@@ -51,6 +54,26 @@ abstract class EmitronDatabase : RoomDatabase() {
    * See [ProgressionDao]
    */
   abstract fun progressionDao(): ProgressionDao
+
+  /**
+   * See [GroupDao]
+   */
+  abstract fun groupDao(): GroupDao
+
+  /**
+   * See [ContentGroupJoinDao]
+   */
+  abstract fun contentGroupDao(): ContentGroupJoinDao
+
+  /**
+   * See [GroupEpisodeJoinDao]
+   */
+  abstract fun groupEpisodeDao(): GroupEpisodeJoinDao
+
+  /**
+   * See [DownloadDao]
+   */
+  abstract fun downloadDao(): DownloadDao
 
   companion object {
 

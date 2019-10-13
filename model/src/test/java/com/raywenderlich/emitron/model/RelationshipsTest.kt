@@ -140,6 +140,25 @@ class RelationshipsTest {
   }
 
   @Test
+  fun addContentGroups() {
+    val contents = listOf(
+      Data(
+        id = "1",
+        type = "groups",
+        attributes = Attributes(name = "Content1")
+      ),
+      Data(attributes = Attributes(name = "Content2"))
+    )
+    val relationShip = Relationships()
+    val result = relationShip.addContents(emptyList())
+    assertThat(result).isEqualTo(relationShip)
+
+    val relationShip2 = Relationships()
+    val result2 = relationShip2.addContentGroups(contents)
+    assertThat(result2.getContentGroupIds()).isEqualTo(listOf("1"))
+  }
+
+  @Test
   fun addProgression() {
     val progressions = listOf(
       Data(id = "1", type = "progressions", attributes = Attributes(finished = true)),

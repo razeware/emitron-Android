@@ -28,15 +28,6 @@ data class Download(
 ) : Parcelable
 
 /**
- * Set download completed
- *
- * @return Updated [Download]
- */
-fun Download?.setDownloaded(): Download? {
-  return this?.copy(state = DownloadState.COMPLETED.ordinal)
-}
-
-/**
  * @return true if download has completed, else false
  */
 fun Download?.isDownloaded(): Boolean {

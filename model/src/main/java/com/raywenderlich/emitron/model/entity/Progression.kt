@@ -67,5 +67,19 @@ data class Progression(
           finished = it.isFinished()
         )
       }
+
+    /**
+     * Create list of [Progression] from list of [Data]
+     *
+     * @return list of [Progression]
+     */
+    fun listFromIncluded(progressions: List<Data>): List<Progression> =
+      progressions.filter { it.isTypeProgression() }.map {
+        Progression(
+          progressionId = it.id!!,
+          percentComplete = it.getPercentComplete(),
+          finished = it.isFinished()
+        )
+      }
   }
 }

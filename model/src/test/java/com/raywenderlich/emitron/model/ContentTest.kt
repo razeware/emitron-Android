@@ -188,10 +188,10 @@ class ContentTest {
 
   @Test
   fun getVideoId() {
-    val datum = Data(id = "1", attributes = Attributes(uri = "rw://betamax/collections/122"))
+    val datum = Data(id = "1", attributes = Attributes(videoId = "1"))
     val content = Content(datum = datum)
 
-    content.getVideoId() isEqualTo "122"
+    content.getVideoId() isEqualTo "1"
   }
 
   @Test
@@ -209,5 +209,4 @@ class ContentTest {
     assertThat(bookmark.datum?.relationships?.content?.getChildId()).isEqualTo("1")
     assertThat(bookmark.datum?.relationships?.content?.datum?.type).isEqualTo("contents")
   }
-
 }

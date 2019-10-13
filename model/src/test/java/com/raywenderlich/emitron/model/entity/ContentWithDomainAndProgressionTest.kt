@@ -1,10 +1,9 @@
 package com.raywenderlich.emitron.model.entity
 
 import com.google.common.truth.Truth
-import com.raywenderlich.emitron.model.Attributes
-import com.raywenderlich.emitron.model.Contents
-import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.model.Relationships
+import com.raywenderlich.emitron.model.*
+import com.raywenderlich.emitron.model.Content
+import com.raywenderlich.emitron.model.Download
 import com.raywenderlich.emitron.model.utils.isEqualTo
 import org.junit.Test
 
@@ -54,39 +53,7 @@ class ContentWithDomainAndProgressionTest {
 
   @Test
   fun toData() {
-    val contentWithDomain = ContentWithDomainAndProgression(
-      content = Content(
-        contentId = "1",
-        name = "Introduction to Kotlin Lambdas: Getting Started",
-        description = "In this tutorial you will learn how to use lambda.",
-        contributors = "Luke",
-        professional = false,
-        deleted = false,
-        contentType = "screencast",
-        difficulty = "beginner",
-        releasedAt = "2019-08-08T00:00:00.000Z",
-        technology = "Swift, iOS",
-        duration = 408,
-        streamUrl = "https://koenig-media.raywenderlich.com/",
-        cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
-        videoId = "1",
-        bookmarkId = "1",
-        progressionId = "1",
-        updatedAt = "2019-08-08T00:00:00.000Z"
-      ),
-      domains = listOf(
-        ContentDomainJoinWithDomain(
-          domains = listOf(
-            Domain(domainId = "1", name = "iOS & Swift"),
-            Domain(domainId = "2", name = "Android & Kotlin")
-          )
-        )
-      ),
-      progressions = listOf(
-        Progression(progressionId = "1", percentComplete = 99, finished = true)
-      )
-    )
-
+    val contentWithDomain = createContentWithDomainAndProgression()
     Truth.assertThat(contentWithDomain.toData()).isEqualTo(
       Data(
         id = "1",
@@ -112,14 +79,13 @@ class ContentWithDomainAndProgressionTest {
           updatedAt = null,
           technology = "Swift, iOS",
           contributors = "Luke",
-          url = "https://koenig-media.raywenderlich.com/",
           kind = null
         ),
         links = null,
         relationships = Relationships(
           content = null,
           contents = null,
-          bookmark = com.raywenderlich.emitron.model.Content(
+          bookmark = Content(
             datum = Data(
               id = "1",
               type = "bookmarks",
@@ -133,18 +99,13 @@ class ContentWithDomainAndProgressionTest {
           domains = Contents(
             datum = listOf(
               Data(
-                id = "1",
-                type = "domains",
-                attributes = Attributes(name = "iOS & Swift", level = null)
-              ),
-              Data(
                 id = "2",
                 type = "domains",
                 attributes = Attributes(name = "Android & Kotlin", level = null)
               )
             )
           ),
-          progression = com.raywenderlich.emitron.model.Content(
+          progression = Content(
             datum = Data(
               id = "1",
               type = "progressions",
@@ -157,8 +118,56 @@ class ContentWithDomainAndProgressionTest {
           ),
           groups = null,
           childContents = null
+        ),
+        download = Download(
+          progress = 25,
+          state = 3,
+          url = "download/1"
         )
       )
     )
   }
 }
+
+fun createContentWithDomainAndProgression(): ContentWithDomainAndProgression =
+  ContentWithDomainAndProgression(
+    content = Content(
+      contentId = "1",
+      name = "Introduction to Kotlin Lambdas: Getting Started",
+      description = "In this tutorial you will learn how to use lambda.",
+      contributors = "Luke",
+      professional = false,
+      deleted = false,
+      contentType = "screencast",
+      difficulty = "beginner",
+      releasedAt = "2019-08-08T00:00:00.000Z",
+      technology = "Swift, iOS",
+      duration = 408,
+      streamUrl = "https://koenig-media.raywenderlich.com/",
+      cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
+      videoId = "1",
+      bookmarkId = "1",
+      progressionId = "1",
+      updatedAt = "2019-08-08T00:00:00.000Z"
+    ),
+    domains = listOf(
+      ContentDomainJoinWithDomain(
+        domains = listOf(
+          Domain(domainId = "2", name = "Android & Kotlin")
+        )
+      )
+    ),
+    progressions = listOf(
+      Progression(progressionId = "1", percentComplete = 99, finished = true)
+    ),
+    downloads = listOf(
+      Download(
+        "1",
+        "download/1",
+        25,
+        DownloadState.COMPLETED.ordinal,
+        0,
+        "createdAt"
+      )
+    )
+  )

@@ -40,6 +40,20 @@ enum class ContentType {
      */
     fun getAllowedContentTypes(): Array<String> =
       values().filter { !it.isEpisode() }.map { it.name.toLowerCase() }.toTypedArray()
+
+    /**
+     * Allowed downloadable [ContentType]s
+     *
+     * @return List of [ContentType]
+     */
+    fun getAllowedDownloadTypes(): Array<String> =
+      values().filter { !it.isCollection() }.map { it.name.toLowerCase() }.toTypedArray()
+
+    /**
+     * Allowed content filters [ContentType]s
+     *
+     * @return List of [ContentType]
+     */
     fun getFilterContentTypes(): List<ContentType> =
       values().filter { !it.isEpisode() }
   }

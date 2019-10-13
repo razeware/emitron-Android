@@ -2,8 +2,7 @@ package com.raywenderlich.emitron.di.modules
 
 import android.app.Application
 import com.raywenderlich.emitron.data.EmitronDatabase
-import com.raywenderlich.emitron.data.content.dao.ContentDao
-import com.raywenderlich.emitron.data.content.dao.ContentDomainJoinDao
+import com.raywenderlich.emitron.data.content.dao.*
 import com.raywenderlich.emitron.data.filter.dao.CategoryDao
 import com.raywenderlich.emitron.data.filter.dao.DomainDao
 import com.raywenderlich.emitron.data.progressions.dao.ProgressionDao
@@ -40,5 +39,25 @@ class DataModule {
     @Provides
     fun provideProgressionDao(application: Application): ProgressionDao =
       EmitronDatabase.getInstance(application).progressionDao()
+
+    @JvmStatic
+    @Provides
+    fun provideGroupDao(application: Application): GroupDao =
+      EmitronDatabase.getInstance(application).groupDao()
+
+    @JvmStatic
+    @Provides
+    fun provideContentGroupJoinDao(application: Application): ContentGroupJoinDao =
+      EmitronDatabase.getInstance(application).contentGroupDao()
+
+    @JvmStatic
+    @Provides
+    fun provideGroupEpisodeJoinDao(application: Application): GroupEpisodeJoinDao =
+      EmitronDatabase.getInstance(application).groupEpisodeDao()
+
+    @JvmStatic
+    @Provides
+    fun provideDownloadDao(application: Application): DownloadDao =
+      EmitronDatabase.getInstance(application).downloadDao()
   }
 }

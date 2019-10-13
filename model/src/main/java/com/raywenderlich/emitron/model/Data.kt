@@ -230,11 +230,14 @@ data class Data(
       ?.addDomains(newRelations)
       ?.addProgression(newRelations)
       ?.addBookmark(newRelations)
+      ?.addContents(newRelations)
+      ?.addContentGroups(newRelations)
       ?: Relationships()
         .addDomains(newRelations)
         .addProgression(newRelations)
         .addBookmark(newRelations)
         .addContents(newRelations)
+        .addContentGroups(newRelations)
 
     return this.copy(relationships = newRelationShips)
   }
@@ -348,12 +351,12 @@ data class Data(
    *
    * @return video id string
    */
-  fun getVideoId(): String? = attributes?.getVideoId()
+  fun getVideoId(): String? = attributes?.videoId
 
   /**
    *  @return stream/download url for content
    */
-  fun getUrl(): String = attributes?.url ?: ""
+  fun getUrl(): String = attributes?.url ?: download?.url ?: ""
 
   /**
    *  @return uri for content
@@ -382,6 +385,36 @@ data class Data(
    */
   fun getContentGroupIds(): List<String> {
     return this.relationships?.getContentGroupIds() ?: emptyList()
+  }
+
+  /**
+   * Check if content is downloaded
+   *
+   * @return true if content is downloaded, else false
+   */
+  fun isDownloaded(): Boolean = download.isDownloaded()
+
+  /**
+   * Check if content is downloading
+   *
+   * @return true if content is downloading, else false
+   */
+  fun isDownloading(): Boolean = download.isDownloading()
+
+  /**
+   * Get content download progress
+   *
+   * @return true if content is downloaded, else false
+   */
+  fun getDownloadProgress(): Int = download.getProgress()
+
+  /**
+   * Update content download progress
+   *
+   * @return Updated [Data]
+   */
+  fun updateDownloadProgress(download: Download?): Data {
+    return this.copy(download = download)
   }
 
   companion object {

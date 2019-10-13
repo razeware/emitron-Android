@@ -23,8 +23,6 @@ import java.io.IOException
 import javax.inject.Inject
 
 /**
- * Collection (Content detail) detail viewmodel
- *
  * ViewModel for content detail view
  */
 class CollectionViewModel @Inject constructor(
@@ -52,7 +50,7 @@ class CollectionViewModel @Inject constructor(
   private val _loadCollectionResult = MutableLiveData<Event<Boolean>>()
 
   /**
-   * Observer for collection details
+   * LiveData for collection details
    */
   val collection: LiveData<Data>
     get() {
@@ -60,7 +58,7 @@ class CollectionViewModel @Inject constructor(
     }
 
   /**
-   * Observer for episode for collection
+   * LiveData for episode for collection
    */
   val collectionEpisodes: LiveData<List<EpisodeItem>>
     get() {
@@ -68,7 +66,7 @@ class CollectionViewModel @Inject constructor(
     }
 
   /**
-   * Observer for content type for collection
+   * LiveData for content type for collection
    *
    * You need to hide the list/headings when the collection type is [ContentType.Screencast]
    */
@@ -78,14 +76,14 @@ class CollectionViewModel @Inject constructor(
     }
 
   /**
-   * Observer for bookmark action
+   * LiveData for bookmark action
    *
    */
   val bookmarkActionResult: LiveData<Event<BookmarkActionDelegate.BookmarkActionResult>> =
     bookmarkActionDelegate.bookmarkActionResult
 
   /**
-   * Observer for progression action
+   * LiveData for progression action
    *
    */
   val completionActionResult:
@@ -121,11 +119,25 @@ class CollectionViewModel @Inject constructor(
     }
   }
 
-  /**
-   * Get collection episodes
-   */
-  private suspend fun loadContentFromApi(contentId: String) {
+  private suspend fun loadContentFromDb(contentId: String) {
+    val onFailure = {
+      _loadCollectionResult.value = Event(false)
+    }
 
+    val content = try {
+      repository.getContentFromDb(contentId)
+    } catch (exception: IOException) {
+      onFailure()
+      null
+    } catch (exception: HttpException) {
+      onFailure()
+      null
+    }
+    updateContentEpisodes(content)
+    _loadCollectionResult.value = Event(true)
+  }
+
+  private suspend fun loadContentFromApi(contentId: String) {
     val onFailure = {
       _loadCollectionResult.value = Event(false)
     }

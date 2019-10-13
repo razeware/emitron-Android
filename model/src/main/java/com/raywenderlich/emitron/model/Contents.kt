@@ -47,4 +47,27 @@ data class Contents(
    * @return list of [Data.id] for included content items
    */
   fun getChildIds(): List<String> = datum.mapNotNull { it.id }
+
+  /**
+   * Get download url from response
+   *
+   * @param qualityHd Download url kind
+   *
+   * @return download url from [Contents.datum]
+   */
+  fun getDownloadUrl(qualityHd: Boolean): String? {
+    return if (qualityHd) {
+      getHdUrl()
+    } else {
+      getSdUrl()
+    }?.getUrl()
+  }
+
+  private fun getHdUrl(): Data? = datum.first {
+    DownloadQuality.fromKind(it.attributes?.kind).isHd()
+  }
+
+  private fun getSdUrl(): Data? = datum.first {
+    DownloadQuality.fromKind(it.attributes?.kind).isSd()
+  }
 }

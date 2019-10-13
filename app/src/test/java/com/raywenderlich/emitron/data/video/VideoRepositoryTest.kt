@@ -3,6 +3,7 @@ package com.raywenderlich.emitron.data.video
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
 import com.nhaarman.mockitokotlin2.*
+import com.raywenderlich.emitron.data.content.ContentDataSourceLocal
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.PlaybackProgress
 import com.raywenderlich.emitron.utils.CurrentThreadExecutor
@@ -22,6 +23,8 @@ class VideoRepositoryTest {
   private val videoApi: VideoApi = mock()
 
   private val threadManager: ThreadManager = mock()
+
+  private val contentDataSourceLocal: ContentDataSourceLocal = mock()
 
   @get:Rule
   val instantTaskExecutorRule: InstantTaskExecutorRule = InstantTaskExecutorRule()

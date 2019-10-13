@@ -67,6 +67,56 @@ interface ContentDao {
     }
   }
 
+  /**
+   * Insert content, if already exists update it
+   */
+  @WorkerThread
+  @Transaction
+  fun insertOrUpdateContent(
+    contents: List<Content>,
+    progressions: List<Progression>,
+    progressionDao: ProgressionDao,
+    contentDomainJoins: List<ContentDomainJoin>,
+    contentDomainJoinDao: ContentDomainJoinDao,
+    groups: List<Group>,
+    groupDao: GroupDao,
+    contentGroupJoins: List<ContentGroupJoin>,
+    contentGroupJoinDao: ContentGroupJoinDao,
+    groupEpisodeJoins: List<GroupEpisodeJoin>,
+    groupEpisodeJoinDao: GroupEpisodeJoinDao
+  ) {
+
+    insertOrUpdateProgressions(progressionDao, progressions)
+    val insertResult = insertContents(contents)
+    val itemsToUpdate = insertResult.mapIndexedNotNull { index, result ->
+      if (result == -1L) {
+        contents[index]
+      } else {
+        null
+      }
+    }
+
+    if (itemsToUpdate.isNotEmpty()) {
+      updateContents(itemsToUpdate)
+    }
+
+    if (contentDomainJoins.isNotEmpty()) {
+      contentDomainJoinDao.insertContentDomainJoin(contentDomainJoins)
+    }
+
+    if (groups.isNotEmpty()) {
+      groupDao.insertGroups(groups)
+    }
+
+    if (contentGroupJoins.isNotEmpty()) {
+      contentGroupJoinDao.insertContentGroupJoin(contentGroupJoins)
+    }
+
+    if (groupEpisodeJoins.isNotEmpty()) {
+      groupEpisodeJoinDao.insertGroupEpisodeJoin(groupEpisodeJoins)
+    }
+  }
+
   @WorkerThread
   private fun insertOrUpdateProgressions(
     progressionDao: ProgressionDao,
@@ -134,29 +184,50 @@ interface ContentDao {
   fun getProgressions(completed: Boolean, contentTypes: Array<String>):
       DataSource.Factory<Int, ContentWithDomainAndProgression>
 
+
+  /**
+   * Load collection (video course/screencast)
+   *
+   * @param id content id
+   */
+  @Query(
+    """
+          SELECT * FROM contents 
+          WHERE content_id = :id
+          """
+  )
+  @Transaction
+  suspend fun getContentDetail(id: String): ContentDetail
+
   /**
    * Delete contents tables
-   *
    */
   @Query("DELETE from contents")
   fun deleteAll()
 
   /**
    * Delete all tables
-   *
    */
   @WorkerThread
   @Transaction
-  fun deleteAll(
+  suspend fun deleteAll(
     domainDao: DomainDao,
     categoryDao: CategoryDao,
     contentDomainJoinDao: ContentDomainJoinDao,
-    progressionDao: ProgressionDao
+    progressionDao: ProgressionDao,
+    groupDao: GroupDao,
+    contentGroupJoinDao: ContentGroupJoinDao,
+    groupEpisodeJoinDao: GroupEpisodeJoinDao,
+    downloadDao: DownloadDao
   ) {
     contentDomainJoinDao.deleteAll()
     domainDao.deleteAll()
     categoryDao.deleteAll()
     progressionDao.deleteAll()
+    groupDao.deleteAll()
+    contentGroupJoinDao.deleteAll()
+    groupEpisodeJoinDao.deleteAll()
+    downloadDao.deleteAll()
     deleteAll()
   }
 }

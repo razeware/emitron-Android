@@ -3,13 +3,13 @@ package com.raywenderlich.emitron.data.content
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.nhaarman.mockitokotlin2.*
-import com.raywenderlich.emitron.data.content.dao.ContentDao
-import com.raywenderlich.emitron.data.content.dao.ContentDomainJoinDao
+import com.raywenderlich.emitron.data.content.dao.*
 import com.raywenderlich.emitron.data.filter.dao.CategoryDao
 import com.raywenderlich.emitron.data.filter.dao.DomainDao
 import com.raywenderlich.emitron.data.progressions.dao.ProgressionDao
 import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.model.entity.ContentDomainJoin
+import com.raywenderlich.emitron.model.entity.Download
 import com.raywenderlich.emitron.model.entity.Progression
 import com.raywenderlich.emitron.utils.TestCoroutineRule
 import com.raywenderlich.emitron.utils.isEqualTo
@@ -17,6 +17,9 @@ import com.raywenderlich.emitron.utils.observeForTestingResultNullable
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.Month
+import org.threeten.bp.format.DateTimeFormatter
 
 class ContentDataSourceLocalTest {
 
@@ -25,6 +28,10 @@ class ContentDataSourceLocalTest {
   private val progressionDao: ProgressionDao = mock()
   private val domainDao: DomainDao = mock()
   private val categoryDao: CategoryDao = mock()
+  private val groupDao: GroupDao = mock()
+  private val contentGroupJoinDao: ContentGroupJoinDao = mock()
+  private val groupEpisodeJoinDao: GroupEpisodeJoinDao = mock()
+  private val downloadDao: DownloadDao = mock()
 
   private lateinit var contentDataSourceLocal: ContentDataSourceLocal
 
@@ -42,7 +49,11 @@ class ContentDataSourceLocalTest {
         contentDomainJoinDao,
         progressionDao,
         domainDao,
-        categoryDao
+        categoryDao,
+        groupDao,
+        contentGroupJoinDao,
+        groupEpisodeJoinDao,
+        downloadDao
       )
   }
 
@@ -203,7 +214,7 @@ class ContentDataSourceLocalTest {
             duration = 408,
             streamUrl = "",
             cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
-            videoId = "",
+            videoId = null,
             bookmarkId = "1",
             progressionId = "1",
             updatedAt = ""
@@ -222,7 +233,7 @@ class ContentDataSourceLocalTest {
             duration = 408,
             streamUrl = "",
             cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
-            videoId = "",
+            videoId = null,
             bookmarkId = "2",
             progressionId = "2",
             updatedAt = ""
@@ -396,7 +407,7 @@ class ContentDataSourceLocalTest {
             duration = 408,
             streamUrl = "",
             cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
-            videoId = "",
+            videoId = null,
             bookmarkId = "1",
             progressionId = "1",
             updatedAt = ""
@@ -415,7 +426,7 @@ class ContentDataSourceLocalTest {
             duration = 408,
             streamUrl = "",
             cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
-            videoId = "",
+            videoId = null,
             bookmarkId = "2",
             progressionId = "2",
             updatedAt = ""
@@ -476,8 +487,7 @@ class ContentDataSourceLocalTest {
   @Test
   fun updateBookmark() {
     testCoroutineRule.runBlockingTest {
-      contentDao.updateBookmark("1", "2")
-
+      contentDataSourceLocal.updateBookmark("1", "2")
       verify(contentDao).updateBookmark("1", bookmarkId = "2")
       verifyNoMoreInteractions(contentDao)
     }
@@ -485,18 +495,146 @@ class ContentDataSourceLocalTest {
 
   @Test
   fun getProgressions() {
-    contentDao.getProgressions(false, arrayOf())
-    verify(contentDao).getProgressions(false, arrayOf())
+    contentDataSourceLocal.getProgressions(true)
+    verify(contentDao).getProgressions(true, arrayOf("collection", "screencast"))
     verifyNoMoreInteractions(contentDomainJoinDao)
   }
 
   @Test
   fun updateProgress() {
     testCoroutineRule.runBlockingTest {
-      progressionDao.updateProgress("1", true)
-
+      contentDataSourceLocal.updateProgress("1", true)
       verify(progressionDao).updateProgress("1", true)
       verifyNoMoreInteractions(progressionDao)
+    }
+  }
+
+  @Test
+  fun deleteAll() {
+    testCoroutineRule.runBlockingTest {
+      contentDataSourceLocal.deleteAll()
+      verify(contentDao).deleteAll(
+        domainDao,
+        categoryDao,
+        contentDomainJoinDao,
+        progressionDao,
+        groupDao,
+        contentGroupJoinDao,
+        groupEpisodeJoinDao,
+        downloadDao
+      )
+      verifyNoMoreInteractions(contentDao)
+    }
+  }
+
+  @Test
+  fun updateDownloadUrl() {
+    testCoroutineRule.runBlockingTest {
+      contentDataSourceLocal.updateDownloadUrl("1", "download/1")
+      verify(downloadDao).updateUrl("1", "download/1", 2)
+      verifyNoMoreInteractions(downloadDao)
+    }
+  }
+
+  @Test
+  fun updateDownloadProgress() {
+    testCoroutineRule.runBlockingTest {
+      contentDataSourceLocal.updateDownloadProgress(
+        "1", 25,
+        DownloadState.COMPLETED
+      )
+      verify(downloadDao).updateProgress("1", 25, 3)
+      verifyNoMoreInteractions(downloadDao)
+    }
+  }
+
+  @Test
+  fun updateDownloadState() {
+    testCoroutineRule.runBlockingTest {
+      contentDataSourceLocal.updateDownloadState(
+        "1",
+        DownloadState.COMPLETED
+      )
+      verify(downloadDao).updateState("1", 3)
+      verifyNoMoreInteractions(downloadDao)
+    }
+  }
+
+  @Test
+  fun insertDownload() {
+    testCoroutineRule.runBlockingTest {
+      val today = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
+      val download = Download(
+        "1",
+        state = 3,
+        createdAt = today.format(DateTimeFormatter.ISO_DATE_TIME)
+      )
+      contentDataSourceLocal.insertDownload("1", DownloadState.COMPLETED, today)
+      verify(downloadDao).insert(download)
+      verifyNoMoreInteractions(downloadDao)
+    }
+  }
+
+  @Test
+  fun deleteDownload() {
+    testCoroutineRule.runBlockingTest {
+      contentDataSourceLocal.deleteDownload("1")
+      verify(downloadDao).delete(
+        Download(
+          "1"
+        )
+      )
+      verifyNoMoreInteractions(downloadDao)
+    }
+  }
+
+  @Test
+  fun deleteAllDownloads() {
+    testCoroutineRule.runBlockingTest {
+      contentDataSourceLocal.deleteAllDownloads()
+      verify(downloadDao).deleteAll()
+      verifyNoMoreInteractions(downloadDao)
+    }
+  }
+
+  @Test
+  fun getQueuedDownloads_A() {
+    testCoroutineRule.runBlockingTest {
+      contentDataSourceLocal.getQueuedDownloads(
+        1,
+        arrayOf(1, 2),
+        arrayOf("screencast", "episode")
+      )
+      verify(downloadDao).getQueuedDownloads(1, arrayOf(1, 2), arrayOf("screencast", "episode"))
+      verifyNoMoreInteractions(downloadDao)
+    }
+  }
+
+  @Test
+  fun getQueuedDownload() {
+    testCoroutineRule.runBlockingTest {
+      contentDataSourceLocal.getQueuedDownload("1")
+      verify(downloadDao).getQueuedDownload("1")
+      verifyNoMoreInteractions(downloadDao)
+    }
+  }
+
+  @Test
+  fun getQueuedDownloads_B() {
+    testCoroutineRule.runBlockingTest {
+      contentDataSourceLocal.getQueuedDownloads()
+      verify(downloadDao).getQueuedDownloads(arrayOf("collection", "screencast"))
+      verifyNoMoreInteractions(downloadDao)
+    }
+  }
+
+  @Test
+  fun getDownloadsById() {
+    testCoroutineRule.runBlockingTest {
+      val downloadIds = listOf("1", "2", "3")
+      contentDataSourceLocal.getDownloadsById(downloadIds)
+      verify(downloadDao).getDownloadsById(downloadIds)
+      verifyNoMoreInteractions(downloadDao)
     }
   }
 }
