@@ -381,7 +381,7 @@ class CollectionFragment : DaggerFragment() {
     if (null == downloadProgressHandler) {
       downloadProgressHandler =
         createMainThreadScheduledHandler(
-          requireActivity(),
+          requireContext(),
           downloadProgressUpdateIntervalMillis
         ) {
           updateDownloadProgress()

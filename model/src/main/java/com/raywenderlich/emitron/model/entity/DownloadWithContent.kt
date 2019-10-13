@@ -40,9 +40,27 @@ data class DownloadWithContent(
     if (contents.isNotEmpty()) contents.first().content.contentId else null
 
   /**
-   * Get Download Id
+   * Get download Id
    */
   fun getDownloadId(): String = download.downloadId
+
+  /**
+   * Get content name
+   */
+  fun getContentName(): String? =
+    if (contents.isNotEmpty()) contents.first().content.name else null
+
+  /**
+   * Get Download Id
+   */
+  fun getDownloadIds(): List<String> {
+    val content = contents.first()
+    return if (content.isScreencastOrEpisode()) {
+      listOf(download.downloadId)
+    } else {
+      content.getDownloadIds().plus(download.downloadId)
+    }
+  }
 
   /**
    * @return [Data] from [DownloadWithContent]

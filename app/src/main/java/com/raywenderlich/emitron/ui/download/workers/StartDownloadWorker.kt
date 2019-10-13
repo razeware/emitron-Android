@@ -38,7 +38,7 @@ class StartDownloadWorker @AssistedInject constructor(
 
     // Check db download state
     val download =
-      downloadRepository.getInProgressDownloads(downloadId)
+      downloadRepository.getDownload(downloadId)
 
     return when {
       download.inProgress() -> {

@@ -105,13 +105,13 @@ class DownloadRepositoryTest {
   fun getInProgressDownloads() {
     testCoroutineRule.runBlockingTest {
       val expected = com.raywenderlich.emitron.data.createDownloadWithContent()
-      whenever(contentDataSourceLocal.getQueuedDownload("1")).doReturn(
+      whenever(contentDataSourceLocal.getDownload("1")).doReturn(
         expected
       )
-      val result = repository.getInProgressDownloads("1")
+      val result = repository.getDownload("1")
 
       result isEqualTo expected
-      verify(contentDataSourceLocal).getQueuedDownload("1")
+      verify(contentDataSourceLocal).getDownload("1")
       verifyNoMoreInteractions(contentDataSourceLocal)
     }
   }

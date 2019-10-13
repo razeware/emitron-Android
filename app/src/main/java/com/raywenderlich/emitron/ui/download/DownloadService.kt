@@ -75,10 +75,15 @@ class DownloadService : ExoDownloadService(
    * See [DownloadService.getForegroundNotification]
    */
   override fun getForegroundNotification(downloads: MutableList<Download>?): Notification {
+    val message = if (!downloads.isNullOrEmpty()) {
+      downloads[0].request.data.toString(Charsets.UTF_8)
+    } else {
+      null
+    }
     return notificationHelper?.buildProgressNotification(
       R.drawable.ic_logo,
       null,
-      null,
+      message,
       downloads
     )!!
   }
@@ -179,7 +184,8 @@ class DownloadService : ExoDownloadService(
     fun startDownload(
       ctx: Context,
       contentId: String,
-      uri: Uri
+      uri: Uri,
+      name: String?
     ): String {
       val downloadRequest = DownloadRequest(
         contentId,
@@ -187,7 +193,7 @@ class DownloadService : ExoDownloadService(
         uri,
         Collections.emptyList(),
         null,
-        null
+        name?.toByteArray()
       )
       sendAddDownload(
         ctx, DownloadService::class.java, downloadRequest, true
@@ -195,6 +201,13 @@ class DownloadService : ExoDownloadService(
       return downloadRequest.id
     }
 
+    /**
+     * Resume a download
+     *
+     * @param ctx Context
+     * @param contentId Content Id
+     *
+     */
     fun resumeDownload(
       ctx: Context,
       contentId: String
@@ -207,6 +220,13 @@ class DownloadService : ExoDownloadService(
       )
     }
 
+    /**
+     * Pause a download
+     *
+     * @param ctx Context
+     * @param contentId Content Id
+     *
+     */
     fun pauseDownload(
       ctx: Context,
       contentId: String

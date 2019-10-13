@@ -22,10 +22,17 @@ class DownloadWithContentTest {
   }
 
   @Test
+  fun getContentName() {
+    val download = createDownloadWithContent()
+
+    download.getContentName() isEqualTo "Introduction to Kotlin Lambdas: Getting Started"
+  }
+
+  @Test
   fun getDownloadId() {
     val download = createDownloadWithContent()
 
-    download.getDownloadId() isEqualTo "1"
+    download.getDownloadIds() isEqualTo listOf("1")
   }
 
   @Test
@@ -66,7 +73,9 @@ class DownloadWithContentTest {
 
   @Test
   fun toDataScreencast() {
-    val download = createDownloadWithContent()
+    val download = createDownloadWithContent(
+      contentType = "screencast"
+    )
 
     val expectedDownload = Download(
       25,
@@ -79,7 +88,8 @@ class DownloadWithContentTest {
         withRelatedBookmark(),
         withRelatedDomains()
       ),
-      download = expectedDownload
+      download = expectedDownload,
+      contentType = "screencast"
     )
     download.toData() isEqualTo expectedData
   }
@@ -105,5 +115,13 @@ class DownloadWithContentTest {
       contentType = "collection"
     )
     download.toData() isEqualTo expectedData
+  }
+
+  @Test
+  fun getDownloadIds() {
+    val download = createDownloadWithContent(
+      contentType = "collection"
+    )
+    download.getDownloadIds() isEqualTo listOf("1")
   }
 }
