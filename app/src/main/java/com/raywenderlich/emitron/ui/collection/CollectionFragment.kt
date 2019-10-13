@@ -1,6 +1,7 @@
 package com.raywenderlich.emitron.ui.collection
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,22 +10,28 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.WorkManager
+import com.google.android.exoplayer2.offline.Download
+import com.google.android.exoplayer2.offline.DownloadManager
 import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentCollectionBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import com.raywenderlich.emitron.model.Data
+import com.raywenderlich.emitron.model.DownloadState
 import com.raywenderlich.emitron.model.isScreencast
-import com.raywenderlich.emitron.ui.common.ShimmerProgressDelegate
+import com.raywenderlich.emitron.ui.common.getDefaultAppBarConfiguration
 import com.raywenderlich.emitron.ui.content.getReadableContributors
 import com.raywenderlich.emitron.ui.content.getReadableReleaseAtWithTypeAndDuration
+import com.raywenderlich.emitron.ui.download.workers.StartDownloadWorker
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
 import com.raywenderlich.emitron.ui.onboarding.OnboardingView
 import com.raywenderlich.emitron.utils.UiStateManager
+import com.raywenderlich.emitron.utils.createMainThreadScheduledHandler
 import com.raywenderlich.emitron.utils.extensions.*
-import com.raywenderlich.emitron.utils.getDefaultAppBarConfiguration
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 /**
  * Collection detail view
@@ -47,7 +54,39 @@ class CollectionFragment : DaggerFragment() {
 
   private lateinit var binding: FragmentCollectionBinding
 
-  private lateinit var progressDelegate: ShimmerProgressDelegate
+  companion object {
+    /**
+     * Handler interval to update download progress
+     */
+    const val downloadProgressUpdateIntervalMillis: Long = 5000L
+  }
+
+  /**
+   * Download manager instance to observe download progress
+   */
+  @Inject
+  lateinit var downloadManager: DownloadManager
+
+  private var downloadProgressHandler: Handler? = null
+
+  /**
+   * Download listener
+   */
+  class DownloadStartListener(private val onDownloadStart: () -> Unit) : DownloadManager.Listener {
+
+    /**
+     * See [DownloadManager.Listener.onDownloadChanged]
+     */
+    override fun onDownloadChanged(downloadManager: DownloadManager?, download: Download?) {
+      if (download?.state == Download.STATE_DOWNLOADING
+        || download?.state == Download.STATE_RESTARTING
+      ) {
+        onDownloadStart()
+      }
+    }
+  }
+
+  private var downloadStartListener: DownloadStartListener? = null
 
   /**
    * See [androidx.fragment.app.Fragment.onCreateView]
@@ -74,7 +113,10 @@ class CollectionFragment : DaggerFragment() {
   }
 
   private fun initUi() {
-    binding.toolbar.setupWithNavController(findNavController(), getDefaultAppBarConfiguration())
+    binding.toolbar.setupWithNavController(
+      findNavController(),
+      getDefaultAppBarConfiguration()
+    )
 
     binding.textCollectionBodyPro.removeUnderline()
 
@@ -88,7 +130,7 @@ class CollectionFragment : DaggerFragment() {
         viewModel.updateContentProgression(episode, position)
       },
       onEpisodeDownload = { episode, _ ->
-
+        startDownload(episode?.id)
       }
     )
 
@@ -106,7 +148,23 @@ class CollectionFragment : DaggerFragment() {
     binding.buttonCollectionPlay.setOnClickListener {
       openPlayer()
     }
-    progressDelegate = ShimmerProgressDelegate(requireView())
+
+    binding.buttonCollectionDownload.setOnClickListener {
+      startDownload()
+    }
+  }
+
+  private fun startDownload(episodeId: String? = null) {
+    val contentId = viewModel.getContentId()
+    contentId?.let {
+      StartDownloadWorker.enqueue(
+        WorkManager.getInstance(requireContext()),
+        contentId,
+        episodeId
+      )
+    }
+
+    initDownloadProgressHandler()
   }
 
   private fun initObservers() {
@@ -148,7 +206,11 @@ class CollectionFragment : DaggerFragment() {
 
     viewModel.loadCollectionResult.observe(viewLifecycleOwner) {
       if (it?.getContentIfNotHandled() == false) {
+        initDownloadObserver()
         showErrorSnackbar(getString(R.string.message_collection_episode_load_failed))
+      } else {
+        initDownloadObserver()
+        initDownloadProgressHandler()
       }
     }
 
@@ -206,6 +268,20 @@ class CollectionFragment : DaggerFragment() {
         }
       }
     }
+
+  }
+
+  private fun initDownloadObserver() {
+    viewModel.getDownloads(viewModel.getContentIds())
+      .observe(viewLifecycleOwner) { downloads ->
+        downloads?.let {
+          if (it.isNotEmpty()) {
+            val collectionDownload = viewModel.getCollectionDownloadState(downloads)
+            binding.buttonCollectionDownload.updateDownloadState(collectionDownload)
+            episodeAdapter.updateEpisodeDownloadProgress(downloads)
+          }
+        }
+      }
   }
 
   private fun loadCollection() {
@@ -226,8 +302,10 @@ class CollectionFragment : DaggerFragment() {
 
   private fun handleProgress(showProgress: Boolean = false) {
     with(binding) {
-      progressViewEpisode.toVisibility(showProgress)
-      groupCollectionContent.toVisibility(!showProgress)
+      groupEpisodeProgress.toVisibility(showProgress)
+      if (showProgress) {
+        groupCollectionContent.toVisibility(!showProgress)
+      }
     }
   }
 
@@ -241,6 +319,73 @@ class CollectionFragment : DaggerFragment() {
         OnboardingView.Collection
       )
       findNavController().navigate(action)
+    }
+  }
+
+  private fun initDownloadProgressHandler() {
+    val downloads = downloadManager.currentDownloads
+
+    if (!downloads.isNullOrEmpty()) {
+      val downloadIds = downloads.map {
+        it.request.id
+      }.filter {
+        it in viewModel.getContentIds()
+      }
+
+      if (downloadIds.isNotEmpty()) {
+        createDownloadProgressHandler()
+      }
+    }
+    if (null == downloadStartListener) {
+      downloadStartListener = DownloadStartListener {
+        createDownloadProgressHandler()
+      }
+      downloadManager.addListener(downloadStartListener)
+    }
+  }
+
+  private fun updateDownloadProgress() {
+    val downloads = downloadManager.currentDownloads
+
+    if (downloads.isEmpty()) {
+      downloadProgressHandler?.removeCallbacksAndMessages(null)
+      return
+    }
+
+    downloads.map {
+      val state = when {
+        it.state == Download.STATE_FAILED -> DownloadState.FAILED
+        it.state == Download.STATE_COMPLETED -> DownloadState.COMPLETED
+        it.state == Download.STATE_DOWNLOADING -> DownloadState.IN_PROGRESS
+        it.state == Download.STATE_QUEUED -> DownloadState.PAUSED
+        it.state == Download.STATE_STOPPED -> DownloadState.PAUSED
+        else -> DownloadState.IN_PROGRESS
+      }
+      viewModel.updateDownloadProgress(
+        it.request.id,
+        it.percentDownloaded.roundToInt(),
+        state
+      )
+    }
+  }
+
+  /**
+   * See [androidx.fragment.app.Fragment.onDestroy]
+   */
+  override fun onDestroy() {
+    super.onDestroy()
+    downloadProgressHandler?.removeCallbacksAndMessages(null)
+  }
+
+  private fun createDownloadProgressHandler() {
+    if (null == downloadProgressHandler) {
+      downloadProgressHandler =
+        createMainThreadScheduledHandler(
+          requireActivity(),
+          downloadProgressUpdateIntervalMillis
+        ) {
+          updateDownloadProgress()
+        }
     }
   }
 }

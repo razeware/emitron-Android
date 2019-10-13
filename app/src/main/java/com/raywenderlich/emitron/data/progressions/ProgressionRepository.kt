@@ -8,6 +8,7 @@ import com.raywenderlich.emitron.data.content.ContentDataSourceLocal
 import com.raywenderlich.emitron.model.CompletionStatus
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.Data
+import com.raywenderlich.emitron.model.isCompleted
 import com.raywenderlich.emitron.utils.BoundaryCallbackNotifier
 import com.raywenderlich.emitron.utils.LocalPagedResponse
 import com.raywenderlich.emitron.utils.PagedBoundaryCallbackImpl

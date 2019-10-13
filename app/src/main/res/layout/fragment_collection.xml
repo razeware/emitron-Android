@@ -211,7 +211,7 @@ Values and References" />
         app:layout_constraintTop_toBottomOf="@id/text_collection_title"
         tools:text="11 Apr · Beginner · Video Course (56 min)" />
 
-      <com.raywenderlich.emitron.utils.DownloadButton
+      <com.raywenderlich.emitron.ui.common.DownloadButton
         android:id="@+id/button_collection_download"
         android:layout_width="@dimen/button_icon_height_width_3"
         android:layout_height="@dimen/button_icon_height_width_3"
@@ -320,16 +320,41 @@ Values and References" />
         app:constraint_referenced_ids="text_collection_episode_headline,recycler_view_collection_episode"
         tools:visibility="gone" />
 
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_collection_episode_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/collection_episode_headline_margin_top"
+        android:text="@string/course_episodes_progress"
+        android:textAppearance="@style/TextAppearance.Headline.3"
+        app:layout_constraintEnd_toStartOf="@+id/progress_episode"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/text_collection_author"
+        tools:text="@string/course_episodes_progress" />
+
       <ProgressBar
-        android:id="@+id/progress_view_episode"
+        android:id="@+id/progress_episode"
         style="?android:attr/progressBarStyle"
         android:layout_width="@dimen/episode_progress_height_width"
         android:layout_height="@dimen/episode_progress_height_width"
+        android:layout_marginStart="@dimen/button_spacing_horizontal"
         android:layout_marginTop="@dimen/episode_progress_margin_top"
         android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/text_collection_episode_progress"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_collection_author" />
+        app:layout_constraintStart_toEndOf="@+id/text_collection_episode_progress"
+        app:layout_constraintTop_toTopOf="@+id/text_collection_episode_progress" />
+
+      <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_episode_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:constraint_referenced_ids="text_collection_episode_progress"
+        tools:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
   </androidx.core.widget.NestedScrollView>

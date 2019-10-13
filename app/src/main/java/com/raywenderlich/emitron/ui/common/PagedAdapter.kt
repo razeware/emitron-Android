@@ -88,7 +88,7 @@ class PagedAdapter {
   /**
    * Check if footer progress item view should be shown
    */
-  fun hasExtraRow(): Boolean = (networkState != null && networkState != NetworkState.SUCCESS
+  fun hasExtraRow(): Boolean = (null != networkState && networkState != NetworkState.SUCCESS
       && networkState != NetworkState.INIT_SUCCESS) ||
-      (uiState != null && uiState != UiStateManager.UiState.LOADED)
+      (null != uiState && uiState != UiStateManager.UiState.LOADED)
 }

@@ -1,4 +1,4 @@
-package com.raywenderlich.emitron.utils
+package com.raywenderlich.emitron.ui.common
 
 import android.annotation.TargetApi
 import android.content.Context
@@ -110,7 +110,7 @@ class DownloadButton : FrameLayout {
    *
    * @param download Download
    */
-  fun setDownloadState(download: Download?) {
+  fun updateDownloadState(download: Download?) {
     downloadButton.iconTint = ContextCompat.getColorStateList(context, R.color.colorIcon)
     when {
       download.isDownloaded() -> {
@@ -123,6 +123,7 @@ class DownloadButton : FrameLayout {
       download.isDownloading() -> {
         downloadButton.toVisibility(false)
         downloadStopButton.toVisibility(true)
+        progressDownloadingPending.toVisibility(false)
         progressDownload.toVisibility(true)
         progressDownload.progress = download.getProgress()
       }

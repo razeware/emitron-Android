@@ -1,6 +1,7 @@
 package com.raywenderlich.emitron.model
 
 import android.os.Parcelable
+import com.raywenderlich.emitron.model.CompletionStatus.Completed
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -21,11 +22,6 @@ enum class CompletionStatus(val param: String) : Parcelable {
    */
   Completed("completed");
 
-  /**
-   * Check is completion status is [Completed]
-   */
-  fun isCompleted(): Boolean = this == Completed
-
   companion object {
 
     /**
@@ -34,3 +30,9 @@ enum class CompletionStatus(val param: String) : Parcelable {
     internal val map = values().associateBy(CompletionStatus::name)
   }
 }
+
+
+/**
+ * Check is completion status is [Completed]
+ */
+fun CompletionStatus?.isCompleted(): Boolean = this == Completed

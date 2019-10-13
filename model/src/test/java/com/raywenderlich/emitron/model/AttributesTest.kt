@@ -92,15 +92,6 @@ class AttributesTest {
   }
 
   @Test
-  fun getVideoId() {
-    val attributes = Attributes(uri = null)
-    assertThat(attributes.getVideoId()).isEqualTo(null)
-
-    val attributes2 = Attributes(uri = "rw://betamax/collections/122")
-    attributes2.getVideoId() isEqualTo "122"
-  }
-
-  @Test
   fun setVideoUrl() {
     val attributesWithUrl = Attributes(url = "WubbaLubbaDubDub")
     val attributes = Attributes()

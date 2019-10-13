@@ -150,7 +150,13 @@ data class Attributes(
   /**
    * Tag
    */
-  val tag: String? = null
+  val tag: String? = null,
+
+  /**
+   * Tag
+   */
+  @Json(name = "video_identifier")
+  val videoId: String? = null
 ) : Parcelable {
 
   /**
@@ -220,13 +226,6 @@ data class Attributes(
    * @return progress
    */
   fun getProgress(): Long = progress ?: 0
-
-  /**
-   * Get content video id by parsing URI
-   *
-   * @return video id
-   */
-  fun getVideoId(): String? = uri?.split("/")?.lastOrNull()
 
   /**
    * Set video url

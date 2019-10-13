@@ -88,10 +88,8 @@ fun Fragment.showSuccessSnackbar(text: String) {
 fun Fragment.hideKeyboard() {
   val inputMethodManager =
     requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-  if (view != null) {
+  view?.let {
     inputMethodManager.hideSoftInputFromWindow(requireView().windowToken, 0)
-  }
-  if (view != null) {
     requireView().clearFocus()
   }
 }

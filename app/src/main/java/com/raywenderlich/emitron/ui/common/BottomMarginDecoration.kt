@@ -1,4 +1,4 @@
-package com.raywenderlich.emitron.utils
+package com.raywenderlich.emitron.ui.common
 
 import android.graphics.Rect
 import android.view.View

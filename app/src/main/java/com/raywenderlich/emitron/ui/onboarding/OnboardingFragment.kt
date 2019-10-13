@@ -16,7 +16,7 @@ import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import com.raywenderlich.emitron.utils.extensions.applyUnderline
 import com.raywenderlich.emitron.utils.extensions.setDataBindingView
 import com.raywenderlich.emitron.utils.extensions.toVisibility
-import com.raywenderlich.emitron.utils.getDefaultAppBarConfiguration
+import com.raywenderlich.emitron.ui.common.getDefaultAppBarConfiguration
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -61,7 +61,9 @@ class OnboardingFragment : DaggerFragment() {
   }
 
   private fun initToolbar() {
-    binding.toolbar.setupWithNavController(findNavController(), getDefaultAppBarConfiguration())
+    binding.toolbar.setupWithNavController(findNavController(),
+      getDefaultAppBarConfiguration()
+    )
     binding.toolbar.navigationIcon =
       VectorDrawableCompat.create(resources, R.drawable.ic_material_icon_close, null)
   }

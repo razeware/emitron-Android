@@ -4,6 +4,8 @@
   package="com.raywenderlich.emitron">
 
   <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
   <application
     android:name=".EmitronApplication"
@@ -43,11 +45,25 @@
       </intent-filter>
     </activity>
 
+    <!-- WorkManager reset -->
     <provider
       android:name="androidx.work.impl.WorkManagerInitializer"
       android:authorities="com.raywenderlich.emitron.workmanager-init"
       android:exported="false"
       tools:node="remove" />
+
+    <!-- Download Service -->
+    <service android:name=".ui.download.DownloadService">
+      <intent-filter>
+        <action android:name="com.google.android.exoplayer.downloadService.action.RESTART" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
+    </service>
+
+    <service
+      android:name="com.google.android.exoplayer2.scheduler.PlatformScheduler$PlatformSchedulerService"
+      android:exported="true"
+      android:permission="android.permission.BIND_JOB_SERVICE" />
   </application>
 
 </manifest>

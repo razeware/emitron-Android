@@ -230,11 +230,14 @@ data class Data(
       ?.addDomains(newRelations)
       ?.addProgression(newRelations)
       ?.addBookmark(newRelations)
+      ?.addContents(newRelations)
+      ?.addContentGroups(newRelations)
       ?: Relationships()
         .addDomains(newRelations)
         .addProgression(newRelations)
         .addBookmark(newRelations)
         .addContents(newRelations)
+        .addContentGroups(newRelations)
 
     return this.copy(relationships = newRelationShips)
   }
@@ -348,17 +351,12 @@ data class Data(
    *
    * @return video id string
    */
-  fun getVideoId(): String? = attributes?.getVideoId()
+  fun getVideoId(): String? = attributes?.videoId
 
   /**
    *  @return stream/download url for content
    */
-  fun getUrl(): String = attributes?.url ?: ""
-
-  /**
-   *  @return uri for content
-   */
-  fun getUri(): String = attributes?.uri ?: ""
+  fun getUrl(): String = attributes?.url ?: download?.url ?: ""
 
   /**
    * @return Video playback token for user
@@ -384,6 +382,36 @@ data class Data(
     return this.relationships?.getContentGroupIds() ?: emptyList()
   }
 
+  /**
+   * Check if content is downloaded
+   *
+   * @return true if content is downloaded, else false
+   */
+  fun isDownloaded(): Boolean = download.isDownloaded()
+
+  /**
+   * Check if content is downloading
+   *
+   * @return true if content is downloading, else false
+   */
+  fun isDownloading(): Boolean = download.isDownloading()
+
+  /**
+   * Get content download progress
+   *
+   * @return true if content is downloaded, else false
+   */
+  fun getDownloadProgress(): Int = download.getProgress()
+
+  /**
+   * Update content download progress
+   *
+   * @return Updated [Data]
+   */
+  fun updateDownloadProgress(download: Download?): Data {
+    return this.copy(download = download)
+  }
+
   companion object {
 
     /**
@@ -392,7 +420,7 @@ data class Data(
      *  @return list of domain ids from input list
      */
     fun getDomainIds(dataList: List<Data>): List<String> {
-      return dataList.filter { it.isTypeDomain() }
+      return dataList.filter { FilterType.fromType(it.type).isDomain() }
         .mapNotNull { it.id }
     }
 
@@ -402,7 +430,7 @@ data class Data(
      *  @return list of category ids from input list
      */
     fun getCategoryIds(dataList: List<Data>): List<String> {
-      return dataList.filter { DataType.Categories == DataType.fromValue(it.type) }
+      return dataList.filter { FilterType.fromType(it.type).isCategory() }
         .mapNotNull { it.id }
     }
 
@@ -412,8 +440,28 @@ data class Data(
      *  @return list of category ids from input list
      */
     fun getSearchTerm(dataList: List<Data>): String {
-      return dataList.firstOrNull { DataType.Search == DataType.fromValue(it.type) }?.getName()
+      return dataList.firstOrNull { FilterType.fromType(it.type).isSearch() }?.getName()
         ?: ""
+    }
+
+    /**
+     *  @param dataList List of content type
+     *
+     *  @return list of content types from input list
+     */
+    fun getContentTypes(dataList: List<Data>): List<String> {
+      return dataList.filter { FilterType.fromType(it.type).isContentType() }
+        .mapNotNull { it.getContentType()?.toString()?.toLowerCase() }
+    }
+
+    /**
+     *  @param dataList List of difficulty
+     *
+     *  @return list of difficulty from input list
+     */
+    fun getDifficulty(dataList: List<Data>): List<String> {
+      return dataList.filter { FilterType.fromType(it.type).isDifficulty() }
+        .mapNotNull { it.getName()?.toLowerCase() }
     }
 
     /**
@@ -423,7 +471,7 @@ data class Data(
      */
     fun getSortOrder(dataList: List<Data>): String {
       val sortOrder =
-        dataList.firstOrNull { DataType.Sort == DataType.fromValue(it.type) }?.getName()
+        dataList.firstOrNull { FilterType.fromType(it.type).isSort() }?.getName()
           ?: ""
       return SortOrder.fromValue(sortOrder)?.param ?: SortOrder.Newest.param
     }
@@ -472,7 +520,7 @@ data class Data(
      */
     fun fromSearchQuery(searchTerm: String?): Data =
       Data(
-        type = DataType.Search.toRequestFormat(),
+        type = FilterType.Search.toRequestFormat(),
         attributes = Attributes(
           name = searchTerm
         )
@@ -487,7 +535,7 @@ data class Data(
      */
     fun fromSortOrder(sortOrder: String?): Data =
       Data(
-        type = DataType.Sort.toRequestFormat(),
+        type = FilterType.Sort.toRequestFormat(),
         attributes = Attributes(
           name = sortOrder
         )

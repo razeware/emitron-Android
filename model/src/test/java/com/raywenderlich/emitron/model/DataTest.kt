@@ -521,7 +521,7 @@ class DataTest {
   fun getSearchTerm() {
     val filters = listOf(
       Data(
-        type = DataType.Search.toRequestFormat(),
+        type = FilterType.Search.toRequestFormat(),
         attributes = Attributes(name = "Emitron")
       )
     )
@@ -531,10 +531,36 @@ class DataTest {
   }
 
   @Test
+  fun getContentTypes() {
+    val filters = listOf(
+      Data(
+        type = FilterType.ContentType.toRequestFormat(),
+        attributes = Attributes(name = "Video Course", contentType = "collection")
+      )
+    )
+    val contentTypes = Data.getContentTypes(filters)
+
+    contentTypes isEqualTo listOf("collection")
+  }
+
+  @Test
+  fun getDifficultyFilter() {
+    val filters = listOf(
+      Data(
+        type = FilterType.Difficulty.toRequestFormat(),
+        attributes = Attributes(name = "Beginner")
+      )
+    )
+    val contentTypes = Data.getDifficulty(filters)
+
+    contentTypes isEqualTo listOf("beginner")
+  }
+
+  @Test
   fun getSortOrder() {
     val filters = listOf(
       Data(
-        type = DataType.Sort.toRequestFormat(),
+        type = FilterType.Sort.toRequestFormat(),
         attributes = Attributes(name = "popularity")
       )
     )
@@ -544,7 +570,7 @@ class DataTest {
 
     val filters2 = listOf(
       Data(
-        type = DataType.Sort.toRequestFormat(),
+        type = FilterType.Sort.toRequestFormat(),
         attributes = Attributes(name = "newest")
       )
     )
@@ -600,7 +626,7 @@ class DataTest {
   @Test
   fun fromSearchQuery() {
     val expected = Data(
-      type = DataType.Search.toRequestFormat(),
+      type = FilterType.Search.toRequestFormat(),
       attributes = Attributes(
         name = "Emitron"
       )
@@ -614,7 +640,7 @@ class DataTest {
   @Test
   fun fromSortOrder() {
     val expected = Data(
-      type = DataType.Sort.toRequestFormat(),
+      type = FilterType.Sort.toRequestFormat(),
       attributes = Attributes(
         name = "popularity"
       )
@@ -627,9 +653,9 @@ class DataTest {
 
   @Test
   fun getVideoId() {
-    val attributes = Attributes(uri = "rw://betamax/collections/122")
+    val attributes = Attributes(videoId = "1")
     val data = Data(attributes = attributes)
-    data.getVideoId() isEqualTo "122"
+    data.getVideoId() isEqualTo "1"
   }
 
   @Test
@@ -654,5 +680,101 @@ class DataTest {
     val result = data.setVideoUrl(dataWithUrl)
 
     result?.getUrl() isEqualTo "WubbaLubbaDubDub"
+  }
+
+  @Test
+  fun isDownloaded() {
+    val data = Data(
+      attributes = Attributes(url = "WubbaLubbaDubDub"),
+      download = Download(
+        state = DownloadState.COMPLETED.ordinal
+      )
+    )
+
+    val result = data.isDownloaded()
+
+    result isEqualTo true
+
+    val data2 = Data(
+      attributes = Attributes(url = "WubbaLubbaDubDub"),
+      download = Download(
+        state = DownloadState.IN_PROGRESS.ordinal
+      )
+    )
+
+    val result2 = data2.isDownloaded()
+
+    result2 isEqualTo false
+  }
+
+  @Test
+  fun isDownloading() {
+    val data = Data(
+      attributes = Attributes(url = "WubbaLubbaDubDub"),
+      download = Download(
+        state = DownloadState.COMPLETED.ordinal
+      )
+    )
+
+    val result = data.isDownloading()
+
+    result isEqualTo false
+
+    val data2 = Data(
+      attributes = Attributes(url = "WubbaLubbaDubDub"),
+      download = Download(
+        state = DownloadState.IN_PROGRESS.ordinal
+      )
+    )
+
+    val result2 = data2.isDownloading()
+
+    result2 isEqualTo true
+  }
+
+  @Test
+  fun getDownloadProgress() {
+    val data = Data(
+      attributes = Attributes(url = "WubbaLubbaDubDub"),
+      download = Download(
+        progress = 25,
+        state = DownloadState.COMPLETED.ordinal
+      )
+    )
+
+    val result = data.getDownloadProgress()
+
+    result isEqualTo 25
+  }
+
+  @Test
+  fun updateDownloadProgress() {
+    val data = Data(
+      attributes = Attributes(url = "WubbaLubbaDubDub"),
+      download = Download(
+        progress = 25,
+        state = DownloadState.COMPLETED.ordinal
+      )
+    )
+
+    val result = data.updateDownloadProgress(
+      download = Download(
+        progress = 45,
+        state = DownloadState.COMPLETED.ordinal
+      )
+    )
+
+    result.getDownloadProgress() isEqualTo 45
+  }
+
+  @Test
+  fun getDownloadUrl() {
+    val data = Data(
+      download = Download(
+        url = "WubbaLubbaDubDub",
+        state = DownloadState.COMPLETED.ordinal
+      )
+    )
+    data.getUrl() isEqualTo "WubbaLubbaDubDub"
   }
 }

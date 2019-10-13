@@ -104,6 +104,16 @@ class PlayerViewModel @Inject constructor(
   }
 
   private fun startPlayback(episode: Data, position: Int) {
+    if (episode.isDownloaded()) {
+      lastUpdatedProgress = 0
+      _nowPlayingEpisode.value = episode
+      nowPlayingPosition = position
+    } else {
+      startStream(episode, position)
+    }
+  }
+
+  private fun startStream(episode: Data, position: Int) {
     episode.getVideoId()?.let { videoId ->
       viewModelScope.launch {
         try {

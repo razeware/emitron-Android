@@ -22,12 +22,10 @@ interface ContentApi {
   fun getContents(
     @Query("page[number]") pageNumber: Int,
     @Query("page[size]") pageSize: Int,
-    @Query("filter[content_types][]") contentType: List<String> = listOf(
-      "collection",
-      "screencast"
-    ),
+    @Query("filter[content_types][]") contentType: List<String> = emptyList(),
     @Query("filter[category_ids][]") category: List<String> = emptyList(),
     @Query("filter[domain_ids][]") domain: List<String> = emptyList(),
+    @Query("filter[difficulties][]") difficulty: List<String> = emptyList(),
     @Query("filter[q]") search: String = "",
     @Query("sort") sort: String = ""
   ): Call<Contents>

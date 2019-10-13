@@ -26,7 +26,11 @@ data class Episode(
       Episode(
         name = data.getName() ?: "",
         uri = data.getUrl(),
-        mimeType = MimeTypes.APPLICATION_M3U8
+        mimeType = if (data.isDownloaded()) {
+          MimeTypes.APPLICATION_MP4
+        } else {
+          MimeTypes.APPLICATION_M3U8
+        }
       )
     }
   }

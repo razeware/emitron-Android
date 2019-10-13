@@ -22,5 +22,5 @@ interface ContentDomainJoinDao {
    * Delete all content domain joins
    */
   @Query("DELETE from content_domain_join")
-  fun deleteAll()
+  suspend fun deleteAll()
 }

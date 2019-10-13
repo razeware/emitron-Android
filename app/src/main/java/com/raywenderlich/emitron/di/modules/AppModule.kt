@@ -16,7 +16,8 @@ import javax.inject.Singleton
     NetModule::class,
     DataModule::class,
     SessionModule::class,
-    WorkerBindings::class
+    WorkerBindings::class,
+    DownloadModule::class
   ]
 )
 class AppModule {

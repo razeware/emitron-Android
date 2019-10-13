@@ -25,7 +25,7 @@ import com.raywenderlich.emitron.ui.common.ShimmerProgressDelegate
 import com.raywenderlich.emitron.ui.content.ContentAdapter
 import com.raywenderlich.emitron.ui.content.ContentPagedFragment
 import com.raywenderlich.emitron.ui.library.search.RecentSearchAdapter
-import com.raywenderlich.emitron.utils.BottomMarginDecoration
+import com.raywenderlich.emitron.ui.common.BottomMarginDecoration
 import com.raywenderlich.emitron.utils.NetworkState
 import com.raywenderlich.emitron.utils.extensions.*
 import dagger.android.support.DaggerFragment
@@ -317,7 +317,7 @@ class LibraryFragment : DaggerFragment() {
 
   private fun applyDefaultChipStyle(chip: Chip) {
     val shapeAppearanceModel =
-      ShapeAppearanceModel.builder().setCornerRadius(9.0f.toInt().toPx().toFloat()).build()
+      ShapeAppearanceModel.builder().setAllCornerSizes(9.0f.toInt().toPx().toFloat()).build()
 
     with(chip) {
       this.shapeAppearanceModel = shapeAppearanceModel

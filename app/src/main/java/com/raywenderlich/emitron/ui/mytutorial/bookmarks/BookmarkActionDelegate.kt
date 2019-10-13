@@ -97,7 +97,7 @@ class BookmarkActionDelegate @Inject constructor(
     } else {
       val result = addContentBookmark(contentId)
       boundaryCallbackNotifier.decrement()
-      if (result != null) {
+      if (null != result) {
         collection.addBookmark(result)
       } else {
         collection

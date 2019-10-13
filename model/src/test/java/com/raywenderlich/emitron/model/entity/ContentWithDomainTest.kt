@@ -104,7 +104,6 @@ class ContentWithDomainTest {
           updatedAt = null,
           technology = "Swift, iOS",
           contributors = "Luke",
-          url = "https://koenig-media.raywenderlich.com/",
           kind = null
         ),
         links = null,

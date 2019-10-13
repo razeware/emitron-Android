@@ -22,6 +22,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.setupWithNavController
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
+import com.google.android.exoplayer2.upstream.cache.Cache
 import com.google.android.gms.cast.framework.CastContext
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -39,7 +40,7 @@ import com.raywenderlich.emitron.utils.Log
 import com.raywenderlich.emitron.utils.createCountDownTimer
 import com.raywenderlich.emitron.utils.createMainThreadScheduledHandler
 import com.raywenderlich.emitron.utils.extensions.*
-import com.raywenderlich.emitron.utils.getDefaultAppBarConfiguration
+import com.raywenderlich.emitron.ui.common.getDefaultAppBarConfiguration
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -195,6 +196,9 @@ class PlayerFragment : DaggerFragment() {
    */
   @Inject
   lateinit var viewModelFactory: ViewModelFactory
+
+  @Inject
+  lateinit var cache: Cache
 
   private val viewModel: PlayerViewModel by viewModels { viewModelFactory }
 
@@ -355,17 +359,20 @@ class PlayerFragment : DaggerFragment() {
       eventObserver =
       Observer {
         onPlaybackStateChange(it)
-      })
+      },
+      cache = cache
+    )
   }
 
   private fun startPlayback() {
-    if (isNetNotConnected()) {
+    val playlist = args.playlist
+    if (playlist.isNotDownloaded() && isNetNotConnected()) {
       showErrorSnackbar(getString(R.string.error_no_connection))
       return
     }
 
-    args.playlist?.let {
-      viewModel.startPlayback(it)
+    playlist?.let {
+      viewModel.startPlayback(playlist)
     }
   }
 

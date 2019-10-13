@@ -14,18 +14,6 @@ enum class DataType {
   Categories,
   /** Groups */
   Groups,
-  /**
-   * Search
-   *
-   * Local data type to add search filter
-   */
-  Search,
-  /**
-   * Sort
-   *
-   * Local data type to add sort filter
-   */
-  Sort,
   /** Contents */
   Contents,
   /** Permissions */

@@ -129,6 +129,25 @@ data class Relationships(
   }
 
   /**
+   * Add content groups to existing [Data.relationships] with no groups
+   *
+   * @param groupRelations list of groups
+   *
+   * @return Updated relationship
+   */
+  fun addContentGroups(groupRelations: List<Data>): Relationships {
+    val contents = groupRelations.filter {
+      it.isTypeGroup()
+    }
+
+    if (contents.isEmpty()) {
+      return this
+    }
+
+    return this.copy(groups = Contents(datum = contents))
+  }
+
+  /**
    * Update progressions to existing [Data.relationships] with progressions
    *
    * @param progressionRelations list of progressions

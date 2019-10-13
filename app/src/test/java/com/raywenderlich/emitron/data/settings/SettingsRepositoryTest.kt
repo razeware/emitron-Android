@@ -4,7 +4,11 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.content.ContentDataSourceLocal
 import com.raywenderlich.emitron.ui.onboarding.OnboardingView
+import com.raywenderlich.emitron.utils.CurrentThreadExecutor
+import com.raywenderlich.emitron.utils.TestCoroutineRule
+import com.raywenderlich.emitron.utils.async.ThreadManager
 import com.raywenderlich.emitron.utils.isEqualTo
+import kotlinx.coroutines.Dispatchers
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -15,14 +19,22 @@ class SettingsRepositoryTest {
 
   private val settingsPrefs: SettingsPrefs = mock()
 
+  private val threadManager: ThreadManager = mock()
+
   private val contentDataSourceLocal: ContentDataSourceLocal = mock()
 
   @get:Rule
   val instantTaskExecutorRule: InstantTaskExecutorRule = InstantTaskExecutorRule()
 
+  @get:Rule
+  val testCoroutineRule: TestCoroutineRule = TestCoroutineRule()
+
   @Before
   fun setUp() {
-    settingsRepository = SettingsRepository(settingsPrefs, contentDataSourceLocal)
+    whenever(threadManager.io).doReturn(Dispatchers.Unconfined)
+    whenever(threadManager.db).doReturn(Dispatchers.Unconfined)
+    whenever(threadManager.networkExecutor).doReturn(CurrentThreadExecutor())
+    settingsRepository = SettingsRepository(threadManager, settingsPrefs, contentDataSourceLocal)
   }
 
   @Test
@@ -159,11 +171,13 @@ class SettingsRepositoryTest {
 
   @Test
   fun logout() {
-    settingsRepository.logout()
-    verify(contentDataSourceLocal).deleteAll()
-    verify(settingsPrefs).clear()
-    verifyNoMoreInteractions(contentDataSourceLocal)
-    verifyNoMoreInteractions(settingsPrefs)
+    testCoroutineRule.runBlockingTest {
+      settingsRepository.logout()
+      verify(contentDataSourceLocal).deleteAll()
+      verify(settingsPrefs).clear()
+      verifyNoMoreInteractions(contentDataSourceLocal)
+      verifyNoMoreInteractions(settingsPrefs)
+    }
   }
 
   @Test

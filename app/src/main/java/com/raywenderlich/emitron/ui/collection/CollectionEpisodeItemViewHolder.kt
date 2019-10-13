@@ -39,7 +39,7 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
     binding.buttonCollectionEpisodeDownload.setOnClickListener {
       onEpisodeDownload(adapterPosition)
     }
-    binding.buttonCollectionEpisodeDownload.setDownloadState(episode?.download)
+    binding.buttonCollectionEpisodeDownload.updateDownloadState(episode?.download)
     binding.data = episode
     binding.episodePosition = episode?.getEpisodeNumber(position, episodeIsProContent)
 

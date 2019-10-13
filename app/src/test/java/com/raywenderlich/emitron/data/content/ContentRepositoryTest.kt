@@ -22,6 +22,7 @@ class ContentRepositoryTest {
   private lateinit var repository: ContentRepository
 
   private val contentApi: ContentApi = mock()
+  private val contentDataSourceLocal: ContentDataSourceLocal = mock()
 
   @get:Rule
   val instantTaskExecutorRule: InstantTaskExecutorRule = InstantTaskExecutorRule()
@@ -37,7 +38,7 @@ class ContentRepositoryTest {
   fun setUp() {
     whenever(threadManager.io).doReturn(Dispatchers.Unconfined)
     whenever(threadManager.networkExecutor).doReturn(CurrentThreadExecutor())
-    repository = ContentRepository(contentApi, threadManager, settingsPref)
+    repository = ContentRepository(contentApi, threadManager, settingsPref, contentDataSourceLocal)
   }
 
   /**
@@ -54,6 +55,7 @@ class ContentRepositoryTest {
         pageSize = anyInt(),
         contentType = anyList(),
         category = anyList(),
+        difficulty = anyList(),
         domain = anyList(),
         search = anyString(),
         sort = anyString()
@@ -98,6 +100,7 @@ class ContentRepositoryTest {
         pageSize = anyInt(),
         contentType = anyList(),
         category = anyList(),
+        difficulty = anyList(),
         domain = anyList(),
         search = anyString(),
         sort = anyString()
@@ -120,6 +123,7 @@ class ContentRepositoryTest {
       expectedContentTypeFilter,
       emptyList(),
       emptyList(),
+      emptyList(),
       "",
       "-released_at"
     )
@@ -140,6 +144,7 @@ class ContentRepositoryTest {
         pageSize = anyInt(),
         contentType = anyList(),
         category = anyList(),
+        difficulty = anyList(),
         domain = anyList(),
         search = anyString(),
         sort = anyString()
@@ -152,9 +157,9 @@ class ContentRepositoryTest {
 
     val filterList = listOf(
       Data(id = "1", type = DataType.Categories.toRequestFormat()),
-      Data(type = DataType.Search.toRequestFormat(), attributes = Attributes(name = "Emitron")),
+      Data(type = FilterType.Search.toRequestFormat(), attributes = Attributes(name = "Emitron")),
       Data(id = "2", type = DataType.Domains.toRequestFormat()),
-      Data(type = DataType.Sort.toRequestFormat(), attributes = Attributes(name = "popularity"))
+      Data(type = FilterType.Sort.toRequestFormat(), attributes = Attributes(name = "popularity"))
     )
 
     // When
@@ -170,6 +175,7 @@ class ContentRepositoryTest {
       expectedContentTypeFilter,
       listOf("1"),
       listOf("2"),
+      emptyList(),
       "Emitron",
       "popularity"
     )
@@ -191,6 +197,7 @@ class ContentRepositoryTest {
         pageSize = anyInt(),
         contentType = anyList(),
         category = anyList(),
+        difficulty = anyList(),
         domain = anyList(),
         search = anyString(),
         sort = anyString()
@@ -223,6 +230,7 @@ class ContentRepositoryTest {
         pageSize = anyInt(),
         contentType = anyList(),
         category = anyList(),
+        difficulty = anyList(),
         domain = anyList(),
         search = anyString(),
         sort = anyString()
@@ -246,6 +254,7 @@ class ContentRepositoryTest {
         pageNumber = anyInt(),
         pageSize = anyInt(),
         contentType = anyList(),
+        difficulty = anyList(),
         category = anyList(),
         domain = anyList(),
         search = anyString(),
@@ -278,6 +287,7 @@ class ContentRepositoryTest {
         pageSize = anyInt(),
         contentType = anyList(),
         category = anyList(),
+        difficulty = anyList(),
         domain = anyList(),
         search = anyString(),
         sort = anyString()
@@ -308,6 +318,7 @@ class ContentRepositoryTest {
         pageSize = anyInt(),
         contentType = anyList(),
         category = anyList(),
+        difficulty = anyList(),
         domain = anyList(),
         search = anyString(),
         sort = anyString()
@@ -330,6 +341,7 @@ class ContentRepositoryTest {
         pageNumber = anyInt(),
         pageSize = anyInt(),
         contentType = anyList(),
+        difficulty = anyList(),
         category = anyList(),
         domain = anyList(),
         search = anyString(),
@@ -370,6 +382,7 @@ class ContentRepositoryTest {
         pageSize = anyInt(),
         contentType = anyList(),
         category = anyList(),
+        difficulty = anyList(),
         domain = anyList(),
         search = anyString(),
         sort = anyString()
@@ -399,6 +412,7 @@ class ContentRepositoryTest {
         pageNumber = anyInt(),
         pageSize = anyInt(),
         contentType = anyList(),
+        difficulty = anyList(),
         category = anyList(),
         domain = anyList(),
         search = anyString(),
@@ -419,6 +433,7 @@ class ContentRepositoryTest {
         pageNumber = anyInt(),
         pageSize = anyInt(),
         contentType = anyList(),
+        difficulty = anyList(),
         category = anyList(),
         domain = anyList(),
         search = anyString(),
@@ -458,6 +473,26 @@ class ContentRepositoryTest {
       assertThat(result).isEqualTo(expectedContent)
 
       verify(contentApi).getContent("1")
+      verifyNoMoreInteractions(contentApi)
+    }
+  }
+
+  @Test
+  fun getContentFromDb() {
+    testCoroutineRule.runBlockingTest {
+      // Given
+      val expectedContent = com.raywenderlich.emitron.data.createContent()
+
+      // When
+      whenever(contentDataSourceLocal.getContent("1")).doReturn(
+        com.raywenderlich.emitron.data.createContentDetail()
+      )
+
+      // Then
+      val result = repository.getContentFromDb("1")
+      assertThat(result).isEqualTo(expectedContent)
+
+      verify(contentDataSourceLocal).getContent("1")
       verifyNoMoreInteractions(contentApi)
     }
   }

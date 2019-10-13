@@ -23,3 +23,5 @@ kapt.incremental.apt=true
 org.gradle.caching=true
 org.gradle.parallel=true
 org.gradle.daemon=true
+client_api_key=
+app_token=

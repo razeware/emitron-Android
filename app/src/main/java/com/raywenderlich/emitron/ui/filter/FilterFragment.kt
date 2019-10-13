@@ -16,10 +16,11 @@ import com.raywenderlich.emitron.MainViewModel
 import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentFilterBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
+import com.raywenderlich.emitron.model.ContentType
 import com.raywenderlich.emitron.utils.extensions.observe
 import com.raywenderlich.emitron.utils.extensions.setDataBindingView
 import com.raywenderlich.emitron.utils.extensions.showErrorSnackbar
-import com.raywenderlich.emitron.utils.getDefaultAppBarConfiguration
+import com.raywenderlich.emitron.ui.common.getDefaultAppBarConfiguration
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_filter.*
 import javax.inject.Inject
@@ -69,7 +70,9 @@ class FilterFragment : DaggerFragment() {
   }
 
   private fun initToolbar() {
-    binding.toolbar.setupWithNavController(findNavController(), getDefaultAppBarConfiguration())
+    binding.toolbar.setupWithNavController(findNavController(),
+      getDefaultAppBarConfiguration()
+    )
     binding.toolbar.navigationIcon =
       VectorDrawableCompat.create(resources, R.drawable.ic_material_icon_close, null)
   }
@@ -166,8 +169,17 @@ class FilterFragment : DaggerFragment() {
   }
 
   private fun loadContentTypes() {
+    val contentTypes =
+      ContentType.getFilterContentTypes()
+        .associateBy({ contentType: ContentType -> contentType }, { contentType ->
+          when (contentType) {
+            ContentType.Collection -> getString(R.string.content_type_video_course)
+            ContentType.Screencast -> getString(R.string.content_type_screencast)
+            ContentType.Episode -> getString(R.string.content_type_episode)
+          }
+        })
     val contentTypeList =
-      viewModel.getContentTypeList(resources.getStringArray(R.array.filter_content_type))
+      viewModel.getContentTypeList(contentTypes)
     filterAdapter.setFilterOptions(
       contentTypeList,
       FilterCategory.ContentType

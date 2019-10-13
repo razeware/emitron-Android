@@ -4,10 +4,10 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.bookmarks.BookmarkRepository
+import com.raywenderlich.emitron.data.createContentData
+import com.raywenderlich.emitron.data.removeBookmark
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.ui.collection.createContentData
-import com.raywenderlich.emitron.ui.collection.removeBookmark
 import com.raywenderlich.emitron.ui.content.ContentPagedViewModel
 import com.raywenderlich.emitron.utils.*
 import org.junit.Rule

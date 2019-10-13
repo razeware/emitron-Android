@@ -85,24 +85,9 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/activity_vertical_margin"
       android:background="@drawable/bg_progress_shimmer"
-      app:layout_constraintBottom_toTopOf="@+id/layout_progress_item_3"
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintStart_toStartOf="@id/guideline_left"
       app:layout_constraintTop_toBottomOf="@id/layout_progress_item_1">
-
-      <include layout="@layout/layout_library_shimmer_progress_item" />
-    </FrameLayout>
-
-    <FrameLayout
-      android:id="@+id/layout_progress_item_3"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/activity_vertical_margin"
-      android:background="@drawable/bg_progress_shimmer"
-      app:layout_constraintBottom_toBottomOf="@+id/guideline_bottom"
-      app:layout_constraintEnd_toEndOf="@id/guideline_right"
-      app:layout_constraintStart_toStartOf="@id/guideline_left"
-      app:layout_constraintTop_toBottomOf="@id/layout_progress_item_2">
 
       <include layout="@layout/layout_library_shimmer_progress_item" />
     </FrameLayout>

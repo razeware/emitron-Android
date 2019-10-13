@@ -1,5 +1,7 @@
 package com.raywenderlich.emitron.di.modules
 
+import android.app.Application
+import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.data.login.LoginPrefs
 import com.raywenderlich.emitron.network.RequestHelper
 import dagger.Module
@@ -13,7 +15,13 @@ abstract class SessionModule {
 
     @JvmStatic
     @Provides
-    fun provideRequestHelper(loginPrefs: LoginPrefs): RequestHelper =
-      RequestHelper(apiAuthToken = loginPrefs.authToken())
+    fun provideRequestHelper(
+      application: Application,
+      loginPrefs: LoginPrefs
+    ): RequestHelper =
+      RequestHelper(
+        appToken = application.getString(R.string.app_token),
+        apiAuthToken = loginPrefs.authToken()
+      )
   }
 }

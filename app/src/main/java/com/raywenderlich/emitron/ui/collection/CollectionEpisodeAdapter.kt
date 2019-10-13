@@ -89,7 +89,9 @@ class CollectionEpisodeAdapter(
   }
 
   private fun bindItem(viewHolder: CollectionEpisodeItemViewHolder, position: Int) {
+
     val (_, data, cachedEpisodePosition) = items[position]
+
     val episodePosition = if (cachedEpisodePosition == 0) {
       val newCachedPosition = position - bindHeaderCount
       items[position] = EpisodeItem(data = data, position = newCachedPosition)
@@ -98,7 +100,6 @@ class CollectionEpisodeAdapter(
       cachedEpisodePosition
     }
 
-    val episodeId = data?.id
     viewHolder.bindTo(data, episodePosition, isProCourse, { selectedPosition ->
       val contentEpisode = items[selectedPosition]
       val nextContentEpisode = if (selectedPosition < items.size - 1) {
@@ -135,6 +136,27 @@ class CollectionEpisodeAdapter(
     val contentEpisode = items[position]
     items[position] = contentEpisode.copy(data = contentEpisode.data?.toggleFinished())
     notifyItemChanged(position)
+  }
+
+  /**
+   * Update episode download progress
+   *
+   * @param downloads Downloads in progress
+   */
+  fun updateEpisodeDownloadProgress(
+    downloads:
+    List<com.raywenderlich.emitron.model.entity.Download>
+  ) {
+    downloads.forEach { download ->
+      val position = items.indexOfFirst { it.data?.id == download.downloadId }
+      if (position != -1) {
+        val contentEpisode = items[position]
+        val updateEpisodeData =
+          contentEpisode.data?.updateDownloadProgress(download.toDownloadState())
+        items[position] = contentEpisode.copy(data = updateEpisodeData)
+        notifyItemChanged(position)
+      }
+    }
   }
 }
 
