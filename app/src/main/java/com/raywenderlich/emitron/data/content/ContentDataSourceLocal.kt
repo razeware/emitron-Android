@@ -11,7 +11,6 @@ import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.DataType
 import com.raywenderlich.emitron.model.DownloadState
 import com.raywenderlich.emitron.model.entity.*
-import org.threeten.bp.Clock
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import javax.inject.Inject
@@ -209,7 +208,7 @@ class ContentDataSourceLocal @Inject constructor(
   suspend fun insertDownload(
     contentId: String,
     state: DownloadState,
-    createdAt: LocalDateTime = LocalDateTime.now(Clock.systemUTC())
+    createdAt: LocalDateTime
   ) {
     val download = Download(
       contentId,

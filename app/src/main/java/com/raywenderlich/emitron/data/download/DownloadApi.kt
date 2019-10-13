@@ -19,6 +19,7 @@ interface DownloadApi {
    * @return [Content]
    */
   @GET("contents/{id}")
+  @Throws(Exception::class)
   suspend fun getContent(
     @Path("id") id: String
   ): Content
@@ -27,6 +28,7 @@ interface DownloadApi {
    * Get download url
    */
   @GET("videos/{id}/download")
+  @Throws(Exception::class)
   suspend fun getDownloadUrl(
     @Path("id") id: String
   ): Contents

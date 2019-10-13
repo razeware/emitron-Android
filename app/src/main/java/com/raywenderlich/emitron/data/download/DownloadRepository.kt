@@ -18,6 +18,8 @@ import com.raywenderlich.emitron.utils.PagedBoundaryCallbackImpl
 import com.raywenderlich.emitron.utils.PagedResponse
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import kotlinx.coroutines.withContext
+import org.threeten.bp.Clock
+import org.threeten.bp.LocalDateTime
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
@@ -55,7 +57,7 @@ class DownloadRepository @Inject constructor(
       } catch (exception: HttpException) {
         null
       }
-      if (content != null) {
+      if (null != content) {
         contentDataSourceLocal.insertContent(content)
       }
       content
@@ -103,9 +105,12 @@ class DownloadRepository @Inject constructor(
    * @param downloadState Download state
    */
   @AnyThread
-  suspend fun addDownload(downloadId: String, downloadState: DownloadState) {
+  suspend fun addDownload(
+    downloadId: String, downloadState: DownloadState,
+    createdAt: LocalDateTime = LocalDateTime.now(Clock.systemUTC())
+  ) {
     withContext(threadManager.db) {
-      contentDataSourceLocal.insertDownload(downloadId, downloadState)
+      contentDataSourceLocal.insertDownload(downloadId, downloadState, createdAt)
     }
   }
 

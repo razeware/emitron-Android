@@ -3,11 +3,11 @@ package com.raywenderlich.emitron.ui.mytutorial.bookmarks
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.bookmarks.BookmarkRepository
+import com.raywenderlich.emitron.data.createContent
+import com.raywenderlich.emitron.data.createContentData
+import com.raywenderlich.emitron.data.removeBookmark
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.ui.collection.createContent
-import com.raywenderlich.emitron.ui.collection.createContentData
-import com.raywenderlich.emitron.ui.collection.removeBookmark
 import com.raywenderlich.emitron.utils.*
 import org.junit.Before
 import org.junit.Rule

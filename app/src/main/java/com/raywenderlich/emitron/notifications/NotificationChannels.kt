@@ -67,6 +67,11 @@ private constructor(context: Context, private val notificationManager: Notificat
     const val channelIdOther: String = "notification.channel.others"
 
     /**
+     * Channel id others
+     */
+    const val channelIdDownloads: String = "notification.channel.downloads"
+
+    /**
      * Create new instance of NotificationChannels
      *
      * @return NotificationChannels

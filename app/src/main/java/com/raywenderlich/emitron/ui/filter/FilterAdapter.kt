@@ -67,7 +67,7 @@ class FilterAdapter(
   }
 
   private fun isHeaderPosition(position: Int): Boolean {
-    return filterOptions[position].category != null
+    return null != filterOptions[position].category
   }
 
   /**

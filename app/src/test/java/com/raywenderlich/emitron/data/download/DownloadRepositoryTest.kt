@@ -4,9 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.content.ContentDataSourceLocal
+import com.raywenderlich.emitron.data.createContent
 import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.model.entity.Download
-import com.raywenderlich.emitron.ui.collection.createContent
 import com.raywenderlich.emitron.utils.TestCoroutineRule
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import com.raywenderlich.emitron.utils.isEqualTo
@@ -74,8 +74,8 @@ class DownloadRepositoryTest {
   fun getQueuedDownloads() {
     testCoroutineRule.runBlockingTest {
       val expected = listOf(
-        createDownloadWithContent(),
-        createDownloadWithContent()
+        com.raywenderlich.emitron.data.createDownloadWithContent(),
+        com.raywenderlich.emitron.data.createDownloadWithContent()
       )
       whenever(
         contentDataSourceLocal.getQueuedDownloads(
@@ -104,7 +104,7 @@ class DownloadRepositoryTest {
   @Test
   fun getInProgressDownloads() {
     testCoroutineRule.runBlockingTest {
-      val expected = createDownloadWithContent()
+      val expected = com.raywenderlich.emitron.data.createDownloadWithContent()
       whenever(contentDataSourceLocal.getQueuedDownload("1")).doReturn(
         expected
       )

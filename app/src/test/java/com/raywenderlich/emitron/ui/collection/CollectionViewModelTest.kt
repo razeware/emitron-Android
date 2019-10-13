@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
+import com.raywenderlich.emitron.data.*
 import com.raywenderlich.emitron.data.content.ContentRepository
 import com.raywenderlich.emitron.data.download.DownloadRepository
 import com.raywenderlich.emitron.data.settings.SettingsRepository
@@ -800,5 +801,189 @@ class CollectionViewModelTest {
     result isEqualTo true
     verify(settingsRepository).isOnboardingAllowed()
     verifyNoMoreInteractions(settingsRepository)
+  }
+
+  @Test
+  fun getContentId() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+
+      // Given
+      val contentData = createContentData(
+        type = "screencast",
+        groups = null,
+        bookmark = Content(
+          datum = Data(
+            id = "10",
+            type = "bookmarks"
+          )
+        )
+      )
+      val content = createContent(data = contentData)
+      whenever(contentRepository.getContent("1")).doReturn(content)
+      viewModel.loadCollection(Data(id = "1"))
+      val result = viewModel.getContentId()
+      result isEqualTo "1"
+    }
+  }
+
+  @Test
+  fun isScreencast() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      // Given
+      val contentData = createContentData(
+        type = "screencast",
+        groups = null,
+        bookmark = Content(
+          datum = Data(
+            id = "10",
+            type = "bookmarks"
+          )
+        )
+      )
+      val content = createContent(data = contentData)
+      whenever(contentRepository.getContent("1")).doReturn(content)
+      viewModel.loadCollection(Data(id = "1"))
+      val result = viewModel.isFreeContent()
+      result isEqualTo true
+    }
+  }
+
+  @Test
+  fun getDownloads() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      val downloadIds = listOf("1", "2")
+
+      viewModel.getDownloads(downloadIds)
+      verify(downloadRepository).getDownloadsById(downloadIds)
+      verifyNoMoreInteractions(downloadRepository)
+    }
+  }
+
+  @Test
+  fun getContentIds() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+
+      // Given
+      val contentData = createContentData(
+        type = "screencast",
+        groups = null,
+        bookmark = Content(
+          datum = Data(
+            id = "10",
+            type = "bookmarks"
+          )
+        )
+      )
+      val content = createContent(data = contentData)
+      whenever(contentRepository.getContent("1")).doReturn(content)
+      viewModel.loadCollection(Data(id = "1"))
+
+      val result = viewModel.getContentIds()
+
+      result isEqualTo listOf("1")
+      verifyNoMoreInteractions(downloadRepository)
+    }
+  }
+
+  @Test
+  fun updateDownloadProgress() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+
+      // When
+      viewModel.updateDownloadProgress("1", 25, DownloadState.COMPLETED)
+
+      verify(downloadRepository).updateDownloadProgress(
+        "1",
+        25,
+        DownloadState.COMPLETED
+      )
+      verifyNoMoreInteractions(downloadRepository)
+    }
+  }
+
+  @Test
+  fun getContentIds_collection() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      // Given
+      val contentData = com.raywenderlich.emitron.data.createExpectedContent()
+      whenever(contentRepository.getContent("1")).doReturn(contentData)
+      viewModel.loadCollection(Data(id = "1"))
+
+      val result = viewModel.getContentIds()
+
+      result isEqualTo listOf("1")
+      verifyNoMoreInteractions(downloadRepository)
+    }
+  }
+
+  @Test
+  fun getCollectionDownloadState_Screencast() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      // Given
+      val contentData = createContentData(
+        type = "screencast",
+        groups = null,
+        bookmark = Content(
+          datum = Data(
+            id = "10",
+            type = "bookmarks"
+          )
+        )
+      )
+      val content = createContent(data = contentData)
+      whenever(contentRepository.getContent("1")).doReturn(content)
+      viewModel.loadCollection(Data(id = "1"))
+
+      // When
+      val result = viewModel.getCollectionDownloadState(
+        listOf(
+          com.raywenderlich.emitron.data.createDownload()
+        )
+      )
+
+      // Then
+      result isEqualTo Download(
+        progress = 25,
+        state = 3,
+        failureReason = 0,
+        url = "download/1"
+      )
+      verifyNoMoreInteractions(downloadRepository)
+    }
+  }
+
+  @Test
+  fun getCollectionDownloadState_Collection() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      // Given
+      val contentData =
+        com.raywenderlich.emitron.data.createExpectedContent(type = "collection")
+      whenever(contentRepository.getContent("1")).doReturn(contentData)
+      viewModel.loadCollection(Data(id = "1"))
+
+      // When
+      val result = viewModel.getCollectionDownloadState(
+        listOf(
+          com.raywenderlich.emitron.data.createDownload()
+        )
+      )
+
+      // Then
+      result isEqualTo Download(
+        progress = 100,
+        state = 3,
+        failureReason = 0,
+        url = null
+      )
+      verifyNoMoreInteractions(downloadRepository)
+    }
   }
 }

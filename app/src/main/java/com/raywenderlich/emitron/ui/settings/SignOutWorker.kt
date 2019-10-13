@@ -23,6 +23,7 @@ class SignOutWorker @AssistedInject constructor(
   override suspend fun doWork(): Result {
     // Clear tables and preferences
     settingsRepository.logout()
+    DownloadService.removeAllDownloads(appContext)
     return Result.success()
   }
 

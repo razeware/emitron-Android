@@ -1,18 +1,22 @@
-package com.raywenderlich.emitron.data.download
+package com.raywenderlich.emitron.data
 
 import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.model.entity.*
 import com.raywenderlich.emitron.model.entity.Content
 import com.raywenderlich.emitron.model.entity.Download
 
-fun createExpectedContent(): com.raywenderlich.emitron.model.Content =
+/**
+ * Factory function to test downloads
+ */
+fun createExpectedContent(type: String = "screencast"): com.raywenderlich.emitron.model.Content =
   com.raywenderlich.emitron.model.Content(
     datum = buildContentData(
       withRelationship(
         withRelatedBookmark(),
         withRelatedDomains(),
         groups = withGroups(withGroupContents())
-      )
+      ),
+      contentType = type
     ),
     included = listOf(
       createDomain(),
@@ -256,4 +260,104 @@ fun createDownload(state: Int = DownloadState.COMPLETED.ordinal): Download = Dow
   state,
   0,
   "createdAt"
+)
+
+/**
+ * Factory function to test Content detail view
+ */
+fun createContentData(
+  id: String = "1",
+  type: String = "collection",
+  groups: Contents? = Contents(datum = (1..2).map { Data(id = it.toString(), type = "groups") }),
+  bookmark: com.raywenderlich.emitron.model.Content? = null,
+  isFree: Boolean = false,
+  videoId: Int = 1,
+  videoUrl: String? = null,
+  playbackToken: String = "",
+  progress: Long = 0,
+  download: com.raywenderlich.emitron.model.Download? = null
+): Data = Data(
+  id = id,
+  type = "contents",
+  attributes = Attributes(
+    name = "Introduction to Kotlin Lambdas",
+    description = "Lambda expression is simplified representation of a function.",
+    cardArtworkUrl = "https://koenig-media.raywenderlich.com/KotlinLambdas-feature.png",
+    contentType = type,
+    free = isFree,
+    videoId = videoId.toString(),
+    videoPlaybackToken = playbackToken,
+    url = videoUrl,
+    progress = progress
+  ),
+  relationships = Relationships(
+    groups = groups,
+    bookmark = bookmark
+  ),
+  download = download
+)
+
+fun removeBookmark(data: Data): Data = data.copy(
+  relationships = data.relationships?.copy(bookmark = null)
+)
+
+fun createContent(
+  data: Data = createContentData(),
+  included: List<Data> = emptyList()
+): com.raywenderlich.emitron.model.Content = com.raywenderlich.emitron.model.Content(
+  datum = data,
+  included = included
+)
+
+fun getIncludedDataForCollection(): List<Data> = listOf(
+  createGroup(1, "one", 5),
+  createGroup(2, "two", 7),
+  createEpisode(
+    5,
+    "five",
+    relationships = createRelationship()
+  ),
+  createEpisode(6, "six"),
+  createEpisode(7, "seven"),
+  createEpisode(8, "eight"),
+  Data(id = "9", type = "progressions", attributes = Attributes(percentComplete = 10.0))
+)
+
+fun createRelationship(): Relationships = Relationships(
+  progression = com.raywenderlich.emitron.model.Content(
+    datum = Data(id = "9")
+  )
+)
+
+fun createGroup(id: Int, name: String, dataId: Int): Data = Data(
+  id = id.toString(),
+  type = "groups",
+  attributes = Attributes(name = name),
+  relationships = Relationships(
+    contents = Contents(
+      datum = listOf(
+        Data(id = dataId.toString(), type = "contents"),
+        Data(id = (dataId + 1).toString(), type = "contents")
+      )
+    )
+  )
+)
+
+fun createEpisode(id: Int, name: String, relationships: Relationships? = null): Data = Data(
+  id = id.toString(),
+  type = "contents",
+  attributes = Attributes(name = name),
+  relationships = relationships
+)
+
+fun createBookmarkResponse(): com.raywenderlich.emitron.model.Content = createContent(
+  data = createContentData(
+    id = "10",
+    bookmark = com.raywenderlich.emitron.model.Content(
+      datum = Data(
+        id = "10",
+        type = "bookmarks"
+      )
+    )
+  )
 )

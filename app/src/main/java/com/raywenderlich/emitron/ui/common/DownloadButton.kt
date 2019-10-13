@@ -123,6 +123,7 @@ class DownloadButton : FrameLayout {
       download.isDownloading() -> {
         downloadButton.toVisibility(false)
         downloadStopButton.toVisibility(true)
+        progressDownloadingPending.toVisibility(false)
         progressDownload.toVisibility(true)
         progressDownload.progress = download.getProgress()
       }

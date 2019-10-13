@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "8e2da04af3ba99cd37075c8e51db0fbb",
+    "identityHash": "5d7a6af821fa85241ab8ed7e3ef5bb4f",
     "entities": [
       {
         "tableName": "domains",
@@ -182,7 +182,7 @@
             "columnNames": [
               "content_id"
             ],
-            "createSql": "CREATE UNIQUE INDEX `index_contents_content_id` ON `${TABLE_NAME}` (`content_id`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_contents_content_id` ON `${TABLE_NAME}` (`content_id`)"
           },
           {
             "name": "index_contents_progression_id",
@@ -190,7 +190,7 @@
             "columnNames": [
               "progression_id"
             ],
-            "createSql": "CREATE  INDEX `index_contents_progression_id` ON `${TABLE_NAME}` (`progression_id`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_contents_progression_id` ON `${TABLE_NAME}` (`progression_id`)"
           }
         ],
         "foreignKeys": [
@@ -243,7 +243,7 @@
             "columnNames": [
               "progression_id"
             ],
-            "createSql": "CREATE UNIQUE INDEX `index_progressions_progression_id` ON `${TABLE_NAME}` (`progression_id`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_progressions_progression_id` ON `${TABLE_NAME}` (`progression_id`)"
           }
         ],
         "foreignKeys": []
@@ -279,7 +279,7 @@
             "columnNames": [
               "content_id"
             ],
-            "createSql": "CREATE  INDEX `index_content_domain_join_content_id` ON `${TABLE_NAME}` (`content_id`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_content_domain_join_content_id` ON `${TABLE_NAME}` (`content_id`)"
           },
           {
             "name": "index_content_domain_join_domain_id",
@@ -287,7 +287,7 @@
             "columnNames": [
               "domain_id"
             ],
-            "createSql": "CREATE  INDEX `index_content_domain_join_domain_id` ON `${TABLE_NAME}` (`domain_id`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_content_domain_join_domain_id` ON `${TABLE_NAME}` (`domain_id`)"
           }
         ],
         "foreignKeys": [
@@ -314,12 +314,228 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "groups",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`group_id` TEXT NOT NULL, `name` TEXT, `ordinal` INTEGER NOT NULL, PRIMARY KEY(`group_id`))",
+        "fields": [
+          {
+            "fieldPath": "groupId",
+            "columnName": "group_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ordinal",
+            "columnName": "ordinal",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "group_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "content_group_join",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`content_id` TEXT NOT NULL, `group_id` TEXT NOT NULL, PRIMARY KEY(`content_id`, `group_id`), FOREIGN KEY(`content_id`) REFERENCES `contents`(`content_id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`group_id`) REFERENCES `groups`(`group_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "contentId",
+            "columnName": "content_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "groupId",
+            "columnName": "group_id",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "content_id",
+            "group_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_content_group_join_content_id",
+            "unique": false,
+            "columnNames": [
+              "content_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_content_group_join_content_id` ON `${TABLE_NAME}` (`content_id`)"
+          },
+          {
+            "name": "index_content_group_join_group_id",
+            "unique": false,
+            "columnNames": [
+              "group_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_content_group_join_group_id` ON `${TABLE_NAME}` (`group_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "contents",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "content_id"
+            ],
+            "referencedColumns": [
+              "content_id"
+            ]
+          },
+          {
+            "table": "groups",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "group_id"
+            ],
+            "referencedColumns": [
+              "group_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "group_content_join",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`group_id` TEXT NOT NULL, `content_id` TEXT NOT NULL, PRIMARY KEY(`group_id`, `content_id`), FOREIGN KEY(`group_id`) REFERENCES `groups`(`group_id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`content_id`) REFERENCES `contents`(`content_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "groupId",
+            "columnName": "group_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "episodeId",
+            "columnName": "content_id",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "group_id",
+            "content_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_group_content_join_group_id",
+            "unique": false,
+            "columnNames": [
+              "group_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_group_content_join_group_id` ON `${TABLE_NAME}` (`group_id`)"
+          },
+          {
+            "name": "index_group_content_join_content_id",
+            "unique": false,
+            "columnNames": [
+              "content_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_group_content_join_content_id` ON `${TABLE_NAME}` (`content_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "groups",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "group_id"
+            ],
+            "referencedColumns": [
+              "group_id"
+            ]
+          },
+          {
+            "table": "contents",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "content_id"
+            ],
+            "referencedColumns": [
+              "content_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "downloads",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`download_id` TEXT NOT NULL, `url` TEXT, `progress` INTEGER NOT NULL, `state` INTEGER NOT NULL, `failure_reason` INTEGER NOT NULL, `created_at` TEXT, PRIMARY KEY(`download_id`))",
+        "fields": [
+          {
+            "fieldPath": "downloadId",
+            "columnName": "download_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "progress",
+            "columnName": "progress",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "state",
+            "columnName": "state",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "failureReason",
+            "columnName": "failure_reason",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "download_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8e2da04af3ba99cd37075c8e51db0fbb')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5d7a6af821fa85241ab8ed7e3ef5bb4f')"
     ]
   }
 }

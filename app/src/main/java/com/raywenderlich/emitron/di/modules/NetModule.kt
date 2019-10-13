@@ -3,6 +3,7 @@ package com.raywenderlich.emitron.di.modules
 import com.raywenderlich.emitron.BuildConfig
 import com.raywenderlich.emitron.data.bookmarks.BookmarkApi
 import com.raywenderlich.emitron.data.content.ContentApi
+import com.raywenderlich.emitron.data.download.DownloadApi
 import com.raywenderlich.emitron.data.filter.FilterApi
 import com.raywenderlich.emitron.data.login.LoginApi
 import com.raywenderlich.emitron.data.progressions.ProgressionApi
@@ -115,6 +116,13 @@ class NetModule {
     @JvmStatic
     @Provides
     fun provideVideoApi(retrofit: Retrofit): VideoApi = VideoApi.create(retrofit)
+
+    /**
+     * Create [DownloadApi]
+     */
+    @JvmStatic
+    @Provides
+    fun provideDownloadApi(retrofit: Retrofit): DownloadApi = DownloadApi.create(retrofit)
 
   }
 

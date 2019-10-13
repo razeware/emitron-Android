@@ -5,6 +5,7 @@ import com.raywenderlich.emitron.di.bindings.FragmentBindings
 import com.raywenderlich.emitron.di.bindings.ViewModelBindings
 import com.raywenderlich.emitron.network.AuthInterceptor
 import com.raywenderlich.emitron.network.AuthInterceptorImpl
+import com.raywenderlich.emitron.ui.download.DownloadService
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import com.raywenderlich.emitron.utils.async.ThreadManagerImpl
 import dagger.Binds
@@ -21,6 +22,9 @@ abstract class AppBindings {
     ]
   )
   abstract fun contributeMainActivity(): MainActivity
+
+  @ContributesAndroidInjector
+  abstract fun contributeDownloadService(): DownloadService
 
   @Binds
   abstract fun provideThreadManager(schedulerProvider: ThreadManagerImpl): ThreadManager

@@ -4,11 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.exoplayer2.offline.Download
 import com.raywenderlich.emitron.data.content.ContentRepository
+import com.raywenderlich.emitron.data.download.DownloadRepository
 import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.ContentType
 import com.raywenderlich.emitron.model.Data
+import com.raywenderlich.emitron.model.DownloadState
+import com.raywenderlich.emitron.model.entity.inProgress
+import com.raywenderlich.emitron.model.entity.isCompleted
 import com.raywenderlich.emitron.ui.common.UiStateViewModel
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
@@ -29,6 +34,7 @@ class CollectionViewModel @Inject constructor(
   private val repository: ContentRepository,
   private val bookmarkActionDelegate: BookmarkActionDelegate,
   private val progressionActionDelegate: ProgressionActionDelegate,
+  private val downloadRepository: DownloadRepository,
   private val settingsRepository: SettingsRepository
 ) : ViewModel(), UiStateViewModel {
 
@@ -90,6 +96,14 @@ class CollectionViewModel @Inject constructor(
       LiveData<Pair<Event<ProgressionActionDelegate.EpisodeProgressionActionResult>, Int>> =
     progressionActionDelegate.completionActionResult
 
+  private val _downloads = MutableLiveData<List<Download>>()
+
+  /**
+   * LiveData for [com.raywenderlich.emitron.model.entity.Download] table
+   */
+  val downloads: LiveData<List<Download>>
+    get() = _downloads
+
   /**
    * Observer for progression action
    *
@@ -114,7 +128,12 @@ class CollectionViewModel @Inject constructor(
     }
 
     viewModelScope.launch {
-      loadContentFromApi(contentId)
+      if (content.isDownloaded()) {
+        loadContentFromDb(contentId)
+      } else {
+        loadContentFromApi(contentId)
+      }
+
       uiState.value = UiStateManager.UiState.LOADED
     }
   }
@@ -152,6 +171,7 @@ class CollectionViewModel @Inject constructor(
       null
     }
     updateContentEpisodes(content)
+    _loadCollectionResult.value = Event(true)
   }
 
   private fun updateContentEpisodes(content: Content?) {
@@ -228,7 +248,125 @@ class CollectionViewModel @Inject constructor(
   fun isFreeContent(): Boolean = _collection.value?.isFreeContent() ?: false
 
   /**
+   * Get collection id
+   *
    * @return id for video course, screencast
+   */
+  fun getContentId(): String? = _collection.value?.id
+
+  /**
+   * Check collection type
+   *
+   * @return true if collection type is screencast, else false
+   */
+  private fun isScreencast(): Boolean = _collection.value?.isTypeScreencast() ?: false
+
+  /**
+   * Get downloads by id
+   *
+   * @param downloadIds Download ids
+   *
+   * @return Observable for Downloads by id
+   */
+  fun getDownloads(downloadIds: List<String>):
+      LiveData<List<com.raywenderlich.emitron.model.entity.Download>> {
+    return downloadRepository.getDownloadsById(downloadIds)
+  }
+
+  /**
+   * Get content ids
+   *
+   * @return list of content id if collection type is screencast, else list of episode ids
+   */
+  fun getContentIds(): List<String> {
+    val contentId = getContentId()
+    contentId ?: return emptyList()
+
+    return if (isScreencast()) {
+      listOf(contentId)
+    } else {
+      val episodes = collectionEpisodes.value
+      val episodeIds = episodes?.mapNotNull { it.data?.id }
+      episodeIds ?: emptyList()
+    }
+  }
+
+  /**
+   * Collection download state
+   *
+   * @param downloads list of [com.raywenderlich.emitron.model.entity.Download] from db
+   *
+   * @return Download state for collection
+   */
+  fun getCollectionDownloadState(downloads: List<com.raywenderlich.emitron.model.entity.Download>):
+      com.raywenderlich.emitron.model.Download? {
+
+    val collection = _collection.value
+    val collectionIsScreencast = collection?.isTypeScreencast() ?: false
+
+    return if (collectionIsScreencast) {
+      val download =
+        downloads.first { it.downloadId == getContentId() }.toDownloadState()
+      _collection.value = collection?.copy(download = download)
+      download
+    } else {
+      getVideoCourseDownloadState(downloads)
+    }
+  }
+
+  private fun getVideoCourseDownloadState(
+    downloads:
+    List<com.raywenderlich.emitron.model.entity.Download>
+  ): com.raywenderlich.emitron.model.Download? {
+    return if (downloads.isNotEmpty()) {
+      val downloadProgress: Pair<Int, Int> = when {
+        downloads.any { it.inProgress() } -> {
+          downloads.map {
+            it.progress
+          }.reduce { acc, i ->
+            i + acc
+          } to DownloadState.IN_PROGRESS.ordinal
+        }
+        downloads.all { it.isCompleted() } -> {
+          100 to DownloadState.COMPLETED.ordinal
+        }
+        else -> {
+          0 to DownloadState.IN_PROGRESS.ordinal
+        }
+      }
+
+      com.raywenderlich.emitron.model.Download(
+        progress = downloadProgress.first,
+        state = downloadProgress.second
+      )
+    } else {
+      null
+    }
+  }
+
+  /**
+   * Update download progress
+   *
+   * @param contentId Content id
+   * @param progress Int
+   * @state Download state
+   */
+  fun updateDownloadProgress(
+    contentId: String,
+    progress: Int,
+    state: DownloadState
+  ) {
+    viewModelScope.launch {
+      downloadRepository.updateDownloadProgress(contentId, progress, state)
+    }
+  }
+
+
+  /**
+   *
+   * @param view Onboarding view type [OnboardingView]
+   *
+   * @return true if onboarding is shown for view, else false
    */
   fun isOnboardedForType(view: OnboardingView): Boolean =
     settingsRepository.getOnboardedViews().contains(view)
