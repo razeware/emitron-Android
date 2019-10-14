@@ -34,13 +34,13 @@ import com.raywenderlich.emitron.databinding.FragmentPlayerBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.notifications.NotificationChannels
+import com.raywenderlich.emitron.ui.common.getDefaultAppBarConfiguration
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.player.cast.Episode
 import com.raywenderlich.emitron.utils.Log
 import com.raywenderlich.emitron.utils.createCountDownTimer
 import com.raywenderlich.emitron.utils.createMainThreadScheduledHandler
 import com.raywenderlich.emitron.utils.extensions.*
-import com.raywenderlich.emitron.ui.common.getDefaultAppBarConfiguration
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -197,6 +197,10 @@ class PlayerFragment : DaggerFragment() {
   @Inject
   lateinit var viewModelFactory: ViewModelFactory
 
+  /**
+   * Cache for offline playback
+   *
+   */
   @Inject
   lateinit var cache: Cache
 
@@ -288,6 +292,7 @@ class PlayerFragment : DaggerFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     requestLandscapeOrientation()
+    requestFullScreen()
     initUi()
     initObservers()
     startPlayback()
@@ -338,6 +343,10 @@ class PlayerFragment : DaggerFragment() {
 
       playerNextButton = findViewById(R.id.player_next_episode)
       playerNextButton.setOnClickListener { viewModel.playNextEpisode() }
+
+      binding.playerView.setControllerVisibilityListener {
+        binding.toolbar.toVisibility(it == View.VISIBLE)
+      }
     }
 
     binding.buttonAutoPlayCancel.setOnClickListener {
