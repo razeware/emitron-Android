@@ -39,7 +39,11 @@ class DownloadRepositoryTest {
   fun setUp() {
     whenever(threadManager.io).doReturn(Dispatchers.Unconfined)
     whenever(threadManager.db).doReturn(Dispatchers.Unconfined)
-    repository = DownloadRepository(downloadApi, threadManager, contentDataSourceLocal)
+    repository = DownloadRepository(
+      downloadApi,
+      threadManager,
+      contentDataSourceLocal
+    )
   }
 
   @Test
@@ -129,8 +133,8 @@ class DownloadRepositoryTest {
   @Test
   fun removeDownload() {
     testCoroutineRule.runBlockingTest {
-      repository.removeDownload("1")
-      verify(contentDataSourceLocal).deleteDownload("1")
+      repository.removeDownload(listOf("1"))
+      verify(contentDataSourceLocal).deleteDownload(listOf("1"))
       verifyNoMoreInteractions(contentDataSourceLocal)
     }
   }

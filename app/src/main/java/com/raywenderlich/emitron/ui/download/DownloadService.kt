@@ -76,7 +76,9 @@ class DownloadService : ExoDownloadService(
    */
   override fun getForegroundNotification(downloads: MutableList<Download>?): Notification {
     val message = if (!downloads.isNullOrEmpty()) {
-      downloads[0].request.data.toString(Charsets.UTF_8)
+      downloads.first {
+        it.state == Download.STATE_DOWNLOADING
+      }.request.data.toString(Charsets.UTF_8)
     } else {
       null
     }

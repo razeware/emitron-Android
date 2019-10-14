@@ -132,8 +132,20 @@ class DownloadButton : FrameLayout {
         progressDownloadingPending.toVisibility(true)
         downloadStopButton.toVisibility(true)
       }
+      download.isPaused() -> {
+        downloadButton.toVisibility(true)
+        progressDownloadingPending.toVisibility(false)
+        downloadStopButton.toVisibility(false)
+        progressDownload.toVisibility(false)
+      }
       download.isFailed() -> {
         downloadButton.toVisibility(true)
+      }
+      else -> {
+        downloadButton.toVisibility(true)
+        progressDownloadingPending.toVisibility(false)
+        downloadStopButton.toVisibility(false)
+        progressDownload.toVisibility(false)
       }
     }
   }

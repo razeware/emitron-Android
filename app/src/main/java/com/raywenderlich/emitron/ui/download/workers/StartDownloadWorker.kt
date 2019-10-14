@@ -42,14 +42,16 @@ class StartDownloadWorker @AssistedInject constructor(
 
     return when {
       download.inProgress() -> {
-        downloadRepository.updateDownloadState(downloadId, DownloadState.PAUSED)
-        DownloadService.pauseDownload(appContext, downloadId)
-        Result.success()
+        val outputData = workDataOf(
+          DownloadWorker.DOWNLOAD_ID to download?.getDownloadId()
+        )
+        Result.success(outputData)
       }
       download.isPaused() -> {
-        downloadRepository.updateDownloadState(downloadId, DownloadState.IN_PROGRESS)
-        DownloadService.resumeDownload(appContext, downloadId)
-        Result.success()
+        val outputData = workDataOf(
+          DownloadWorker.DOWNLOAD_ID to download?.getDownloadId()
+        )
+        Result.success(outputData)
       }
       download.isCompleted() -> {
         // Yay!
