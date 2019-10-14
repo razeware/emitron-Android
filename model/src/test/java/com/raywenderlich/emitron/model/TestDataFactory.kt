@@ -22,13 +22,14 @@ fun createContent(): com.raywenderlich.emitron.model.Content =
           withRelatedDomains(),
           withRelatedProgression()
         ),
-        download = withDownload()
+        download = withDownload(),
+        contentType = "episode"
       ),
       withProgression()
     )
   )
 
-fun createContentDetail(contentType: String = "screencast"): ContentDetail = ContentDetail(
+fun createContentDetail(contentType: String = "collection"): ContentDetail = ContentDetail(
   content = Content(
     contentId = "1",
     name = "Introduction to Kotlin Lambdas: Getting Started",
@@ -78,7 +79,7 @@ fun createGroupEpisodeJoinWithEpisode(): ContentGroupJoinWithGroup =
 fun buildContentData(
   relationships: Relationships? = null,
   download: com.raywenderlich.emitron.model.Download? = null,
-  contentType: String = "screencast"
+  contentType: String = "collection"
 ): Data = Data(
   id = "1",
   type = "contents",
@@ -204,7 +205,7 @@ fun createContentWithDomainAndProgression(): ContentWithDomainAndProgression =
       contributors = "Luke",
       professional = false,
       deleted = false,
-      contentType = "screencast",
+      contentType = "episode",
       difficulty = "beginner",
       releasedAt = "2019-08-08T00:00:00.000Z",
       technology = "Swift, iOS",

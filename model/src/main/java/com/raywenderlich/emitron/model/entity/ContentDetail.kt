@@ -109,13 +109,19 @@ data class ContentDetail(
     )
   }
 
+  /**
+   * Is content screencast or episode
+   */
   fun isScreencastOrEpisode(): Boolean = content.isScreencastOrEpisode()
 
+  /**
+   * Get [Download] for [ContentDetail]
+   */
   fun getDownload(): Download? {
     val episodeDownloads = groups.flatMap { contentGroupJoin ->
       contentGroupJoin.episodes.flatMap { groupEpisodeJoin ->
-        groupEpisodeJoin.episodes.flatMap {
-          it.downloads
+        groupEpisodeJoin.episodes.flatMap { contentWithDomainAndProgression ->
+          contentWithDomainAndProgression.downloads
         }
       }
     }
@@ -143,6 +149,19 @@ data class ContentDetail(
       )
     } else {
       null
+    }
+  }
+
+  /**
+   * Get download ids for collection
+   */
+  fun getDownloadIds(): List<String> = groups.flatMap { contentGroupJoin ->
+    contentGroupJoin.episodes.flatMap { groupEpisodeJoin ->
+      groupEpisodeJoin.episodes.flatMap { contentWithDomainAndProgression ->
+        contentWithDomainAndProgression.downloads.map { (downloadId) ->
+          downloadId
+        }
+      }
     }
   }
 }

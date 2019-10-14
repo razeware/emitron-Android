@@ -2,7 +2,10 @@ package com.raywenderlich.emitron.data.content.dao
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.raywenderlich.emitron.model.entity.Download
 import com.raywenderlich.emitron.model.entity.DownloadWithContent
 
@@ -21,8 +24,11 @@ interface DownloadDao {
   /**
    * Delete queued download
    */
-  @Delete
-  suspend fun delete(download: Download)
+  @Query(
+    """DELETE from downloads
+      WHERE downloads.download_id in(:downloadIds)"""
+  )
+  suspend fun delete(downloadIds: List<String>)
 
   /**
    * Delete all downloads
@@ -103,7 +109,7 @@ interface DownloadDao {
              WHERE downloads.download_id = :id
           """
   )
-  suspend fun getQueuedDownload(
+  suspend fun getDownload(
     id: String
   ): DownloadWithContent?
 

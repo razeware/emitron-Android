@@ -578,11 +578,9 @@ class ContentDataSourceLocalTest {
   @Test
   fun deleteDownload() {
     testCoroutineRule.runBlockingTest {
-      contentDataSourceLocal.deleteDownload("1")
+      contentDataSourceLocal.deleteDownload(listOf("1"))
       verify(downloadDao).delete(
-        Download(
-          "1"
-        )
+        listOf("1")
       )
       verifyNoMoreInteractions(downloadDao)
     }
@@ -613,8 +611,8 @@ class ContentDataSourceLocalTest {
   @Test
   fun getQueuedDownload() {
     testCoroutineRule.runBlockingTest {
-      contentDataSourceLocal.getQueuedDownload("1")
-      verify(downloadDao).getQueuedDownload("1")
+      contentDataSourceLocal.getDownload("1")
+      verify(downloadDao).getDownload("1")
       verifyNoMoreInteractions(downloadDao)
     }
   }

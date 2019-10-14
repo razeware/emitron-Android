@@ -92,9 +92,9 @@ class DownloadRepository @Inject constructor(
    * @param downloadId Download id
    */
   @AnyThread
-  suspend fun getInProgressDownloads(downloadId: String): DownloadWithContent? {
+  suspend fun getDownload(downloadId: String): DownloadWithContent? {
     return withContext(threadManager.db) {
-      contentDataSourceLocal.getQueuedDownload(downloadId)
+      contentDataSourceLocal.getDownload(downloadId)
     }
   }
 
@@ -120,9 +120,9 @@ class DownloadRepository @Inject constructor(
    * @param downloadId Download id
    */
   @AnyThread
-  suspend fun removeDownload(downloadId: String) {
+  suspend fun removeDownload(downloadIds: List<String>) {
     withContext(threadManager.db) {
-      contentDataSourceLocal.deleteDownload(downloadId)
+      contentDataSourceLocal.deleteDownload(downloadIds)
     }
   }
 

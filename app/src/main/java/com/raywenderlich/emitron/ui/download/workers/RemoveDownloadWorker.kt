@@ -28,14 +28,25 @@ class RemoveDownloadWorker @AssistedInject constructor(
 
     val downloadId = episodeId ?: contentId
 
+
     if (downloadId.isNullOrBlank()) {
       downloadRepository.removeAllDownloads()
       DownloadService.removeAllDownloads(appContext)
     } else {
-      // Remove download from db
-      downloadRepository.removeDownload(downloadId)
-      // Remove download from storage
-      DownloadService.removeDownload(appContext, downloadId)
+
+      val download =
+        downloadRepository.getDownload(downloadId)
+
+      if (null != download) {
+        // Remove download from db
+        val downloadIds = download.getDownloadIds()
+        downloadRepository.removeDownload(downloadIds)
+        // Remove download from storage
+
+        downloadIds.map { id ->
+          DownloadService.removeDownload(appContext, id)
+        }
+      }
     }
 
 

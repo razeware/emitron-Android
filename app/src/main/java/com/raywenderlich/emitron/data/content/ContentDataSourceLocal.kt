@@ -221,15 +221,12 @@ class ContentDataSourceLocal @Inject constructor(
   /**
    * Remove a download
    *
-   * @param contentId Download id
+   * @param downloadIds Download id
    */
   suspend fun deleteDownload(
-    contentId: String
+    downloadIds: List<String>
   ) {
-    val download = Download(
-      contentId
-    )
-    downloadDao.delete(download)
+    downloadDao.delete(downloadIds)
   }
 
   /**
@@ -258,8 +255,8 @@ class ContentDataSourceLocal @Inject constructor(
    *
    * @param downloadId Download id
    */
-  suspend fun getQueuedDownload(downloadId: String): DownloadWithContent? =
-    downloadDao.getQueuedDownload(downloadId)
+  suspend fun getDownload(downloadId: String): DownloadWithContent? =
+    downloadDao.getDownload(downloadId)
 
   /**
    * Get queued downloads factory

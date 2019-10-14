@@ -66,7 +66,8 @@ class DownloadWorker @AssistedInject constructor(
             DownloadService.startDownload(
               appContext,
               downloadRequest.contentId,
-              Uri.parse(downloadRequest.downloadUrl)
+              Uri.parse(downloadRequest.downloadUrl),
+              download.getContentName()
             )
           } else {
             return Result.failure()
