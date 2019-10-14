@@ -127,7 +127,10 @@ class LibraryFragment : DaggerFragment() {
     }
 
     binding.editTextLibrarySearch.setOnEditorActionListener { _, actionId, _ ->
-      val allowedImeActions = arrayOf(IME_ACTION_SEARCH, IME_ACTION_DONE, IME_ACTION_GO)
+      val allowedImeActions = arrayOf(
+        IME_ACTION_SEARCH, IME_ACTION_DONE, IME_ACTION_GO,
+        IME_ACTION_UNSPECIFIED
+      )
       if (actionId in allowedImeActions) {
         handleSearchImeAction()
         true
