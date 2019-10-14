@@ -1,6 +1,7 @@
 package com.raywenderlich.emitron.data.login
 
 import com.raywenderlich.emitron.model.Contents
+import com.raywenderlich.emitron.model.PermissionTag
 import com.raywenderlich.emitron.network.AuthInterceptor
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import com.raywenderlich.guardpost.data.SSOUser
@@ -70,4 +71,12 @@ class LoginRepository @Inject constructor(
       loginApi.getPermissions()
     }
   }
+
+  /**
+   * Check if user has download permission
+   *
+   * @return true if user has [PermissionTag.Download] permission
+   */
+  fun hasDownloadPermission(): Boolean =
+    loginPrefs.getPermissions().contains(PermissionTag.Download.param)
 }

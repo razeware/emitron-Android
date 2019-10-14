@@ -190,6 +190,7 @@
   <string name="download_quality_high">High</string>
   <string name="download_quality_normal">Normal</string>
   <string name="body_downloads_empty">You haven’t downloaded any tutorials yet</string>
+  <string name="error_download_permission">Update your subscription to add offline viewing.</string>
 
   <!-- On-boarding -->
   <string name="on_boarding_download_card_title">Mobile UX Design Tips &amp; Tricks</string>

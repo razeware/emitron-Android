@@ -7,6 +7,7 @@ import com.raywenderlich.emitron.model.Contents
 import com.raywenderlich.emitron.network.AuthInterceptor
 import com.raywenderlich.emitron.utils.TestCoroutineRule
 import com.raywenderlich.emitron.utils.async.ThreadManager
+import com.raywenderlich.emitron.utils.isEqualTo
 import com.raywenderlich.guardpost.data.SSOUser
 import kotlinx.coroutines.Dispatchers
 import org.junit.Before
@@ -67,7 +68,7 @@ class LoginRepositoryTest {
   }
 
   @Test
-  fun getSubscription() {
+  fun getPermissions() {
     testCoroutineRule.runBlockingTest {
       val expectedContent = Contents()
       whenever(loginApi.getPermissions()).doReturn(expectedContent)
@@ -77,5 +78,31 @@ class LoginRepositoryTest {
       assertThat(result).isEqualTo(expectedContent)
       verifyNoMoreInteractions(loginApi)
     }
+  }
+
+
+  @Test
+  fun hasPermissions() {
+    // Given
+    whenever(loginPrefs.getPermissions()).doReturn(listOf("download-videos"))
+
+    // Then
+    repository.hasPermissions() isEqualTo true
+  }
+
+  @Test
+  fun updatePermissions() {
+    repository.updatePermissions(listOf("perm-1", "perm-2"))
+    verify(loginPrefs).savePermissions(listOf("perm-1", "perm-2"))
+    verifyNoMoreInteractions(loginPrefs)
+  }
+
+  @Test
+  fun hasDownloadPermission() {
+    // Given
+    whenever(loginPrefs.getPermissions()).doReturn(listOf("download-videos"))
+
+    // Then
+    repository.hasDownloadPermission() isEqualTo true
   }
 }

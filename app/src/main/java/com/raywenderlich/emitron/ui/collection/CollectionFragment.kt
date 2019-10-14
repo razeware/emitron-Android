@@ -155,6 +155,12 @@ class CollectionFragment : DaggerFragment() {
   }
 
   private fun startDownload(episodeId: String? = null) {
+
+    if (!viewModel.isDownloadAllowed()) {
+      showErrorSnackbar(getString(R.string.error_download_permission))
+      return
+    }
+
     val contentId = viewModel.getContentId()
     contentId?.let {
       StartDownloadWorker.enqueue(
