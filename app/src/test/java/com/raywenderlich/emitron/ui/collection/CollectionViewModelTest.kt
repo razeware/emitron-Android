@@ -16,6 +16,8 @@ import com.raywenderlich.emitron.ui.player.Playlist
 import com.raywenderlich.emitron.utils.*
 import org.junit.Rule
 import org.junit.Test
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.Month
 import java.io.IOException
 
 class CollectionViewModelTest {
@@ -593,6 +595,8 @@ class CollectionViewModelTest {
     createViewModel()
     testCoroutineRule.runBlockingTest {
 
+      // Given
+      val day = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
       val episodeData = Data(
         id = "8", type = "contents",
         attributes = Attributes(name = "eight"),
@@ -611,11 +615,14 @@ class CollectionViewModelTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition)
+      viewModel.updateContentProgression(episodeData, episodePosition, day)
 
       // Then
       verify(progressionActionDelegate).completionActionResult
-      verify(progressionActionDelegate).updateContentProgression(episodeData, episodePosition)
+      verify(progressionActionDelegate).updateContentProgression(
+        episodeData, episodePosition,
+        updatedAt = day
+      )
       verifyNoMoreInteractions(progressionActionDelegate)
       viewModel.completionActionResult.value?.first?.peekContent() isEqualTo
           ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeMarkedCompleted
@@ -638,6 +645,8 @@ class CollectionViewModelTest {
     testCoroutineRule.runBlockingTest {
 
       // Given
+      val day = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
+
       val episodeData = Data(
         id = "8", type = "contents",
         attributes = Attributes(name = "eight"),
@@ -656,11 +665,15 @@ class CollectionViewModelTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition)
+      viewModel.updateContentProgression(episodeData, episodePosition, updatedAt = day)
 
       // Then
       verify(progressionActionDelegate).completionActionResult
-      verify(progressionActionDelegate).updateContentProgression(episodeData, episodePosition)
+      verify(progressionActionDelegate).updateContentProgression(
+        episodeData,
+        episodePosition,
+        updatedAt = day
+      )
       verifyNoMoreInteractions(progressionActionDelegate)
       viewModel.completionActionResult.value?.first?.peekContent() isEqualTo
           ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeFailedToMarkComplete
@@ -683,6 +696,7 @@ class CollectionViewModelTest {
     testCoroutineRule.runBlockingTest {
 
       // Given
+      val day = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
       val episodeData = Data(
         id = "8", type = "contents",
         attributes = Attributes(name = "eight"),
@@ -701,11 +715,14 @@ class CollectionViewModelTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition)
+      viewModel.updateContentProgression(episodeData, episodePosition, day)
 
       // Then
       verify(progressionActionDelegate).completionActionResult
-      verify(progressionActionDelegate).updateContentProgression(episodeData, episodePosition)
+      verify(progressionActionDelegate).updateContentProgression(
+        episodeData, episodePosition,
+        updatedAt = day
+      )
       verifyNoMoreInteractions(progressionActionDelegate)
       viewModel.completionActionResult.value?.first?.peekContent() isEqualTo
           ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeMarkedInProgress
@@ -728,6 +745,7 @@ class CollectionViewModelTest {
     testCoroutineRule.runBlockingTest {
 
       // Given
+      val day = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
       val episodeData = Data(
         id = "8", type = "contents",
         attributes = Attributes(name = "eight"),
@@ -746,11 +764,14 @@ class CollectionViewModelTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition)
+      viewModel.updateContentProgression(episodeData, episodePosition, day)
 
       // Then
       verify(progressionActionDelegate).completionActionResult
-      verify(progressionActionDelegate).updateContentProgression(episodeData, episodePosition)
+      verify(progressionActionDelegate).updateContentProgression(
+        episodeData, episodePosition,
+        updatedAt = day
+      )
       verifyNoMoreInteractions(progressionActionDelegate)
       viewModel.completionActionResult.value?.first?.peekContent() isEqualTo
           ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeFailedToMarkInProgress

@@ -12,6 +12,7 @@ import com.raywenderlich.emitron.utils.PagedBoundaryCallbackImpl
 import com.raywenderlich.emitron.utils.PagedResponse
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import kotlinx.coroutines.withContext
+import org.threeten.bp.LocalDateTime
 import javax.inject.Inject
 
 /**
@@ -41,9 +42,11 @@ class ProgressionRepository @Inject constructor(
   @Throws(Exception::class)
   suspend fun updateProgression(
     contentId: String,
-    finished: Boolean
-  ): Contents {
-    val progression = ProgressionsUpdate.newProgressionsUpdate(contentId, finished)
+    finished: Boolean,
+    updatedAt: LocalDateTime
+  ): Contents? {
+    val progression =
+      ProgressionsUpdate.newProgressionsUpdate(contentId, finished, updatedAt)
     return withContext(threadManager.io) {
       api.updateProgression(progression)
     }

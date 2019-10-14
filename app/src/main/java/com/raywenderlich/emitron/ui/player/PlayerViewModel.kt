@@ -118,7 +118,7 @@ class PlayerViewModel @Inject constructor(
       viewModelScope.launch {
         try {
           val videoContent = repository.getVideoStream(videoId)
-          val playerToken = repository.getVideoPlaybackToken().getPlayerToken()
+          val playerToken = repository.getVideoPlaybackToken()?.getPlayerToken()
           _playerToken.value = playerToken
           lastUpdatedProgress = 0
           _nowPlayingEpisode.value = episode.setVideoUrl(videoContent.datum)
@@ -341,7 +341,7 @@ class PlayerViewModel @Inject constructor(
     viewModelScope.launch {
 
       val resetPlaybackToken = try {
-        _playerToken.value = repository.getVideoPlaybackToken().getPlayerToken()
+        _playerToken.value = repository.getVideoPlaybackToken()?.getPlayerToken()
         false
       } catch (error: Throwable) {
         Log.exception(error)

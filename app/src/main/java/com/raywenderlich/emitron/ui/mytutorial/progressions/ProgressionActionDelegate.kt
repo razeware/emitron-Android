@@ -9,6 +9,7 @@ import com.raywenderlich.emitron.utils.BoundaryCallbackNotifier
 import com.raywenderlich.emitron.utils.Event
 import com.raywenderlich.emitron.utils.decrement
 import com.raywenderlich.emitron.utils.increment
+import org.threeten.bp.LocalDateTime
 import java.io.IOException
 import javax.inject.Inject
 
@@ -58,7 +59,8 @@ class ProgressionActionDelegate @Inject constructor(
   suspend fun updateContentProgression(
     episode: Data?,
     position: Int,
-    boundaryCallbackNotifier: BoundaryCallbackNotifier? = null
+    boundaryCallbackNotifier: BoundaryCallbackNotifier? = null,
+    updatedAt: LocalDateTime
   ) {
     if (null == episode) {
       return
@@ -66,18 +68,21 @@ class ProgressionActionDelegate @Inject constructor(
 
     boundaryCallbackNotifier.increment()
     if (episode.isFinished()) {
-      updateContentInProgress(episode.id, position)
+      updateContentInProgress(episode.id, position, updatedAt)
       boundaryCallbackNotifier.decrement()
     } else {
-      updateContentCompleted(episode.id, position)
+      updateContentCompleted(episode.id, position, updatedAt)
       boundaryCallbackNotifier.decrement()
     }
   }
 
-  private suspend fun updateContentCompleted(episodeId: String?, position: Int) {
+  private suspend fun updateContentCompleted(
+    episodeId: String?, position: Int,
+    updatedAt: LocalDateTime
+  ) {
     episodeId?.let {
       val contents = try {
-        progressionRepository.updateProgression(episodeId, true)
+        progressionRepository.updateProgression(episodeId, true, updatedAt)
       } catch (exception: IOException) {
         null
       } catch (exception: HttpException) {
@@ -94,10 +99,14 @@ class ProgressionActionDelegate @Inject constructor(
     }
   }
 
-  private suspend fun updateContentInProgress(episodeId: String?, position: Int) {
+  private suspend fun updateContentInProgress(
+    episodeId: String?,
+    position: Int,
+    updatedAt: LocalDateTime
+  ) {
     episodeId?.let {
       val contents = try {
-        progressionRepository.updateProgression(episodeId, false)
+        progressionRepository.updateProgression(episodeId, false, updatedAt)
       } catch (exception: IOException) {
         null
       } catch (exception: HttpException) {

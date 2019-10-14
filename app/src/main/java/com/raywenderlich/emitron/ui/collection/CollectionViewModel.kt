@@ -24,6 +24,8 @@ import com.raywenderlich.emitron.utils.Event
 import com.raywenderlich.emitron.utils.NetworkState
 import com.raywenderlich.emitron.utils.UiStateManager
 import kotlinx.coroutines.launch
+import org.threeten.bp.Clock
+import org.threeten.bp.LocalDateTime
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
@@ -235,11 +237,15 @@ class CollectionViewModel @Inject constructor(
    * @param episode to be marked completed
    * @param position position of episode in a list
    */
-  fun updateContentProgression(episode: Data?, position: Int = 0) {
+  fun updateContentProgression(
+    episode: Data?, position: Int = 0,
+    updatedAt: LocalDateTime = LocalDateTime.now(Clock.systemUTC())
+  ) {
     viewModelScope.launch {
       progressionActionDelegate.updateContentProgression(
         episode,
-        position
+        position,
+        updatedAt = updatedAt
       )
     }
   }

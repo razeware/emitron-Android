@@ -17,7 +17,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyString
 import retrofit2.Response
-import java.io.IOException
 
 class PlayerViewModelTest {
 
@@ -750,7 +749,7 @@ class PlayerViewModelTest {
     testCoroutineRule.runBlockingTest {
       // When
 
-      whenever(videoRepository.getVideoPlaybackToken()).doThrow(IOException())
+      whenever(videoRepository.getVideoPlaybackToken()).doReturn(null)
       viewModel.resumePlayback()
       val resetPlaybackToken = viewModel.resetPlaybackToken.observeForTestingResult()
       val playbackToken = viewModel.playerToken.observeForTestingResultNullable()
@@ -759,7 +758,7 @@ class PlayerViewModelTest {
       verify(videoRepository).getVideoPlaybackToken()
       verifyNoMoreInteractions(videoRepository)
 
-      resetPlaybackToken isEqualTo true
+      resetPlaybackToken isEqualTo false
       playbackToken isEqualTo null
     }
   }

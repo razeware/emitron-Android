@@ -23,7 +23,7 @@ interface ProgressionApi {
   @Throws(Exception::class)
   suspend fun updateProgression(
     @Body data: ProgressionsUpdate
-  ): Contents
+  ): Contents?
 
   /**
    * Delete a progression
