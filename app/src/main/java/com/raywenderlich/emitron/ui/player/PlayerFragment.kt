@@ -249,6 +249,8 @@ class PlayerFragment : DaggerFragment() {
 
   private lateinit var playerBookmarkButton: MaterialButton
 
+  private lateinit var playerPlaylistButton: MaterialButton
+
   private lateinit var settingsBottomSheet: BottomSheetDialog
 
   private lateinit var playbackTokenErrorBottomSheet: BottomSheetDialog
@@ -292,7 +294,6 @@ class PlayerFragment : DaggerFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     requestLandscapeOrientation()
-    requestFullScreen()
     initUi()
     initObservers()
     startPlayback()
@@ -336,8 +337,8 @@ class PlayerFragment : DaggerFragment() {
       playbackBufferingProgress =
         findViewById(R.id.player_play_back_buffering)
 
-      val buttonPlaylist: View = findViewById(R.id.button_player_playlist)
-      buttonPlaylist.setOnClickListener {
+      playerPlaylistButton = findViewById(R.id.button_player_playlist)
+      playerPlaylistButton.setOnClickListener {
         findNavController().popBackStack()
       }
 
@@ -515,6 +516,7 @@ class PlayerFragment : DaggerFragment() {
         val showNextButton = viewModel.hasMoreEpisodes() &&
             !viewModel.isContentTypeScreencast()
         playerNextButton.toVisibility(showNextButton)
+        playerPlaylistButton.toVisibility(!viewModel.isContentTypeScreencast())
       }
     }
   }
