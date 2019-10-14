@@ -2,9 +2,9 @@ package com.raywenderlich.emitron.ui.download
 
 import androidx.lifecycle.ViewModel
 import com.raywenderlich.emitron.data.download.DownloadRepository
-import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.ui.content.ContentPagedViewModel
-import com.raywenderlich.emitron.ui.onboarding.OnboardingView
+import com.raywenderlich.emitron.ui.onboarding.OnboardingAction
+import com.raywenderlich.emitron.ui.onboarding.OnboardingActionDelegate
 import javax.inject.Inject
 
 /**
@@ -13,8 +13,8 @@ import javax.inject.Inject
 class DownloadViewModel @Inject constructor(
   private val downloadRepository: DownloadRepository,
   private val contentPagedViewModel: ContentPagedViewModel,
-  private val settingsRepository: SettingsRepository
-) : ViewModel() {
+  private val onboardingActionDelegate: OnboardingActionDelegate
+) : ViewModel(), OnboardingAction by onboardingActionDelegate {
 
   /**
    * Load bookmarks from database
@@ -28,9 +28,4 @@ class DownloadViewModel @Inject constructor(
    * Get pagination helper
    */
   fun getPaginationViewModel(): ContentPagedViewModel = contentPagedViewModel
-
-  fun isOnboardedForType(view: OnboardingView): Boolean =
-    settingsRepository.getOnboardedViews().contains(view)
-
-  fun isOnboardingAllowed(): Boolean = settingsRepository.isOnboardingAllowed()
 }

@@ -6,8 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.offline.Download
 import com.raywenderlich.emitron.data.content.ContentRepository
-import com.raywenderlich.emitron.data.download.DownloadRepository
-import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.ContentType
 import com.raywenderlich.emitron.model.Data
@@ -15,9 +13,12 @@ import com.raywenderlich.emitron.model.DownloadState
 import com.raywenderlich.emitron.model.entity.inProgress
 import com.raywenderlich.emitron.model.entity.isCompleted
 import com.raywenderlich.emitron.ui.common.UiStateViewModel
+import com.raywenderlich.emitron.ui.download.DownloadAction
+import com.raywenderlich.emitron.ui.download.DownloadActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
-import com.raywenderlich.emitron.ui.onboarding.OnboardingView
+import com.raywenderlich.emitron.ui.onboarding.OnboardingAction
+import com.raywenderlich.emitron.ui.onboarding.OnboardingActionDelegate
 import com.raywenderlich.emitron.ui.player.Playlist
 import com.raywenderlich.emitron.utils.Event
 import com.raywenderlich.emitron.utils.NetworkState
@@ -34,9 +35,10 @@ class CollectionViewModel @Inject constructor(
   private val repository: ContentRepository,
   private val bookmarkActionDelegate: BookmarkActionDelegate,
   private val progressionActionDelegate: ProgressionActionDelegate,
-  private val downloadRepository: DownloadRepository,
-  private val settingsRepository: SettingsRepository
-) : ViewModel(), UiStateViewModel {
+  private val downloadActionDelegate: DownloadActionDelegate,
+  private val onboardingActionDelegate: OnboardingActionDelegate
+) : ViewModel(), UiStateViewModel, OnboardingAction by onboardingActionDelegate,
+  DownloadAction by downloadActionDelegate {
 
   private val _networkState = MutableLiveData<NetworkState>()
 
@@ -262,18 +264,6 @@ class CollectionViewModel @Inject constructor(
   private fun isScreencast(): Boolean = _collection.value?.isTypeScreencast() ?: false
 
   /**
-   * Get downloads by id
-   *
-   * @param downloadIds Download ids
-   *
-   * @return Observable for Downloads by id
-   */
-  fun getDownloads(downloadIds: List<String>):
-      LiveData<List<com.raywenderlich.emitron.model.entity.Download>> {
-    return downloadRepository.getDownloadsById(downloadIds)
-  }
-
-  /**
    * Get content ids
    *
    * @return list of content id if collection type is screencast, else list of episode ids
@@ -290,6 +280,7 @@ class CollectionViewModel @Inject constructor(
       episodeIds ?: emptyList()
     }
   }
+
 
   /**
    * Collection download state
@@ -351,28 +342,27 @@ class CollectionViewModel @Inject constructor(
    * @param progress Int
    * @state Download state
    */
-  fun updateDownloadProgress(
-    contentId: String,
-    progress: Int,
-    state: DownloadState
-  ) {
+  fun updateDownload(contentId: String, progress: Int, state: DownloadState) {
     viewModelScope.launch {
-      downloadRepository.updateDownloadProgress(contentId, progress, state)
+      downloadActionDelegate.updateDownloadProgress(contentId, progress, state)
     }
   }
 
-
   /**
+   * Update collection download state
    *
-   * @param view Onboarding view type [OnboardingView]
+   * @param downloads list of [com.raywenderlich.emitron.model.entity.Download] from db
    *
-   * @return true if onboarding is shown for view, else false
+   * @return Download state for collection
    */
-  fun isOnboardedForType(view: OnboardingView): Boolean =
-    settingsRepository.getOnboardedViews().contains(view)
+  fun updateCollectionDownloadState(
+    downloads: List<com.raywenderlich.emitron.model.entity.Download>
+  ): com.raywenderlich.emitron.model.Download? {
+    val collection = _collection.value
+    val download = downloadActionDelegate
+      .getCollectionDownloadState(collection, downloads)
+    _collection.value = collection?.copy(download = download)
+    return download
+  }
 
-  /**
-   * @return true if onboarding can be shown, else false
-   */
-  fun isOnboardingAllowed(): Boolean = settingsRepository.isOnboardingAllowed()
 }

@@ -361,7 +361,7 @@ class CollectionFragment : DaggerFragment() {
         it.state == Download.STATE_STOPPED -> DownloadState.PAUSED
         else -> DownloadState.IN_PROGRESS
       }
-      viewModel.updateDownloadProgress(
+      viewModel.updateDownload(
         it.request.id,
         it.percentDownloaded.roundToInt(),
         state
