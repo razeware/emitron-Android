@@ -1,7 +1,7 @@
 package com.raywenderlich.emitron.data.progressions
 
-import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.Contents
+import com.raywenderlich.emitron.model.ProgressionsUpdate
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -19,11 +19,11 @@ interface ProgressionApi {
    *
    * @return Response<Content> response object containing response body
    */
-  @POST("progressions")
+  @POST("progressions/bulk")
   @Throws(Exception::class)
-  suspend fun createProgression(
-    @Body data: Content
-  ): Response<Content>
+  suspend fun updateProgression(
+    @Body data: ProgressionsUpdate
+  ): Contents
 
   /**
    * Delete a progression

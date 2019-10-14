@@ -42,7 +42,8 @@ class ProgressionActionDelegateTest {
           id = "10"
         )
       )
-      whenever(progressionRepository.updateProgression("8")).doReturn(response to true)
+      whenever(progressionRepository.updateProgression("8", true))
+        .doReturn(response to true)
 
       val episodeData = Data(
         id = "8", type = "contents",
@@ -67,7 +68,7 @@ class ProgressionActionDelegateTest {
       viewModel.updateContentProgression(episodeData, episodePosition, boundaryCallbackNotifier)
 
       // Then
-      verify(progressionRepository).updateProgression("8")
+      verify(progressionRepository).updateProgression("8", true)
       verify(progressionRepository).updateProgressionInDb("8", true)
       verifyNoMoreInteractions(progressionRepository)
 
@@ -89,7 +90,8 @@ class ProgressionActionDelegateTest {
           id = "10"
         )
       )
-      whenever(progressionRepository.updateProgression("8")).doReturn(response to false)
+      whenever(progressionRepository.updateProgression("8", true))
+        .doReturn(response to false)
 
       val episodeData = Data(
         id = "8", type = "contents",
@@ -112,7 +114,7 @@ class ProgressionActionDelegateTest {
       viewModel.updateContentProgression(episodeData, episodePosition)
 
       // Then
-      verify(progressionRepository).updateProgression("8")
+      verify(progressionRepository).updateProgression("8", true)
       verify(progressionRepository).updateProgressionInDb("8", false)
       verifyNoMoreInteractions(progressionRepository)
 
@@ -128,7 +130,8 @@ class ProgressionActionDelegateTest {
     testCoroutineRule.runBlockingTest {
 
       // Given
-      whenever(progressionRepository.updateProgression("8")).doThrow(IOException())
+      whenever(progressionRepository.updateProgression("8", true))
+        .doThrow(IOException())
 
       val episodeData = Data(
         id = "8", type = "contents",
@@ -151,7 +154,7 @@ class ProgressionActionDelegateTest {
       viewModel.updateContentProgression(episodeData, episodePosition)
 
       // Then
-      verify(progressionRepository).updateProgression("8")
+      verify(progressionRepository).updateProgression("8", true)
       verify(progressionRepository).updateProgressionInDb("8", false)
       verifyNoMoreInteractions(progressionRepository)
 
@@ -172,7 +175,8 @@ class ProgressionActionDelegateTest {
           id = "10"
         )
       )
-      whenever(progressionRepository.updateProgression("8")).doReturn(response to true)
+      whenever(progressionRepository.updateProgression("8", false))
+        .doReturn(response to true)
 
       val episodeData = Data(
         id = "8", type = "contents",
@@ -195,7 +199,7 @@ class ProgressionActionDelegateTest {
       viewModel.updateContentProgression(episodeData, episodePosition)
 
       // Then
-      verify(progressionRepository).updateProgression("8")
+      verify(progressionRepository).updateProgression("8", false)
       verify(progressionRepository).updateProgressionInDb("8", false)
       verifyNoMoreInteractions(progressionRepository)
 
@@ -216,7 +220,8 @@ class ProgressionActionDelegateTest {
           id = "10"
         )
       )
-      whenever(progressionRepository.updateProgression("8")).doReturn(response to false)
+      whenever(progressionRepository.updateProgression("8", false))
+        .doReturn(response to false)
 
       val episodeData = Data(
         id = "8", type = "contents",
@@ -239,7 +244,7 @@ class ProgressionActionDelegateTest {
       viewModel.updateContentProgression(episodeData, episodePosition)
 
       // Then
-      verify(progressionRepository).updateProgression("8")
+      verify(progressionRepository).updateProgression("8", false)
       verify(progressionRepository).updateProgressionInDb("8", true)
       verifyNoMoreInteractions(progressionRepository)
 
@@ -267,7 +272,8 @@ class ProgressionActionDelegateTest {
           )
         )
       )
-      whenever(progressionRepository.updateProgression("8")).doThrow(IOException())
+      whenever(progressionRepository.updateProgression("8", false))
+        .doThrow(IOException())
 
       val episodePosition = 4
 
@@ -276,7 +282,7 @@ class ProgressionActionDelegateTest {
       viewModel.updateContentProgression(episodeData, episodePosition)
 
       // Then
-      verify(progressionRepository).updateProgression("8")
+      verify(progressionRepository).updateProgression("8", false)
       verify(progressionRepository).updateProgressionInDb("8", true)
       verifyNoMoreInteractions(progressionRepository)
       viewModel.completionActionResult.value?.first?.peekContent() isEqualTo

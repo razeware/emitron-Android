@@ -4,7 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
 import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.content.ContentDataSourceLocal
-import com.raywenderlich.emitron.model.*
+import com.raywenderlich.emitron.model.Content
+import com.raywenderlich.emitron.model.ProgressionUpdate
+import com.raywenderlich.emitron.model.ProgressionsUpdate
 import com.raywenderlich.emitron.utils.TestCoroutineRule
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import kotlinx.coroutines.Dispatchers
@@ -42,14 +44,17 @@ class ProgressionRepositoryTest {
     testCoroutineRule.runBlockingTest {
       val expectedContent = Content()
       val progression = createProgressionStub()
-      whenever(progressionApi.createProgression(any())).doReturn(
+      whenever(progressionApi.updateProgression(any())).doReturn(
         Response.success(
           200,
           expectedContent
         )
       )
-      val (result, isSuccessful) = repository.updateProgression("1")
-      verify(progressionApi).createProgression(progression)
+      val (result, isSuccessful) = repository.updateProgression(
+        "1",
+        true
+      )
+      verify(progressionApi).updateProgression(progression)
       Truth.assertThat(result).isEqualTo(expectedContent)
       Truth.assertThat(isSuccessful).isTrue()
       verifyNoMoreInteractions(progressionApi)
@@ -62,11 +67,14 @@ class ProgressionRepositoryTest {
       val expectedContent = createProgressionStub()
       val responseBody: ResponseBody = mock()
       val errorResponse: Response<Content> = Response.error(401, responseBody)
-      whenever(progressionApi.createProgression(any())).doReturn(errorResponse)
+      whenever(progressionApi.updateProgression(any())).doReturn(errorResponse)
 
-      val (_, result) = repository.updateProgression("1")
+      val (_, result) = repository.updateProgression(
+        "1",
+        true
+      )
 
-      verify(progressionApi).createProgression(expectedContent)
+      verify(progressionApi).updateProgression(expectedContent)
       Truth.assertThat(result).isFalse()
       verifyNoMoreInteractions(progressionApi)
     }
@@ -110,18 +118,6 @@ class ProgressionRepositoryTest {
     }
   }
 
-  private fun createProgressionStub() = Content(
-    datum = Data(
-      type = DataType.Progressions.toRequestFormat(),
-      relationships = Relationships(
-        content =
-        Content(
-          datum = Data(
-            type = DataType.Contents.toRequestFormat(),
-            id = "1"
-          )
-        )
-      )
-    )
-  )
+  private fun createProgressionStub() =
+    ProgressionsUpdate(listOf(ProgressionUpdate("1", finished = true)))
 }

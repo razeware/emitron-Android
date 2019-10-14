@@ -76,15 +76,15 @@ class ProgressionActionDelegate @Inject constructor(
 
   private suspend fun updateContentCompleted(episodeId: String?, position: Int) {
     episodeId?.let {
-      val (_, result) = try {
-        progressionRepository.updateProgression(episodeId)
+      val contents = try {
+        progressionRepository.updateProgression(episodeId, true)
       } catch (exception: IOException) {
-        null to false
+        null
       } catch (exception: HttpException) {
-        null to false
+        null
       }
 
-      _completionActionResult.value = if (result) {
+      _completionActionResult.value = if (null != contents) {
         progressionRepository.updateProgressionInDb(episodeId, true)
         Event(EpisodeProgressionActionResult.EpisodeMarkedCompleted) to position
       } else {
@@ -96,14 +96,14 @@ class ProgressionActionDelegate @Inject constructor(
 
   private suspend fun updateContentInProgress(episodeId: String?, position: Int) {
     episodeId?.let {
-      val (_, result) = try {
-        progressionRepository.updateProgression(episodeId)
+      val contents = try {
+        progressionRepository.updateProgression(episodeId, false)
       } catch (exception: IOException) {
-        null to false
+        null
       } catch (exception: HttpException) {
-        null to false
+        null
       }
-      _completionActionResult.value = if (result) {
+      _completionActionResult.value = if (null != contents) {
         progressionRepository.updateProgressionInDb(episodeId, false)
         Event(EpisodeProgressionActionResult.EpisodeMarkedInProgress) to position
       } else {

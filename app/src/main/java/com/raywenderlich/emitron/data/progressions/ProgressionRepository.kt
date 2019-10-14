@@ -5,10 +5,7 @@ import androidx.annotation.WorkerThread
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import com.raywenderlich.emitron.data.content.ContentDataSourceLocal
-import com.raywenderlich.emitron.model.CompletionStatus
-import com.raywenderlich.emitron.model.Content
-import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.model.isCompleted
+import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.utils.BoundaryCallbackNotifier
 import com.raywenderlich.emitron.utils.LocalPagedResponse
 import com.raywenderlich.emitron.utils.PagedBoundaryCallbackImpl
@@ -27,6 +24,9 @@ class ProgressionRepository @Inject constructor(
 ) {
 
   companion object {
+    /**
+     * Progression items per page
+     */
     const val PAGE_SIZE: Int = 10
   }
 
@@ -39,12 +39,13 @@ class ProgressionRepository @Inject constructor(
    */
   @WorkerThread
   @Throws(Exception::class)
-  suspend fun updateProgression(contentId: String): Pair<Content?, Boolean> {
-    val progression = Content.newProgression(contentId)
+  suspend fun updateProgression(
+    contentId: String,
+    finished: Boolean
+  ): Contents {
+    val progression = ProgressionsUpdate.newProgressionsUpdate(contentId, finished)
     return withContext(threadManager.io) {
-      contentDataSourceLocal.updateProgress(contentId, true)
-      val response = api.createProgression(progression)
-      response.body() to response.isSuccessful
+      api.updateProgression(progression)
     }
   }
 
@@ -82,7 +83,7 @@ class ProgressionRepository @Inject constructor(
    * Fetch progressions
    *
    * @param completionStatus Progression completion state [CompletionStatus]
-   * @param pageSize Default page size to be fetched
+   * @param boundaryCallbackNotifier Boundary callback notifier
    *
    * @return [PagedResponse] containing LiveData objects of network state,
    * initial meta data, retry callback and paged list

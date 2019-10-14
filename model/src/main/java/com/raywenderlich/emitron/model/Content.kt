@@ -170,27 +170,5 @@ data class Content(
         )
       )
     }
-
-    /**
-     * Create content object for creating new progression
-     *
-     * @param contentId id of content for which progression has to be created/updated
-     */
-    fun newProgression(contentId: String): Content {
-      return Content(
-        datum = Data(
-          type = DataType.Progressions.toRequestFormat(),
-          relationships = Relationships(
-            content =
-            Content(
-              datum = Data(
-                type = DataType.Contents.toRequestFormat(),
-                id = contentId
-              )
-            )
-          )
-        )
-      )
-    }
   }
 }
