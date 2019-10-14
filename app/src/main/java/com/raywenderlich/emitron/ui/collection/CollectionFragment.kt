@@ -282,7 +282,7 @@ class CollectionFragment : DaggerFragment() {
       .observe(viewLifecycleOwner) { downloads ->
         downloads?.let {
           if (it.isNotEmpty()) {
-            val collectionDownload = viewModel.getCollectionDownloadState(downloads)
+            val collectionDownload = viewModel.updateCollectionDownloadState(downloads)
             binding.buttonCollectionDownload.updateDownloadState(collectionDownload)
             episodeAdapter.updateEpisodeDownloadProgress(downloads)
           }
@@ -384,7 +384,7 @@ class CollectionFragment : DaggerFragment() {
   }
 
   private fun createDownloadProgressHandler() {
-    if (null == downloadProgressHandler) {
+    if (null == downloadProgressHandler && isVisible) {
       downloadProgressHandler =
         createMainThreadScheduledHandler(
           requireContext(),
