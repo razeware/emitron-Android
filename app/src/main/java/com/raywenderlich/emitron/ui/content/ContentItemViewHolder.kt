@@ -41,7 +41,7 @@ class ContentItemViewHolder(private val binding: ItemContentBinding) :
     binding.textCollectionLabelPro.toVisibility(
       adapterContent.isContent() &&
           content?.isFinished() != true &&
-          content?.isFreeContent() != true
+          content?.isProfessionContent() != true
     )
     binding.buttonDownload.toVisibility(!adapterContent.isDownloaded())
     binding.buttonBookmark.toVisibility(adapterContent.isBookmarked())

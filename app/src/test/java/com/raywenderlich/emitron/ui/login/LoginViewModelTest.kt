@@ -8,6 +8,7 @@ import com.raywenderlich.emitron.model.Attributes
 import com.raywenderlich.emitron.model.Contents
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.utils.TestCoroutineRule
+import com.raywenderlich.emitron.utils.isEqualTo
 import com.raywenderlich.guardpost.data.SSOUser
 import org.junit.Before
 import org.junit.Rule
@@ -86,4 +87,16 @@ class LoginViewModelTest {
       verifyNoMoreInteractions(loginRepository)
     }
   }
+
+  @Test
+  fun hasDownloadPermission() {
+    whenever(loginRepository.hasDownloadPermission()).doReturn(true)
+
+    val result = viewModel.hasDownloadPermission()
+
+    result isEqualTo true
+    verify(loginRepository).hasDownloadPermission()
+    verifyNoMoreInteractions(loginRepository)
+  }
+
 }

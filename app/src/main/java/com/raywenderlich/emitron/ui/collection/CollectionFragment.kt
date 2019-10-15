@@ -122,7 +122,7 @@ class CollectionFragment : DaggerFragment() {
 
     episodeAdapter = CollectionEpisodeAdapter(
       onEpisodeSelected = { currentEpisode, _ ->
-        if (viewModel.isFreeContent()) {
+        if (viewModel.isContentPlaybackAllowed(isNetConnected())) {
           openPlayer(currentEpisode)
         }
       },
@@ -156,7 +156,7 @@ class CollectionFragment : DaggerFragment() {
 
   private fun startDownload(episodeId: String? = null) {
 
-    if (!viewModel.isDownloadAllowed()) {
+    if (!viewModel.hasDownloadPermission()) {
       showErrorSnackbar(getString(R.string.error_download_permission))
       return
     }
@@ -179,7 +179,7 @@ class CollectionFragment : DaggerFragment() {
         episodeAdapter.submitList(it)
         binding.groupCollectionContent.toVisibility(true)
 
-        if (viewModel.isFreeContent()) {
+        if (viewModel.isContentPlaybackAllowed(isNetConnected())) {
           binding.buttonCollectionPlay.toVisibility(true)
         }
       }
@@ -193,7 +193,8 @@ class CollectionFragment : DaggerFragment() {
           withYear = false
         )
 
-        episodeAdapter.isProCourse = !it.isFreeContent()
+        episodeAdapter.isContentPlaybackAllowed =
+          viewModel.isContentPlaybackAllowed(isConnected = true)
 
         val contributors = it.getReadableContributors(requireContext())
         binding.textCollectionDuration.text = releaseDateWithTypeAndDuration

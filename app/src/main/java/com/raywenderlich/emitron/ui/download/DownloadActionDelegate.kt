@@ -50,7 +50,7 @@ interface DownloadAction {
   /**
    * @return true if downloads can be shown, else false
    */
-  fun isDownloadAllowed(): Boolean
+  fun hasDownloadPermission(): Boolean
 }
 
 /**
@@ -123,5 +123,5 @@ class DownloadActionDelegate @Inject constructor(
   /**
    * @return true if downloads can be shown, else false
    */
-  override fun isDownloadAllowed(): Boolean = loginRepository.hasDownloadPermission()
+  override fun hasDownloadPermission(): Boolean = loginRepository.hasDownloadPermission()
 }

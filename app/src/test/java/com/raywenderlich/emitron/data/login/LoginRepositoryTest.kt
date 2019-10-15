@@ -105,4 +105,41 @@ class LoginRepositoryTest {
     // Then
     repository.hasDownloadPermission() isEqualTo true
   }
+
+  @Test
+  fun hasStreamProPermission() {
+    // Given
+    whenever(loginPrefs.getPermissions()).doReturn(listOf("stream-professional-videos"))
+
+    // Then
+    repository.hasStreamProPermission() isEqualTo true
+  }
+
+  @Test
+  fun hasStreamProPermission_NoPermission() {
+    // Given
+    whenever(loginPrefs.getPermissions()).doReturn(listOf("stream-beginner-videos"))
+
+    // Then
+    repository.hasStreamProPermission() isEqualTo false
+  }
+
+  @Test
+  fun getPermissionsFromPrefs() {
+    // Given
+    whenever(loginPrefs.getPermissions()).doReturn(listOf("download-videos"))
+
+    // Then
+    repository.getPermissionsFromPrefs() isEqualTo listOf("download-videos")
+  }
+
+  @Test
+  fun removePermissions() {
+    // When
+    repository.removePermissions()
+
+    // Then
+    verify(loginPrefs).removePermissions()
+    verifyNoMoreInteractions(loginApi)
+  }
 }

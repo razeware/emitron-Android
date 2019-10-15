@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.work.WorkManager
 import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentLoginBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
+import com.raywenderlich.emitron.ui.download.workers.VerifyDownloadWorker
 import com.raywenderlich.emitron.utils.extensions.*
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -74,8 +76,12 @@ class LoginFragment : DaggerFragment() {
     viewModel.loginActionResult.observe(viewLifecycleOwner) {
       binding.buttonSignIn.isEnabled = true
       when (it) {
-        LoginViewModel.LoginActionResult.LoggedIn ->
+        LoginViewModel.LoginActionResult.LoggedIn -> {
+          if (viewModel.hasDownloadPermission()) {
+            VerifyDownloadWorker.queue(WorkManager.getInstance(requireContext()))
+          }
           findNavController().navigate(R.id.action_navigation_login_to_navigation_library)
+        }
         LoginViewModel.LoginActionResult.NoSubscription -> {
           handleNoSubscription()
         }

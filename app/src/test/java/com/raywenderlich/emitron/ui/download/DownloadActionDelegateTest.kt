@@ -112,10 +112,10 @@ class DownloadActionDelegateTest {
   }
 
   @Test
-  fun isDownloadAllowed() {
+  fun isDownloadPermission() {
     whenever(loginRepository.hasDownloadPermission()).doReturn(true)
 
-    val result = viewModel.isDownloadAllowed()
+    val result = viewModel.hasDownloadPermission()
 
     result isEqualTo true
     verify(loginRepository).hasDownloadPermission()

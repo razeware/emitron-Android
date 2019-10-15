@@ -23,11 +23,11 @@ class CollectionEpisodeAdapter(
   private var bindHeaderCount = -1
 
   /**
-   * Property to check If the collection requires a subscription
+   * Property to check If the collection playback is allowed,
+   * If playback is not allowed a lock icon will be shown and collection won't be playable.
    *
-   * This will help you in disabling clicks on episodes, changing the episode UI accordingly.
    */
-  var isProCourse: Boolean = false
+  var isContentPlaybackAllowed: Boolean = false
 
   /**
    * [RecyclerView.Adapter.getItemViewType]
@@ -100,7 +100,7 @@ class CollectionEpisodeAdapter(
       cachedEpisodePosition
     }
 
-    viewHolder.bindTo(data, episodePosition, isProCourse, { selectedPosition ->
+    viewHolder.bindTo(data, episodePosition, isContentPlaybackAllowed, { selectedPosition ->
       val contentEpisode = items[selectedPosition]
       val nextContentEpisode = if (selectedPosition < items.size - 1) {
         items[selectedPosition + 1]

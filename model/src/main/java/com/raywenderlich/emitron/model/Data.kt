@@ -101,7 +101,7 @@ data class Data(
   /**
    *  @return true if content doesn't require subscription, else false
    */
-  fun isFreeContent(): Boolean = attributes?.professional != true
+  fun isProfessionContent(): Boolean = attributes?.professional == true
 
   /**
    *  If data represents a progression object
@@ -134,7 +134,7 @@ data class Data(
    *  @return true if content requires subscription, else false
    */
   fun isProLabelVisible(): Boolean =
-    !isTypeProgression() && !isFreeContent() && !isFinished()
+    !isTypeProgression() && !isProfessionContent() && !isFinished()
 
   /**
    *  @return [TimeUtils.Day] after parsing release date of content

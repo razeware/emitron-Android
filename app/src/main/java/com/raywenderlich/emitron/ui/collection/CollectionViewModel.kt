@@ -6,12 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.offline.Download
 import com.raywenderlich.emitron.data.content.ContentRepository
+import com.raywenderlich.emitron.data.login.LoginRepository
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.ContentType
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.DownloadState
-import com.raywenderlich.emitron.model.entity.inProgress
-import com.raywenderlich.emitron.model.entity.isCompleted
 import com.raywenderlich.emitron.ui.common.UiStateViewModel
 import com.raywenderlich.emitron.ui.download.DownloadAction
 import com.raywenderlich.emitron.ui.download.DownloadActionDelegate
@@ -38,7 +37,8 @@ class CollectionViewModel @Inject constructor(
   private val bookmarkActionDelegate: BookmarkActionDelegate,
   private val progressionActionDelegate: ProgressionActionDelegate,
   private val downloadActionDelegate: DownloadActionDelegate,
-  private val onboardingActionDelegate: OnboardingActionDelegate
+  private val onboardingActionDelegate: OnboardingActionDelegate,
+  private val loginRepository: LoginRepository
 ) : ViewModel(), UiStateViewModel, OnboardingAction by onboardingActionDelegate,
   DownloadAction by downloadActionDelegate {
 
@@ -251,9 +251,27 @@ class CollectionViewModel @Inject constructor(
   }
 
   /**
-   * @return true if content is free to watch, else false
+   * Is content playback allowed
+   *
+   * @param isConnected Is device connected to internet
    */
-  fun isFreeContent(): Boolean = _collection.value?.isFreeContent() ?: false
+  fun isContentPlaybackAllowed(isConnected: Boolean): Boolean {
+    val collection = _collection.value
+    val isProfessionalContent = collection?.isProfessionContent()
+    val isDownloaded = collection?.isDownloaded()
+
+    return when {
+      isConnected && isProfessionalContent == true -> {
+        if (isDownloaded == true) {
+          loginRepository.hasDownloadPermission()
+        } else {
+          loginRepository.hasStreamProPermission()
+        }
+      }
+      !isConnected -> loginRepository.hasDownloadPermission()
+      else -> isProfessionalContent ?: false
+    }
+  }
 
   /**
    * Get collection id
@@ -284,60 +302,6 @@ class CollectionViewModel @Inject constructor(
       val episodes = collectionEpisodes.value
       val episodeIds = episodes?.mapNotNull { it.data?.id }
       episodeIds ?: emptyList()
-    }
-  }
-
-
-  /**
-   * Collection download state
-   *
-   * @param downloads list of [com.raywenderlich.emitron.model.entity.Download] from db
-   *
-   * @return Download state for collection
-   */
-  fun getCollectionDownloadState(downloads: List<com.raywenderlich.emitron.model.entity.Download>):
-      com.raywenderlich.emitron.model.Download? {
-
-    val collection = _collection.value
-    val collectionIsScreencast = collection?.isTypeScreencast() ?: false
-
-    return if (collectionIsScreencast) {
-      val download =
-        downloads.first { it.downloadId == getContentId() }.toDownloadState()
-      _collection.value = collection?.copy(download = download)
-      download
-    } else {
-      getVideoCourseDownloadState(downloads)
-    }
-  }
-
-  private fun getVideoCourseDownloadState(
-    downloads:
-    List<com.raywenderlich.emitron.model.entity.Download>
-  ): com.raywenderlich.emitron.model.Download? {
-    return if (downloads.isNotEmpty()) {
-      val downloadProgress: Pair<Int, Int> = when {
-        downloads.any { it.inProgress() } -> {
-          downloads.map {
-            it.progress
-          }.reduce { acc, i ->
-            i + acc
-          } to DownloadState.IN_PROGRESS.ordinal
-        }
-        downloads.all { it.isCompleted() } -> {
-          100 to DownloadState.COMPLETED.ordinal
-        }
-        else -> {
-          0 to DownloadState.IN_PROGRESS.ordinal
-        }
-      }
-
-      com.raywenderlich.emitron.model.Download(
-        progress = downloadProgress.first,
-        state = downloadProgress.second
-      )
-    } else {
-      null
     }
   }
 

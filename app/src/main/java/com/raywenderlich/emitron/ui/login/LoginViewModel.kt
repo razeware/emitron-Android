@@ -84,4 +84,11 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
       }
     }
   }
+
+  /**
+   * User has download permission
+   *
+   * @return true if user has download permission, else false
+   */
+  fun hasDownloadPermission(): Boolean = loginRepository.hasDownloadPermission()
 }
