@@ -40,7 +40,7 @@
   <color name="colorButton2">@color/bright_grey</color>
   <color name="colorButtonIconRipple">@color/pale_blue</color>
   <color name="colorButton3">@color/copper</color>
-  <color name="colorButton4">@color/blue_grey</color>
+  <color name="colorButton4">@color/slate_grey</color>
 
   <color name="textColorBody1">@color/raven_grey</color>
   <color name="textColorBody1Inverse">@color/white</color>

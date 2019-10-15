@@ -9,6 +9,7 @@ import com.raywenderlich.emitron.data.content.ContentRepository
 import com.raywenderlich.emitron.data.login.LoginRepository
 import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.ui.download.DownloadActionDelegate
+import com.raywenderlich.emitron.ui.download.PermissionActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
 import com.raywenderlich.emitron.ui.onboarding.OnboardingActionDelegate
@@ -32,6 +33,8 @@ class CollectionViewModelTest {
 
   private val onboardingActionDelegate: OnboardingActionDelegate = mock()
 
+  private val permissionActionDelegate: PermissionActionDelegate = mock()
+
   private lateinit var viewModel: CollectionViewModel
 
   private val loginRepository: LoginRepository = mock()
@@ -50,7 +53,7 @@ class CollectionViewModelTest {
         progressionActionDelegate,
         downloadActionDelegate,
         onboardingActionDelegate,
-        loginRepository
+        permissionActionDelegate
       )
   }
 
@@ -888,7 +891,8 @@ class CollectionViewModelTest {
       val content = createContent(data = contentData)
       whenever(contentRepository.getContent("1")).doReturn(content)
       viewModel.loadCollection(Data(id = "1"))
-      whenever(loginRepository.hasStreamProPermission()).doReturn(true)
+      whenever(permissionActionDelegate.isProfessionalVideoPlaybackAllowed()).doReturn(true)
+      whenever(permissionActionDelegate.isProfessionalVideoPlaybackAllowed()).doReturn(true)
 
       // When
       val result = viewModel.isContentPlaybackAllowed(true)
@@ -914,10 +918,10 @@ class CollectionViewModelTest {
       val content = createContent(data = contentData)
       whenever(contentRepository.getContent("1")).doReturn(content)
       viewModel.loadCollection(Data(id = "1"))
-      whenever(loginRepository.hasDownloadPermission()).doReturn(true)
+      whenever(permissionActionDelegate.isDownloadAllowed()).doReturn(true)
 
       // When
-      val result = viewModel.isContentPlaybackAllowed(true)
+      val result = viewModel.isContentPlaybackAllowed(true, checkDownloadPermission = true)
 
       // Then
       result isEqualTo true
@@ -940,7 +944,7 @@ class CollectionViewModelTest {
       val content = createContent(data = contentData)
       whenever(contentRepository.getContent("1")).doReturn(content)
       viewModel.loadCollection(Data(id = "1"))
-      whenever(loginRepository.hasDownloadPermission()).doReturn(false)
+      whenever(loginRepository.isDownloadAllowed()).doReturn(false)
 
       // When
       val result = viewModel.isContentPlaybackAllowed(false)

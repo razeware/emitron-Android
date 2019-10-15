@@ -103,7 +103,7 @@ class LoginRepositoryTest {
     whenever(loginPrefs.getPermissions()).doReturn(listOf("download-videos"))
 
     // Then
-    repository.hasDownloadPermission() isEqualTo true
+    repository.isDownloadAllowed() isEqualTo true
   }
 
   @Test
@@ -112,7 +112,7 @@ class LoginRepositoryTest {
     whenever(loginPrefs.getPermissions()).doReturn(listOf("stream-professional-videos"))
 
     // Then
-    repository.hasStreamProPermission() isEqualTo true
+    repository.isProfessionalVideoPlaybackAllowed() isEqualTo true
   }
 
   @Test
@@ -121,7 +121,7 @@ class LoginRepositoryTest {
     whenever(loginPrefs.getPermissions()).doReturn(listOf("stream-beginner-videos"))
 
     // Then
-    repository.hasStreamProPermission() isEqualTo false
+    repository.isProfessionalVideoPlaybackAllowed() isEqualTo false
   }
 
   @Test

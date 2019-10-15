@@ -101,7 +101,7 @@ data class Data(
   /**
    *  @return true if content doesn't require subscription, else false
    */
-  fun isProfessionContent(): Boolean = attributes?.professional == true
+  fun isProfessional(): Boolean = attributes?.professional == true
 
   /**
    *  If data represents a progression object
@@ -129,12 +129,6 @@ data class Data(
    *  @return true if user has watched the content, else false
    */
   fun isFinished(): Boolean = attributes?.finished ?: false || isProgressionFinished()
-
-  /**
-   *  @return true if content requires subscription, else false
-   */
-  fun isProLabelVisible(): Boolean =
-    !isTypeProgression() && !isProfessionContent() && !isFinished()
 
   /**
    *  @return [TimeUtils.Day] after parsing release date of content
@@ -326,13 +320,13 @@ data class Data(
    * Get episode number
    *
    * @param position Episode position
-   * @param episodeIsProContent Episode requires subscription
+   * @param playbackAllowed Episode playback allowed
    *
    * @return Empty String if episode is finished or it requires subscription,
    * else String of position
    */
-  fun getEpisodeNumber(position: Int, episodeIsProContent: Boolean): String =
-    if (episodeIsProContent || isFinished()) "" else position.toString()
+  fun getEpisodeNumber(position: Int, playbackAllowed: Boolean): String =
+    if (!playbackAllowed || isFinished()) "" else position.toString()
 
   /**
    *  @return content id for relationships

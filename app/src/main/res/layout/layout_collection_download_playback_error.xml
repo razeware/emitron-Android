@@ -16,7 +16,6 @@
       style="@style/Button.Icon"
       android:layout_width="@dimen/button_icon_height_width_3"
       android:layout_height="@dimen/button_icon_height_width_3"
-      android:visibility="gone"
       app:icon="@drawable/ic_material_icon_chevron"
       app:iconTint="@color/colorIcon"
       app:layout_constraintBottom_toTopOf="@+id/text_playback_token_error"
@@ -33,25 +32,39 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/player_playback_token_error_margin_top"
       android:gravity="center"
-      android:text="@string/player_playback_token_error"
+      android:text="@string/error_download_verification"
       android:textIsSelectable="false"
-      app:layout_constraintBottom_toTopOf="@id/button_playback_token_play"
+      app:layout_constraintBottom_toTopOf="@id/button_collection_verify_download"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/button_player_settings_close" />
 
     <com.google.android.material.button.MaterialButton
-      android:id="@+id/button_playback_token_play"
+      android:id="@+id/button_collection_verify_download"
       style="@style/Button.Colored.4.Dense"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/player_playback_token_error_margin_top"
-      android:text="@string/button_play"
+      android:text="@string/button_verify_download"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@+id/button_collection_play_online"
+      app:layout_constraintHorizontal_chainStyle="packed"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/text_playback_token_error" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_collection_play_online"
+      style="@style/Button.Colored.4.Dense"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/button_spacing_horizontal_2"
+      android:layout_marginTop="@dimen/player_playback_token_error_margin_top"
+      android:text="@string/button_play_online"
       app:icon="@drawable/ic_material_icon_play"
       app:iconTint="@color/colorIconInverse"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintStart_toEndOf="@+id/button_collection_verify_download"
       app:layout_constraintTop_toBottomOf="@+id/text_playback_token_error" />
 
 

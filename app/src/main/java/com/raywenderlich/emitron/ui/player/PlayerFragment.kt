@@ -6,7 +6,6 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.RadioGroup
 import android.widget.Toast
@@ -24,7 +23,6 @@ import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.android.exoplayer2.upstream.cache.Cache
 import com.google.android.gms.cast.framework.CastContext
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.raywenderlich.emitron.BuildConfig
@@ -522,7 +520,7 @@ class PlayerFragment : DaggerFragment() {
   }
 
   private fun showPlaybackTokenErrorBottomSheet() {
-    if (::playbackTokenErrorBottomSheet.isInitialized && playbackTokenErrorBottomSheet.isShowing) {
+    if (isShowingPlaybackTokenBottomSheet()) {
       return
     }
     val sheetView = requireActivity().layoutInflater
@@ -568,24 +566,6 @@ class PlayerFragment : DaggerFragment() {
 
     settingsBottomSheet.show()
   }
-
-  private fun createBottomSheetDialog(view: View) =
-    BottomSheetDialog(requireActivity()).apply {
-      setContentView(view)
-      setOnShowListener { dialog ->
-        val d = dialog as BottomSheetDialog
-        val bottomSheet =
-          d.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as? FrameLayout
-
-        bottomSheet?.let {
-          BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_EXPANDED
-        }
-
-        val closeButton =
-          dialog.findViewById<View>(R.id.button_player_settings_close)
-        closeButton?.setOnClickListener { dialog.dismiss() }
-      }
-    }
 
   private fun handlePlaybackSpeedSettings(bottomSheetView: View) {
     val playbackSpeedRadioGroup: RadioGroup =
@@ -670,11 +650,8 @@ class PlayerFragment : DaggerFragment() {
     subtitlesBottomSheet.show()
   }
 
-  /**
-   * See [Fragment.onDestroy]
-   */
-  override fun onDestroy() {
-    super.onDestroy()
+  override fun onDestroyView() {
+    super.onDestroyView()
     dismissBottomSheets()
     countDownTimer.cancel()
     requestLandscapeOrientation(false)

@@ -82,6 +82,10 @@
   <string name="message_episode_failed_to_mark_completed">Failed to mark episode completed.</string>
   <string name="message_episode_marked_in_progress">Episode marked in progress.</string>
   <string name="message_episode_failed_to_mark_in_progress">Failed to mark episode in progress.</string>
+  <string name="error_download_verification">Sync subscriptions to continue playing downloaded content</string>
+  <string name="button_verify_download">Sync</string>
+  <string name="button_play_online">Play online</string>
+  <string name="error_permission">Failed to check permissions.</string>
 
   <!-- Filter screen -->
   <string name="button_filter_clear_all">Clear All</string>

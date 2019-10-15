@@ -85,13 +85,13 @@ class LoginRepository @Inject constructor(
    *
    * @return true if user has [PermissionTag.Download] permission
    */
-  fun hasDownloadPermission(): Boolean =
+  fun isDownloadAllowed(): Boolean =
     loginPrefs.getPermissions().contains(PermissionTag.Download.param)
 
   /**
    * Check if user has permission to stream professional courses
    */
-  fun hasStreamProPermission(): Boolean =
+  fun isProfessionalVideoPlaybackAllowed(): Boolean =
     loginPrefs.getPermissions().contains(PermissionTag.StreamProfessional.param)
 
   /**

@@ -2,13 +2,18 @@ package com.raywenderlich.emitron.utils.extensions
 
 import android.content.Context
 import android.content.pm.ActivityInfo
+import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.FrameLayout
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.raywenderlich.emitron.R
 
 /**
  * File will contain all the extension functions for [androidx.fragment.app.Fragment]s
@@ -106,3 +111,25 @@ fun Fragment.requestLandscapeOrientation(isLandscape: Boolean = true) {
     ActivityInfo.SCREEN_ORIENTATION_USER
   }
 }
+
+/**
+ * Create a [BottomSheetDialog]
+ */
+fun Fragment.createBottomSheetDialog(view: View): BottomSheetDialog =
+  BottomSheetDialog(requireActivity()).apply {
+    setContentView(view)
+    setOnShowListener { dialog ->
+      val d = dialog as BottomSheetDialog
+      val bottomSheet =
+        d.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as? FrameLayout
+
+      bottomSheet?.let {
+        BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_EXPANDED
+      }
+
+      val closeButton =
+        dialog.findViewById<View>(R.id.button_player_settings_close)
+      closeButton?.setOnClickListener { dialog.dismiss() }
+    }
+  }
+

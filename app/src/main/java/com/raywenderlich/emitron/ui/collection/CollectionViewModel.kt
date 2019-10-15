@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.offline.Download
 import com.raywenderlich.emitron.data.content.ContentRepository
-import com.raywenderlich.emitron.data.login.LoginRepository
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.ContentType
 import com.raywenderlich.emitron.model.Data
@@ -14,6 +13,8 @@ import com.raywenderlich.emitron.model.DownloadState
 import com.raywenderlich.emitron.ui.common.UiStateViewModel
 import com.raywenderlich.emitron.ui.download.DownloadAction
 import com.raywenderlich.emitron.ui.download.DownloadActionDelegate
+import com.raywenderlich.emitron.ui.download.PermissionActionDelegate
+import com.raywenderlich.emitron.ui.download.PermissionsAction
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
 import com.raywenderlich.emitron.ui.onboarding.OnboardingAction
@@ -38,9 +39,9 @@ class CollectionViewModel @Inject constructor(
   private val progressionActionDelegate: ProgressionActionDelegate,
   private val downloadActionDelegate: DownloadActionDelegate,
   private val onboardingActionDelegate: OnboardingActionDelegate,
-  private val loginRepository: LoginRepository
+  private val permissionActionDelegate: PermissionActionDelegate
 ) : ViewModel(), UiStateViewModel, OnboardingAction by onboardingActionDelegate,
-  DownloadAction by downloadActionDelegate {
+  DownloadAction by downloadActionDelegate, PermissionsAction by permissionActionDelegate {
 
   private val _networkState = MutableLiveData<NetworkState>()
 
@@ -255,21 +256,30 @@ class CollectionViewModel @Inject constructor(
    *
    * @param isConnected Is device connected to internet
    */
-  fun isContentPlaybackAllowed(isConnected: Boolean): Boolean {
+  fun isContentPlaybackAllowed(
+    isConnected: Boolean,
+    checkDownloadPermission: Boolean = true
+  ): Boolean {
     val collection = _collection.value
-    val isProfessionalContent = collection?.isProfessionContent()
+    val isProfessionalContent = collection?.isProfessional()
     val isDownloaded = collection?.isDownloaded()
 
     return when {
       isConnected && isProfessionalContent == true -> {
-        if (isDownloaded == true) {
-          loginRepository.hasDownloadPermission()
+        if (checkDownloadPermission && isDownloaded == true) {
+          permissionActionDelegate.isDownloadAllowed()
         } else {
-          loginRepository.hasStreamProPermission()
+          permissionActionDelegate.isProfessionalVideoPlaybackAllowed()
         }
       }
-      !isConnected -> loginRepository.hasDownloadPermission()
-      else -> isProfessionalContent ?: false
+      !isConnected -> permissionActionDelegate.isDownloadAllowed()
+      else -> {
+        if (checkDownloadPermission && isDownloaded == true) {
+          permissionActionDelegate.isDownloadAllowed()
+        } else {
+          true
+        }
+      }
     }
   }
 
@@ -335,4 +345,19 @@ class CollectionViewModel @Inject constructor(
     return download
   }
 
+  /**
+   * Collection is downloaded?
+   *
+   * @return true if collection is downloaded, else false
+   */
+  fun isDownloaded(): Boolean = _collection.value?.isDownloaded() ?: false
+
+  /**
+   * Get permissions for the current logged in user
+   */
+  fun getPermissions() {
+    viewModelScope.launch {
+      permissionActionDelegate.fetchPermissions()
+    }
+  }
 }

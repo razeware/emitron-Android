@@ -27,7 +27,7 @@ class CollectionEpisodeAdapter(
    * If playback is not allowed a lock icon will be shown and collection won't be playable.
    *
    */
-  var isContentPlaybackAllowed: Boolean = false
+  private var isContentPlaybackAllowed: Boolean = false
 
   /**
    * [RecyclerView.Adapter.getItemViewType]
@@ -156,6 +156,19 @@ class CollectionEpisodeAdapter(
         items[position] = contentEpisode.copy(data = updateEpisodeData)
         notifyItemChanged(position)
       }
+    }
+  }
+
+  /**
+   * Update playback allowed for adapter content
+   */
+  fun updateContentPlaybackAllowed(
+    contentPlaybackAllowed: Boolean,
+    refresh: Boolean = false
+  ) {
+    this.isContentPlaybackAllowed = contentPlaybackAllowed
+    if (refresh) {
+      notifyDataSetChanged()
     }
   }
 }

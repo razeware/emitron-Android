@@ -151,8 +151,8 @@
       <androidx.constraintlayout.widget.Group
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="@{data.isProfessionContent()? View.VISIBLE : View.GONE}"
-        app:constraint_referenced_ids="image_collection_pro,text_collection_title_pro,text_collection_body_pro"
+        android:visibility="@{data.isProfessional()? View.VISIBLE : View.GONE}"
+        app:constraint_referenced_ids="image_collection_pro,text_collection_title_pro,text_collection_body_pro,text_collection_label_pro"
         tools:visibility="gone" />
 
       <androidx.appcompat.widget.AppCompatTextView
@@ -176,7 +176,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/label_pro"
-        android:visibility="@{data.isProfessionContent()? View.VISIBLE : View.GONE}"
         app:layout_constraintBottom_toBottomOf="@+id/text_collection_language"
         app:layout_constraintEnd_toEndOf="@+id/guideline_right"
         app:layout_constraintStart_toEndOf="@+id/text_collection_language"

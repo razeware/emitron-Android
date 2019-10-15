@@ -18,14 +18,14 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
   /**
    * @param episode [Data] for this item layout
    * @param position User readable episode position
-   * @param isContentPlaybackAllowed true, If the episode requires subscription else false
+   * @param isPlaybackAllowed true, If the episode requires subscription else false
    * @param onEpisodeSelected Handle episode selection/tap
    * @param onEpisodeCompleted Handle episode marked completed/in-progress
    */
   fun bindTo(
     episode: Data?,
     position: Int,
-    isContentPlaybackAllowed: Boolean,
+    isPlaybackAllowed: Boolean,
     onEpisodeSelected: (Int) -> Unit,
     onEpisodeCompleted: (Int) -> Unit,
     onEpisodeDownload: (Int) -> Unit
@@ -41,9 +41,9 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
     }
     binding.buttonCollectionEpisodeDownload.updateDownloadState(episode?.download)
     binding.data = episode
-    binding.episodePosition = episode?.getEpisodeNumber(position, isContentPlaybackAllowed)
+    binding.episodePosition = episode?.getEpisodeNumber(position, isPlaybackAllowed)
 
-    if (isContentPlaybackAllowed) {
+    if (isPlaybackAllowed) {
       checkEpisodeCompleted(episode?.isFinished() ?: false)
     } else {
       setEpisodeLocked()

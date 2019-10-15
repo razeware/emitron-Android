@@ -1,14 +1,12 @@
 package com.raywenderlich.emitron.ui.login
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.common.truth.Truth.assertThat
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.raywenderlich.emitron.data.login.LoginRepository
-import com.raywenderlich.emitron.model.Attributes
-import com.raywenderlich.emitron.model.Contents
-import com.raywenderlich.emitron.model.Data
+import com.raywenderlich.emitron.ui.download.PermissionActionDelegate
 import com.raywenderlich.emitron.utils.TestCoroutineRule
-import com.raywenderlich.emitron.utils.isEqualTo
 import com.raywenderlich.guardpost.data.SSOUser
 import org.junit.Before
 import org.junit.Rule
@@ -17,6 +15,8 @@ import org.junit.Test
 class LoginViewModelTest {
 
   private val loginRepository: LoginRepository = mock()
+
+  private val permissionActionDelegate: PermissionActionDelegate = mock()
 
   private lateinit var viewModel: LoginViewModel
 
@@ -28,7 +28,7 @@ class LoginViewModelTest {
 
   @Before
   fun setUp() {
-    viewModel = LoginViewModel(loginRepository)
+    viewModel = LoginViewModel(loginRepository, permissionActionDelegate)
   }
 
   @Test
@@ -47,56 +47,12 @@ class LoginViewModelTest {
   @Test
   fun getPermissions_noPermissions() {
     testCoroutineRule.runBlockingTest {
-      whenever(loginRepository.getPermissions()).doReturn(Contents())
+      // When
       viewModel.getPermissions()
-      verify(loginRepository).getPermissions()
-      assertThat(viewModel.loginActionResult.value)
-        .isEqualTo(LoginViewModel.LoginActionResult.NoSubscription)
-      verifyNoMoreInteractions(loginRepository)
+
+      // Then
+      verify(permissionActionDelegate).fetchPermissions()
+      verifyNoMoreInteractions(permissionActionDelegate)
     }
   }
-
-  @Test
-  fun getPermissions_hasPermissions() {
-    testCoroutineRule.runBlockingTest {
-      whenever(loginRepository.getPermissions()).doReturn(
-        Contents(
-          datum = listOf(Data(attributes = Attributes(tag = "stream-beginner-videos")))
-        )
-      )
-
-      viewModel.getPermissions()
-      verify(loginRepository).getPermissions()
-      assertThat(viewModel.loginActionResult.value)
-        .isEqualTo(LoginViewModel.LoginActionResult.LoggedIn)
-      verify(loginRepository).getPermissions()
-      verify(loginRepository).updatePermissions(listOf("stream-beginner-videos"))
-      verifyNoMoreInteractions(loginRepository)
-    }
-  }
-
-  @Test
-  fun getPermissions_apiError() {
-    testCoroutineRule.runBlockingTest {
-      whenever(loginRepository.getPermissions()).doThrow(RuntimeException())
-
-      viewModel.getPermissions()
-      verify(loginRepository).getPermissions()
-      assertThat(viewModel.loginActionResult.value)
-        .isEqualTo(LoginViewModel.LoginActionResult.SubscriptionRequestFailed)
-      verifyNoMoreInteractions(loginRepository)
-    }
-  }
-
-  @Test
-  fun hasDownloadPermission() {
-    whenever(loginRepository.hasDownloadPermission()).doReturn(true)
-
-    val result = viewModel.hasDownloadPermission()
-
-    result isEqualTo true
-    verify(loginRepository).hasDownloadPermission()
-    verifyNoMoreInteractions(loginRepository)
-  }
-
 }

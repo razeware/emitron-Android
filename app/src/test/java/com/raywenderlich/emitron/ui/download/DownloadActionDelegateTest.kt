@@ -1,9 +1,10 @@
 package com.raywenderlich.emitron.ui.download
 
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.raywenderlich.emitron.data.*
 import com.raywenderlich.emitron.data.download.DownloadRepository
-import com.raywenderlich.emitron.data.login.LoginRepository
 import com.raywenderlich.emitron.model.Download
 import com.raywenderlich.emitron.model.DownloadState
 import com.raywenderlich.emitron.utils.TestCoroutineRule
@@ -15,13 +16,12 @@ import org.junit.Test
 class DownloadActionDelegateTest {
 
   private val downloadRepository: DownloadRepository = mock()
-  private val loginRepository: LoginRepository = mock()
 
   private lateinit var viewModel: DownloadActionDelegate
 
   @Before
   fun setUp() {
-    viewModel = DownloadActionDelegate(downloadRepository, loginRepository)
+    viewModel = DownloadActionDelegate(downloadRepository)
   }
 
   @get:Rule
@@ -109,16 +109,5 @@ class DownloadActionDelegateTest {
       url = null
     )
     verifyNoMoreInteractions(downloadRepository)
-  }
-
-  @Test
-  fun isDownloadPermission() {
-    whenever(loginRepository.hasDownloadPermission()).doReturn(true)
-
-    val result = viewModel.hasDownloadPermission()
-
-    result isEqualTo true
-    verify(loginRepository).hasDownloadPermission()
-    verifyNoMoreInteractions(loginRepository)
   }
 }

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.WorkManager
 import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentCollectionBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
@@ -22,6 +23,7 @@ import com.raywenderlich.emitron.model.isScreencast
 import com.raywenderlich.emitron.ui.common.getDefaultAppBarConfiguration
 import com.raywenderlich.emitron.ui.content.getReadableContributors
 import com.raywenderlich.emitron.ui.content.getReadableReleaseAtWithTypeAndDuration
+import com.raywenderlich.emitron.ui.download.PermissionActionDelegate
 import com.raywenderlich.emitron.ui.download.workers.StartDownloadWorker
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
@@ -68,6 +70,8 @@ class CollectionFragment : DaggerFragment() {
   lateinit var downloadManager: DownloadManager
 
   private var downloadProgressHandler: Handler? = null
+
+  private lateinit var verifyDownloadBottomSheet: BottomSheetDialog
 
   /**
    * Download listener
@@ -124,6 +128,10 @@ class CollectionFragment : DaggerFragment() {
       onEpisodeSelected = { currentEpisode, _ ->
         if (viewModel.isContentPlaybackAllowed(isNetConnected())) {
           openPlayer(currentEpisode)
+        } else {
+          if (viewModel.isDownloaded()) {
+            showVerifyDownloadBottomSheet(currentEpisode)
+          }
         }
       },
       onEpisodeCompleted = { episode, position ->
@@ -156,7 +164,7 @@ class CollectionFragment : DaggerFragment() {
 
   private fun startDownload(episodeId: String? = null) {
 
-    if (!viewModel.hasDownloadPermission()) {
+    if (!viewModel.isDownloadAllowed()) {
       showErrorSnackbar(getString(R.string.error_download_permission))
       return
     }
@@ -193,8 +201,10 @@ class CollectionFragment : DaggerFragment() {
           withYear = false
         )
 
-        episodeAdapter.isContentPlaybackAllowed =
+
+        episodeAdapter.updateContentPlaybackAllowed(
           viewModel.isContentPlaybackAllowed(isConnected = true)
+        )
 
         val contributors = it.getReadableContributors(requireContext())
         binding.textCollectionDuration.text = releaseDateWithTypeAndDuration
@@ -376,11 +386,11 @@ class CollectionFragment : DaggerFragment() {
     }
   }
 
-  /**
-   * See [androidx.fragment.app.Fragment.onDestroy]
-   */
-  override fun onDestroy() {
-    super.onDestroy()
+  override fun onDestroyView() {
+    super.onDestroyView()
+    if (isShowingVerifyDownloadBottomSheet()) {
+      verifyDownloadBottomSheet.dismiss()
+    }
     downloadProgressHandler?.removeCallbacksAndMessages(null)
   }
 
@@ -393,6 +403,57 @@ class CollectionFragment : DaggerFragment() {
         ) {
           updateDownloadProgress()
         }
+    }
+  }
+
+  private fun showVerifyDownloadBottomSheet(currentEpisode: Data? = null) {
+    if (isShowingVerifyDownloadBottomSheet()) {
+      return
+    }
+    val sheetView = requireActivity().layoutInflater
+      .inflate(R.layout.layout_collection_download_playback_error, null)
+    verifyDownloadBottomSheet = createBottomSheetDialog(sheetView)
+
+    val verifyDownloadButton: View =
+      sheetView.findViewById(R.id.button_collection_verify_download)
+
+    verifyDownloadButton.setOnClickListener {
+      viewModel.getPermissions()
+      initPermissionObserver(currentEpisode)
+    }
+
+    val continuePlayback: View =
+      sheetView.findViewById(R.id.button_collection_play_online)
+    continuePlayback.setOnClickListener {
+      if (viewModel.isContentPlaybackAllowed(isNetConnected(), false)) {
+        openPlayer(currentEpisode)
+      }
+    }
+
+    verifyDownloadBottomSheet.show()
+  }
+
+  private fun isShowingVerifyDownloadBottomSheet() =
+    ::verifyDownloadBottomSheet.isInitialized && verifyDownloadBottomSheet.isShowing
+
+  private fun initPermissionObserver(currentEpisode: Data? = null) {
+    viewModel.permissionActionResult.observe(viewLifecycleOwner) {
+      when (it) {
+        PermissionActionDelegate.PermissionActionResult.HasDownloadPermission -> {
+          episodeAdapter.updateContentPlaybackAllowed(
+            viewModel.isContentPlaybackAllowed(isConnected = true),
+            refresh = true
+          )
+          openPlayer(currentEpisode)
+        }
+        PermissionActionDelegate.PermissionActionResult.NoPermission -> {
+        }
+        PermissionActionDelegate.PermissionActionResult.PermissionRequestFailed ->
+          showErrorSnackbar(getString(R.string.error_permission))
+        else -> {
+          // Will be handled by data binding.
+        }
+      }
     }
   }
 }
