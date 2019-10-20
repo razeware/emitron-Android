@@ -20,7 +20,7 @@ android {
   }
 
   defaultConfig {
-    applicationId "com.raywenderlich.Emitron"
+    applicationId "com.raywenderlich.emitron"
     minSdkVersion versions.minSdk
     targetSdkVersion versions.targetSdk
     versionCode versions.versionCode
