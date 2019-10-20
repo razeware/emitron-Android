@@ -777,4 +777,15 @@ class DataTest {
     )
     data.getUrl() isEqualTo "WubbaLubbaDubDub"
   }
+
+  @Test
+  fun newProgression() {
+
+    val today = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
+
+    val progression =
+      Data.newProgression("1", false, updatedAt = today)
+
+    progression.isFinished() isEqualTo false
+  }
 }

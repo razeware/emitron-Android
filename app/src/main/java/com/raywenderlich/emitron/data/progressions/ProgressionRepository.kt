@@ -46,9 +46,9 @@ class ProgressionRepository @Inject constructor(
     updatedAt: LocalDateTime
   ): Contents? {
     val progression =
-      ProgressionsUpdate.newProgressionsUpdate(contentId, finished, updatedAt)
+      Data.newProgression(contentId, finished, updatedAt = updatedAt)
     return withContext(threadManager.io) {
-      api.updateProgression(progression)
+      api.updateProgression(Contents.from(progression))
     }
   }
 

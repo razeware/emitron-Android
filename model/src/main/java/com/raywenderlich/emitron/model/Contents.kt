@@ -70,4 +70,9 @@ data class Contents(
   private fun getSdUrl(): Data? = datum.first {
     DownloadQuality.fromKind(it.attributes?.kind).isSd()
   }
+
+  companion object {
+
+    fun from(vararg data: Data): Contents = Contents(datum = data.toList())
+  }
 }

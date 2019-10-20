@@ -7,6 +7,7 @@ import com.raywenderlich.emitron.model.utils.TimeUtils
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 import org.threeten.bp.LocalDateTime
+import org.threeten.bp.format.DateTimeFormatter
 
 /**
  *  Model class for Bookmark, Domain, Progression, Content, Group.
@@ -538,6 +539,30 @@ data class Data(
         type = FilterType.Sort.toRequestFormat(),
         attributes = Attributes(
           name = sortOrder
+        )
+      )
+
+    /**
+     * Create content object for creating new progression
+     *
+     * @param contentId id of content for which progression has to be created/updated
+     * @param finished true if content is completed else false
+     * @param progress
+     * @param updatedAt Update at time
+     */
+    fun newProgression(
+      contentId: String,
+      finished: Boolean = false,
+      progress: Long = 0,
+      updatedAt: LocalDateTime
+    ): Data =
+      Data(
+        type = DataType.Progressions.toRequestFormat(),
+        attributes = Attributes(
+          contentId = contentId,
+          progress = progress,
+          finished = finished,
+          updatedAt = updatedAt.format(DateTimeFormatter.ISO_DATE_TIME)
         )
       )
   }
