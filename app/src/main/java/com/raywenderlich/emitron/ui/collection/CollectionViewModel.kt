@@ -360,4 +360,11 @@ class CollectionViewModel @Inject constructor(
       permissionActionDelegate.fetchPermissions()
     }
   }
+
+  /**
+   * Remove download
+   */
+  fun removeDownload() {
+    _collection.value = _collection.value?.removeDownload()
+  }
 }

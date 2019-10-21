@@ -160,6 +160,25 @@ class CollectionEpisodeAdapter(
   }
 
   /**
+   * Remove episode download
+   *
+   * @param downloads Download ids to be removed
+   */
+  fun removeEpisodeDownload(
+    downloads: List<String>
+  ) {
+    downloads.forEach { downloadId ->
+      val position = items.indexOfFirst { it.data?.id == downloadId }
+      if (position != -1) {
+        val contentEpisode = items[position]
+        val updateEpisodeData = contentEpisode.data?.removeDownload()
+        items[position] = contentEpisode.copy(data = updateEpisodeData)
+        notifyItemChanged(position)
+      }
+    }
+  }
+
+  /**
    * Update playback allowed for adapter content
    */
   fun updateContentPlaybackAllowed(

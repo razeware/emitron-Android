@@ -953,4 +953,30 @@ class CollectionViewModelTest {
       result isEqualTo false
     }
   }
+
+  @Test
+  fun removeDownload() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      // Given
+      val contentData = createContentData(
+        type = "screencast",
+        groups = null,
+        professional = false,
+        download = Download(
+          state = DownloadState.COMPLETED.ordinal
+        )
+      )
+      val content = createContent(data = contentData)
+      whenever(contentRepository.getContent("1")).doReturn(content)
+      viewModel.loadCollection(Data(id = "1"))
+      whenever(loginRepository.isDownloadAllowed()).doReturn(false)
+
+      // When
+      viewModel.removeDownload()
+
+      // Then
+      viewModel.isDownloaded() isEqualTo false
+    }
+  }
 }

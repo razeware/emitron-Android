@@ -76,9 +76,9 @@ class DownloadService : ExoDownloadService(
    */
   override fun getForegroundNotification(downloads: MutableList<Download>?): Notification {
     val message = if (!downloads.isNullOrEmpty()) {
-      downloads.first {
+      downloads.firstOrNull {
         it.state == Download.STATE_DOWNLOADING
-      }.request.data.toString(Charsets.UTF_8)
+      }?.request?.data?.toString(Charsets.UTF_8)
     } else {
       null
     }
@@ -113,6 +113,10 @@ class DownloadService : ExoDownloadService(
         handleDownloadFailed(download)
         buildDownloadFailedNotification(download)
       }
+      download?.state == Download.STATE_REMOVING -> {
+        handleDownloadRemoved(download)
+        null
+      }
       else -> return
     }
     NotificationUtil.setNotification(this, nextNotificationId++, notification)
@@ -136,6 +140,15 @@ class DownloadService : ExoDownloadService(
     )
   }
 
+  private fun handleDownloadRemoved(download: Download) {
+    UpdateDownloadWorker.updateAndStartNext(
+      WorkManager.getInstance(this),
+      downloadId = download.request.id,
+      progress = 0,
+      state = DownloadState.NONE
+    )
+  }
+
   private fun buildDownloadCompletedNotification(download: Download): Notification? {
     return download.run {
       notificationHelper?.buildDownloadCompletedNotification(
@@ -155,7 +168,6 @@ class DownloadService : ExoDownloadService(
       )
     }
   }
-
 
   companion object {
     private const val JOB_ID = 1

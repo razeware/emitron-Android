@@ -280,6 +280,15 @@ data class Data(
   }
 
   /**
+   *  Remove download from data
+   *
+   *  @return Data after removing bookmark
+   */
+  fun removeDownload(): Data {
+    return this.copy(download = null)
+  }
+
+  /**
    *  @return true if type is [DataType.Groups], otherwise false
    */
   fun isTypeGroup(): Boolean = DataType.Groups == DataType.fromValue(type)
@@ -536,4 +545,3 @@ data class Data(
       )
   }
 }
-

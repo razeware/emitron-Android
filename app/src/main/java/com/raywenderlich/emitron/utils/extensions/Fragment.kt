@@ -7,12 +7,15 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.raywenderlich.emitron.R
 
 /**
@@ -132,4 +135,31 @@ fun Fragment.createBottomSheetDialog(view: View): BottomSheetDialog =
       closeButton?.setOnClickListener { dialog.dismiss() }
     }
   }
+
+/**
+ * Create a [AlertDialog]
+ */
+fun Fragment.createDialog(
+  @StringRes title: Int,
+  @StringRes message: Int,
+  @StringRes positiveButton: Int,
+  positiveButtonClickListener: (() -> Unit)? = null,
+  @StringRes negativeButton: Int,
+  negativeButtonClickListener: (() -> Unit)? = null,
+  cancellable: Boolean = true
+): AlertDialog? = if (isVisible) {
+  MaterialAlertDialogBuilder(requireContext())
+    .setTitle(getString(title))
+    .setMessage(getString(message))
+    .setPositiveButton(getString(positiveButton)) { dialog, _ ->
+      positiveButtonClickListener?.invoke()
+      dialog.dismiss()
+    }
+    .setNegativeButton(getString(negativeButton)) { dialog, _ ->
+      negativeButtonClickListener?.invoke()
+      dialog.dismiss()
+    }.setCancelable(cancellable).create()
+} else {
+  null
+}
 
