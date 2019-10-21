@@ -149,9 +149,10 @@
         tools:text="@string/body_pro_course" />
 
       <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_professional_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="@{data.isProfessional()? View.VISIBLE : View.GONE}"
+        android:visibility="gone"
         app:constraint_referenced_ids="image_collection_pro,text_collection_title_pro,text_collection_body_pro,text_collection_label_pro"
         tools:visibility="gone" />
 

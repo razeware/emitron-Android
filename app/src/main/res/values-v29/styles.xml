@@ -13,6 +13,7 @@
     <item name="materialCardViewStyle">@style/Card</item>
     <item name="android:navigationBarColor">@android:color/transparent</item>
     <item name="android:statusBarColor">@android:color/transparent</item>
+    <item name="materialAlertDialogTheme">@style/AlertDialog</item>
   </style>
 
   <style name="AppTheme.Popup" parent="Widget.AppCompat.PopupMenu">
@@ -325,5 +326,18 @@
     <item name="android:textAppearance">@style/TextAppearance.Button.Regular</item>
     <item name="android:paddingStart">@dimen/button_padding_internal_dense</item>
     <item name="android:paddingEnd">@dimen/button_padding_internal_dense</item>
+  </style>
+
+  <style name="AlertDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+    <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+    <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+  </style>
+
+  <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+    <item name="android:textColor">@color/colorButton1</item>
+  </style>
+
+  <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+    <item name="android:textColor">@color/colorButton1</item>
   </style>
 </resources>

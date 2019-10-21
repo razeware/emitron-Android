@@ -15,6 +15,7 @@
   <color name="textColorHint">@color/blue_grey</color>
 
   <color name="colorButtonIconRipple">@color/colorSurface</color>
+  <color name="colorButton1">@color/white</color>
   <color name="colorIcon2">@color/white</color>
   <color name="colorIcon3">@color/blue_grey</color>
   <color name="colorIcon">@color/light_gray_blue</color>

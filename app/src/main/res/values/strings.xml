@@ -82,10 +82,9 @@
   <string name="message_episode_failed_to_mark_completed">Failed to mark episode completed.</string>
   <string name="message_episode_marked_in_progress">Episode marked in progress.</string>
   <string name="message_episode_failed_to_mark_in_progress">Failed to mark episode in progress.</string>
-  <string name="error_download_verification">Sync subscriptions to continue playing downloaded content</string>
-  <string name="button_verify_download">Sync</string>
-  <string name="button_play_online">Play online</string>
-  <string name="error_permission">Failed to check permissions.</string>
+  <string name="button_label_verify">Verify</string>
+  <string name="button_label_play_online">Play online</string>
+  <string name="error_permission">Failed to verify permissions.</string>
 
   <!-- Filter screen -->
   <string name="button_filter_clear_all">Clear All</string>
@@ -194,7 +193,8 @@
   <string name="download_quality_high">High</string>
   <string name="download_quality_normal">Normal</string>
   <string name="body_downloads_empty">You haven’t downloaded any tutorials yet</string>
-  <string name="error_download_permission">Update your subscription to add offline viewing.</string>
+  <string name="error_download_permission_title">Verify permission</string>
+  <string name="error_download_permission">Verify permission to watch downloaded content offline.</string>
 
   <!-- On-boarding -->
   <string name="on_boarding_download_card_title">Mobile UX Design Tips &amp; Tricks</string>
