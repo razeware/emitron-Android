@@ -213,8 +213,8 @@ Values and References" />
 
       <com.raywenderlich.emitron.ui.common.DownloadButton
         android:id="@+id/button_collection_download"
-        android:layout_width="@dimen/button_icon_height_width_3"
-        android:layout_height="@dimen/button_icon_height_width_3"
+        android:layout_width="@dimen/collection_detail_button_download_height_width"
+        android:layout_height="@dimen/collection_detail_button_download_height_width"
         app:downloadIcon="@drawable/ic_material_icon_download_2"
         app:downloadIconTint="@color/colorIcon"
         app:downloadStopIcon="@drawable/ic_material_icon_download_pause"

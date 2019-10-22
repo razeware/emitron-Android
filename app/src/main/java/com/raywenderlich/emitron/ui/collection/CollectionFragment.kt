@@ -213,7 +213,7 @@ class CollectionFragment : DaggerFragment() {
 
   private fun handleRemoveDownload(downloadId: String, isCollection: Boolean = false) {
     if (isCollection) {
-      viewModel.removeDownload()
+      binding.buttonCollectionDownload.updateDownloadState(null)
       episodeAdapter.removeEpisodeDownload(viewModel.getContentIds())
     } else {
       episodeAdapter.removeEpisodeDownload(listOf(downloadId))
@@ -381,9 +381,7 @@ class CollectionFragment : DaggerFragment() {
     if (!downloads.isNullOrEmpty()) {
       val downloadIds = downloads.map {
         it.request.id
-      }.filter {
-        it in viewModel.getContentIds()
-      }
+      }.intersect(viewModel.getContentIds())
 
       if (downloadIds.isNotEmpty()) {
         createDownloadProgressHandler()
@@ -400,7 +398,11 @@ class CollectionFragment : DaggerFragment() {
   private fun updateDownloadProgress() {
     val downloads = downloadManager.currentDownloads
 
-    if (downloads.isEmpty()) {
+    val downloadIds = downloads.map {
+      it.request.id
+    }.intersect(viewModel.getContentIds())
+
+    if (downloadIds.isEmpty()) {
       downloadProgressHandler?.removeCallbacksAndMessages(null)
       return
     }
