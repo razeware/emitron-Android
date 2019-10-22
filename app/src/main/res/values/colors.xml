@@ -37,6 +37,7 @@
   <color name="cardShadow">@color/charcoal_black_0_05</color>
 
   <color name="colorButton1">@color/dark_sea_green</color>
+  <color name="colorButtonDialog">@color/dark_sea_green</color>
   <color name="colorButton2">@color/bright_grey</color>
   <color name="colorButtonIconRipple">@color/pale_blue</color>
   <color name="colorButton3">@color/copper</color>
