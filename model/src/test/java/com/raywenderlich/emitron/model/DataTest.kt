@@ -109,15 +109,6 @@ class DataTest {
   }
 
   @Test
-  fun isProLabelVisible() {
-    val data = Data(attributes = Attributes(free = false, finished = false), type = "contents")
-    data.isProLabelVisible() isEqualTo false
-
-    val data2 = Data(attributes = Attributes(free = true, finished = false), type = "progressions")
-    data2.isProLabelVisible() isEqualTo false
-  }
-
-  @Test
   fun getContentType() {
     val data = Data(attributes = Attributes(contentType = "screencast"))
     data.getContentType() isEqualTo ContentType.Screencast

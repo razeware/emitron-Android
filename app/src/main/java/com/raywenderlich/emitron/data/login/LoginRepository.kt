@@ -52,6 +52,14 @@ class LoginRepository @Inject constructor(
   }
 
   /**
+   * Remove user permissions
+   *
+   */
+  fun removePermissions() {
+    loginPrefs.removePermissions()
+  }
+
+  /**
    * Delete saved user details
    *
    */
@@ -77,6 +85,17 @@ class LoginRepository @Inject constructor(
    *
    * @return true if user has [PermissionTag.Download] permission
    */
-  fun hasDownloadPermission(): Boolean =
+  fun isDownloadAllowed(): Boolean =
     loginPrefs.getPermissions().contains(PermissionTag.Download.param)
+
+  /**
+   * Check if user has permission to stream professional courses
+   */
+  fun isProfessionalVideoPlaybackAllowed(): Boolean =
+    loginPrefs.getPermissions().contains(PermissionTag.StreamProfessional.param)
+
+  /**
+   * Get stored permissions
+   */
+  fun getPermissionsFromPrefs(): List<String> = loginPrefs.getPermissions()
 }

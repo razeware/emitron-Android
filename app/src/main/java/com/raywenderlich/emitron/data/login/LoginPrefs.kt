@@ -73,6 +73,13 @@ class LoginPrefs @Inject constructor(private val prefs: PrefUtils) {
   }
 
   /**
+   * Remove user permissions
+   */
+  fun removePermissions() {
+    prefs.set(USER_PERMISSIONS, "").commit()
+  }
+
+  /**
    * Get saved permissions
    *
    * @return List of permissions

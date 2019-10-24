@@ -6,9 +6,10 @@ import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.*
 import com.raywenderlich.emitron.data.content.ContentRepository
-import com.raywenderlich.emitron.data.download.DownloadRepository
+import com.raywenderlich.emitron.data.login.LoginRepository
 import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.ui.download.DownloadActionDelegate
+import com.raywenderlich.emitron.ui.download.PermissionActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
 import com.raywenderlich.emitron.ui.onboarding.OnboardingActionDelegate
@@ -28,13 +29,15 @@ class CollectionViewModelTest {
 
   private val progressionActionDelegate: ProgressionActionDelegate = mock()
 
-  private val downloadRepository: DownloadRepository = mock()
-
   private val downloadActionDelegate: DownloadActionDelegate = mock()
 
   private val onboardingActionDelegate: OnboardingActionDelegate = mock()
 
+  private val permissionActionDelegate: PermissionActionDelegate = mock()
+
   private lateinit var viewModel: CollectionViewModel
+
+  private val loginRepository: LoginRepository = mock()
 
   @get:Rule
   val instantTaskExecutorRule: InstantTaskExecutorRule = InstantTaskExecutorRule()
@@ -49,7 +52,8 @@ class CollectionViewModelTest {
         bookmarkActionDelegate,
         progressionActionDelegate,
         downloadActionDelegate,
-        onboardingActionDelegate
+        onboardingActionDelegate,
+        permissionActionDelegate
       )
   }
 
@@ -781,36 +785,6 @@ class CollectionViewModelTest {
   }
 
   @Test
-  fun isFreeContent() {
-    createViewModel()
-    testCoroutineRule.runBlockingTest {
-      // When
-      val content = createContent(data = createContentData())
-      whenever(contentRepository.getContent("1")).doReturn(content)
-
-      viewModel.loadCollection(Data(id = "1"))
-
-      // When
-      val result = viewModel.isFreeContent()
-
-      // Then
-      result isEqualTo true
-
-      // When
-      val content2 = createContent(data = createContentData(isFree = true))
-      whenever(contentRepository.getContent("2")).doReturn(content2)
-
-      viewModel.loadCollection(Data(id = "2"))
-
-      // When
-      val result2 = viewModel.isFreeContent()
-
-      // Then
-      result2 isEqualTo true
-    }
-  }
-
-  @Test
   fun getContentId() {
     createViewModel()
     testCoroutineRule.runBlockingTest {
@@ -831,29 +805,6 @@ class CollectionViewModelTest {
       viewModel.loadCollection(Data(id = "1"))
       val result = viewModel.getContentId()
       result isEqualTo "1"
-    }
-  }
-
-  @Test
-  fun isScreencast() {
-    createViewModel()
-    testCoroutineRule.runBlockingTest {
-      // Given
-      val contentData = createContentData(
-        type = "screencast",
-        groups = null,
-        bookmark = Content(
-          datum = Data(
-            id = "10",
-            type = "bookmarks"
-          )
-        )
-      )
-      val content = createContent(data = contentData)
-      whenever(contentRepository.getContent("1")).doReturn(content)
-      viewModel.loadCollection(Data(id = "1"))
-      val result = viewModel.isFreeContent()
-      result isEqualTo true
     }
   }
 
@@ -880,7 +831,6 @@ class CollectionViewModelTest {
       val result = viewModel.getContentIds()
 
       result isEqualTo listOf("1")
-      verifyNoMoreInteractions(downloadRepository)
     }
   }
 
@@ -896,7 +846,6 @@ class CollectionViewModelTest {
       val result = viewModel.getContentIds()
 
       result isEqualTo listOf("1")
-      verifyNoMoreInteractions(downloadRepository)
     }
   }
 
@@ -926,6 +875,108 @@ class CollectionViewModelTest {
         contentData.datum,
         expected
       )
+    }
+  }
+
+  @Test
+  fun isContentPlaybackAllowed_Professional_isConnected() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      // Given
+      val contentData = createContentData(
+        type = "screencast",
+        groups = null,
+        professional = true
+      )
+      val content = createContent(data = contentData)
+      whenever(contentRepository.getContent("1")).doReturn(content)
+      viewModel.loadCollection(Data(id = "1"))
+      whenever(permissionActionDelegate.isProfessionalVideoPlaybackAllowed()).doReturn(true)
+      whenever(permissionActionDelegate.isProfessionalVideoPlaybackAllowed()).doReturn(true)
+
+      // When
+      val result = viewModel.isContentPlaybackAllowed(true)
+
+      // Then
+      result isEqualTo true
+    }
+  }
+
+  @Test
+  fun isContentPlaybackAllowed_isConnected_isDownloaded() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      // Given
+      val contentData = createContentData(
+        type = "screencast",
+        groups = null,
+        professional = true,
+        download = Download(
+          state = DownloadState.COMPLETED.ordinal
+        )
+      )
+      val content = createContent(data = contentData)
+      whenever(contentRepository.getContent("1")).doReturn(content)
+      viewModel.loadCollection(Data(id = "1"))
+      whenever(permissionActionDelegate.isDownloadAllowed()).doReturn(true)
+
+      // When
+      val result = viewModel.isContentPlaybackAllowed(true, checkDownloadPermission = true)
+
+      // Then
+      result isEqualTo true
+    }
+  }
+
+  @Test
+  fun isContentPlaybackAllowed_isOffline() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      // Given
+      val contentData = createContentData(
+        type = "screencast",
+        groups = null,
+        professional = false,
+        download = Download(
+          state = DownloadState.COMPLETED.ordinal
+        )
+      )
+      val content = createContent(data = contentData)
+      whenever(contentRepository.getContent("1")).doReturn(content)
+      viewModel.loadCollection(Data(id = "1"))
+      whenever(loginRepository.isDownloadAllowed()).doReturn(false)
+
+      // When
+      val result = viewModel.isContentPlaybackAllowed(false)
+
+      // Then
+      result isEqualTo false
+    }
+  }
+
+  @Test
+  fun removeDownload() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      // Given
+      val contentData = createContentData(
+        type = "screencast",
+        groups = null,
+        professional = false,
+        download = Download(
+          state = DownloadState.COMPLETED.ordinal
+        )
+      )
+      val content = createContent(data = contentData)
+      whenever(contentRepository.getContent("1")).doReturn(content)
+      viewModel.loadCollection(Data(id = "1"))
+      whenever(loginRepository.isDownloadAllowed()).doReturn(false)
+
+      // When
+      viewModel.removeDownload()
+
+      // Then
+      viewModel.isDownloaded() isEqualTo false
     }
   }
 }

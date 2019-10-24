@@ -5,6 +5,7 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -22,6 +23,8 @@ import com.raywenderlich.emitron.model.isScreencast
 import com.raywenderlich.emitron.ui.common.getDefaultAppBarConfiguration
 import com.raywenderlich.emitron.ui.content.getReadableContributors
 import com.raywenderlich.emitron.ui.content.getReadableReleaseAtWithTypeAndDuration
+import com.raywenderlich.emitron.ui.download.PermissionActionDelegate
+import com.raywenderlich.emitron.ui.download.workers.RemoveDownloadWorker
 import com.raywenderlich.emitron.ui.download.workers.StartDownloadWorker
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
@@ -68,6 +71,10 @@ class CollectionFragment : DaggerFragment() {
   lateinit var downloadManager: DownloadManager
 
   private var downloadProgressHandler: Handler? = null
+
+  private var verifyDownloadDialog: AlertDialog? = null
+
+  private var removeDownloadDialog: AlertDialog? = null
 
   /**
    * Download listener
@@ -122,15 +129,19 @@ class CollectionFragment : DaggerFragment() {
 
     episodeAdapter = CollectionEpisodeAdapter(
       onEpisodeSelected = { currentEpisode, _ ->
-        if (viewModel.isFreeContent()) {
+        if (viewModel.isContentPlaybackAllowed(isNetConnected())) {
           openPlayer(currentEpisode)
+        } else {
+          if (viewModel.isDownloaded()) {
+            showVerifyDownloadBottomSheet(currentEpisode)
+          }
         }
       },
       onEpisodeCompleted = { episode, position ->
         viewModel.updateContentProgression(episode, position)
       },
       onEpisodeDownload = { episode, _ ->
-        startDownload(episode?.id)
+        startDownload(episode?.id, episode?.isDownloaded() == true)
       }
     )
 
@@ -154,33 +165,74 @@ class CollectionFragment : DaggerFragment() {
     }
   }
 
-  private fun startDownload(episodeId: String? = null) {
+  private fun startDownload(episodeId: String? = null, episodeIsDownloaded: Boolean = false) {
 
     if (!viewModel.isDownloadAllowed()) {
-      showErrorSnackbar(getString(R.string.error_download_permission))
+      showErrorSnackbar(getString(R.string.message_download_permission_error))
       return
     }
 
-    val contentId = viewModel.getContentId()
-    contentId?.let {
-      StartDownloadWorker.enqueue(
-        WorkManager.getInstance(requireContext()),
-        contentId,
-        episodeId
-      )
+    val contentId = viewModel.getContentId() ?: return
+
+    // Delete downloaded episode
+    if (!episodeId.isNullOrBlank() && episodeIsDownloaded) {
+      showDeleteDownloadedContentDialog(episodeId)
+      return
     }
 
+    // Delete downloaded collection
+    if (viewModel.isDownloaded()) {
+      showDeleteDownloadedContentDialog(contentId, true)
+      return
+    }
+
+    StartDownloadWorker.enqueue(
+      WorkManager.getInstance(requireContext()),
+      contentId,
+      episodeId
+    )
+
     initDownloadProgressHandler()
+  }
+
+  private fun showDeleteDownloadedContentDialog(downloadId: String, isCollection: Boolean = false) {
+    if (isShowingRemoveDownloadDialog()) {
+      return
+    }
+    removeDownloadDialog = createDialog(
+      title = R.string.title_download_remove,
+      message = R.string.message_download_remove,
+      positiveButton = R.string.button_label_yes,
+      positiveButtonClickListener = {
+        handleRemoveDownload(downloadId, isCollection)
+      },
+      negativeButton = R.string.button_label_no
+    )
+    removeDownloadDialog?.show()
+  }
+
+  private fun handleRemoveDownload(downloadId: String, isCollection: Boolean = false) {
+    if (isCollection) {
+      binding.buttonCollectionDownload.updateDownloadState(null)
+      episodeAdapter.removeEpisodeDownload(viewModel.getContentIds())
+    } else {
+      episodeAdapter.removeEpisodeDownload(listOf(downloadId))
+    }
+    RemoveDownloadWorker.enqueue(
+      WorkManager.getInstance(requireContext()),
+      downloadId
+    )
   }
 
   private fun initObservers() {
     viewModel.collectionEpisodes.observe(viewLifecycleOwner) {
       it?.let {
         episodeAdapter.submitList(it)
-        binding.groupCollectionContent.toVisibility(true)
-
-        if (viewModel.isFreeContent()) {
-          binding.buttonCollectionPlay.toVisibility(true)
+        val playbackAllowed = viewModel.isContentPlaybackAllowed(isNetConnected())
+        with(binding) {
+          groupCollectionContent.toVisibility(true)
+          groupProfessionalContent.toVisibility(!playbackAllowed)
+          buttonCollectionPlay.toVisibility(playbackAllowed)
         }
       }
     }
@@ -193,7 +245,9 @@ class CollectionFragment : DaggerFragment() {
           withYear = false
         )
 
-        episodeAdapter.isProCourse = !it.isFreeContent()
+        episodeAdapter.updateContentPlaybackAllowed(
+          viewModel.isContentPlaybackAllowed(isConnected = true)
+        )
 
         val contributors = it.getReadableContributors(requireContext())
         binding.textCollectionDuration.text = releaseDateWithTypeAndDuration
@@ -266,15 +320,8 @@ class CollectionFragment : DaggerFragment() {
     }
 
     viewModel.uiState.observe(viewLifecycleOwner) {
-      when (it) {
-        UiStateManager.UiState.LOADED -> handleProgress(false)
-        UiStateManager.UiState.LOADING -> handleProgress(true)
-        else -> {
-          // Ignored, for now :)
-        }
-      }
+      handleProgress(UiStateManager.UiState.LOADING == it)
     }
-
   }
 
   private fun initDownloadObserver() {
@@ -334,9 +381,7 @@ class CollectionFragment : DaggerFragment() {
     if (!downloads.isNullOrEmpty()) {
       val downloadIds = downloads.map {
         it.request.id
-      }.filter {
-        it in viewModel.getContentIds()
-      }
+      }.intersect(viewModel.getContentIds())
 
       if (downloadIds.isNotEmpty()) {
         createDownloadProgressHandler()
@@ -353,7 +398,11 @@ class CollectionFragment : DaggerFragment() {
   private fun updateDownloadProgress() {
     val downloads = downloadManager.currentDownloads
 
-    if (downloads.isEmpty()) {
+    val downloadIds = downloads.map {
+      it.request.id
+    }.intersect(viewModel.getContentIds())
+
+    if (downloadIds.isEmpty()) {
       downloadProgressHandler?.removeCallbacksAndMessages(null)
       return
     }
@@ -376,10 +425,16 @@ class CollectionFragment : DaggerFragment() {
   }
 
   /**
-   * See [androidx.fragment.app.Fragment.onDestroy]
+   * See [androidx.fragment.app.Fragment.onDestroyView]
    */
-  override fun onDestroy() {
-    super.onDestroy()
+  override fun onDestroyView() {
+    super.onDestroyView()
+    if (isShowingVerifyDownloadDialog()) {
+      verifyDownloadDialog?.dismiss()
+    }
+    if (isShowingRemoveDownloadDialog()) {
+      removeDownloadDialog?.dismiss()
+    }
     downloadProgressHandler?.removeCallbacksAndMessages(null)
   }
 
@@ -392,6 +447,56 @@ class CollectionFragment : DaggerFragment() {
         ) {
           updateDownloadProgress()
         }
+    }
+  }
+
+  private fun showVerifyDownloadBottomSheet(currentEpisode: Data? = null) {
+    if (isShowingVerifyDownloadDialog()) {
+      return
+    }
+
+    verifyDownloadDialog = createDialog(
+      title = R.string.title_download_permission_error,
+      message = R.string.message_download_permission_error,
+      positiveButton = R.string.button_label_play_online,
+      positiveButtonClickListener = {
+        if (viewModel.isContentPlaybackAllowed(isNetConnected(), false)) {
+          openPlayer(currentEpisode)
+        }
+      },
+      negativeButton = R.string.button_label_verify,
+      negativeButtonClickListener = {
+        viewModel.getPermissions()
+        initPermissionObserver(currentEpisode)
+      }
+    )
+    verifyDownloadDialog?.show()
+  }
+
+  private fun isShowingVerifyDownloadDialog() = verifyDownloadDialog?.isShowing == true
+
+  private fun isShowingRemoveDownloadDialog() = removeDownloadDialog?.isShowing == true
+
+  private fun initPermissionObserver(currentEpisode: Data? = null) {
+    viewModel.permissionActionResult.observe(viewLifecycleOwner) {
+      when (it) {
+        PermissionActionDelegate.PermissionActionResult.HasDownloadPermission -> {
+          episodeAdapter.updateContentPlaybackAllowed(
+            viewModel.isContentPlaybackAllowed(isConnected = true),
+            refresh = true
+          )
+          openPlayer(currentEpisode)
+        }
+        PermissionActionDelegate.PermissionActionResult.NoPermission -> {
+        }
+        PermissionActionDelegate.PermissionActionResult.PermissionRequestFailed -> {
+          RemoveDownloadWorker.enqueue(WorkManager.getInstance(requireContext()))
+          showErrorSnackbar(getString(R.string.error_permission))
+        }
+        else -> {
+          // Will be handled by data binding.
+        }
+      }
     }
   }
 }

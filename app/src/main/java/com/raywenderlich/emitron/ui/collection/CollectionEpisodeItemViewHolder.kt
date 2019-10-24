@@ -18,14 +18,14 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
   /**
    * @param episode [Data] for this item layout
    * @param position User readable episode position
-   * @param episodeIsProContent true, If the episode requires subscription else false
+   * @param isPlaybackAllowed true, If the episode requires subscription else false
    * @param onEpisodeSelected Handle episode selection/tap
    * @param onEpisodeCompleted Handle episode marked completed/in-progress
    */
   fun bindTo(
     episode: Data?,
     position: Int,
-    episodeIsProContent: Boolean,
+    isPlaybackAllowed: Boolean,
     onEpisodeSelected: (Int) -> Unit,
     onEpisodeCompleted: (Int) -> Unit,
     onEpisodeDownload: (Int) -> Unit
@@ -41,12 +41,12 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
     }
     binding.buttonCollectionEpisodeDownload.updateDownloadState(episode?.download)
     binding.data = episode
-    binding.episodePosition = episode?.getEpisodeNumber(position, episodeIsProContent)
+    binding.episodePosition = episode?.getEpisodeNumber(position, isPlaybackAllowed)
 
-    if (episodeIsProContent) {
-      setProCourse()
-    } else {
+    if (isPlaybackAllowed) {
       checkEpisodeCompleted(episode?.isFinished() ?: false)
+    } else {
+      setEpisodeLocked()
     }
 
     binding.executePendingBindings()
@@ -60,7 +60,7 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
     }
   }
 
-  private fun setProCourse() {
+  private fun setEpisodeLocked() {
     binding.buttonCollectionEpisode.setIconResource(R.drawable.ic_material_icon_padlock)
     binding.buttonCollectionEpisode.setIconTintResource(R.color.colorIcon)
     binding.buttonCollectionEpisode.isEnabled = false

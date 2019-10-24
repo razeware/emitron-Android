@@ -10,11 +10,11 @@ import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.ContentType
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.DownloadState
-import com.raywenderlich.emitron.model.entity.inProgress
-import com.raywenderlich.emitron.model.entity.isCompleted
 import com.raywenderlich.emitron.ui.common.UiStateViewModel
 import com.raywenderlich.emitron.ui.download.DownloadAction
 import com.raywenderlich.emitron.ui.download.DownloadActionDelegate
+import com.raywenderlich.emitron.ui.download.PermissionActionDelegate
+import com.raywenderlich.emitron.ui.download.PermissionsAction
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
 import com.raywenderlich.emitron.ui.onboarding.OnboardingAction
@@ -38,9 +38,10 @@ class CollectionViewModel @Inject constructor(
   private val bookmarkActionDelegate: BookmarkActionDelegate,
   private val progressionActionDelegate: ProgressionActionDelegate,
   private val downloadActionDelegate: DownloadActionDelegate,
-  private val onboardingActionDelegate: OnboardingActionDelegate
+  private val onboardingActionDelegate: OnboardingActionDelegate,
+  private val permissionActionDelegate: PermissionActionDelegate
 ) : ViewModel(), UiStateViewModel, OnboardingAction by onboardingActionDelegate,
-  DownloadAction by downloadActionDelegate {
+  DownloadAction by downloadActionDelegate, PermissionsAction by permissionActionDelegate {
 
   private val _networkState = MutableLiveData<NetworkState>()
 
@@ -251,9 +252,36 @@ class CollectionViewModel @Inject constructor(
   }
 
   /**
-   * @return true if content is free to watch, else false
+   * Is content playback allowed
+   *
+   * @param isConnected Is device connected to internet
    */
-  fun isFreeContent(): Boolean = _collection.value?.isFreeContent() ?: false
+  fun isContentPlaybackAllowed(
+    isConnected: Boolean,
+    checkDownloadPermission: Boolean = true
+  ): Boolean {
+    val collection = _collection.value
+    val isProfessionalContent = collection?.isProfessional()
+    val isDownloaded = collection?.isDownloaded()
+
+    return when {
+      isConnected && isProfessionalContent == true -> {
+        if (checkDownloadPermission && isDownloaded == true) {
+          permissionActionDelegate.isDownloadAllowed()
+        } else {
+          permissionActionDelegate.isProfessionalVideoPlaybackAllowed()
+        }
+      }
+      !isConnected -> permissionActionDelegate.isDownloadAllowed()
+      else -> {
+        if (checkDownloadPermission && isDownloaded == true) {
+          permissionActionDelegate.isDownloadAllowed()
+        } else {
+          true
+        }
+      }
+    }
+  }
 
   /**
    * Get collection id
@@ -287,60 +315,6 @@ class CollectionViewModel @Inject constructor(
     }
   }
 
-
-  /**
-   * Collection download state
-   *
-   * @param downloads list of [com.raywenderlich.emitron.model.entity.Download] from db
-   *
-   * @return Download state for collection
-   */
-  fun getCollectionDownloadState(downloads: List<com.raywenderlich.emitron.model.entity.Download>):
-      com.raywenderlich.emitron.model.Download? {
-
-    val collection = _collection.value
-    val collectionIsScreencast = collection?.isTypeScreencast() ?: false
-
-    return if (collectionIsScreencast) {
-      val download =
-        downloads.first { it.downloadId == getContentId() }.toDownloadState()
-      _collection.value = collection?.copy(download = download)
-      download
-    } else {
-      getVideoCourseDownloadState(downloads)
-    }
-  }
-
-  private fun getVideoCourseDownloadState(
-    downloads:
-    List<com.raywenderlich.emitron.model.entity.Download>
-  ): com.raywenderlich.emitron.model.Download? {
-    return if (downloads.isNotEmpty()) {
-      val downloadProgress: Pair<Int, Int> = when {
-        downloads.any { it.inProgress() } -> {
-          downloads.map {
-            it.progress
-          }.reduce { acc, i ->
-            i + acc
-          } to DownloadState.IN_PROGRESS.ordinal
-        }
-        downloads.all { it.isCompleted() } -> {
-          100 to DownloadState.COMPLETED.ordinal
-        }
-        else -> {
-          0 to DownloadState.IN_PROGRESS.ordinal
-        }
-      }
-
-      com.raywenderlich.emitron.model.Download(
-        progress = downloadProgress.first,
-        state = downloadProgress.second
-      )
-    } else {
-      null
-    }
-  }
-
   /**
    * Update download progress
    *
@@ -371,4 +345,26 @@ class CollectionViewModel @Inject constructor(
     return download
   }
 
+  /**
+   * Collection is downloaded?
+   *
+   * @return true if collection is downloaded, else false
+   */
+  fun isDownloaded(): Boolean = _collection.value?.isDownloaded() ?: false
+
+  /**
+   * Get permissions for the current logged in user
+   */
+  fun getPermissions() {
+    viewModelScope.launch {
+      permissionActionDelegate.fetchPermissions()
+    }
+  }
+
+  /**
+   * Remove download
+   */
+  fun removeDownload() {
+    _collection.value = _collection.value?.removeDownload()
+  }
 }

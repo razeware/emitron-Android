@@ -2,7 +2,6 @@ package com.raywenderlich.emitron.ui.download
 
 import androidx.lifecycle.LiveData
 import com.raywenderlich.emitron.data.download.DownloadRepository
-import com.raywenderlich.emitron.data.login.LoginRepository
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.DownloadState
 import com.raywenderlich.emitron.model.entity.Download
@@ -46,19 +45,13 @@ interface DownloadAction {
     progress: Int,
     state: DownloadState
   )
-
-  /**
-   * @return true if downloads can be shown, else false
-   */
-  fun isDownloadAllowed(): Boolean
 }
 
 /**
  * [DownloadAction] implementation
  */
 class DownloadActionDelegate @Inject constructor(
-  private val downloadRepository: DownloadRepository,
-  private val loginRepository: LoginRepository
+  private val downloadRepository: DownloadRepository
 ) : DownloadAction {
 
   override fun getDownloads(downloadIds: List<String>): LiveData<List<Download>> {
@@ -118,10 +111,4 @@ class DownloadActionDelegate @Inject constructor(
   ) {
     downloadRepository.updateDownloadProgress(contentId, progress, state)
   }
-
-
-  /**
-   * @return true if downloads can be shown, else false
-   */
-  override fun isDownloadAllowed(): Boolean = loginRepository.hasDownloadPermission()
 }
