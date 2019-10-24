@@ -6,23 +6,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.offline.Download
 import com.raywenderlich.emitron.data.content.ContentRepository
-import com.raywenderlich.emitron.data.download.DownloadRepository
-import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.ContentType
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.DownloadState
-import com.raywenderlich.emitron.model.entity.inProgress
-import com.raywenderlich.emitron.model.entity.isCompleted
 import com.raywenderlich.emitron.ui.common.UiStateViewModel
+import com.raywenderlich.emitron.ui.download.DownloadAction
+import com.raywenderlich.emitron.ui.download.DownloadActionDelegate
+import com.raywenderlich.emitron.ui.download.PermissionActionDelegate
+import com.raywenderlich.emitron.ui.download.PermissionsAction
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
-import com.raywenderlich.emitron.ui.onboarding.OnboardingView
+import com.raywenderlich.emitron.ui.onboarding.OnboardingAction
+import com.raywenderlich.emitron.ui.onboarding.OnboardingActionDelegate
 import com.raywenderlich.emitron.ui.player.Playlist
 import com.raywenderlich.emitron.utils.Event
 import com.raywenderlich.emitron.utils.NetworkState
 import com.raywenderlich.emitron.utils.UiStateManager
 import kotlinx.coroutines.launch
+import org.threeten.bp.Clock
+import org.threeten.bp.LocalDateTime
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
@@ -34,9 +37,11 @@ class CollectionViewModel @Inject constructor(
   private val repository: ContentRepository,
   private val bookmarkActionDelegate: BookmarkActionDelegate,
   private val progressionActionDelegate: ProgressionActionDelegate,
-  private val downloadRepository: DownloadRepository,
-  private val settingsRepository: SettingsRepository
-) : ViewModel(), UiStateViewModel {
+  private val downloadActionDelegate: DownloadActionDelegate,
+  private val onboardingActionDelegate: OnboardingActionDelegate,
+  private val permissionActionDelegate: PermissionActionDelegate
+) : ViewModel(), UiStateViewModel, OnboardingAction by onboardingActionDelegate,
+  DownloadAction by downloadActionDelegate, PermissionsAction by permissionActionDelegate {
 
   private val _networkState = MutableLiveData<NetworkState>()
 
@@ -233,19 +238,50 @@ class CollectionViewModel @Inject constructor(
    * @param episode to be marked completed
    * @param position position of episode in a list
    */
-  fun updateContentProgression(episode: Data?, position: Int = 0) {
+  fun updateContentProgression(
+    episode: Data?, position: Int = 0,
+    updatedAt: LocalDateTime = LocalDateTime.now(Clock.systemUTC())
+  ) {
     viewModelScope.launch {
       progressionActionDelegate.updateContentProgression(
         episode,
-        position
+        position,
+        updatedAt = updatedAt
       )
     }
   }
 
   /**
-   * @return true if content is free to watch, else false
+   * Is content playback allowed
+   *
+   * @param isConnected Is device connected to internet
    */
-  fun isFreeContent(): Boolean = _collection.value?.isFreeContent() ?: false
+  fun isContentPlaybackAllowed(
+    isConnected: Boolean,
+    checkDownloadPermission: Boolean = true
+  ): Boolean {
+    val collection = _collection.value
+    val isProfessionalContent = collection?.isProfessional()
+    val isDownloaded = collection?.isDownloaded()
+
+    return when {
+      isConnected && isProfessionalContent == true -> {
+        if (checkDownloadPermission && isDownloaded == true) {
+          permissionActionDelegate.isDownloadAllowed()
+        } else {
+          permissionActionDelegate.isProfessionalVideoPlaybackAllowed()
+        }
+      }
+      !isConnected -> permissionActionDelegate.isDownloadAllowed()
+      else -> {
+        if (checkDownloadPermission && isDownloaded == true) {
+          permissionActionDelegate.isDownloadAllowed()
+        } else {
+          true
+        }
+      }
+    }
+  }
 
   /**
    * Get collection id
@@ -260,18 +296,6 @@ class CollectionViewModel @Inject constructor(
    * @return true if collection type is screencast, else false
    */
   private fun isScreencast(): Boolean = _collection.value?.isTypeScreencast() ?: false
-
-  /**
-   * Get downloads by id
-   *
-   * @param downloadIds Download ids
-   *
-   * @return Observable for Downloads by id
-   */
-  fun getDownloads(downloadIds: List<String>):
-      LiveData<List<com.raywenderlich.emitron.model.entity.Download>> {
-    return downloadRepository.getDownloadsById(downloadIds)
-  }
 
   /**
    * Get content ids
@@ -292,87 +316,55 @@ class CollectionViewModel @Inject constructor(
   }
 
   /**
-   * Collection download state
-   *
-   * @param downloads list of [com.raywenderlich.emitron.model.entity.Download] from db
-   *
-   * @return Download state for collection
-   */
-  fun getCollectionDownloadState(downloads: List<com.raywenderlich.emitron.model.entity.Download>):
-      com.raywenderlich.emitron.model.Download? {
-
-    val collection = _collection.value
-    val collectionIsScreencast = collection?.isTypeScreencast() ?: false
-
-    return if (collectionIsScreencast) {
-      val download =
-        downloads.first { it.downloadId == getContentId() }.toDownloadState()
-      _collection.value = collection?.copy(download = download)
-      download
-    } else {
-      getVideoCourseDownloadState(downloads)
-    }
-  }
-
-  private fun getVideoCourseDownloadState(
-    downloads:
-    List<com.raywenderlich.emitron.model.entity.Download>
-  ): com.raywenderlich.emitron.model.Download? {
-    return if (downloads.isNotEmpty()) {
-      val downloadProgress: Pair<Int, Int> = when {
-        downloads.any { it.inProgress() } -> {
-          downloads.map {
-            it.progress
-          }.reduce { acc, i ->
-            i + acc
-          } to DownloadState.IN_PROGRESS.ordinal
-        }
-        downloads.all { it.isCompleted() } -> {
-          100 to DownloadState.COMPLETED.ordinal
-        }
-        else -> {
-          0 to DownloadState.IN_PROGRESS.ordinal
-        }
-      }
-
-      com.raywenderlich.emitron.model.Download(
-        progress = downloadProgress.first,
-        state = downloadProgress.second
-      )
-    } else {
-      null
-    }
-  }
-
-  /**
    * Update download progress
    *
    * @param contentId Content id
    * @param progress Int
    * @state Download state
    */
-  fun updateDownloadProgress(
-    contentId: String,
-    progress: Int,
-    state: DownloadState
-  ) {
+  fun updateDownload(contentId: String, progress: Int, state: DownloadState) {
     viewModelScope.launch {
-      downloadRepository.updateDownloadProgress(contentId, progress, state)
+      downloadActionDelegate.updateDownloadProgress(contentId, progress, state)
     }
   }
 
+  /**
+   * Update collection download state
+   *
+   * @param downloads list of [com.raywenderlich.emitron.model.entity.Download] from db
+   *
+   * @return Download state for collection
+   */
+  fun updateCollectionDownloadState(
+    downloads: List<com.raywenderlich.emitron.model.entity.Download>
+  ): com.raywenderlich.emitron.model.Download? {
+    val collection = _collection.value
+    val download = downloadActionDelegate
+      .getCollectionDownloadState(collection, downloads)
+    _collection.value = collection?.copy(download = download)
+    return download
+  }
 
   /**
+   * Collection is downloaded?
    *
-   * @param view Onboarding view type [OnboardingView]
-   *
-   * @return true if onboarding is shown for view, else false
+   * @return true if collection is downloaded, else false
    */
-  fun isOnboardedForType(view: OnboardingView): Boolean =
-    settingsRepository.getOnboardedViews().contains(view)
+  fun isDownloaded(): Boolean = _collection.value?.isDownloaded() ?: false
 
   /**
-   * @return true if onboarding can be shown, else false
+   * Get permissions for the current logged in user
    */
-  fun isOnboardingAllowed(): Boolean = settingsRepository.isOnboardingAllowed()
+  fun getPermissions() {
+    viewModelScope.launch {
+      permissionActionDelegate.fetchPermissions()
+    }
+  }
+
+  /**
+   * Remove download
+   */
+  fun removeDownload() {
+    _collection.value = _collection.value?.removeDownload()
+  }
 }

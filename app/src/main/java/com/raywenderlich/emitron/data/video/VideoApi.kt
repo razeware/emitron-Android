@@ -40,7 +40,7 @@ interface VideoApi {
   @POST("contents/begin_playback")
   @Throws(Exception::class)
   suspend fun getPlaybackToken(
-  ): Content
+  ): Content?
 
   /**
    * Get playback token for user

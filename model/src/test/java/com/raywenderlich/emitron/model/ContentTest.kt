@@ -201,12 +201,4 @@ class ContentTest {
     assertThat(bookmark.datum?.relationships?.content?.getChildId()).isEqualTo("1")
     assertThat(bookmark.datum?.relationships?.content?.datum?.type).isEqualTo("contents")
   }
-
-  @Test
-  fun newProgression() {
-    val bookmark = Content.newProgression("1")
-    assertThat(bookmark.datum?.type).isEqualTo("progressions")
-    assertThat(bookmark.datum?.relationships?.content?.getChildId()).isEqualTo("1")
-    assertThat(bookmark.datum?.relationships?.content?.datum?.type).isEqualTo("contents")
-  }
 }

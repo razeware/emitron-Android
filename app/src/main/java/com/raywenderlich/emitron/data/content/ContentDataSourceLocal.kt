@@ -126,8 +126,9 @@ class ContentDataSourceLocal @Inject constructor(
    * @param contentId Content id
    * @param bookmarkId Bookmark id
    */
-  suspend fun updateBookmark(contentId: String, bookmarkId: String?): Unit =
+  suspend fun updateBookmark(contentId: String, bookmarkId: String?) {
     contentDao.updateBookmark(contentId, bookmarkId)
+  }
 
   /**
    * Get progressions DataSource.Factory
@@ -142,8 +143,9 @@ class ContentDataSourceLocal @Inject constructor(
    * @param contentId Content id
    * @param finished Content finished
    */
-  suspend fun updateProgress(contentId: String, finished: Boolean): Unit =
+  suspend fun updateProgress(contentId: String, finished: Boolean) {
     progressionDao.updateProgress(contentId, finished)
+  }
 
   /**
    * Delete all tables
@@ -167,10 +169,12 @@ class ContentDataSourceLocal @Inject constructor(
    * @param contentId Content id
    * @param url Download url
    */
-  fun updateDownloadUrl(
+  suspend fun updateDownloadUrl(
     contentId: String,
     url: String
-  ): Unit = downloadDao.updateUrl(contentId, url, DownloadState.IN_PROGRESS.ordinal)
+  ) {
+    downloadDao.updateUrl(contentId, url, DownloadState.IN_PROGRESS.ordinal)
+  }
 
   /**
    * Update download progress
@@ -183,8 +187,9 @@ class ContentDataSourceLocal @Inject constructor(
     contentId: String,
     progress: Int,
     state: DownloadState
-  ): Unit =
+  ) {
     downloadDao.updateProgress(contentId, progress, state.ordinal)
+  }
 
   /**
    * Update download state
@@ -192,11 +197,12 @@ class ContentDataSourceLocal @Inject constructor(
    * @param contentId Content id
    * @param state Download state [DownloadState]
    */
-  fun updateDownloadState(
+  suspend fun updateDownloadState(
     contentId: String,
     state: DownloadState
-  ): Unit =
+  ) {
     downloadDao.updateState(contentId, state.ordinal)
+  }
 
   /**
    * Add new download

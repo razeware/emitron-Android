@@ -10,6 +10,8 @@ import com.raywenderlich.emitron.ui.content.ContentPagedViewModel
 import com.raywenderlich.emitron.utils.BoundaryCallbackNotifier
 import com.raywenderlich.emitron.utils.Event
 import kotlinx.coroutines.launch
+import org.threeten.bp.Clock
+import org.threeten.bp.LocalDateTime
 import javax.inject.Inject
 
 /**
@@ -53,12 +55,16 @@ class ProgressionViewModel @Inject constructor(
   /**
    * Update content progression state
    */
-  fun updateContentProgression(episode: Data?, position: Int = 0) {
+  fun updateContentProgression(
+    episode: Data?, position: Int = 0,
+    updatedAt: LocalDateTime = LocalDateTime.now(Clock.systemUTC())
+  ) {
     viewModelScope.launch {
       progressionActionDelegate.updateContentProgression(
         episode,
         position,
-        boundaryCallbackNotifier
+        boundaryCallbackNotifier,
+        updatedAt
       )
     }
   }

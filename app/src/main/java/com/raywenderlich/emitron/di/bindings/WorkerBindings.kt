@@ -2,10 +2,7 @@ package com.raywenderlich.emitron.di.bindings
 
 import com.raywenderlich.emitron.di.modules.worker.ChildWorkerFactory
 import com.raywenderlich.emitron.di.modules.worker.WorkerKey
-import com.raywenderlich.emitron.ui.download.workers.DownloadWorker
-import com.raywenderlich.emitron.ui.download.workers.RemoveDownloadWorker
-import com.raywenderlich.emitron.ui.download.workers.StartDownloadWorker
-import com.raywenderlich.emitron.ui.download.workers.UpdateDownloadWorker
+import com.raywenderlich.emitron.ui.download.workers.*
 import com.raywenderlich.emitron.ui.settings.SignOutWorker
 import dagger.Binds
 import dagger.Module
@@ -38,5 +35,10 @@ abstract class WorkerBindings {
   @IntoMap
   @WorkerKey(RemoveDownloadWorker::class)
   abstract fun bindRemoveWorker(factory: RemoveDownloadWorker.Factory): ChildWorkerFactory
+
+  @Binds
+  @IntoMap
+  @WorkerKey(VerifyDownloadWorker::class)
+  abstract fun bindVerifyDownloadWorker(factory: VerifyDownloadWorker.Factory): ChildWorkerFactory
 
 }

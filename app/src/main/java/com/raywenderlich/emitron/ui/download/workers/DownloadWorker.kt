@@ -11,6 +11,7 @@ import com.raywenderlich.emitron.di.modules.worker.ChildWorkerFactory
 import com.raywenderlich.emitron.model.ContentType
 import com.raywenderlich.emitron.model.DownloadQuality
 import com.raywenderlich.emitron.model.DownloadState
+import com.raywenderlich.emitron.model.entity.inProgress
 import com.raywenderlich.emitron.model.entity.isPaused
 import com.raywenderlich.emitron.model.isHd
 import com.raywenderlich.emitron.ui.download.DownloadService
@@ -33,46 +34,66 @@ class DownloadWorker @AssistedInject constructor(
    */
   override suspend fun doWork(): Result {
 
+    val downloadId = inputData.getString(DOWNLOAD_ID)
+
+    if (null != downloadId) {
+      handleExistingDownload(downloadId)
+    } else {
+      handleQueuedDownloads()
+    }
+
+    return Result.success()
+  }
+
+  private suspend fun handleExistingDownload(downloadId: String): Result {
+    val download =
+      downloadRepository.getDownload(downloadId)
+    return when {
+      download.inProgress() -> {
+        downloadRepository.updateDownloadState(downloadId, DownloadState.PAUSED)
+        DownloadService.pauseDownload(appContext, downloadId)
+        handleQueuedDownloads()
+      }
+      download.isPaused() -> {
+        downloadRepository.updateDownloadState(downloadId, DownloadState.IN_PROGRESS)
+        DownloadService.resumeDownload(appContext, downloadId)
+        Result.success()
+      }
+      else -> {
+        Result.success()
+      }
+    }
+  }
+
+  private suspend fun handleQueuedDownloads(): Result {
     // Get all queued downloads
     val queuedDownloads =
       downloadRepository.getQueuedDownloads(
         limit = MAX_PARALLEL_DOWNLOADS,
-        states = arrayOf(DownloadState.CREATED, DownloadState.PAUSED),
+        states = arrayOf(DownloadState.CREATED),
         contentTypes = ContentType.getAllowedDownloadTypes()
       )
 
     // Get download urls for queued downloads
 
     queuedDownloads.map { download ->
-      when {
-        download.isPaused() -> {
-          downloadRepository.updateDownloadState(
-            download.getDownloadId(),
-            DownloadState.IN_PROGRESS
-          )
-          DownloadService.resumeDownload(appContext, download.getDownloadId())
-        }
-        else -> {
-          // Start download
-          val downloadRequest = createDownloadRequest(
-            download.getContentId(),
-            download.getVideoId()
-          )
-          if (null != downloadRequest) {
-            downloadRepository.updateDownloadUrl(
-              downloadRequest.contentId,
-              downloadRequest.downloadUrl
-            )
-            DownloadService.startDownload(
-              appContext,
-              downloadRequest.contentId,
-              Uri.parse(downloadRequest.downloadUrl),
-              download.getContentName()
-            )
-          } else {
-            return Result.failure()
-          }
-        }
+      val downloadRequest = createDownloadRequest(
+        download.getContentId(),
+        download.getVideoId()
+      )
+      if (null != downloadRequest) {
+        downloadRepository.updateDownloadUrl(
+          downloadRequest.contentId,
+          downloadRequest.downloadUrl
+        )
+        DownloadService.startDownload(
+          appContext,
+          downloadRequest.contentId,
+          Uri.parse(downloadRequest.downloadUrl),
+          download.getContentName()
+        )
+      } else {
+        return Result.failure()
       }
     }
 
@@ -114,5 +135,10 @@ class DownloadWorker @AssistedInject constructor(
 
   companion object {
     private const val MAX_PARALLEL_DOWNLOADS: Int = 1
+
+    /**
+     * Download id
+     */
+    const val DOWNLOAD_ID: String = "download_id"
   }
 }

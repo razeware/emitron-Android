@@ -7,6 +7,7 @@ import com.raywenderlich.emitron.model.utils.TimeUtils
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 import org.threeten.bp.LocalDateTime
+import org.threeten.bp.format.DateTimeFormatter
 
 /**
  *  Model class for Bookmark, Domain, Progression, Content, Group.
@@ -101,7 +102,7 @@ data class Data(
   /**
    *  @return true if content doesn't require subscription, else false
    */
-  fun isFreeContent(): Boolean = attributes?.professional != true
+  fun isProfessional(): Boolean = attributes?.professional == true
 
   /**
    *  If data represents a progression object
@@ -129,12 +130,6 @@ data class Data(
    *  @return true if user has watched the content, else false
    */
   fun isFinished(): Boolean = attributes?.finished ?: false || isProgressionFinished()
-
-  /**
-   *  @return true if content requires subscription, else false
-   */
-  fun isProLabelVisible(): Boolean =
-    !isTypeProgression() && !isFreeContent() && !isFinished()
 
   /**
    *  @return [TimeUtils.Day] after parsing release date of content
@@ -286,6 +281,15 @@ data class Data(
   }
 
   /**
+   *  Remove download from data
+   *
+   *  @return Data after removing bookmark
+   */
+  fun removeDownload(): Data {
+    return this.copy(download = null)
+  }
+
+  /**
    *  @return true if type is [DataType.Groups], otherwise false
    */
   fun isTypeGroup(): Boolean = DataType.Groups == DataType.fromValue(type)
@@ -326,13 +330,13 @@ data class Data(
    * Get episode number
    *
    * @param position Episode position
-   * @param episodeIsProContent Episode requires subscription
+   * @param playbackAllowed Episode playback allowed
    *
    * @return Empty String if episode is finished or it requires subscription,
    * else String of position
    */
-  fun getEpisodeNumber(position: Int, episodeIsProContent: Boolean): String =
-    if (episodeIsProContent || isFinished()) "" else position.toString()
+  fun getEpisodeNumber(position: Int, playbackAllowed: Boolean): String =
+    if (!playbackAllowed || isFinished()) "" else position.toString()
 
   /**
    *  @return content id for relationships
@@ -540,6 +544,29 @@ data class Data(
           name = sortOrder
         )
       )
+
+    /**
+     * Create content object for creating new progression
+     *
+     * @param contentId id of content for which progression has to be created/updated
+     * @param finished true if content is completed else false
+     * @param progress
+     * @param updatedAt Update at time
+     */
+    fun newProgression(
+      contentId: String,
+      finished: Boolean = false,
+      progress: Long = 0,
+      updatedAt: LocalDateTime
+    ): Data =
+      Data(
+        type = DataType.Progressions.toRequestFormat(),
+        attributes = Attributes(
+          contentId = contentId,
+          progress = progress,
+          finished = finished,
+          updatedAt = updatedAt.format(DateTimeFormatter.ISO_DATE_TIME)
+        )
+      )
   }
 }
-

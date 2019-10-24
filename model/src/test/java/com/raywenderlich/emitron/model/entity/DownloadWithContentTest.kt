@@ -32,7 +32,7 @@ class DownloadWithContentTest {
   fun getDownloadId() {
     val download = createDownloadWithContent()
 
-    download.getDownloadIds() isEqualTo listOf("1")
+    download.getDownloadId() isEqualTo "1"
   }
 
   @Test
@@ -122,6 +122,6 @@ class DownloadWithContentTest {
     val download = createDownloadWithContent(
       contentType = "collection"
     )
-    download.getDownloadIds() isEqualTo listOf("1")
+    download.getDownloadIds() isEqualTo listOf("1", "1")
   }
 }

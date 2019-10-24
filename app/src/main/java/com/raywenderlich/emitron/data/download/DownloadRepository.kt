@@ -161,10 +161,12 @@ class DownloadRepository @Inject constructor(
    * @param contentId Content id
    * @param url Download url
    */
-  @WorkerThread
-  fun updateDownloadUrl(contentId: String, url: String) {
-    return contentDataSourceLocal
-      .updateDownloadUrl(contentId, url)
+  @AnyThread
+  suspend fun updateDownloadUrl(contentId: String, url: String) {
+    withContext(threadManager.db) {
+      contentDataSourceLocal
+        .updateDownloadUrl(contentId, url)
+    }
   }
 
   /**
@@ -174,7 +176,7 @@ class DownloadRepository @Inject constructor(
    * @param progress Int
    * @param state Download state [DownloadState]
    */
-  @WorkerThread
+  @AnyThread
   suspend fun updateDownloadProgress(
     contentId: String,
     progress: Int,
@@ -191,12 +193,14 @@ class DownloadRepository @Inject constructor(
    * @param contentId Content id
    * @param state Download state [DownloadState]
    */
-  @WorkerThread
-  fun updateDownloadState(
+  @AnyThread
+  suspend fun updateDownloadState(
     contentId: String,
     state: DownloadState
   ) {
-    return contentDataSourceLocal.updateDownloadState(contentId, state)
+    withContext(threadManager.db) {
+      contentDataSourceLocal.updateDownloadState(contentId, state)
+    }
   }
 
   /**

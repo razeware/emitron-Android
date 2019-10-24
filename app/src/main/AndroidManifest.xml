@@ -37,13 +37,7 @@
       android:parentActivityName=".MainActivity"
       android:resizeableActivity="true"
       android:supportsPictureInPicture="true"
-      android:windowSoftInputMode="adjustNothing">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
-    </activity>
+      android:windowSoftInputMode="adjustNothing" />
 
     <!-- WorkManager reset -->
     <provider
@@ -64,6 +58,16 @@
       android:name="com.google.android.exoplayer2.scheduler.PlatformScheduler$PlatformSchedulerService"
       android:exported="true"
       android:permission="android.permission.BIND_JOB_SERVICE" />
+
+    <activity-alias
+      android:name=".MainActivity"
+      android:targetActivity=".MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity-alias>
   </application>
 
 </manifest>

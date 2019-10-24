@@ -47,25 +47,32 @@
     <ProgressBar
       android:id="@+id/progress_download"
       style="?android:attr/progressBarStyleHorizontal"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
       android:indeterminate="false"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHeight_percent="0.7"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintWidth_percent="0.7"
       tools:progress="80"
       tools:progressDrawable="@drawable/progress_drawable"
-      tools:visibility="gone" />
+      tools:visibility="visible" />
 
     <ProgressBar
       android:id="@+id/progress_download_pending"
       style="?android:attr/progressBarStyle"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
       android:indeterminate="true"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHeight_percent="0.7"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintWidth_percent="0.7"
+      tools:visibility="gone" />
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/button_download_stop"
@@ -78,10 +85,10 @@
       android:paddingLeft="@null"
       android:paddingRight="@null"
       app:iconTint="@color/colorPrimary"
-      app:layout_constraintBottom_toBottomOf="@+id/progress_download"
-      app:layout_constraintEnd_toEndOf="@+id/progress_download"
-      app:layout_constraintStart_toStartOf="@+id/progress_download"
-      app:layout_constraintTop_toTopOf="@+id/progress_download"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
       tools:icon="@drawable/ic_material_icon_download_pause"
       tools:visibility="visible" />
 
@@ -103,7 +110,7 @@
       app:layout_constraintTop_toTopOf="parent"
       tools:icon="@drawable/ic_material_icon_download_2"
       tools:iconTint="@color/colorIcon"
-      tools:visibility="visible" />
+      tools:visibility="gone" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 

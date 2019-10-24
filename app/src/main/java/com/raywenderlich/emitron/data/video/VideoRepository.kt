@@ -29,7 +29,7 @@ class VideoRepository @Inject constructor(
    * Get video playback token
    */
   @Throws(Exception::class)
-  suspend fun getVideoPlaybackToken(): Content {
+  suspend fun getVideoPlaybackToken(): Content? {
     return withContext(threadManager.io) {
       videoApi.getPlaybackToken()
     }

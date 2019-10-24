@@ -57,6 +57,13 @@ fun Download?.isFailed(): Boolean {
 }
 
 /**
+ * @return true if download has failed, else false
+ */
+fun Download?.isPaused(): Boolean {
+  return this?.state == DownloadState.PAUSED.ordinal
+}
+
+/**
  * @return download progress or 0
  */
 fun Download?.getProgress(): Int = this?.progress ?: 0

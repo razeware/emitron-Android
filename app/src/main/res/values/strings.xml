@@ -82,6 +82,13 @@
   <string name="message_episode_failed_to_mark_completed">Failed to mark episode completed.</string>
   <string name="message_episode_marked_in_progress">Episode marked in progress.</string>
   <string name="message_episode_failed_to_mark_in_progress">Failed to mark episode in progress.</string>
+  <string name="button_label_verify">Verify</string>
+  <string name="button_label_cancel">Cancel</string>
+  <string name="button_label_play_online">Play online</string>
+  <string name="error_permission">Failed to verify permissions.</string>
+  <string name="button_label_yes">Yes</string>
+  <string name="button_label_no">No</string>
+
 
   <!-- Filter screen -->
   <string name="button_filter_clear_all">Clear All</string>
@@ -168,7 +175,7 @@
   <string name="episodes">Episodes</string>
   <string name="next_episode">Next: %1$s</string>
   <string name="progress_next_episode">Next episode in %1$s…</string>
-  <string name="button_cancel">Cancel</string>
+  <string name="button_cancel">@string/button_label_cancel</string>
   <string name="player_volume_low">Please increase media volume.</string>
   <string name="player_playback_token_error">You are only allowed to play on a single device.</string>
 
@@ -190,6 +197,10 @@
   <string name="download_quality_high">High</string>
   <string name="download_quality_normal">Normal</string>
   <string name="body_downloads_empty">You haven’t downloaded any tutorials yet</string>
+  <string name="title_download_permission_error">Verify permission</string>
+  <string name="message_download_permission_error">Verify permission to watch downloaded content offline.</string>
+  <string name="title_download_remove">Remove Download</string>
+  <string name="message_download_remove">Are you sure you want to remove this download?</string>
 
   <!-- On-boarding -->
   <string name="on_boarding_download_card_title">Mobile UX Design Tips &amp; Tricks</string>
