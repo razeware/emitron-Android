@@ -115,6 +115,7 @@
   <dimen name="button_download_stop_radius">1dp</dimen>
   <dimen name="default_item_spacing_vertical">12dp</dimen>
   <dimen name="sort_option_height">36dp</dimen>
+  <dimen name="error_image_height_width">192dp</dimen>
 
   <!-- Collection detail view -->
   <dimen name="margin_body_pro">32dp</dimen>
@@ -172,5 +173,7 @@
   <dimen name="on_boarding_episode_item_margin_top">24dp</dimen>
   <dimen name="onboarding_download_content_margin_end">96dp</dimen>
   <dimen name="onboarding_download_content_margin_start">48dp</dimen>
+
+  <dimen name="error_title_margin_top">20dp</dimen>
 
 </resources>
