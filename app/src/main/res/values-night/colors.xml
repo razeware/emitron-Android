@@ -32,4 +32,6 @@
   <color name="colorTabSelected">@color/white</color>
   <color name="colorTabDefault">@color/bright_grey</color>
   <color name="colorRadioButtonChecked2">@color/white</color>
+
+  <color name="colorViewPagerIndicator">@color/colorPrimary</color>
 </resources>

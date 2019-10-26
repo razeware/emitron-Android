@@ -141,7 +141,11 @@
   <dimen name="height_card_divider">1dp</dimen>
 
   <!-- Login view -->
-  <dimen name="login_logo_height_width">72dp</dimen>
+  <dimen name="login_logo_height_width">56dp</dimen>
+  <dimen name="login_onboarding_image_height_width">256dp</dimen>
+  <dimen name="login_onboarding_image_margin_top">48dp</dimen>
+  <dimen name="login_onboarding_body_margin_top">16dp</dimen>
+  <dimen name="login_view_pager_indicator_height">4dp</dimen>
 
   <!-- Filter view -->
   <dimen name="filter_progress_height">4dp</dimen>

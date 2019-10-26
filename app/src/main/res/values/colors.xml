@@ -96,4 +96,7 @@
   <color name="colorRadioButtonChecked">@color/blue_grey</color>
   <color name="colorRadioButtonChecked2">@color/colorPrimary</color>
   <color name="colorRadioButtonDefault">@color/transparent</color>
+
+  <color name="colorViewPagerIndicator">@color/pale_blue</color>
+
 </resources>

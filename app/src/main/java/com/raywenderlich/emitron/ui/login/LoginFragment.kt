@@ -96,13 +96,18 @@ class LoginFragment : DaggerFragment() {
   }
 
   private fun initView() {
-    binding.textLoginErrorDescription.removeUnderline()
+    with(binding) {
+      textLoginErrorDescription.removeUnderline()
 
-    binding.buttonSignIn.setOnClickListener {
-      guardpostDelegate.login()
-    }
-    binding.buttonSignOut.setOnClickListener {
-      guardpostDelegate.logout()
+      buttonSignIn.setOnClickListener {
+        guardpostDelegate.login()
+      }
+      buttonSignOut.setOnClickListener {
+        guardpostDelegate.logout()
+      }
+      viewPagerLogin.adapter =
+        LoginOnboardingPagingAdapter.newInstance(requireFragmentManager())
+      viewPagerIndicator.attachViewPager(binding.viewPagerLogin)
     }
   }
 
