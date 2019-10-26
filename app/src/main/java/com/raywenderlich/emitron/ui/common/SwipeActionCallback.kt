@@ -80,12 +80,7 @@ internal abstract class SwipeActionCallback(
     canvas: Canvas
   ) {
     val swipeText = context.getString(buttonText)
-    val textPaint = TextPaint()
-    textPaint.isAntiAlias = true
-    textPaint.textSize = 14.toPx().toFloat()
-    textPaint.color = ContextCompat.getColor(context, R.color.textColorButtonOnError)
-    textPaint.typeface = ResourcesCompat.getFont(context, R.font.roboto_bold)
-
+    val textPaint = createTextPaint(context)
     val textBounds = Rect()
     textPaint.getTextBounds(swipeText, 0, swipeText.length, textBounds)
     val textHeight = textBounds.height()
@@ -97,5 +92,12 @@ internal abstract class SwipeActionCallback(
       textY.toFloat(),
       textPaint
     )
+  }
+
+  private fun createTextPaint(ctx: Context) = TextPaint().apply {
+    isAntiAlias = true
+    textSize = 14.toPx().toFloat()
+    color = ContextCompat.getColor(ctx, R.color.textColorButtonOnError)
+    typeface = ResourcesCompat.getFont(ctx, R.font.roboto_bold)
   }
 }

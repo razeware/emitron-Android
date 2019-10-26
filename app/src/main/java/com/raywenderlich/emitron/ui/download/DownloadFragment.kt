@@ -102,6 +102,7 @@ class DownloadFragment : DaggerFragment() {
     initObservers()
     loadDownloads()
     checkAndShowOnboarding()
+    checkAndShowDownloadSubscription()
   }
 
   private fun initUi() {
@@ -180,5 +181,9 @@ class DownloadFragment : DaggerFragment() {
       )
       findNavController().navigate(action)
     }
+  }
+
+  private fun checkAndShowDownloadSubscription() {
+    binding.groupDownloadNoSubscription.toVisibility(!viewModel.isDownloadAllowed())
   }
 }

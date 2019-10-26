@@ -13,8 +13,10 @@ import javax.inject.Inject
 class DownloadViewModel @Inject constructor(
   private val downloadRepository: DownloadRepository,
   private val contentPagedViewModel: ContentPagedViewModel,
-  private val onboardingActionDelegate: OnboardingActionDelegate
-) : ViewModel(), OnboardingAction by onboardingActionDelegate {
+  private val onboardingActionDelegate: OnboardingActionDelegate,
+  private val permissionActionDelegate: PermissionActionDelegate
+) : ViewModel(), OnboardingAction by onboardingActionDelegate,
+  PermissionsAction by permissionActionDelegate {
 
   /**
    * Load bookmarks from database

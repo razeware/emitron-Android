@@ -205,6 +205,10 @@
   <string name="message_download_permission_error">Verify permission to watch downloaded content offline.</string>
   <string name="title_download_remove">Remove Download</string>
   <string name="message_download_remove">Are you sure you want to remove this download?</string>
+  <string name="downloads_no_subscription_title">Are you sure you want to remove this download?</string>
+  <string name="downloads_no_subscription_body">Are you sure you want to remove this download?</string>
+  <string name="title_downloads_no_subscription">Upgrade your subscription to download videos</string>
+  <string name="body_downloads_no_subscription">raywenderlich Professional subscribers can download videos and watch them offline.</string>
 
   <!-- On-boarding -->
   <string name="on_boarding_download_card_title">Mobile UX Design Tips &amp; Tricks</string>
