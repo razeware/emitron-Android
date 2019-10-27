@@ -36,6 +36,7 @@ buildscript {
       'materialDesign'              : '1.1.0-beta01',
       'vectorDrawable'              : '1.1.0',
       'recyclerView'                : "1.0.0",
+      'viewpagerdots'               : "1.0.0",
 
       // db
       'room'                        : '2.2.0',

@@ -15,14 +15,17 @@ import com.raywenderlich.emitron.databinding.FragmentDownloadsBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.ui.common.PagedAdapter
+import com.raywenderlich.emitron.ui.common.StartEndBottomMarginDecoration
+import com.raywenderlich.emitron.ui.common.SwipeActionCallback
 import com.raywenderlich.emitron.ui.content.ContentAdapter
 import com.raywenderlich.emitron.ui.content.ContentPagedFragment
 import com.raywenderlich.emitron.ui.download.workers.RemoveDownloadWorker
 import com.raywenderlich.emitron.ui.mytutorial.MyTutorialFragmentDirections
 import com.raywenderlich.emitron.ui.onboarding.OnboardingView
-import com.raywenderlich.emitron.ui.common.StartEndBottomMarginDecoration
-import com.raywenderlich.emitron.ui.common.SwipeActionCallback
+import com.raywenderlich.emitron.utils.NetworkState
+import com.raywenderlich.emitron.utils.extensions.observe
 import com.raywenderlich.emitron.utils.extensions.setDataBindingView
+import com.raywenderlich.emitron.utils.extensions.toVisibility
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -46,6 +49,17 @@ class DownloadFragment : DaggerFragment() {
   lateinit var downloadManager: DownloadManager
 
   private val viewModel: DownloadViewModel by viewModels { viewModelFactory }
+
+  private val swipeActionCallback by lazy {
+    SwipeActionCallback.build(
+      R.drawable.bg_swipe_bookmark,
+      R.string.button_delete,
+      onSwipe = {
+        deleteDownload(adapter.getItemFor(it))
+      })
+  }
+
+  private val itemTouchHelper = ItemTouchHelper(swipeActionCallback)
 
   internal val adapter by lazy {
     ContentAdapter.build(
@@ -88,25 +102,20 @@ class DownloadFragment : DaggerFragment() {
     initObservers()
     loadDownloads()
     checkAndShowOnboarding()
+    checkAndShowDownloadSubscription()
   }
 
   private fun initUi() {
     pagedFragment.value.initPaging(this, binding.recyclerView)
     binding.recyclerView.addItemDecoration(StartEndBottomMarginDecoration())
-    addSwipeToDelete()
   }
 
   private fun addSwipeToDelete() {
-    val swipeHandler =
-      SwipeActionCallback.build(
-        R.drawable.bg_swipe_bookmark,
-        R.string.button_delete,
-        onSwipe = {
-          deleteDownload(adapter.getItemFor(it))
-        })
-
-    val itemTouchHelper = ItemTouchHelper(swipeHandler)
     itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+  }
+
+  private fun removeSwipeToDelete() {
+    itemTouchHelper.attachToRecyclerView(null)
   }
 
   private fun deleteDownload(data: Data?) {
@@ -120,6 +129,28 @@ class DownloadFragment : DaggerFragment() {
   }
 
   private fun initObservers() {
+    viewModel.getPaginationViewModel().networkState.observe(viewLifecycleOwner) {
+      handleInitialProgress(it)
+    }
+  }
+
+  private fun handleInitialProgress(networkState: NetworkState?) {
+    when (networkState) {
+      NetworkState.INIT -> {
+      }
+      NetworkState.SUCCESS,
+      NetworkState.INIT_SUCCESS -> {
+        addSwipeToDelete()
+      }
+      NetworkState.INIT_EMPTY,
+      NetworkState.INIT_FAILED,
+      NetworkState.FAILED -> {
+        removeSwipeToDelete()
+      }
+      else -> {
+        // NA
+      }
+    }
   }
 
   private fun loadDownloads() {
@@ -150,5 +181,9 @@ class DownloadFragment : DaggerFragment() {
       )
       findNavController().navigate(action)
     }
+  }
+
+  private fun checkAndShowDownloadSubscription() {
+    binding.groupDownloadNoSubscription.toVisibility(!viewModel.isDownloadAllowed())
   }
 }

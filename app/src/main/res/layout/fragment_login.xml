@@ -48,11 +48,11 @@
       app:layout_constraintStart_toStartOf="@id/guideline_left"
       app:layout_constraintTop_toBottomOf="@id/guideline_top"
       app:layout_constraintVertical_chainStyle="spread_inside"
-      app:srcCompat="@drawable/ic_launcher_foreground" />
+      app:srcCompat="@drawable/ic_logo_color_primary" />
 
     <com.google.android.material.textview.MaterialTextView
       android:id="@+id/text_logo"
-      style="@style/TextAppearance.Label"
+      style="@style/TextAppearance.Headline.4"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -85,10 +85,23 @@
       android:id="@+id/view_pager_login"
       android:layout_width="0dp"
       android:layout_height="0dp"
+      app:layout_constraintBottom_toTopOf="@+id/view_pager_indicator"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/image_logo" />
+
+    <com.afollestad.viewpagerdots.DotsIndicator
+      android:id="@+id/view_pager_indicator"
+      android:layout_width="wrap_content"
+      android:layout_height="@dimen/activity_horizontal_margin"
+      android:layout_marginBottom="@dimen/activity_vertical_margin"
+      app:dot_height="@dimen/login_view_pager_indicator_height"
+      app:dot_width="@dimen/login_view_pager_indicator_height"
+      app:dot_tint="@color/colorViewPagerIndicator"
       app:layout_constraintBottom_toTopOf="@+id/button_sign_in"
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintStart_toStartOf="@id/guideline_left"
-      app:layout_constraintTop_toBottomOf="parent" />
+      app:layout_constraintTop_toBottomOf="@+id/view_pager_login" />
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/button_sign_in"
@@ -103,7 +116,7 @@
       app:layout_constraintBottom_toBottomOf="@+id/guideline_bottom"
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintStart_toStartOf="@id/guideline_left"
-      app:layout_constraintTop_toBottomOf="@+id/view_pager_login" />
+      app:layout_constraintTop_toBottomOf="@+id/view_pager_indicator" />
 
     <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/text_login_error_title"

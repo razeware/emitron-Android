@@ -117,7 +117,7 @@ class DownloadRepository @Inject constructor(
   /**
    * Remove a download
    *
-   * @param downloadId Download id
+   * @param downloadIds List of Download id
    */
   @AnyThread
   suspend fun removeDownload(downloadIds: List<String>) {
