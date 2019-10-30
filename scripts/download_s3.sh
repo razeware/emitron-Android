@@ -2,7 +2,7 @@
 
 # See https://esc.sh/blog/access-s3-gcs-curl/
 
-req_path="/secrets/android/secrets.${1}.xcconfig"
+req_path="/secrets/android/${1}"
 
 # We need the current date to calculate the signature and also to pass to S3/GCS
 curr_date=`date +'%a, %d %b %Y %H:%M:%S %z'`
