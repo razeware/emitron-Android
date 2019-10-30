@@ -29,8 +29,8 @@ jobs:
          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
-         scripts/download_s3.sh gradle.properties > emitron-android/gradle.properties
-         scripts/download_s3.sh google-services.json > emitron-android/app/google-services.json
+         scripts/download_s3.sh gradle.properties > gradle.properties
+         scripts/download_s3.sh google-services.json > app/google-services.json
     - name: Run Tests
       run: bundle exec fastlane test
 
