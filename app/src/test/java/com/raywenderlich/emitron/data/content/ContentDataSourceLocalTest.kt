@@ -10,16 +10,12 @@ import com.raywenderlich.emitron.data.progressions.dao.ProgressionDao
 import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.entity.*
-import com.raywenderlich.emitron.model.entity.Download
 import com.raywenderlich.emitron.utils.TestCoroutineRule
 import com.raywenderlich.emitron.utils.isEqualTo
 import com.raywenderlich.emitron.utils.observeForTestingResultNullable
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.threeten.bp.LocalDateTime
-import org.threeten.bp.Month
-import org.threeten.bp.format.DateTimeFormatter
 
 class ContentDataSourceLocalTest {
 
@@ -216,7 +212,6 @@ class ContentDataSourceLocalTest {
             cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
             videoId = null,
             bookmarkId = "1",
-            progressionId = "1",
             updatedAt = ""
           ),
           com.raywenderlich.emitron.model.entity.Content(
@@ -235,7 +230,6 @@ class ContentDataSourceLocalTest {
             cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
             videoId = null,
             bookmarkId = "2",
-            progressionId = "2",
             updatedAt = ""
           )
         ),
@@ -312,7 +306,11 @@ class ContentDataSourceLocalTest {
                 type = "progressions",
                 attributes = Attributes(percentComplete = 99.0, finished = true),
                 links = null,
-                relationships = null,
+                relationships = Relationships(
+                  content = Content(
+                    datum = Data(id = "1")
+                  )
+                ),
                 meta = null,
                 included = null
               ), links = null, meta = null, included = null
@@ -378,7 +376,11 @@ class ContentDataSourceLocalTest {
                 type = "progressions",
                 attributes = Attributes(percentComplete = 50.0, finished = false),
                 links = null,
-                relationships = null,
+                relationships = Relationships(
+                  content = Content(
+                    datum = Data(id = "2")
+                  )
+                ),
                 meta = null,
                 included = null
               ), links = null, meta = null, included = null
@@ -409,7 +411,6 @@ class ContentDataSourceLocalTest {
             cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
             videoId = null,
             bookmarkId = "1",
-            progressionId = "1",
             updatedAt = ""
           ),
           com.raywenderlich.emitron.model.entity.Content(
@@ -428,13 +429,24 @@ class ContentDataSourceLocalTest {
             cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
             videoId = null,
             bookmarkId = "2",
-            progressionId = "2",
             updatedAt = ""
           )
         ),
         listOf(
-          Progression(progressionId = "1", percentComplete = 99, finished = true),
-          Progression(progressionId = "2", percentComplete = 50, finished = false)
+          Progression(
+            contentId = "1",
+            progressionId = "1",
+            percentComplete = 99,
+            finished = true,
+            synced = true
+          ),
+          Progression(
+            contentId = "2",
+            progressionId = "2",
+            percentComplete = 50,
+            finished = false,
+            synced = true
+          )
         ),
         progressionDao,
         listOf(
@@ -464,7 +476,6 @@ class ContentDataSourceLocalTest {
       cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
       videoId = "1",
       bookmarkId = "1",
-      progressionId = "1",
       updatedAt = "2019-08-08T00:00:00.000Z"
     )
     val contents = MutableLiveData<List<com.raywenderlich.emitron.model.entity.Content>>().apply {
@@ -541,12 +552,17 @@ class ContentDataSourceLocalTest {
             cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
             videoId = null,
             bookmarkId = "1",
-            progressionId = null,
             updatedAt = ""
           )
         ),
         listOf(
-          Progression(progressionId = "1", percentComplete = 99, finished = true)
+          Progression(
+            contentId = "1",
+            progressionId = "1",
+            percentComplete = 99,
+            finished = true,
+            synced = true
+          )
         ),
         progressionDao,
         listOf(ContentDomainJoin("1", "2")),

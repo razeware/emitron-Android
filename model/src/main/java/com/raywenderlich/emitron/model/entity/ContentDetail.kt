@@ -31,8 +31,8 @@ data class ContentDetail(
    * Progressions
    */
   @Relation(
-    parentColumn = "progression_id",
-    entityColumn = "progression_id",
+    parentColumn = "content_id",
+    entityColumn = "content_id",
     entity = Progression::class
   )
   val progressions: List<Progression> = emptyList(),
@@ -103,8 +103,10 @@ data class ContentDetail(
       groupsAndEpisodes
     }
 
+    val contentProgressions = listOf(progressions.first().toData())
+
     return com.raywenderlich.emitron.model.Content(
-      datum = content.toData().addRelationships(domains.plus(groups)),
+      datum = content.toData().addRelationships(domains.plus(groups).plus(contentProgressions)),
       included = included
     )
   }

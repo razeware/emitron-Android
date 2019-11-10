@@ -27,7 +27,6 @@ class ContentWithDomainAndProgressionTest {
       cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
       videoId = "1",
       bookmarkId = "1",
-      progressionId = "1",
       updatedAt = "2019-08-08T00:00:00.000Z"
     )
     val domains = listOf(
@@ -39,7 +38,7 @@ class ContentWithDomainAndProgressionTest {
       )
     )
     val progressions = listOf(
-      Progression(progressionId = "1", percentComplete = 99, finished = true)
+      Progression(progressionId = "1", percentComplete = 99, finished = true, contentId = "1")
     )
     val contentWithDomain = ContentWithDomainAndProgression(
       content = content,
@@ -69,13 +68,13 @@ class ContentWithDomainAndProgressionTest {
           difficulty = "beginner",
           duration = 408,
           free = false,
-          popularity = 0.0,
+          popularity = null,
           releasedAt = "2019-08-08T00:00:00.000Z",
           uri = null,
-          target = 0,
-          progress = 0,
-          finished = false,
-          percentComplete = 0.0,
+          target = null,
+          progress = null,
+          finished = null,
+          percentComplete = null,
           updatedAt = null,
           technology = "Swift, iOS",
           contributors = "Luke",
@@ -109,9 +108,18 @@ class ContentWithDomainAndProgressionTest {
             datum = Data(
               id = "1",
               type = "progressions",
-              attributes = Attributes(percentComplete = 99.0, finished = true),
+              attributes = Attributes(
+                percentComplete = 99.0,
+                progress = 0,
+                finished = true,
+                contentId = "1"
+              ),
               links = null,
-              relationships = null,
+              relationships = Relationships(
+                content = Content(
+                  datum = Data(id = "1")
+                )
+              ),
               meta = null,
               included = null
             ), links = null, meta = null, included = null
@@ -147,7 +155,6 @@ fun createContentWithDomainAndProgression(): ContentWithDomainAndProgression =
       cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
       videoId = "1",
       bookmarkId = "1",
-      progressionId = "1",
       updatedAt = "2019-08-08T00:00:00.000Z"
     ),
     domains = listOf(
@@ -158,7 +165,7 @@ fun createContentWithDomainAndProgression(): ContentWithDomainAndProgression =
       )
     ),
     progressions = listOf(
-      Progression(progressionId = "1", percentComplete = 99, finished = true)
+      Progression(progressionId = "1", percentComplete = 99, finished = true, contentId = "1")
     ),
     downloads = listOf(
       Download(

@@ -40,8 +40,7 @@ class ContentDataSourceLocal @Inject constructor(
     val progressionList = when (dataType) {
       DataType.Bookmarks -> emptyList()
       else -> {
-        val progressions = contents.mapNotNull { it.relationships?.progression }
-        Progression.listFrom(progressions)
+        Progression.listFrom(contents)
       }
     }
 
