@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.*
 import com.raywenderlich.emitron.data.download.DownloadRepository
 import com.raywenderlich.emitron.di.modules.worker.ChildWorkerFactory
-import com.raywenderlich.emitron.model.DownloadState
+import com.raywenderlich.emitron.model.entity.Download
 import com.raywenderlich.emitron.model.entity.inProgress
 import com.raywenderlich.emitron.model.entity.isCompleted
 import com.raywenderlich.emitron.model.entity.isPaused
@@ -89,9 +89,10 @@ class StartDownloadWorker @AssistedInject constructor(
     // Queue download for next worker
     if (downloadIds.isNotEmpty()) {
       // Let's queue the download list
-      downloadIds.map { downloadId ->
-        downloadRepository.addDownload(downloadId, DownloadState.CREATED)
+      val downloads = downloadIds.map { downloadId ->
+        Download.with(downloadId)
       }
+      downloadRepository.addDownloads(downloads)
     }
 
     return Result.success()

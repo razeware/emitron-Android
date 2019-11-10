@@ -18,6 +18,9 @@ interface DownloadDao {
   @Insert(onConflict = OnConflictStrategy.IGNORE)
   suspend fun insert(download: Download)
 
+  @Insert(onConflict = OnConflictStrategy.IGNORE)
+  suspend fun insert(download: List<Download>)
+
   /**
    * Delete queued download
    */

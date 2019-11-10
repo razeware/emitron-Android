@@ -4,6 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.raywenderlich.emitron.model.DownloadState
+import org.threeten.bp.Clock
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.format.DateTimeFormatter
 
 /**
  * Entity to store downloads to database
@@ -54,14 +57,13 @@ data class Download(
   /**
    * @return [com.raywenderlich.emitron.model.Download] from [Download]
    */
-  fun toDownloadState(): com.raywenderlich.emitron.model.Download? {
-    return com.raywenderlich.emitron.model.Download(
+  fun toDownloadState(): com.raywenderlich.emitron.model.Download? =
+    com.raywenderlich.emitron.model.Download(
       progress = this.progress,
       state = this.state,
       url = this.url,
       failureReason = failureReason
     )
-  }
 
   companion object {
 
@@ -69,6 +71,20 @@ data class Download(
      * Table name to store domains
      */
     const val TABLE_NAME: String = "downloads"
+
+    /**
+     * Create [Download] instance with id
+     *
+     * @param contentId
+     */
+    fun with(
+      contentId: String,
+      createdAt: LocalDateTime = LocalDateTime.now(Clock.systemUTC())
+    ): Download = Download(
+      contentId,
+      state = DownloadState.CREATED.ordinal,
+      createdAt = createdAt.format(DateTimeFormatter.ISO_DATE_TIME)
+    )
   }
 }
 
