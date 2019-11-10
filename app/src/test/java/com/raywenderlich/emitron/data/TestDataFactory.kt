@@ -295,7 +295,8 @@ fun createContentData(
     videoId = videoId.toString(),
     videoPlaybackToken = playbackToken,
     url = videoUrl,
-    progress = progress
+    progress = progress,
+    duration = 10
   ),
   relationships = Relationships(
     groups = groups,

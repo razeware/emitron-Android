@@ -1,10 +1,8 @@
 package com.raywenderlich.emitron.data.progressions.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
+import androidx.room.*
 import androidx.room.OnConflictStrategy.IGNORE
-import androidx.room.Query
-import androidx.room.Update
+import com.raywenderlich.emitron.data.content.dao.ContentDao
 import com.raywenderlich.emitron.model.entity.Progression
 
 /**
@@ -13,21 +11,123 @@ import com.raywenderlich.emitron.model.entity.Progression
 @Dao
 interface ProgressionDao {
 
+  /**
+   * Insert progressions
+   */
   @Insert(onConflict = IGNORE)
   fun insertProgressions(contents: List<Progression>): List<Long>
 
+  /**
+   * Insert progression
+   */
+  @Insert(onConflict = IGNORE)
+  fun insertProgression(progression: Progression): Long
+
+  /**
+   * Update progressions
+   */
   @Update(onConflict = IGNORE)
   fun updateProgressions(contents: List<Progression>)
 
+  /**
+   * Update progressions (async)
+   */
+  @Update(onConflict = IGNORE)
+  suspend fun updateProgressionsAsync(contents: List<Progression>)
+
+  /**
+   * Update progressions
+   */
   @Query(
     """
-          UPDATE progressions set finished = :finished
-          WHERE progression_id = 
-          (SELECT progression_id from contents where content_id = :contentId)
+          UPDATE 
+            progressions 
+          SET 
+            progress = :progress,
+            percent_complete = :percentComplete,
+            finished = :finished,
+            synced = :synced,
+            updated_at = :updatedAt,
+            progression_id = :progressionId
+          WHERE 
+            content_id = :contentId
           """
   )
-  suspend fun updateProgress(contentId: String, finished: Boolean)
+  suspend fun updateProgress(
+    contentId: String,
+    percentComplete: Int,
+    progress: Long,
+    finished: Boolean,
+    synced: Boolean,
+    updatedAt: String,
+    progressionId: String?
+  ): Int
 
+  /**
+   * Insert progression or update if it already exists.
+   */
+  @Transaction
+  suspend fun insertOrUpdateProgress(
+    contentId: String,
+    percentComplete: Int,
+    progress: Long,
+    finished: Boolean,
+    synced: Boolean,
+    updatedAt: String,
+    progressionId: String?,
+    contentDao: ContentDao
+  ) {
+    val updatedRows =
+      updateProgress(
+        contentId,
+        percentComplete,
+        progress,
+        finished,
+        synced,
+        updatedAt,
+        progressionId
+      )
+    if (updatedRows == 0) {
+      val progression = Progression(
+        contentId = contentId,
+        percentComplete = percentComplete,
+        progress = progress,
+        finished = finished,
+        updatedAt = updatedAt,
+        synced = synced
+      )
+      insertProgression(progression)
+    }
+  }
+
+  /**
+   * Get progression by content id
+   *
+   * @param contentId content id
+   */
+  @Query(
+    """
+          SELECT * FROM progressions 
+          WHERE content_id = :contentId
+          """
+  )
+  suspend fun getProgression(contentId: String): Progression
+
+  /**
+   * Get progression by content id
+   *
+   */
+  @Query(
+    """
+          SELECT * FROM progressions 
+          WHERE synced = 0
+          """
+  )
+  suspend fun getLocalProgressions(): List<Progression>
+
+  /**
+   * Delete all progressions
+   */
   @Query("DELETE from progressions")
   fun deleteAll()
 }

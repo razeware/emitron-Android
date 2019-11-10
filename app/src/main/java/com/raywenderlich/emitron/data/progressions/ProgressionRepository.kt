@@ -6,6 +6,7 @@ import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import com.raywenderlich.emitron.data.content.ContentDataSourceLocal
 import com.raywenderlich.emitron.model.*
+import com.raywenderlich.emitron.model.entity.Progression
 import com.raywenderlich.emitron.utils.BoundaryCallbackNotifier
 import com.raywenderlich.emitron.utils.LocalPagedResponse
 import com.raywenderlich.emitron.utils.PagedBoundaryCallbackImpl
@@ -13,6 +14,7 @@ import com.raywenderlich.emitron.utils.PagedResponse
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import kotlinx.coroutines.withContext
 import org.threeten.bp.LocalDateTime
+import retrofit2.Response
 import javax.inject.Inject
 
 /**
@@ -70,20 +72,6 @@ class ProgressionRepository @Inject constructor(
   }
 
   /**
-   * Update bookmark id for content id
-   *
-   * @param contentId Content id
-   * @param finished mark content completed
-   */
-  @WorkerThread
-  @Throws(Exception::class)
-  suspend fun updateProgressionInDb(contentId: String, finished: Boolean = false) {
-    return withContext(threadManager.io) {
-      contentDataSourceLocal.updateProgress(contentId, finished)
-    }
-  }
-
-  /**
    * Fetch progressions
    *
    * @param completionStatus Progression completion state [CompletionStatus]
@@ -128,6 +116,7 @@ class ProgressionRepository @Inject constructor(
       networkState = boundaryCallback.networkState()
     )
   }
+
   /**
    * Update content Playback
    */
@@ -141,6 +130,75 @@ class ProgressionRepository @Inject constructor(
     val playbackProgress = PlaybackProgress(playbackToken, progress, seconds)
     return withContext(threadManager.io) {
       api.updatePlaybackProgress(contentId, playbackProgress)
+    }
+  }
+
+  /**
+   * Create/Update a progression
+   *
+   * @param updatedProgressions [Contents]
+   *
+   * @return [Contents]
+   */
+  @WorkerThread
+  @Throws(Exception::class)
+  suspend fun updateProgression(
+    updatedProgressions: Contents
+  ): Contents? {
+    return withContext(threadManager.io) {
+      api.updateProgression(updatedProgressions)
+    }
+  }
+
+
+  /**
+   * Get a progression updated offline
+   */
+  suspend fun getLocalProgressions(): List<Progression> {
+    return withContext(threadManager.db) {
+      progressionDataSource.getLocalProgressions()
+    }
+  }
+
+  /**
+   * Update local progressions
+   */
+  suspend fun updateLocalProgressions(progressions: List<Progression>) {
+    return withContext(threadManager.db) {
+      progressionDataSource.updateLocalProgressions(progressions)
+    }
+  }
+
+  /**
+   * Update content progress
+   *
+   * @param contentId Content id
+   * @param percentComplete Percentage completion
+   * @param progress Content progress
+   * @param finished Has content finished
+   * @param synced Has content synced? False if content was updated offline, else True
+   * @param updatedAt Content updated time
+   * @param progressionId Progression Id
+   */
+  suspend fun updateLocalProgression(
+    contentId: String,
+    percentComplete: Int,
+    progress: Long,
+    finished: Boolean,
+    synced: Boolean = false,
+    updatedAt: LocalDateTime,
+    progressionId: String? = null
+  ) {
+    return withContext(threadManager.io) {
+      progressionDataSource.updateProgress(
+        contentId,
+        percentComplete,
+        progress,
+        finished,
+        synced,
+        updatedAt,
+        progressionId
+      )
     }
   }
 }
