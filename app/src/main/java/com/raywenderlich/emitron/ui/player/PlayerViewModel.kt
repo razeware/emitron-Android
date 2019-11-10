@@ -4,12 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.raywenderlich.emitron.data.progressions.ProgressionRepository
 import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.data.video.VideoRepository
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.utils.Event
 import com.raywenderlich.emitron.utils.Log
+import com.raywenderlich.emitron.utils.Logger
+import com.raywenderlich.emitron.utils.LoggerImpl
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -21,8 +24,10 @@ import javax.inject.Inject
 class PlayerViewModel @Inject constructor(
   private val repository: VideoRepository,
   private val bookmarkActionDelegate: BookmarkActionDelegate,
-  private val settingsRepository: SettingsRepository
-) : ViewModel() {
+  private val settingsRepository: SettingsRepository,
+  private val progressionRepository: ProgressionRepository,
+  private val logger: LoggerImpl
+) : ViewModel(), Logger by logger {
 
   private val _nowPlayingEpisode = MutableLiveData<Data>()
 
@@ -328,7 +333,7 @@ class PlayerViewModel @Inject constructor(
         }
 
         if (!result) {
-          Log.exception(IllegalArgumentException("Failed to update progress"))
+      log(IllegalArgumentException("Failed to update progress"))
         }
       }
     }
