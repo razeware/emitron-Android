@@ -138,16 +138,6 @@ class ContentDataSourceLocal @Inject constructor(
     contentDao.getProgressions(completed, ContentType.getAllowedContentTypes())
 
   /**
-   * Update content progress
-   *
-   * @param contentId Content id
-   * @param finished Content finished
-   */
-  suspend fun updateProgress(contentId: String, finished: Boolean) {
-    progressionDao.updateProgress(contentId, finished)
-  }
-
-  /**
    * Delete all tables
    */
   suspend fun deleteAll() {

@@ -501,15 +501,6 @@ class ContentDataSourceLocalTest {
   }
 
   @Test
-  fun updateProgress() {
-    testCoroutineRule.runBlockingTest {
-      contentDataSourceLocal.updateProgress("1", true)
-      verify(progressionDao).updateProgress("1", true)
-      verifyNoMoreInteractions(progressionDao)
-    }
-  }
-
-  @Test
   fun deleteAll() {
     testCoroutineRule.runBlockingTest {
       contentDataSourceLocal.deleteAll()

@@ -30,6 +30,9 @@ class ProgressionRepositoryTest {
 
   private val contentDataSourceLocal: ContentDataSourceLocal = mock()
 
+  private val progressionDataSourceLocal: ProgressionDataSourceLocal = mock()
+
+
   @get:Rule
   val instantTaskExecutorRule: InstantTaskExecutorRule = InstantTaskExecutorRule()
 
@@ -39,7 +42,12 @@ class ProgressionRepositoryTest {
   @Before
   fun setUp() {
     whenever(threadManager.io).doReturn(Dispatchers.Unconfined)
-    repository = ProgressionRepository(progressionApi, threadManager, contentDataSourceLocal)
+    repository = ProgressionRepository(
+      progressionApi,
+      threadManager,
+      contentDataSourceLocal,
+      progressionDataSourceLocal
+    )
   }
 
   @Test
@@ -122,6 +130,33 @@ class ProgressionRepositoryTest {
 
       verify(contentDataSourceLocal).updateProgress("1", true)
       verifyNoMoreInteractions(contentDataSourceLocal)
+    }
+  }
+
+  @Test
+  fun postContentPlayback() {
+    testCoroutineRule.runBlockingTest {
+      // Given
+      val expectedContent = Content()
+
+      val expectedResponse = Response.success(
+        expectedContent
+      )
+      // When
+      whenever(progressionApi.updatePlaybackProgress(anyString(), any())).doReturn(expectedResponse)
+
+      // Then
+      val result = repository.updatePlaybackProgress(
+        "RickAndMorty",
+        "1",
+        10,
+        10
+      )
+      Truth.assertThat(result).isEqualTo(expectedResponse)
+      verify(progressionApi).updatePlaybackProgress(
+        "1", PlaybackProgress("RickAndMorty", 10, 10)
+      )
+      verifyNoMoreInteractions(progressionApi)
     }
   }
 }

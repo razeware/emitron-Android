@@ -21,7 +21,8 @@ import javax.inject.Inject
 class ProgressionRepository @Inject constructor(
   private val api: ProgressionApi,
   private val threadManager: ThreadManager,
-  private val contentDataSourceLocal: ContentDataSourceLocal
+  private val contentDataSourceLocal: ContentDataSourceLocal,
+  private val progressionDataSource: ProgressionDataSourceLocal
 ) {
 
   companion object {
@@ -36,7 +37,7 @@ class ProgressionRepository @Inject constructor(
    *
    * @param contentId Content id for progression to be created/updated
    *
-   * @return Pair of response [Content] and True/False if request was succeeded/failed
+   * @return [Contents]
    */
   @WorkerThread
   @Throws(Exception::class)
@@ -126,5 +127,20 @@ class ProgressionRepository @Inject constructor(
       pagedList = livePagedList,
       networkState = boundaryCallback.networkState()
     )
+  }
+  /**
+   * Update content Playback
+   */
+  @Throws(Exception::class)
+  suspend fun updatePlaybackProgress(
+    playbackToken: String,
+    contentId: String,
+    progress: Long,
+    seconds: Long
+  ): Response<Content> {
+    val playbackProgress = PlaybackProgress(playbackToken, progress, seconds)
+    return withContext(threadManager.io) {
+      api.updatePlaybackProgress(contentId, playbackProgress)
+    }
   }
 }
