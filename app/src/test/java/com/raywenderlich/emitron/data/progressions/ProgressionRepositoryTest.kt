@@ -20,7 +20,6 @@ import org.junit.Test
 import org.mockito.ArgumentMatchers.anyString
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.Month
-import org.threeten.bp.format.DateTimeFormatter
 import retrofit2.Response
 
 class ProgressionRepositoryTest {
@@ -58,7 +57,6 @@ class ProgressionRepositoryTest {
   fun updateProgression() {
     testCoroutineRule.runBlockingTest {
       val day = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
-      val updatedAt = day.format(DateTimeFormatter.ISO_DATE_TIME)
 
       val expectedContent = Contents()
       whenever(progressionApi.updateProgression(any())).doReturn(expectedContent)

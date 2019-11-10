@@ -44,7 +44,7 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
     binding.episodePosition = episode?.getEpisodeNumber(position, isPlaybackAllowed)
 
     if (isPlaybackAllowed) {
-      checkEpisodeCompleted(episode?.isFinished() ?: false)
+      checkEpisodeCompleted(episode?.isProgressionFinished() ?: false)
     } else {
       setEpisodeLocked()
     }
@@ -78,6 +78,7 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
   }
 
   private fun markEpisodeInProgress() {
+    binding.buttonCollectionEpisode.icon = null
     binding.buttonCollectionEpisode.isEnabled = true
     binding.buttonCollectionEpisode.setBackgroundColor(
       ContextCompat.getColor(

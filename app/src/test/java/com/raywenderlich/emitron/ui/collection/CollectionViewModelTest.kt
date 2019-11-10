@@ -619,11 +619,12 @@ class CollectionViewModelTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition, day)
+      viewModel.updateContentProgression(true, episodeData, episodePosition, day)
 
       // Then
       verify(progressionActionDelegate).completionActionResult
       verify(progressionActionDelegate).updateContentProgression(
+        true,
         episodeData, episodePosition,
         updatedAt = day
       )
@@ -669,11 +670,12 @@ class CollectionViewModelTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition, updatedAt = day)
+      viewModel.updateContentProgression(true, episodeData, episodePosition, updatedAt = day)
 
       // Then
       verify(progressionActionDelegate).completionActionResult
       verify(progressionActionDelegate).updateContentProgression(
+        true,
         episodeData,
         episodePosition,
         updatedAt = day
@@ -719,11 +721,12 @@ class CollectionViewModelTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition, day)
+      viewModel.updateContentProgression(true, episodeData, episodePosition, day)
 
       // Then
       verify(progressionActionDelegate).completionActionResult
       verify(progressionActionDelegate).updateContentProgression(
+        true,
         episodeData, episodePosition,
         updatedAt = day
       )
@@ -768,11 +771,12 @@ class CollectionViewModelTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition, day)
+      viewModel.updateContentProgression(true, episodeData, episodePosition, day)
 
       // Then
       verify(progressionActionDelegate).completionActionResult
       verify(progressionActionDelegate).updateContentProgression(
+        true,
         episodeData, episodePosition,
         updatedAt = day
       )
