@@ -154,7 +154,7 @@ data class Relationships(
    *
    * @return Updated relationship
    */
-  fun updateProgression(progressionRelations: List<Data>): Relationships {
+  fun updateProgression(contentId: String?, progressionRelations: List<Data>): Relationships {
     val progressions = progressionRelations.filter {
       it.isTypeProgression()
     }
@@ -162,8 +162,18 @@ data class Relationships(
     if (progressions.isEmpty()) {
       return this
     }
-    val progressionData =
-      progressions.firstOrNull { it.id == progression?.getChildId() } ?: return this
+
+    val progressionId = progression?.getChildId()
+
+    val progressionData = if (null != progressionId) {
+      // Find a progression by progression id
+      progressions.firstOrNull { it.id == progressionId }
+    } else {
+      // Find a progression by content id
+      progressions.firstOrNull { it.getContentId() == contentId }
+    }
+
+    progressionData ?: return this
     return this.copy(progression = Content(datum = progressionData))
   }
 
@@ -306,4 +316,12 @@ data class Relationships(
    * @return list of content group ids
    */
   fun getContentGroupIds(): List<String> = groups?.getChildIds() ?: emptyList()
+
+  /**
+   * Toggle progression finished
+   */
+  fun toggleFinished(): Relationships {
+    val progression = progression?.toggleFinished() ?: Content().toggleFinished()
+    return this.copy(progression = progression)
+  }
 }
