@@ -7,14 +7,19 @@ import androidx.lifecycle.viewModelScope
 import com.raywenderlich.emitron.data.progressions.ProgressionRepository
 import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.data.video.VideoRepository
+import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.utils.Event
 import com.raywenderlich.emitron.utils.Log
 import com.raywenderlich.emitron.utils.Logger
 import com.raywenderlich.emitron.utils.LoggerImpl
+import com.raywenderlich.emitron.utils.extensions.isBadRequest
 import kotlinx.coroutines.launch
+import org.threeten.bp.Clock
+import org.threeten.bp.LocalDateTime
 import retrofit2.HttpException
+import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
 
@@ -44,6 +49,8 @@ class PlayerViewModel @Inject constructor(
   private val _serverContentProgress = MutableLiveData<Long>()
 
   private val _resetPlaybackToken = MutableLiveData<Boolean>()
+
+  private val _enqueueOfflineProgressUpdate = MutableLiveData<String>()
 
   /**
    * Observer for current episode
@@ -90,6 +97,12 @@ class PlayerViewModel @Inject constructor(
    */
   val playlist: LiveData<Playlist>
     get() = _playlist
+
+  /**
+   * Observer for offline progress update
+   */
+  val enqueueOfflineProgressUpdate: LiveData<String>
+    get() = _enqueueOfflineProgressUpdate
 
   /**
    * Start playback
@@ -300,43 +313,95 @@ class PlayerViewModel @Inject constructor(
   /**
    * Update content progress to server
    */
-  fun updateProgress(duration: Long) {
-    val progress = duration - lastUpdatedProgress
-    val playbackToken = _playerToken.value ?: ""
+  fun updateProgress(
+    isConnected: Boolean,
+    progressInMillis: Long,
+    updatedAt: LocalDateTime = LocalDateTime.now(Clock.systemUTC())
+  ) {
     val contentId = _nowPlayingEpisode.value?.id ?: return
+    if (progressInMillis == 0L) {
+      return
+    }
 
-    if (duration - lastUpdatedProgress > 5000) {
-      lastUpdatedProgress = duration
-
-      viewModelScope.launch {
-
-        val result = try {
-          val response = repository.updateContentPlayback(
-            playbackToken,
-            contentId,
-            duration,
-            progress
-          )
-          val serverProgress = response.body()?.getProgress() ?: 0
-          if (serverProgress > lastUpdatedProgress) {
-            _serverContentProgress.value = serverProgress
-          }
-          if (!response.isSuccessful) {
-            _resetPlaybackToken.value = response.code() == 400
-          }
-          response.isSuccessful
-        } catch (exception: IOException) {
-          false
-        } catch (exception: HttpException) {
-          _resetPlaybackToken.value = exception.code() == 400
-          false
-        }
-
-        if (!result) {
-      log(IllegalArgumentException("Failed to update progress"))
-        }
+    viewModelScope.launch {
+      if (isConnected) {
+        updateOnlineProgress(contentId, progressInMillis)
+      } else {
+        updateOfflineProgress(contentId, progressInMillis, updatedAt)
       }
     }
+  }
+
+  private fun getPlaybackProgress(progressInSecs: Long): Long? {
+    val progress = progressInSecs - lastUpdatedProgress
+    return if (progress >= PROGRESS_UPDATE_DURATION_INTERVAL) {
+      lastUpdatedProgress = progressInSecs
+      progress // converting millis to secs
+    } else {
+      null
+    }
+  }
+
+  private suspend fun updateOnlineProgress(contentId: String, progressInMillis: Long) {
+    val playbackToken = _playerToken.value ?: ""
+
+    val progressInSecs = progressInMillis / MILLIS_IN_A_SEC
+    val progress = getPlaybackProgress(progressInSecs) ?: return
+
+    val result = try {
+      val response = progressionRepository.updatePlaybackProgress(
+        playbackToken,
+        contentId,
+        progressInSecs,
+        progress
+      )
+      verifyRemoteProgressDiff(response)
+    } catch (exception: IOException) {
+      false
+    } catch (exception: HttpException) {
+      _resetPlaybackToken.value = exception.isBadRequest()
+      false
+    }
+
+    if (!result) {
+      log(IllegalArgumentException("Failed to update progress"))
+    }
+  }
+
+  private fun verifyRemoteProgressDiff(response: Response<Content>): Boolean {
+    val serverProgress = response.body()?.getProgress() ?: 0
+    if (serverProgress > lastUpdatedProgress) {
+      _serverContentProgress.value = serverProgress
+    }
+    if (!response.isSuccessful) {
+      _resetPlaybackToken.value = response.isBadRequest()
+    }
+    return response.isSuccessful
+  }
+
+  private suspend fun updateOfflineProgress(
+    contentId: String,
+    progressInMillis: Long,
+    updatedAt: LocalDateTime
+  ) {
+    val progressInSeconds = progressInMillis / MILLIS_IN_A_SEC
+    val playbackDuration = _nowPlayingEpisode.value?.getDuration() ?: return
+
+    val percentageCompletion = getPercentageCompletion(progressInSeconds, playbackDuration)
+    val finished = percentageCompletion in COMPLETION_PERCENTAGE
+    progressionRepository.updateLocalProgression(
+      contentId,
+      percentageCompletion,
+      progressInSeconds,
+      finished,
+      false,
+      updatedAt
+    )
+    _enqueueOfflineProgressUpdate.value = contentId
+  }
+
+  private fun getPercentageCompletion(progress: Long, duration: Long): Int {
+    return ((progress.toDouble() / duration.toDouble()) * 100).toInt()
   }
 
   /**
@@ -375,6 +440,12 @@ class PlayerViewModel @Inject constructor(
   fun hasMoreEpisodes(): Boolean {
     val episodes = _playlist.value?.episodes
     return !episodes.isNullOrEmpty() && episodes.size - 1 > nowPlayingPosition
+  }
+
+  companion object {
+    private const val PROGRESS_UPDATE_DURATION_INTERVAL: Long = 5
+    private const val MILLIS_IN_A_SEC: Long = 1000L
+    private val COMPLETION_PERCENTAGE: Array<Int> = arrayOf(99, 100)
   }
 }
 

@@ -42,7 +42,7 @@ import com.raywenderlich.emitron.utils.extensions.toVisibility
 import java.util.*
 
 /**
- * Manages players and an internal media queue for the ExoPlayer/Cast demo app.
+ * Manages media player instance.
  */
 class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecycle) :
   Player.EventListener, SessionAvailabilityListener, LifecycleObserver {
@@ -374,6 +374,10 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     val player = currentPlayer ?: return 0L
     val playbackState = player.playbackState
     if (playbackState == Player.STATE_READY && player.playWhenReady) {
+      return player.currentPosition
+    }
+
+    if (playbackState == Player.STATE_ENDED) {
       return player.currentPosition
     }
 
