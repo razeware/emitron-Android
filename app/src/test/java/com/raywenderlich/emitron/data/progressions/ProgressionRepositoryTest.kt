@@ -5,8 +5,7 @@ import com.google.common.truth.Truth
 import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.content.ContentDataSourceLocal
 import com.raywenderlich.emitron.model.Contents
-import com.raywenderlich.emitron.model.ProgressionUpdate
-import com.raywenderlich.emitron.model.ProgressionsUpdate
+import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.utils.TestCoroutineRule
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import kotlinx.coroutines.Dispatchers
@@ -56,8 +55,8 @@ class ProgressionRepositoryTest {
         day
       )
       verify(progressionApi).updateProgression(
-        ProgressionsUpdate(
-          listOf(ProgressionUpdate(1, finished = true, updatedAt = updatedAt))
+        Contents(
+          listOf(Data.newProgression("1", finished = true, updatedAt = day))
         )
       )
       Truth.assertThat(result).isEqualTo(expectedContent)
@@ -78,8 +77,8 @@ class ProgressionRepositoryTest {
         repository.updateProgression("1", true, day)
 
       verify(progressionApi).updateProgression(
-        ProgressionsUpdate(
-          listOf(ProgressionUpdate(1, finished = true, updatedAt = updatedAt))
+        Contents(
+          listOf(Data.newProgression("1", finished = true, updatedAt = day))
         )
       )
       Truth.assertThat(result).isNull()

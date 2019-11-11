@@ -336,11 +336,12 @@ class CollectionViewModel @Inject constructor(
    * @return Download state for collection
    */
   fun updateCollectionDownloadState(
-    downloads: List<com.raywenderlich.emitron.model.entity.Download>
+    downloads: List<com.raywenderlich.emitron.model.entity.Download>,
+    downloadIds: List<String>
   ): com.raywenderlich.emitron.model.Download? {
     val collection = _collection.value
     val download = downloadActionDelegate
-      .getCollectionDownloadState(collection, downloads)
+      .getCollectionDownloadState(collection, downloads, downloadIds)
     _collection.value = collection?.copy(download = download)
     return download
   }

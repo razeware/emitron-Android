@@ -30,7 +30,11 @@ interface DownloadAction {
    *
    * @return Download state for collection
    */
-  fun getCollectionDownloadState(collection: Data?, downloads: List<Download>):
+  fun getCollectionDownloadState(
+    collection: Data?,
+    downloads: List<Download>,
+    downloadIds: List<String>
+  ):
       com.raywenderlich.emitron.model.Download?
 
   /**
@@ -58,7 +62,11 @@ class DownloadActionDelegate @Inject constructor(
     return downloadRepository.getDownloadsById(downloadIds)
   }
 
-  override fun getCollectionDownloadState(collection: Data?, downloads: List<Download>):
+  override fun getCollectionDownloadState(
+    collection: Data?,
+    downloads: List<Download>,
+    downloadIds: List<String>
+  ):
       com.raywenderlich.emitron.model.Download? {
 
     val collectionId = collection?.id
@@ -70,38 +78,38 @@ class DownloadActionDelegate @Inject constructor(
         downloads.first { it.downloadId == collectionId }.toDownloadState()
       download
     } else {
-      getVideoCourseDownloadState(downloads)
+      getVideoCourseDownloadState(downloads, downloadIds)
     }
   }
 
   private fun getVideoCourseDownloadState(
-    downloads:
-    List<Download>
+    downloads: List<Download>,
+    downloadIds: List<String>
   ): com.raywenderlich.emitron.model.Download? {
-    return if (downloads.isNotEmpty()) {
-      val downloadProgress: Pair<Int, Int> = when {
-        downloads.any { it.inProgress() } -> {
-          downloads.map {
-            it.progress
-          }.reduce { acc, i ->
-            i + acc
-          } to DownloadState.IN_PROGRESS.ordinal
-        }
-        downloads.all { it.isCompleted() } -> {
-          100 to DownloadState.COMPLETED.ordinal
-        }
-        else -> {
-          0 to DownloadState.IN_PROGRESS.ordinal
-        }
-      }
-
-      com.raywenderlich.emitron.model.Download(
-        progress = downloadProgress.first,
-        state = downloadProgress.second
-      )
-    } else {
-      null
+    if (downloads.isEmpty()) {
+      return null
     }
+
+    val downloadProgress: Pair<Int, Int> = when {
+      downloads.any { it.inProgress() } -> {
+        downloads.map {
+          it.progress
+        }.reduce { acc, i ->
+          i + acc
+        } to DownloadState.IN_PROGRESS.ordinal
+      }
+      downloadIds.size == downloads.size && downloads.all { it.isCompleted() } -> {
+        100 to DownloadState.COMPLETED.ordinal
+      }
+      else -> {
+        0 to DownloadState.PAUSED.ordinal
+      }
+    }
+
+    return com.raywenderlich.emitron.model.Download(
+      progress = downloadProgress.first,
+      state = downloadProgress.second
+    )
   }
 
   override suspend fun updateDownloadProgress(

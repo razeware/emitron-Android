@@ -325,11 +325,12 @@ class CollectionFragment : DaggerFragment() {
   }
 
   private fun initDownloadObserver() {
-    viewModel.getDownloads(viewModel.getContentIds())
+    val downloadIds = viewModel.getContentIds()
+    viewModel.getDownloads(downloadIds)
       .observe(viewLifecycleOwner) { downloads ->
         downloads?.let {
           if (it.isNotEmpty()) {
-            val collectionDownload = viewModel.updateCollectionDownloadState(downloads)
+            val collectionDownload = viewModel.updateCollectionDownloadState(downloads, downloadIds)
             binding.buttonCollectionDownload.updateDownloadState(collectionDownload)
             episodeAdapter.updateEpisodeDownloadProgress(downloads)
           }
