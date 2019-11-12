@@ -103,10 +103,15 @@ data class ContentDetail(
       groupsAndEpisodes
     }
 
-    val contentProgressions = listOf(progressions.first().toData())
+    val relationships =
+      if (progressions.isNotEmpty()) {
+        groupsAndDomains.plus(progressions.first().toData())
+      } else {
+        groupsAndDomains
+      }
 
     return com.raywenderlich.emitron.model.Content(
-      datum = content.toData().addRelationships(domains.plus(groups).plus(contentProgressions)),
+      datum = content.toData().addRelationships(relationships),
       included = included
     )
   }
