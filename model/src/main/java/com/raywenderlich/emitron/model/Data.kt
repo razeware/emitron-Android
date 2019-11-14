@@ -3,6 +3,7 @@ package com.raywenderlich.emitron.model
 import android.os.Parcelable
 import com.raywenderlich.emitron.model.entity.Category
 import com.raywenderlich.emitron.model.entity.Domain
+import com.raywenderlich.emitron.model.entity.Progression
 import com.raywenderlich.emitron.model.utils.TimeUtils
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
@@ -129,7 +130,7 @@ data class Data(
   /**
    *  @return true if user has watched the content, else false
    */
-  fun isFinished(): Boolean = attributes?.finished ?: false || isProgressionFinished()
+  fun isFinished(): Boolean = attributes?.finished ?: false
 
   /**
    *  @return [TimeUtils.Day] after parsing release date of content
@@ -207,7 +208,7 @@ data class Data(
 
     val updatedRelationships = relationships
       ?.updateDomains(updatedRelations)
-      ?.updateProgression(updatedRelations)
+      ?.updateProgression(id, updatedRelations)
       ?.updateBookmark(updatedRelations) ?: Relationships()
 
     return this.copy(relationships = updatedRelationships)
@@ -323,6 +324,18 @@ data class Data(
   /**
    * Mark episode finished/ or in-progress
    */
+  fun toggleProgressionFinished(): Data {
+    val relationships = if (null != relationships) {
+      this.relationships.toggleFinished()
+    } else {
+      Relationships().toggleFinished()
+    }
+    return this.copy(relationships = relationships)
+  }
+
+  /**
+   * Mark episode finished/ or in-progress
+   */
   fun toggleFinished(): Data =
     this.copy(attributes = this.attributes?.copy(finished = !this.isFinished()))
 
@@ -336,7 +349,7 @@ data class Data(
    * else String of position
    */
   fun getEpisodeNumber(position: Int, playbackAllowed: Boolean): String =
-    if (!playbackAllowed || isFinished()) "" else position.toString()
+    if (!playbackAllowed || isProgressionFinished()) "" else position.toString()
 
   /**
    *  @return content id for relationships
@@ -415,6 +428,32 @@ data class Data(
   fun updateDownloadProgress(download: Download?): Data {
     return this.copy(download = download)
   }
+
+  /**
+   * Create [Progression] from [Data]
+   *
+   * @param contentId Content id for progression
+   */
+  fun toProgression(contentId: String): Progression = Progression(
+    contentId = contentId,
+    progressionId = id,
+    percentComplete = getPercentComplete(),
+    finished = isFinished(),
+    synced = true
+  )
+
+
+  /**
+   * Create [Progression] from response [Data]
+   */
+  fun toProgression(): Progression = Progression(
+    contentId = getContentId(),
+    progressionId = id,
+    progress = getProgress(),
+    percentComplete = getPercentComplete(),
+    finished = isFinished(),
+    synced = true
+  )
 
   companion object {
 

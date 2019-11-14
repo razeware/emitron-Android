@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.work.WorkManager
 import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentBookmarksBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
@@ -18,6 +19,7 @@ import com.raywenderlich.emitron.ui.common.SwipeActionCallback
 import com.raywenderlich.emitron.ui.content.ContentAdapter
 import com.raywenderlich.emitron.ui.content.ContentPagedFragment
 import com.raywenderlich.emitron.ui.mytutorial.MyTutorialFragmentDirections
+import com.raywenderlich.emitron.ui.player.workers.UpdateOfflineProgressWorker
 import com.raywenderlich.emitron.utils.NetworkState
 import com.raywenderlich.emitron.utils.extensions.*
 import dagger.android.support.DaggerFragment
@@ -144,7 +146,7 @@ class ProgressionFragment : DaggerFragment() {
     }
 
   private fun updateContentProgression(data: Data?) {
-    viewModel.updateContentProgression(data)
+    viewModel.updateContentProgression(isNetConnected(), data)
   }
 
   private fun initObservers() {
@@ -174,6 +176,12 @@ class ProgressionFragment : DaggerFragment() {
         null -> {
           // Houston, We Have a Problem!
         }
+      }
+    }
+
+    viewModel.enqueueOfflineProgressUpdate.observe(viewLifecycleOwner) {
+      it?.let {
+        UpdateOfflineProgressWorker.enqueue(WorkManager.getInstance(requireContext()))
       }
     }
   }

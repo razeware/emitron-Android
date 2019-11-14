@@ -1,6 +1,8 @@
 package com.raywenderlich.emitron.data.progressions
 
+import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.Contents
+import com.raywenderlich.emitron.model.PlaybackProgress
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -50,6 +52,18 @@ interface ProgressionApi {
     ),
     @Query("filter[completion_status]") completionStatus: String
   ): Call<Contents>
+
+  /**
+   * Get playback token for user
+   *
+   * @return [Content]
+   */
+  @POST("contents/{id}/playback")
+  @Throws(Exception::class)
+  suspend fun updatePlaybackProgress(
+    @Path("id") id: String,
+    @Body data: PlaybackProgress
+  ): Response<Content>
 
   companion object {
 

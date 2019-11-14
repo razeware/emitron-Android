@@ -3,6 +3,8 @@ package com.raywenderlich.emitron.model.entity
 import com.raywenderlich.emitron.model.DownloadState
 import com.raywenderlich.emitron.model.utils.isEqualTo
 import org.junit.Test
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.Month
 
 class DownloadTest {
 
@@ -42,6 +44,17 @@ class DownloadTest {
     val download = createDownload(DownloadState.PAUSED.ordinal)
 
     download.isPaused() isEqualTo true
+  }
+
+  @Test
+  fun with() {
+    // Given day is today
+    val today = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
+    Download.with("1", today) isEqualTo Download(
+      downloadId = "1",
+      state = DownloadState.CREATED.ordinal,
+      createdAt = "2019-08-11T02:00:00"
+    )
   }
 }
 

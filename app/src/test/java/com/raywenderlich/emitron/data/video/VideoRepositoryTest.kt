@@ -3,9 +3,7 @@ package com.raywenderlich.emitron.data.video
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
 import com.nhaarman.mockitokotlin2.*
-import com.raywenderlich.emitron.data.content.ContentDataSourceLocal
 import com.raywenderlich.emitron.model.Content
-import com.raywenderlich.emitron.model.PlaybackProgress
 import com.raywenderlich.emitron.utils.CurrentThreadExecutor
 import com.raywenderlich.emitron.utils.TestCoroutineRule
 import com.raywenderlich.emitron.utils.async.ThreadManager
@@ -14,7 +12,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyString
-import retrofit2.Response
 
 class VideoRepositoryTest {
 
@@ -23,8 +20,6 @@ class VideoRepositoryTest {
   private val videoApi: VideoApi = mock()
 
   private val threadManager: ThreadManager = mock()
-
-  private val contentDataSourceLocal: ContentDataSourceLocal = mock()
 
   @get:Rule
   val instantTaskExecutorRule: InstantTaskExecutorRule = InstantTaskExecutorRule()
@@ -103,33 +98,6 @@ class VideoRepositoryTest {
 
       // Then
       verify(videoApi).getPlaybackToken()
-      verifyNoMoreInteractions(videoApi)
-    }
-  }
-
-  @Test
-  fun postContentPlayback() {
-    testCoroutineRule.runBlockingTest {
-      // Given
-      val expectedContent = Content()
-
-      val expectedResponse = Response.success(
-        expectedContent
-      )
-      // When
-      whenever(videoApi.updateContentPlayback(anyString(), any())).doReturn(expectedResponse)
-
-      // Then
-      val result = repository.updateContentPlayback(
-        "RickAndMorty",
-        "1",
-        10,
-        10
-      )
-      Truth.assertThat(result).isEqualTo(expectedResponse)
-      verify(videoApi).updateContentPlayback(
-        "1", PlaybackProgress("RickAndMorty", 10, 10)
-      )
       verifyNoMoreInteractions(videoApi)
     }
   }

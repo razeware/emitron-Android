@@ -4,6 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import com.raywenderlich.emitron.model.Attributes
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.Data
+import com.raywenderlich.emitron.model.Relationships
 import com.raywenderlich.emitron.model.utils.isEqualTo
 import org.junit.Test
 
@@ -11,7 +12,8 @@ class ProgressionTest {
 
   @Test
   fun init() {
-    val progression = Progression(progressionId = "1", percentComplete = 99, finished = true)
+    val progression =
+      Progression(contentId = "1", progressionId = "1", percentComplete = 99, finished = true)
 
     // Assertions
     progression.progressionId isEqualTo "1"
@@ -21,7 +23,8 @@ class ProgressionTest {
 
   @Test
   fun toData() {
-    val progression = Progression(progressionId = "1", percentComplete = 99, finished = true)
+    val progression =
+      Progression(contentId = "1", progressionId = "1", percentComplete = 99, finished = true)
 
     assertThat(progression.toData()).isEqualTo(
       Data(
@@ -29,7 +32,14 @@ class ProgressionTest {
         type = "progressions",
         attributes = Attributes(
           percentComplete = 99.0,
-          finished = true
+          finished = true,
+          progress = 0,
+          contentId = "1"
+        ),
+        relationships = Relationships(
+          content = Content(
+            datum = Data(id = "1")
+          )
         )
       )
     )
@@ -38,20 +48,39 @@ class ProgressionTest {
   @Test
   fun listFrom() {
     val dataList = listOf(
-      Content(
-        datum = Data(
-          id = "1",
-          type = "progressions",
-          attributes = Attributes(
-            percentComplete = 99.0,
-            finished = true
+      Data(
+        id = "1",
+        relationships = Relationships(
+          progression = Content(
+            datum = Data(
+              id = "1",
+              type = "progressions",
+              attributes = Attributes(
+                percentComplete = 99.0,
+                finished = true,
+                contentId = "1"
+              ),
+              relationships = Relationships(
+                content = Content(
+                  datum = Data(id = "1")
+                )
+              )
+            )
           )
         )
       )
     )
 
     assertThat(Progression.listFrom(dataList)).isEqualTo(
-      listOf(Progression(progressionId = "1", percentComplete = 99, finished = true))
+      listOf(
+        Progression(
+          progressionId = "1",
+          contentId = "1",
+          percentComplete = 99,
+          finished = true,
+          synced = true
+        )
+      )
     )
   }
 
@@ -64,6 +93,11 @@ class ProgressionTest {
         attributes = Attributes(
           percentComplete = 99.0,
           finished = true
+        ),
+        relationships = Relationships(
+          content = Content(
+            datum = Data(id = "1")
+          )
         )
       ),
       Data(
@@ -76,6 +110,11 @@ class ProgressionTest {
         attributes = Attributes(
           percentComplete = 11.0,
           finished = false
+        ),
+        relationships = Relationships(
+          content = Content(
+            datum = Data(id = "2")
+          )
         )
       )
     )
@@ -84,8 +123,20 @@ class ProgressionTest {
 
     result isEqualTo
         listOf(
-          Progression(progressionId = "1", percentComplete = 99, finished = true),
-          Progression(progressionId = "3", percentComplete = 11, finished = false)
+          Progression(
+            contentId = "1",
+            progressionId = "1",
+            percentComplete = 99,
+            finished = true,
+            synced = true
+          ),
+          Progression(
+            contentId = "2",
+            progressionId = "3",
+            percentComplete = 11,
+            finished = false,
+            synced = true
+          )
         )
   }
 }

@@ -16,6 +16,7 @@ import com.raywenderlich.emitron.ui.download.DownloadActionDelegate
 import com.raywenderlich.emitron.ui.download.PermissionActionDelegate
 import com.raywenderlich.emitron.ui.download.PermissionsAction
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
+import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionAction
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
 import com.raywenderlich.emitron.ui.onboarding.OnboardingAction
 import com.raywenderlich.emitron.ui.onboarding.OnboardingActionDelegate
@@ -41,7 +42,8 @@ class CollectionViewModel @Inject constructor(
   private val onboardingActionDelegate: OnboardingActionDelegate,
   private val permissionActionDelegate: PermissionActionDelegate
 ) : ViewModel(), UiStateViewModel, OnboardingAction by onboardingActionDelegate,
-  DownloadAction by downloadActionDelegate, PermissionsAction by permissionActionDelegate {
+  DownloadAction by downloadActionDelegate, PermissionsAction by permissionActionDelegate,
+  ProgressionAction by progressionActionDelegate {
 
   private val _networkState = MutableLiveData<NetworkState>()
 
@@ -92,14 +94,6 @@ class CollectionViewModel @Inject constructor(
    */
   val bookmarkActionResult: LiveData<Event<BookmarkActionDelegate.BookmarkActionResult>> =
     bookmarkActionDelegate.bookmarkActionResult
-
-  /**
-   * LiveData for progression action
-   *
-   */
-  val completionActionResult:
-      LiveData<Pair<Event<ProgressionActionDelegate.EpisodeProgressionActionResult>, Int>> =
-    progressionActionDelegate.completionActionResult
 
   private val _downloads = MutableLiveData<List<Download>>()
 
@@ -239,11 +233,14 @@ class CollectionViewModel @Inject constructor(
    * @param position position of episode in a list
    */
   fun updateContentProgression(
-    episode: Data?, position: Int = 0,
+    hasConnection: Boolean,
+    episode: Data?,
+    position: Int = 0,
     updatedAt: LocalDateTime = LocalDateTime.now(Clock.systemUTC())
   ) {
     viewModelScope.launch {
       progressionActionDelegate.updateContentProgression(
+        hasConnection,
         episode,
         position,
         updatedAt = updatedAt

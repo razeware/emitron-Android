@@ -27,6 +27,8 @@ class DownloadRepositoryTest {
 
   private val contentDataSourceLocal: ContentDataSourceLocal = mock()
 
+  private val downloadDataSourceLocal: DownloadDataSourceLocal = mock()
+
   private lateinit var repository: DownloadRepository
 
   @get:Rule
@@ -42,7 +44,8 @@ class DownloadRepositoryTest {
     repository = DownloadRepository(
       downloadApi,
       threadManager,
-      contentDataSourceLocal
+      contentDataSourceLocal,
+      downloadDataSourceLocal
     )
   }
 
@@ -82,7 +85,7 @@ class DownloadRepositoryTest {
         com.raywenderlich.emitron.data.createDownloadWithContent()
       )
       whenever(
-        contentDataSourceLocal.getQueuedDownloads(
+        downloadDataSourceLocal.getQueuedDownloads(
           1,
           states = arrayOf(1, 5),
           contentTypes = ContentType.getAllowedDownloadTypes()
@@ -96,7 +99,7 @@ class DownloadRepositoryTest {
         contentTypes = ContentType.getAllowedDownloadTypes()
       )
       result isEqualTo expected
-      verify(contentDataSourceLocal).getQueuedDownloads(
+      verify(downloadDataSourceLocal).getQueuedDownloads(
         1,
         arrayOf(1, 5),
         arrayOf("screencast", "episode")
@@ -109,13 +112,13 @@ class DownloadRepositoryTest {
   fun getInProgressDownloads() {
     testCoroutineRule.runBlockingTest {
       val expected = com.raywenderlich.emitron.data.createDownloadWithContent()
-      whenever(contentDataSourceLocal.getDownload("1")).doReturn(
+      whenever(downloadDataSourceLocal.getDownload("1")).doReturn(
         expected
       )
       val result = repository.getDownload("1")
 
       result isEqualTo expected
-      verify(contentDataSourceLocal).getDownload("1")
+      verify(downloadDataSourceLocal).getDownload("1")
       verifyNoMoreInteractions(contentDataSourceLocal)
     }
   }
@@ -125,7 +128,7 @@ class DownloadRepositoryTest {
     testCoroutineRule.runBlockingTest {
       val today = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
       repository.addDownload("1", DownloadState.IN_PROGRESS, today)
-      verify(contentDataSourceLocal).insertDownload("1", DownloadState.IN_PROGRESS, today)
+      verify(downloadDataSourceLocal).insertDownload("1", DownloadState.IN_PROGRESS, today)
       verifyNoMoreInteractions(contentDataSourceLocal)
     }
   }
@@ -134,7 +137,7 @@ class DownloadRepositoryTest {
   fun removeDownload() {
     testCoroutineRule.runBlockingTest {
       repository.removeDownload(listOf("1"))
-      verify(contentDataSourceLocal).deleteDownload(listOf("1"))
+      verify(downloadDataSourceLocal).deleteDownload(listOf("1"))
       verifyNoMoreInteractions(contentDataSourceLocal)
     }
   }
@@ -143,7 +146,7 @@ class DownloadRepositoryTest {
   fun removeAllDownloads() {
     testCoroutineRule.runBlockingTest {
       repository.removeAllDownloads()
-      verify(contentDataSourceLocal).deleteAllDownloads()
+      verify(downloadDataSourceLocal).deleteAllDownloads()
       verifyNoMoreInteractions(contentDataSourceLocal)
     }
   }
@@ -179,7 +182,7 @@ class DownloadRepositoryTest {
   fun updateDownloadUrl() {
     testCoroutineRule.runBlockingTest {
       repository.updateDownloadUrl("1", "download/1")
-      verify(contentDataSourceLocal).updateDownloadUrl("1", "download/1")
+      verify(downloadDataSourceLocal).updateDownloadUrl("1", "download/1")
       verifyNoMoreInteractions(contentDataSourceLocal)
     }
   }
@@ -188,7 +191,7 @@ class DownloadRepositoryTest {
   fun updateDownloadProgress() {
     testCoroutineRule.runBlockingTest {
       repository.updateDownloadProgress("1", 25, DownloadState.IN_PROGRESS)
-      verify(contentDataSourceLocal)
+      verify(downloadDataSourceLocal)
         .updateDownloadProgress("1", 25, DownloadState.IN_PROGRESS)
       verifyNoMoreInteractions(contentDataSourceLocal)
     }
@@ -198,7 +201,7 @@ class DownloadRepositoryTest {
   fun updateDownloadState() {
     testCoroutineRule.runBlockingTest {
       repository.updateDownloadState("1", DownloadState.COMPLETED)
-      verify(contentDataSourceLocal)
+      verify(downloadDataSourceLocal)
         .updateDownloadState("1", DownloadState.COMPLETED)
       verifyNoMoreInteractions(contentDataSourceLocal)
     }
@@ -234,7 +237,7 @@ class DownloadRepositoryTest {
       val downloads = repository.getDownloadsById(listOf("1", "2"))
       val result = downloads.observeForTestingResult()
       result isEqualTo expected
-      verify(contentDataSourceLocal)
+      verify(downloadDataSourceLocal)
         .getDownloadsById(listOf("1", "2"))
       verifyNoMoreInteractions(contentDataSourceLocal)
     }
