@@ -20,7 +20,7 @@ android {
   }
 
   defaultConfig {
-    applicationId "com.raywenderlich.emitron"
+    applicationId "com.razeware.emitron"
     minSdkVersion versions.minSdk
     targetSdkVersion versions.targetSdk
     versionCode versions.versionCode
