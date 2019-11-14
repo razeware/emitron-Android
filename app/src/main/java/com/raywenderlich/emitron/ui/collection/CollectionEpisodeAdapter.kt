@@ -109,10 +109,10 @@ class CollectionEpisodeAdapter(
       }
       onEpisodeSelected(contentEpisode.data, nextContentEpisode.data)
     }, { selectedPosition ->
-      val contentEpisode = items[selectedPosition]
-      items[selectedPosition] =
-        contentEpisode.copy(data = contentEpisode.data?.toggleFinished())
-      onEpisodeCompleted(contentEpisode.data, selectedPosition)
+      val episode = items[selectedPosition]
+      val updatedEpisode = episode.data?.toggleProgressionFinished()
+      items[selectedPosition] = episode.copy(data = updatedEpisode)
+      onEpisodeCompleted(episode.data, selectedPosition)
       notifyItemChanged(selectedPosition)
     }, { selectedPosition ->
       val contentEpisode = items[selectedPosition]

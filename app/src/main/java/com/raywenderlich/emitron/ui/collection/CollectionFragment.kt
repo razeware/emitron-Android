@@ -29,6 +29,7 @@ import com.raywenderlich.emitron.ui.download.workers.StartDownloadWorker
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
 import com.raywenderlich.emitron.ui.onboarding.OnboardingView
+import com.raywenderlich.emitron.ui.player.workers.UpdateOfflineProgressWorker
 import com.raywenderlich.emitron.utils.UiStateManager
 import com.raywenderlich.emitron.utils.createMainThreadScheduledHandler
 import com.raywenderlich.emitron.utils.extensions.*
@@ -138,7 +139,7 @@ class CollectionFragment : DaggerFragment() {
         }
       },
       onEpisodeCompleted = { episode, position ->
-        viewModel.updateContentProgression(episode, position)
+        viewModel.updateContentProgression(isNetConnected(), episode, position)
       },
       onEpisodeDownload = { episode, _ ->
         startDownload(episode?.id, episode?.isDownloaded() == true)
@@ -321,6 +322,15 @@ class CollectionFragment : DaggerFragment() {
 
     viewModel.uiState.observe(viewLifecycleOwner) {
       handleProgress(UiStateManager.UiState.LOADING == it)
+    }
+
+    /**
+     * Add observer to enqueue sync-back for offline progressions update
+     */
+    viewModel.enqueueOfflineProgressUpdate.observe(viewLifecycleOwner) {
+      it?.let {
+        UpdateOfflineProgressWorker.enqueue(WorkManager.getInstance(requireContext()))
+      }
     }
   }
 

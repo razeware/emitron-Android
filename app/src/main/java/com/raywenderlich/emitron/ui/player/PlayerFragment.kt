@@ -20,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.setupWithNavController
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
+import androidx.work.WorkManager
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.android.exoplayer2.upstream.cache.Cache
 import com.google.android.gms.cast.framework.CastContext
@@ -35,6 +36,7 @@ import com.raywenderlich.emitron.notifications.NotificationChannels
 import com.raywenderlich.emitron.ui.common.getDefaultAppBarConfiguration
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.player.cast.Episode
+import com.raywenderlich.emitron.ui.player.workers.UpdateOfflineProgressWorker
 import com.raywenderlich.emitron.utils.Log
 import com.raywenderlich.emitron.utils.createCountDownTimer
 import com.raywenderlich.emitron.utils.createMainThreadScheduledHandler
@@ -517,6 +519,12 @@ class PlayerFragment : DaggerFragment() {
         playerPlaylistButton.toVisibility(!viewModel.isContentTypeScreencast())
       }
     }
+
+    viewModel.enqueueOfflineProgressUpdate.observe(viewLifecycleOwner) {
+      it?.let {
+        UpdateOfflineProgressWorker.enqueue(WorkManager.getInstance(requireContext()))
+      }
+    }
   }
 
   private fun showPlaybackTokenErrorBottomSheet() {
@@ -686,7 +694,7 @@ class PlayerFragment : DaggerFragment() {
       return
     }
 
-    viewModel.updateProgress(playerManager.getContentPosition())
+    viewModel.updateProgress(isNetConnected(), playerManager.getContentPosition())
   }
 
   /**

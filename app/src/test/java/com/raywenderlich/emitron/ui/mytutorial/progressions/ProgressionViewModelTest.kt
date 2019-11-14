@@ -119,12 +119,12 @@ class ProgressionViewModelTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition, day)
+      viewModel.updateContentProgression(true, episodeData, episodePosition, day)
 
       // Then
       verify(progressionActionDelegate).completionActionResult
       verify(progressionActionDelegate)
-        .updateContentProgression(episodeData, episodePosition, boundaryCallbackNotifier, day)
+        .updateContentProgression(true, episodeData, episodePosition, boundaryCallbackNotifier, day)
       verifyNoMoreInteractions(progressionActionDelegate)
 
       with(viewModel) {
@@ -170,12 +170,12 @@ class ProgressionViewModelTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition, day)
+      viewModel.updateContentProgression(true, episodeData, episodePosition, day)
 
       // Then
       verify(progressionActionDelegate).completionActionResult
       verify(progressionActionDelegate)
-        .updateContentProgression(episodeData, episodePosition, boundaryCallbackNotifier, day)
+        .updateContentProgression(true, episodeData, episodePosition, boundaryCallbackNotifier, day)
       verifyNoMoreInteractions(progressionActionDelegate)
       with(viewModel) {
         completionActionResult.value?.first?.peekContent() isEqualTo
@@ -220,12 +220,12 @@ class ProgressionViewModelTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition, day)
+      viewModel.updateContentProgression(true, episodeData, episodePosition, day)
 
       // Then
       verify(progressionActionDelegate).completionActionResult
       verify(progressionActionDelegate)
-        .updateContentProgression(episodeData, episodePosition, boundaryCallbackNotifier, day)
+        .updateContentProgression(true, episodeData, episodePosition, boundaryCallbackNotifier, day)
       verifyNoMoreInteractions(progressionActionDelegate)
       with(viewModel) {
         completionActionResult.value?.first?.peekContent() isEqualTo
@@ -271,12 +271,12 @@ class ProgressionViewModelTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition, day)
+      viewModel.updateContentProgression(true, episodeData, episodePosition, day)
 
       // Then
       verify(progressionActionDelegate).completionActionResult
       verify(progressionActionDelegate)
-        .updateContentProgression(episodeData, episodePosition, boundaryCallbackNotifier, day)
+        .updateContentProgression(true, episodeData, episodePosition, boundaryCallbackNotifier, day)
       verifyNoMoreInteractions(progressionActionDelegate)
       with(viewModel) {
         completionActionResult.value?.first?.peekContent() isEqualTo

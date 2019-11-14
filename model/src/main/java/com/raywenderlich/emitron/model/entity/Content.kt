@@ -1,7 +1,9 @@
 package com.raywenderlich.emitron.model.entity
 
-import androidx.room.*
-import androidx.room.ForeignKey.CASCADE
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
 import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.model.DataType
 import com.raywenderlich.emitron.model.Download
@@ -12,16 +14,7 @@ import com.raywenderlich.emitron.model.Download
  */
 @Entity(
   tableName = Content.TABLE_NAME,
-  indices = [Index("content_id", unique = true), Index("progression_id")],
-  foreignKeys = [
-    ForeignKey(
-      entity = Progression::class,
-      parentColumns = ["progression_id"],
-      childColumns = ["progression_id"],
-      onUpdate = CASCADE,
-      onDelete = CASCADE
-    )
-  ]
+  indices = [Index("content_id", unique = true)]
 )
 data class Content(
 
@@ -107,13 +100,7 @@ data class Content(
    * Bookmark Id
    */
   @ColumnInfo(name = "bookmark_id")
-  val bookmarkId: String?,
-
-  /**
-   * Progression Id
-   */
-  @ColumnInfo(name = "progression_id")
-  val progressionId: String?,
+  val bookmarkId: String? = null,
 
   /**
    * Updated at
@@ -187,7 +174,6 @@ data class Content(
         cardArtworkUrl = it.getCardArtworkUrl(),
         videoId = it.getVideoId(),
         bookmarkId = it.getBookmarkId(),
-        progressionId = it.getProgressionId(),
         updatedAt = ""
       )
     }
@@ -211,7 +197,6 @@ data class Content(
       cardArtworkUrl = data.getCardArtworkUrl(),
       videoId = data.getVideoId(),
       bookmarkId = data.getBookmarkId(),
-      progressionId = data.getProgressionId(),
       updatedAt = ""
     )
 

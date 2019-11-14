@@ -26,13 +26,15 @@ class TimeUtilsTest {
     result2 isEqualTo TimeUtils.Day.Yesterday
 
     // When
-    val result3 = TimeUtils.toReadableDate("2019-08-08T02:00:00.000Z", withYear = false, today = today)
+    val result3 =
+      TimeUtils.toReadableDate("2019-08-08T02:00:00.000Z", withYear = false, today = today)
 
     // Day should be formatted
     result3 isEqualTo TimeUtils.Day.Formatted("Aug 8")
 
     // When
-    val result4 = TimeUtils.toReadableDate("2019-08-08T02:00:00.000Z", withYear = true, today = today)
+    val result4 =
+      TimeUtils.toReadableDate("2019-08-08T02:00:00.000Z", withYear = true, today = today)
 
     // Day should be formatted without year if it's current year
     result4 isEqualTo TimeUtils.Day.Formatted("Aug 8")
@@ -40,7 +42,8 @@ class TimeUtilsTest {
     today.minusYears(1)
 
     // When
-    val result5 = TimeUtils.toReadableDate("2018-08-08T02:00:00.000Z", withYear = true, today = today)
+    val result5 =
+      TimeUtils.toReadableDate("2018-08-08T02:00:00.000Z", withYear = true, today = today)
     result5 isEqualTo TimeUtils.Day.Formatted("Aug 8 2018")
   }
 

@@ -3,7 +3,6 @@ package com.raywenderlich.emitron.model.entity
 import androidx.room.Embedded
 import androidx.room.Relation
 import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.model.DownloadState
 
 /**
  * Relation model for joining content, domain and progression
@@ -30,8 +29,8 @@ data class ContentWithDomainAndProgression(
    * Progression
    */
   @Relation(
-    parentColumn = "progression_id",
-    entityColumn = "progression_id",
+    parentColumn = "content_id",
+    entityColumn = "content_id",
     entity = Progression::class
   )
   val progressions: List<Progression> = emptyList(),
@@ -77,26 +76,6 @@ data class ContentWithDomainAndProgression(
     }
 
     return data.addRelationships(relationships)
-  }
-
-  fun getDownloadState() = if (downloads.isNotEmpty()) {
-    when {
-      downloads.any { it.inProgress() } -> {
-        downloads.map {
-          it.progress
-        }.reduce { acc, i ->
-          i + acc
-        } to DownloadState.IN_PROGRESS.ordinal
-      }
-      downloads.all { it.isCompleted() } -> {
-        100 to DownloadState.COMPLETED.ordinal
-      }
-      else -> {
-        0 to DownloadState.IN_PROGRESS.ordinal
-      }
-    }
-  } else {
-    0 to DownloadState.NONE.ordinal
   }
 
   fun toGroupData(): Data = content.toGroupData()

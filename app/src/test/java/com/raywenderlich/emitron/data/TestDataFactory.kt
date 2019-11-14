@@ -14,7 +14,8 @@ fun createContent(type: String = "screencast"): com.raywenderlich.emitron.model.
       withRelationship(
         withRelatedBookmark(),
         withRelatedDomains(),
-        groups = withGroups(withGroupContents())
+        groups = withGroups(withGroupContents()),
+        progressions = withRelatedProgression()
       ),
       contentType = type
     ),
@@ -50,7 +51,6 @@ fun createContentDetail(contentType: String = "screencast"): ContentDetail = Con
     cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
     videoId = "1",
     bookmarkId = "1",
-    progressionId = "1",
     updatedAt = "2019-08-08T00:00:00.000Z"
   ),
   domains = listOf(
@@ -59,7 +59,7 @@ fun createContentDetail(contentType: String = "screencast"): ContentDetail = Con
     )
   ),
   progressions = listOf(
-    Progression(progressionId = "1", percentComplete = 99, finished = true)
+    Progression(contentId = "1", progressionId = "1", percentComplete = 99, finished = true)
   ),
   groups = listOf(
     createGroupEpisodeJoinWithEpisode()
@@ -97,18 +97,19 @@ fun buildContentData(
     contentType = contentType,
     difficulty = "beginner",
     duration = 408,
-    popularity = 0.0,
+    popularity = null,
     releasedAt = "2019-08-08T00:00:00.000Z",
     videoId = null,
-    target = 0,
-    progress = 0,
-    finished = false,
-    percentComplete = 0.0,
+    target = null,
+    progress = null,
+    finished = null,
+    percentComplete = null,
     updatedAt = null,
     technology = "Swift, iOS",
     contributors = "Luke",
     kind = null,
-    professional = false
+    professional = null,
+    free = false
   ),
   relationships = relationships,
   download = download
@@ -124,7 +125,14 @@ fun withProgression(): Data = Data(
   type = "progressions",
   attributes = Attributes(
     percentComplete = 99.0,
-    finished = true
+    finished = true,
+    progress = 0,
+    contentId = "1"
+  ),
+  relationships = Relationships(
+    content = com.raywenderlich.emitron.model.Content(
+      datum = Data(id = "1")
+    )
   )
 )
 
@@ -218,7 +226,6 @@ fun createContentWithDomainAndProgression(): ContentWithDomainAndProgression =
       cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
       videoId = "1",
       bookmarkId = "1",
-      progressionId = "1",
       updatedAt = "2019-08-08T00:00:00.000Z"
     ),
     domains = listOf(
@@ -229,7 +236,7 @@ fun createContentWithDomainAndProgression(): ContentWithDomainAndProgression =
       )
     ),
     progressions = listOf(
-      Progression(progressionId = "1", percentComplete = 99, finished = true)
+      Progression(contentId = "1", progressionId = "1", percentComplete = 99, finished = true)
     ),
     downloads = listOf(
       Download(
@@ -288,7 +295,8 @@ fun createContentData(
     videoId = videoId.toString(),
     videoPlaybackToken = playbackToken,
     url = videoUrl,
-    progress = progress
+    progress = progress,
+    duration = 10
   ),
   relationships = Relationships(
     groups = groups,

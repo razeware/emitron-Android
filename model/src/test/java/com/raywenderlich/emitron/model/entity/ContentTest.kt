@@ -27,7 +27,6 @@ class ContentTest {
       cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
       videoId = "1",
       bookmarkId = "1",
-      progressionId = "1",
       updatedAt = "2019-08-08T00:00:00.000Z"
     )
 
@@ -46,7 +45,6 @@ class ContentTest {
     content.streamUrl isEqualTo "https://koenig-media.raywenderlich.com/"
     content.cardArtworkUrl isEqualTo "https://koenig-media.raywenderlich.com/"
     content.bookmarkId isEqualTo "1"
-    content.progressionId isEqualTo "1"
     content.updatedAt isEqualTo "2019-08-08T00:00:00.000Z"
   }
 
@@ -68,7 +66,6 @@ class ContentTest {
       cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
       videoId = "1",
       bookmarkId = "1",
-      progressionId = "1",
       updatedAt = "2019-08-08T00:00:00.000Z"
     )
 
@@ -88,13 +85,13 @@ class ContentTest {
         difficulty = "beginner",
         duration = 408,
         free = false,
-        popularity = 0.0,
+        popularity = null,
         releasedAt = "2019-08-08T00:00:00.000Z",
         uri = null,
-        target = 0,
-        progress = 0,
-        finished = false,
-        percentComplete = 0.0,
+        target = null,
+        progress = null,
+        finished = null,
+        percentComplete = null,
         updatedAt = null,
         technology = "Swift, iOS",
         contributors = "Luke",
@@ -141,7 +138,7 @@ class ContentTest {
           contentType = "screencast",
           difficulty = "beginner",
           duration = 408,
-          free = false,
+          professional = true,
           popularity = 0.0,
           releasedAt = "2019-08-08T00:00:00.000Z",
           uri = "",
@@ -208,7 +205,6 @@ class ContentTest {
           cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
           videoId = null,
           bookmarkId = "1",
-          progressionId = "1",
           updatedAt = ""
         )
 
@@ -231,7 +227,7 @@ class ContentTest {
         contentType = "screencast",
         difficulty = "beginner",
         duration = 408,
-        free = false,
+        professional = true,
         popularity = 0.0,
         releasedAt = "2019-08-08T00:00:00.000Z",
         uri = "",
@@ -295,7 +291,6 @@ class ContentTest {
       cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
       videoId = null,
       bookmarkId = "1",
-      progressionId = "1",
       updatedAt = ""
     )
   }
