@@ -255,7 +255,7 @@ fun createDownloadWithContent(
   )
 )
 
-fun createDownload(state: Int = DownloadState.COMPLETED.ordinal): Download =
+internal fun createDownload(state: Int = DownloadState.COMPLETED.ordinal): Download =
   Download(
     "1",
     "download/1",

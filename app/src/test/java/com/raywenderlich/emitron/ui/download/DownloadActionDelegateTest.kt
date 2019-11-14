@@ -69,7 +69,8 @@ class DownloadActionDelegateTest {
       contentData,
       listOf(
         createDownload()
-      )
+      ),
+      downloadIds = listOf("1")
     )
 
     // Then
@@ -98,13 +99,44 @@ class DownloadActionDelegateTest {
     // When
     val result = viewModel.getCollectionDownloadState(
       contentData,
-      listOf(createDownload())
+      listOf(createDownload()),
+      downloadIds = listOf("1")
     )
 
     // Then
     result isEqualTo Download(
       progress = 100,
       state = 3,
+      failureReason = 0,
+      url = null
+    )
+    verifyNoMoreInteractions(downloadRepository)
+  }
+
+  @Test
+  fun getCollectionDownloadState_Collection_PartialDownloaded() {
+    // Given
+    val contentData =
+      buildContentData(
+        withRelationship(
+          withRelatedBookmark(),
+          withRelatedDomains(),
+          groups = withGroups(withGroupContents())
+        ),
+        contentType = "collection"
+      )
+
+    // When
+    val result = viewModel.getCollectionDownloadState(
+      contentData,
+      listOf(createDownload()),
+      downloadIds = listOf("1", "2")
+    )
+
+    // Then
+    result isEqualTo Download(
+      progress = 0,
+      state = 5,
       failureReason = 0,
       url = null
     )

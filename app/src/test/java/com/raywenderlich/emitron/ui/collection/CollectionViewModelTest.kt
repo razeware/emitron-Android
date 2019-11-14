@@ -873,11 +873,12 @@ class CollectionViewModelTest {
       whenever(contentRepository.getContent("1")).doReturn(contentData)
       viewModel.loadCollection(Data(id = "1"))
 
-      val expected = listOf(com.raywenderlich.emitron.data.createDownload())
-      viewModel.updateCollectionDownloadState(expected)
+      val expected = listOf(createDownload())
+      viewModel.updateCollectionDownloadState(expected, listOf("1"))
       verify(downloadActionDelegate).getCollectionDownloadState(
         contentData.datum,
-        expected
+        expected,
+        downloadIds = listOf("1")
       )
     }
   }
