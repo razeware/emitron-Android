@@ -9,6 +9,8 @@ import com.raywenderlich.emitron.ui.content.ContentPagedViewModel
 import com.raywenderlich.emitron.utils.*
 import org.junit.Rule
 import org.junit.Test
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.Month
 
 class ProgressionViewModelTest {
 
@@ -97,6 +99,8 @@ class ProgressionViewModelTest {
     createViewModel()
     testCoroutineRule.runBlockingTest {
 
+      // Given
+      val day = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
       val episodeData = Data(
         id = "8", type = "contents",
         attributes = Attributes(name = "eight"),
@@ -115,12 +119,12 @@ class ProgressionViewModelTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition)
+      viewModel.updateContentProgression(true, episodeData, episodePosition, day)
 
       // Then
       verify(progressionActionDelegate).completionActionResult
       verify(progressionActionDelegate)
-        .updateContentProgression(episodeData, episodePosition, boundaryCallbackNotifier)
+        .updateContentProgression(true, episodeData, episodePosition, boundaryCallbackNotifier, day)
       verifyNoMoreInteractions(progressionActionDelegate)
 
       with(viewModel) {
@@ -147,6 +151,7 @@ class ProgressionViewModelTest {
     testCoroutineRule.runBlockingTest {
 
       // Given
+      val day = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
       val episodeData = Data(
         id = "8", type = "contents",
         attributes = Attributes(name = "eight"),
@@ -165,12 +170,12 @@ class ProgressionViewModelTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition)
+      viewModel.updateContentProgression(true, episodeData, episodePosition, day)
 
       // Then
       verify(progressionActionDelegate).completionActionResult
       verify(progressionActionDelegate)
-        .updateContentProgression(episodeData, episodePosition, boundaryCallbackNotifier)
+        .updateContentProgression(true, episodeData, episodePosition, boundaryCallbackNotifier, day)
       verifyNoMoreInteractions(progressionActionDelegate)
       with(viewModel) {
         completionActionResult.value?.first?.peekContent() isEqualTo
@@ -196,6 +201,7 @@ class ProgressionViewModelTest {
     testCoroutineRule.runBlockingTest {
 
       // Given
+      val day = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
       val episodeData = Data(
         id = "8", type = "contents",
         attributes = Attributes(name = "eight"),
@@ -214,12 +220,12 @@ class ProgressionViewModelTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition)
+      viewModel.updateContentProgression(true, episodeData, episodePosition, day)
 
       // Then
       verify(progressionActionDelegate).completionActionResult
       verify(progressionActionDelegate)
-        .updateContentProgression(episodeData, episodePosition, boundaryCallbackNotifier)
+        .updateContentProgression(true, episodeData, episodePosition, boundaryCallbackNotifier, day)
       verifyNoMoreInteractions(progressionActionDelegate)
       with(viewModel) {
         completionActionResult.value?.first?.peekContent() isEqualTo
@@ -245,6 +251,8 @@ class ProgressionViewModelTest {
     testCoroutineRule.runBlockingTest {
 
       // Given
+      val day = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
+
       val episodeData = Data(
         id = "8", type = "contents",
         attributes = Attributes(name = "eight"),
@@ -263,12 +271,12 @@ class ProgressionViewModelTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition)
+      viewModel.updateContentProgression(true, episodeData, episodePosition, day)
 
       // Then
       verify(progressionActionDelegate).completionActionResult
       verify(progressionActionDelegate)
-        .updateContentProgression(episodeData, episodePosition, boundaryCallbackNotifier)
+        .updateContentProgression(true, episodeData, episodePosition, boundaryCallbackNotifier, day)
       verifyNoMoreInteractions(progressionActionDelegate)
       with(viewModel) {
         completionActionResult.value?.first?.peekContent() isEqualTo

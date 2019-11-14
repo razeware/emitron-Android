@@ -23,11 +23,11 @@ class CollectionEpisodeAdapter(
   private var bindHeaderCount = -1
 
   /**
-   * Property to check If the collection requires a subscription
+   * Property to check If the collection playback is allowed,
+   * If playback is not allowed a lock icon will be shown and collection won't be playable.
    *
-   * This will help you in disabling clicks on episodes, changing the episode UI accordingly.
    */
-  var isProCourse: Boolean = false
+  private var isContentPlaybackAllowed: Boolean = false
 
   /**
    * [RecyclerView.Adapter.getItemViewType]
@@ -100,7 +100,7 @@ class CollectionEpisodeAdapter(
       cachedEpisodePosition
     }
 
-    viewHolder.bindTo(data, episodePosition, isProCourse, { selectedPosition ->
+    viewHolder.bindTo(data, episodePosition, isContentPlaybackAllowed, { selectedPosition ->
       val contentEpisode = items[selectedPosition]
       val nextContentEpisode = if (selectedPosition < items.size - 1) {
         items[selectedPosition + 1]
@@ -109,10 +109,10 @@ class CollectionEpisodeAdapter(
       }
       onEpisodeSelected(contentEpisode.data, nextContentEpisode.data)
     }, { selectedPosition ->
-      val contentEpisode = items[selectedPosition]
-      items[selectedPosition] =
-        contentEpisode.copy(data = contentEpisode.data?.toggleFinished())
-      onEpisodeCompleted(contentEpisode.data, selectedPosition)
+      val episode = items[selectedPosition]
+      val updatedEpisode = episode.data?.toggleProgressionFinished()
+      items[selectedPosition] = episode.copy(data = updatedEpisode)
+      onEpisodeCompleted(episode.data, selectedPosition)
       notifyItemChanged(selectedPosition)
     }, { selectedPosition ->
       val contentEpisode = items[selectedPosition]
@@ -156,6 +156,38 @@ class CollectionEpisodeAdapter(
         items[position] = contentEpisode.copy(data = updateEpisodeData)
         notifyItemChanged(position)
       }
+    }
+  }
+
+  /**
+   * Remove episode download
+   *
+   * @param downloads Download ids to be removed
+   */
+  fun removeEpisodeDownload(
+    downloads: List<String>
+  ) {
+    downloads.forEach { downloadId ->
+      val position = items.indexOfFirst { it.data?.id == downloadId }
+      if (position != -1) {
+        val contentEpisode = items[position]
+        val updateEpisodeData = contentEpisode.data?.removeDownload()
+        items[position] = contentEpisode.copy(data = updateEpisodeData)
+        notifyItemChanged(position)
+      }
+    }
+  }
+
+  /**
+   * Update playback allowed for adapter content
+   */
+  fun updateContentPlaybackAllowed(
+    contentPlaybackAllowed: Boolean,
+    refresh: Boolean = false
+  ) {
+    this.isContentPlaybackAllowed = contentPlaybackAllowed
+    if (refresh) {
+      notifyDataSetChanged()
     }
   }
 }

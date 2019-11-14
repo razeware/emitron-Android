@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.createContent
 import com.raywenderlich.emitron.data.createContentData
+import com.raywenderlich.emitron.data.progressions.ProgressionRepository
 import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.data.video.VideoRepository
 import com.raywenderlich.emitron.model.Content
@@ -16,8 +17,9 @@ import okhttp3.ResponseBody
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyString
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.Month
 import retrofit2.Response
-import java.io.IOException
 
 class PlayerViewModelTest {
 
@@ -25,7 +27,11 @@ class PlayerViewModelTest {
 
   private val videoRepository: VideoRepository = mock()
 
+  private val progressionRepository: ProgressionRepository = mock()
+
   private val bookmarkActionDelegate: BookmarkActionDelegate = mock()
+
+  private val loggerImpl: LoggerImpl = mock()
 
   private lateinit var viewModel: PlayerViewModel
 
@@ -37,7 +43,13 @@ class PlayerViewModelTest {
 
   private fun createViewModel() {
     viewModel =
-      PlayerViewModel(videoRepository, bookmarkActionDelegate, settingsRepository)
+      PlayerViewModel(
+        videoRepository,
+        bookmarkActionDelegate,
+        settingsRepository,
+        progressionRepository,
+        loggerImpl
+      )
   }
 
   private fun createPlaylist(data: Data = createContentData(), currentEpisode: Data? = null) =
@@ -583,36 +595,37 @@ class PlayerViewModelTest {
 
     testCoroutineRule.runBlockingTest {
       // Given
+      val today = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
       whenever(videoRepository.getVideoStream("1"))
         .doReturn(createContent(createContentData(videoUrl = "TheSongOfLife")))
       whenever(videoRepository.getVideoPlaybackToken()).doReturn(
         createContent(createContentData(playbackToken = "WubbaLubbaDubDub"))
       )
       whenever(
-        videoRepository.updateContentPlayback(
+        progressionRepository.updatePlaybackProgress(
           "WubbaLubbaDubDub",
           "1",
-          5002,
-          5002
+          5L,
+          5L
         )
       ).doReturn(Response.success(createContent()))
       viewModel.startPlayback(createPlaylist(createContentData(type = "screencast")))
 
       // When
-      viewModel.updateProgress(5002)
+      viewModel.updateProgress(true, 5002, today)
 
 
       verify(videoRepository).getVideoStream("1")
       verify(videoRepository).getVideoPlaybackToken()
-      verify(videoRepository).updateContentPlayback(
+      verify(progressionRepository).updatePlaybackProgress(
         "WubbaLubbaDubDub",
         "1",
-        5002,
-        5002
+        5L,
+        5L
       )
       verifyNoMoreInteractions(videoRepository)
 
-      viewModel.updateProgress(5000)
+      viewModel.updateProgress(true, 5000, today)
       verifyNoMoreInteractions(videoRepository)
     }
   }
@@ -623,6 +636,7 @@ class PlayerViewModelTest {
 
     testCoroutineRule.runBlockingTest {
       // Given
+      val today = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
       whenever(videoRepository.getVideoStream("1"))
         .doReturn(createContent(createContentData(videoUrl = "TheSongOfLife")))
       whenever(videoRepository.getVideoPlaybackToken()).doReturn(
@@ -631,26 +645,26 @@ class PlayerViewModelTest {
       val responseBody: ResponseBody = mock()
       val response = Response.error<Content>(400, responseBody)
       whenever(
-        videoRepository.updateContentPlayback(
+        progressionRepository.updatePlaybackProgress(
           "WubbaLubbaDubDub",
           "1",
-          5002,
-          5002
+          5L,
+          5L
         )
       ).doReturn(response)
       viewModel.startPlayback(createPlaylist(createContentData(type = "screencast")))
 
       // When
-      viewModel.updateProgress(5002)
+      viewModel.updateProgress(true, 5002, today)
       val resetPlaybackToken = viewModel.resetPlaybackToken.observeForTestingResult()
 
       verify(videoRepository).getVideoStream("1")
       verify(videoRepository).getVideoPlaybackToken()
-      verify(videoRepository).updateContentPlayback(
+      verify(progressionRepository).updatePlaybackProgress(
         "WubbaLubbaDubDub",
         "1",
-        5002,
-        5002
+        5L,
+        5L
       )
       verifyNoMoreInteractions(videoRepository)
       resetPlaybackToken isEqualTo true
@@ -663,53 +677,46 @@ class PlayerViewModelTest {
 
     testCoroutineRule.runBlockingTest {
       // Given
-      whenever(videoRepository.getVideoStream("1"))
-        .doReturn(createContent(createContentData(videoUrl = "TheSongOfLife")))
-      whenever(videoRepository.getVideoPlaybackToken()).doReturn(
-        createContent(createContentData(playbackToken = "WubbaLubbaDubDub"))
-      )
-      whenever(
-        videoRepository.updateContentPlayback(
-          "WubbaLubbaDubDub",
-          "1",
-          5002,
-          5002
+      val today = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
+      viewModel.startPlayback(
+        createPlaylist(
+          createContentData(
+            type = "screencast",
+            download = Download(
+              progress = 100,
+              state = 3,
+              failureReason = 0,
+              url = "download/1"
+            )
+          ),
+          currentEpisode = createContentData(
+            type = "screencast",
+            download = Download(
+              progress = 100,
+              state = 3,
+              failureReason = 0,
+              url = "download/1"
+            )
+          )
         )
-      ).doReturn(Response.success(createContent()))
-      whenever(
-        videoRepository.updateContentPlayback(
-          "WubbaLubbaDubDub",
-          "1",
-          11005,
-          6003
-        )
-      ).doReturn(Response.success(createContent(createContentData(progress = 15005))))
-      viewModel.startPlayback(createPlaylist(createContentData(type = "screencast")))
-
-      viewModel.updateProgress(5002)
-
-
-      viewModel.updateProgress(11005)
-      val serverContentProgress =
-        viewModel.serverContentProgress.observeForTestingResult()
-
-      verify(videoRepository).getVideoStream("1")
-      verify(videoRepository).getVideoPlaybackToken()
-      verify(videoRepository).updateContentPlayback(
-        "WubbaLubbaDubDub",
-        "1",
-        5002,
-        5002
       )
-      verify(videoRepository).updateContentPlayback(
-        "WubbaLubbaDubDub",
-        "1",
-        11005,
-        6003L
-      )
-      verifyNoMoreInteractions(videoRepository)
 
-      serverContentProgress isEqualTo 15005
+      viewModel.updateProgress(false, 5002, today)
+
+      val enqueueOfflineProgressUpdate =
+        viewModel.enqueueOfflineProgressUpdate.observeForTestingResult()
+
+      verify(progressionRepository).updateLocalProgression(
+        contentId = "1",
+        percentComplete = 50,
+        progress = 5L,
+        finished = false,
+        synced = false,
+        updatedAt = today
+      )
+      verifyNoMoreInteractions(progressionRepository)
+
+      enqueueOfflineProgressUpdate isEqualTo "1"
     }
   }
 
@@ -750,7 +757,7 @@ class PlayerViewModelTest {
     testCoroutineRule.runBlockingTest {
       // When
 
-      whenever(videoRepository.getVideoPlaybackToken()).doThrow(IOException())
+      whenever(videoRepository.getVideoPlaybackToken()).doReturn(null)
       viewModel.resumePlayback()
       val resetPlaybackToken = viewModel.resetPlaybackToken.observeForTestingResult()
       val playbackToken = viewModel.playerToken.observeForTestingResultNullable()
@@ -759,7 +766,7 @@ class PlayerViewModelTest {
       verify(videoRepository).getVideoPlaybackToken()
       verifyNoMoreInteractions(videoRepository)
 
-      resetPlaybackToken isEqualTo true
+      resetPlaybackToken isEqualTo false
       playbackToken isEqualTo null
     }
   }

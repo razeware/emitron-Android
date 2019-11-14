@@ -21,13 +21,20 @@ enum class PermissionTag(val param: String) {
     /**
      * Map of all [PermissionTag]
      */
-    internal val map: Map<String, PermissionTag> = values().associateBy(PermissionTag::name)
+    internal val map: Map<String, PermissionTag> = values().associateBy(PermissionTag::param)
 
     /**
      * @param type String value of [PermissionTag]
      *
      * @return [PermissionTag]
      */
-    fun fromValue(type: String?): PermissionTag? = type?.let { map[it.capitalize()] }
+    fun fromParam(param: String?): PermissionTag? = param?.let { map[it] }
   }
 }
+
+/**
+ * Is download permission tag?
+ *
+ * @return true if this tag is [PermissionTag.Download], else false
+ */
+fun PermissionTag?.isDownloadPermissionTag(): Boolean = this == PermissionTag.Download

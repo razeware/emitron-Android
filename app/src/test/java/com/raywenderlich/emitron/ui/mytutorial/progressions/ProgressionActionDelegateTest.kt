@@ -2,17 +2,15 @@ package com.raywenderlich.emitron.ui.mytutorial.progressions
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.*
-import com.raywenderlich.emitron.data.createContent
 import com.raywenderlich.emitron.data.createContentData
 import com.raywenderlich.emitron.data.progressions.ProgressionRepository
-import com.raywenderlich.emitron.model.Attributes
-import com.raywenderlich.emitron.model.Content
-import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.model.Relationships
+import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.utils.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.Month
 import java.io.IOException
 
 class ProgressionActionDelegateTest {
@@ -35,14 +33,18 @@ class ProgressionActionDelegateTest {
   @Test
   fun updateContentProgression_markCompletedSuccess() {
     testCoroutineRule.runBlockingTest {
+      val day = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
 
       // Given
-      val response = createContent(
-        data = createContentData(
-          id = "10"
+      val response = Contents(
+        datum = listOf(
+          createContentData(
+            id = "10"
+          )
         )
       )
-      whenever(progressionRepository.updateProgression("8")).doReturn(response to true)
+      whenever(progressionRepository.updateProgression("8", true, day))
+        .doReturn(response)
 
       val episodeData = Data(
         id = "8", type = "contents",
@@ -64,11 +66,25 @@ class ProgressionActionDelegateTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition, boundaryCallbackNotifier)
+      viewModel.updateContentProgression(
+        true,
+        episodeData,
+        episodePosition,
+        boundaryCallbackNotifier,
+        updatedAt = day
+      )
 
       // Then
-      verify(progressionRepository).updateProgression("8")
-      verify(progressionRepository).updateProgressionInDb("8", true)
+      verify(progressionRepository).updateProgression("8", true, day)
+      verify(progressionRepository).updateLocalProgression(
+        contentId = "8",
+        percentComplete = 0,
+        progress = 0,
+        finished = true,
+        synced = true,
+        updatedAt = day,
+        progressionId = "10"
+      )
       verifyNoMoreInteractions(progressionRepository)
 
       boundaryCallbackNotifier.hasRequests() isEqualTo false
@@ -83,13 +99,11 @@ class ProgressionActionDelegateTest {
   fun updateContentProgression_markCompletedFailure() {
     testCoroutineRule.runBlockingTest {
 
+      val day = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
+
       // Given
-      val response = createContent(
-        data = createContentData(
-          id = "10"
-        )
-      )
-      whenever(progressionRepository.updateProgression("8")).doReturn(response to false)
+      whenever(progressionRepository.updateProgression("8", true, day))
+        .doReturn(null)
 
       val episodeData = Data(
         id = "8", type = "contents",
@@ -109,11 +123,19 @@ class ProgressionActionDelegateTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition)
+      viewModel.updateContentProgression(true, episodeData, episodePosition, updatedAt = day)
 
       // Then
-      verify(progressionRepository).updateProgression("8")
-      verify(progressionRepository).updateProgressionInDb("8", false)
+      verify(progressionRepository).updateProgression("8", true, day)
+      verify(progressionRepository).updateLocalProgression(
+        contentId = "8",
+        percentComplete = 0,
+        progress = 0,
+        finished = false,
+        synced = true,
+        updatedAt = day,
+        progressionId = "10"
+      )
       verifyNoMoreInteractions(progressionRepository)
 
       viewModel.completionActionResult.value?.first?.peekContent() isEqualTo
@@ -126,9 +148,11 @@ class ProgressionActionDelegateTest {
   @Test
   fun toggleEpisodeCompleted_markCompletedApiError() {
     testCoroutineRule.runBlockingTest {
+      val day = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
 
       // Given
-      whenever(progressionRepository.updateProgression("8")).doThrow(IOException())
+      whenever(progressionRepository.updateProgression("8", true, day))
+        .doThrow(IOException())
 
       val episodeData = Data(
         id = "8", type = "contents",
@@ -148,11 +172,19 @@ class ProgressionActionDelegateTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition)
+      viewModel.updateContentProgression(true, episodeData, episodePosition, updatedAt = day)
 
       // Then
-      verify(progressionRepository).updateProgression("8")
-      verify(progressionRepository).updateProgressionInDb("8", false)
+      verify(progressionRepository).updateProgression("8", true, day)
+      verify(progressionRepository).updateLocalProgression(
+        contentId = "8",
+        percentComplete = 0,
+        progress = 0L,
+        finished = false,
+        synced = true,
+        updatedAt = day,
+        progressionId = "10"
+      )
       verifyNoMoreInteractions(progressionRepository)
 
       viewModel.completionActionResult.value?.first?.peekContent() isEqualTo
@@ -165,14 +197,18 @@ class ProgressionActionDelegateTest {
   @Test
   fun toggleEpisodeCompleted_markInProgressSuccess() {
     testCoroutineRule.runBlockingTest {
+      val day = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
 
       // Given
-      val response = createContent(
-        data = createContentData(
-          id = "10"
+      val response = Contents(
+        datum = listOf(
+          createContentData(
+            id = "10"
+          )
         )
       )
-      whenever(progressionRepository.updateProgression("8")).doReturn(response to true)
+      whenever(progressionRepository.updateProgression("8", false, day))
+        .doReturn(response)
 
       val episodeData = Data(
         id = "8", type = "contents",
@@ -192,11 +228,24 @@ class ProgressionActionDelegateTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition)
+      viewModel.updateContentProgression(
+        true,
+        episodeData,
+        episodePosition,
+        updatedAt = day
+      )
 
       // Then
-      verify(progressionRepository).updateProgression("8")
-      verify(progressionRepository).updateProgressionInDb("8", false)
+      verify(progressionRepository).updateProgression("8", false, day)
+      verify(progressionRepository).updateLocalProgression(
+        contentId = "8",
+        percentComplete = 0,
+        progress = 0L,
+        finished = false,
+        synced = true,
+        updatedAt = day,
+        progressionId = "10"
+      )
       verifyNoMoreInteractions(progressionRepository)
 
       viewModel.completionActionResult.value?.first?.peekContent() isEqualTo
@@ -209,14 +258,11 @@ class ProgressionActionDelegateTest {
   @Test
   fun updateContentProgression_markInProgressFailure() {
     testCoroutineRule.runBlockingTest {
+      val day = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
 
       // Given
-      val response = createContent(
-        data = createContentData(
-          id = "10"
-        )
-      )
-      whenever(progressionRepository.updateProgression("8")).doReturn(response to false)
+      whenever(progressionRepository.updateProgression("8", false, day))
+        .doReturn(null)
 
       val episodeData = Data(
         id = "8", type = "contents",
@@ -236,11 +282,19 @@ class ProgressionActionDelegateTest {
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition)
+      viewModel.updateContentProgression(true, episodeData, episodePosition, updatedAt = day)
 
       // Then
-      verify(progressionRepository).updateProgression("8")
-      verify(progressionRepository).updateProgressionInDb("8", true)
+      verify(progressionRepository).updateProgression("8", false, day)
+      verify(progressionRepository).updateLocalProgression(
+        contentId = "8",
+        percentComplete = 0,
+        progress = 0,
+        finished = true,
+        synced = true,
+        updatedAt = day,
+        progressionId = "10"
+      )
       verifyNoMoreInteractions(progressionRepository)
 
       viewModel.completionActionResult.value?.first?.peekContent() isEqualTo
@@ -254,6 +308,10 @@ class ProgressionActionDelegateTest {
   fun updateContentProgression_markInProgressApiError() {
     testCoroutineRule.runBlockingTest {
 
+      // Given
+      val day =
+        LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
+
       val episodeData = Data(
         id = "8", type = "contents",
         attributes = Attributes(name = "eight"),
@@ -267,22 +325,80 @@ class ProgressionActionDelegateTest {
           )
         )
       )
-      whenever(progressionRepository.updateProgression("8")).doThrow(IOException())
+      whenever(progressionRepository.updateProgression("8", false, day))
+        .doThrow(IOException())
 
       val episodePosition = 4
 
       // When
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateContentProgression(episodeData, episodePosition)
+      viewModel.updateContentProgression(true, episodeData, episodePosition, updatedAt = day)
 
       // Then
-      verify(progressionRepository).updateProgression("8")
-      verify(progressionRepository).updateProgressionInDb("8", true)
+      verify(progressionRepository).updateProgression("8", false, day)
+      verify(progressionRepository).updateLocalProgression(
+        contentId = "8",
+        percentComplete = 0,
+        progress = 0,
+        finished = true,
+        synced = true,
+        updatedAt = day,
+        progressionId = "10"
+      )
       verifyNoMoreInteractions(progressionRepository)
       viewModel.completionActionResult.value?.first?.peekContent() isEqualTo
           ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeFailedToMarkInProgress
       viewModel.completionActionResult.value?.second isEqualTo
           episodePosition
+    }
+  }
+
+  @Test
+  fun updateContentProgression_offlineProgress() {
+    testCoroutineRule.runBlockingTest {
+
+      // Given
+      val day =
+        LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
+
+      val episodeData = Data(
+        id = "8", type = "contents",
+        attributes = Attributes(name = "eight"),
+        relationships = Relationships(
+          progression = Content(
+            datum = Data(
+              id = "10",
+              attributes = Attributes(finished = true),
+              type = "progression"
+            )
+          )
+        )
+      )
+      whenever(progressionRepository.updateProgression("8", false, day))
+        .doThrow(IOException())
+
+      val episodePosition = 4
+
+      // When
+      viewModel.completionActionResult.observeForTestingResultNullable()
+      viewModel.enqueueOfflineProgressUpdate.observeForTestingResultNullable()
+      viewModel.updateContentProgression(false, episodeData, episodePosition, updatedAt = day)
+
+      // Then
+      verify(progressionRepository).updateLocalProgression(
+        contentId = "8",
+        percentComplete = 0,
+        progress = 0,
+        finished = false,
+        synced = false,
+        updatedAt = day,
+        progressionId = "10"
+      )
+      verifyNoMoreInteractions(progressionRepository)
+      viewModel.completionActionResult.value?.first?.peekContent() isEqualTo
+          ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeMarkedInProgress
+      viewModel.completionActionResult.value?.second isEqualTo episodePosition
+      viewModel.enqueueOfflineProgressUpdate.value isEqualTo "8"
     }
   }
 }

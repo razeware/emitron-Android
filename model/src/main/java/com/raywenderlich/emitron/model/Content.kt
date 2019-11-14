@@ -1,6 +1,7 @@
 package com.raywenderlich.emitron.model
 
 import android.os.Parcelable
+import com.raywenderlich.emitron.model.entity.Progression
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
@@ -33,7 +34,7 @@ data class Content(
   /**
    *  @return percentage completion for content
    */
-  fun getPercentComplete(): Int? = datum?.getPercentComplete() ?: 0
+  fun getPercentComplete(): Int = datum?.getPercentComplete() ?: 0
 
   /**
    *  @return progress for content
@@ -51,6 +52,13 @@ data class Content(
    * @return String content id
    */
   fun getChildId(): String? = datum?.id
+
+  /**
+   * Get id for content of progression
+   *
+   * @return String child content id
+   */
+  private fun getChildContentId(): String = datum?.getContentId() ?: ""
 
   /**
    * Get video playback token
@@ -147,6 +155,23 @@ data class Content(
    */
   fun getName(): String? = getData()?.getName()
 
+  /**
+   * Create [Progression] from [Content]
+   *
+   */
+  fun toProgression(): Progression = Progression(
+    contentId = getChildContentId(),
+    progressionId = getChildId(),
+    percentComplete = getPercentComplete(),
+    finished = isFinished(),
+    synced = true
+  )
+
+  /**
+   * Toggle content finished
+   */
+  fun toggleFinished(): Content = this.copy(datum = getData()?.toggleFinished())
+
   companion object {
 
     /**
@@ -158,28 +183,6 @@ data class Content(
       return Content(
         datum = Data(
           type = DataType.Bookmarks.toRequestFormat(),
-          relationships = Relationships(
-            content =
-            Content(
-              datum = Data(
-                type = DataType.Contents.toRequestFormat(),
-                id = contentId
-              )
-            )
-          )
-        )
-      )
-    }
-
-    /**
-     * Create content object for creating new progression
-     *
-     * @param contentId id of content for which progression has to be created/updated
-     */
-    fun newProgression(contentId: String): Content {
-      return Content(
-        datum = Data(
-          type = DataType.Progressions.toRequestFormat(),
           relationships = Relationships(
             content =
             Content(

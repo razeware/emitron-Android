@@ -115,6 +115,7 @@
   <dimen name="button_download_stop_radius">1dp</dimen>
   <dimen name="default_item_spacing_vertical">12dp</dimen>
   <dimen name="sort_option_height">36dp</dimen>
+  <dimen name="error_image_height_width">192dp</dimen>
 
   <!-- Collection detail view -->
   <dimen name="margin_body_pro">32dp</dimen>
@@ -134,12 +135,18 @@
   <dimen name="collection_episode_download_button_margin_top">16dp</dimen>
   <dimen name="episode_progress_height_width">32dp</dimen>
   <dimen name="episode_progress_margin_top">20dp</dimen>
+  <dimen name="collection_detail_button_download_height_width">44dp</dimen>
+  <dimen name="collection_detail_button_download_pause_height">8dp</dimen>
 
   <!-- Card divider height -->
   <dimen name="height_card_divider">1dp</dimen>
 
   <!-- Login view -->
-  <dimen name="login_logo_height_width">72dp</dimen>
+  <dimen name="login_logo_height_width">56dp</dimen>
+  <dimen name="login_onboarding_image_height_width">256dp</dimen>
+  <dimen name="login_onboarding_image_margin_top">48dp</dimen>
+  <dimen name="login_onboarding_body_margin_top">16dp</dimen>
+  <dimen name="login_view_pager_indicator_height">4dp</dimen>
 
   <!-- Filter view -->
   <dimen name="filter_progress_height">4dp</dimen>
@@ -166,5 +173,7 @@
   <dimen name="on_boarding_episode_item_margin_top">24dp</dimen>
   <dimen name="onboarding_download_content_margin_end">96dp</dimen>
   <dimen name="onboarding_download_content_margin_start">48dp</dimen>
+
+  <dimen name="error_title_margin_top">20dp</dimen>
 
 </resources>

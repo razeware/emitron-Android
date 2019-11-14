@@ -4,15 +4,22 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
 import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.content.ContentDataSourceLocal
-import com.raywenderlich.emitron.model.*
+import com.raywenderlich.emitron.model.Content
+import com.raywenderlich.emitron.model.Contents
+import com.raywenderlich.emitron.model.Data
+import com.raywenderlich.emitron.model.PlaybackProgress
+import com.raywenderlich.emitron.model.entity.Progression
 import com.raywenderlich.emitron.utils.TestCoroutineRule
 import com.raywenderlich.emitron.utils.async.ThreadManager
+import com.raywenderlich.emitron.utils.isEqualTo
 import kotlinx.coroutines.Dispatchers
 import okhttp3.ResponseBody
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyString
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.Month
 import retrofit2.Response
 
 class ProgressionRepositoryTest {
@@ -25,6 +32,9 @@ class ProgressionRepositoryTest {
 
   private val contentDataSourceLocal: ContentDataSourceLocal = mock()
 
+  private val progressionDataSourceLocal: ProgressionDataSourceLocal = mock()
+
+
   @get:Rule
   val instantTaskExecutorRule: InstantTaskExecutorRule = InstantTaskExecutorRule()
 
@@ -34,24 +44,33 @@ class ProgressionRepositoryTest {
   @Before
   fun setUp() {
     whenever(threadManager.io).doReturn(Dispatchers.Unconfined)
-    repository = ProgressionRepository(progressionApi, threadManager, contentDataSourceLocal)
+    whenever(threadManager.db).doReturn(Dispatchers.Unconfined)
+    repository = ProgressionRepository(
+      progressionApi,
+      threadManager,
+      contentDataSourceLocal,
+      progressionDataSourceLocal
+    )
   }
 
   @Test
   fun updateProgression() {
     testCoroutineRule.runBlockingTest {
-      val expectedContent = Content()
-      val progression = createProgressionStub()
-      whenever(progressionApi.createProgression(any())).doReturn(
-        Response.success(
-          200,
-          expectedContent
+      val day = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
+
+      val expectedContent = Contents()
+      whenever(progressionApi.updateProgression(any())).doReturn(expectedContent)
+      val result = repository.updateProgression(
+        "1",
+        true,
+        day
+      )
+      verify(progressionApi).updateProgression(
+        Contents(
+          listOf(Data.newProgression("1", finished = true, updatedAt = day))
         )
       )
-      val (result, isSuccessful) = repository.updateProgression("1")
-      verify(progressionApi).createProgression(progression)
       Truth.assertThat(result).isEqualTo(expectedContent)
-      Truth.assertThat(isSuccessful).isTrue()
       verifyNoMoreInteractions(progressionApi)
     }
   }
@@ -59,15 +78,19 @@ class ProgressionRepositoryTest {
   @Test
   fun updateProgression_failure() {
     testCoroutineRule.runBlockingTest {
-      val expectedContent = createProgressionStub()
-      val responseBody: ResponseBody = mock()
-      val errorResponse: Response<Content> = Response.error(401, responseBody)
-      whenever(progressionApi.createProgression(any())).doReturn(errorResponse)
 
-      val (_, result) = repository.updateProgression("1")
+      val day = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
+      whenever(progressionApi.updateProgression(any())).doReturn(null)
 
-      verify(progressionApi).createProgression(expectedContent)
-      Truth.assertThat(result).isFalse()
+      val result =
+        repository.updateProgression("1", true, day)
+
+      verify(progressionApi).updateProgression(
+        Contents(
+          listOf(Data.newProgression("1", finished = true, updatedAt = day))
+        )
+      )
+      Truth.assertThat(result).isNull()
       verifyNoMoreInteractions(progressionApi)
     }
   }
@@ -101,27 +124,90 @@ class ProgressionRepositoryTest {
   }
 
   @Test
-  fun updateProgressionInDb() {
+  fun updateLocalProgression() {
     testCoroutineRule.runBlockingTest {
-      repository.updateProgressionInDb("1", true)
+      val today = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
 
-      verify(contentDataSourceLocal).updateProgress("1", true)
+      repository.updateLocalProgression(
+        contentId = "1",
+        percentComplete = 10,
+        progress = 50,
+        finished = false,
+        synced = true,
+        updatedAt = today,
+        progressionId = "1"
+      )
+
+      verify(progressionDataSourceLocal).updateProgress(
+        contentId = "1",
+        percentComplete = 10,
+        progress = 50,
+        finished = false,
+        synced = true,
+        updatedAt = today,
+        progressionId = "1"
+      )
       verifyNoMoreInteractions(contentDataSourceLocal)
     }
   }
 
-  private fun createProgressionStub() = Content(
-    datum = Data(
-      type = DataType.Progressions.toRequestFormat(),
-      relationships = Relationships(
-        content =
-        Content(
-          datum = Data(
-            type = DataType.Contents.toRequestFormat(),
-            id = "1"
-          )
-        )
+  @Test
+  fun updateLocalProgressions() {
+    testCoroutineRule.runBlockingTest {
+
+      val progressions = listOf(
+        Progression(contentId = "1", progressionId = "1", percentComplete = 99, finished = true),
+        Progression(contentId = "2", progressionId = "2", percentComplete = 50, finished = false)
       )
-    )
-  )
+      repository.updateLocalProgressions(progressions)
+
+      verify(progressionDataSourceLocal).updateLocalProgressions(progressions)
+      verifyNoMoreInteractions(contentDataSourceLocal)
+    }
+  }
+
+  @Test
+  fun getLocalProgressions() {
+    testCoroutineRule.runBlockingTest {
+
+      val progressions = listOf(
+        Progression(contentId = "1", progressionId = "1", percentComplete = 99, finished = true),
+        Progression(contentId = "2", progressionId = "2", percentComplete = 50, finished = false)
+      )
+      whenever(progressionDataSourceLocal.getLocalProgressions()).doReturn(
+        progressions
+      )
+      val result = repository.getLocalProgressions()
+      result isEqualTo progressions
+      verify(progressionDataSourceLocal).getLocalProgressions()
+      verifyNoMoreInteractions(contentDataSourceLocal)
+    }
+  }
+
+  @Test
+  fun updatePlaybackProgress() {
+    testCoroutineRule.runBlockingTest {
+      // Given
+      val expectedContent = Content()
+
+      val expectedResponse = Response.success(
+        expectedContent
+      )
+      // When
+      whenever(progressionApi.updatePlaybackProgress(anyString(), any())).doReturn(expectedResponse)
+
+      // Then
+      val result = repository.updatePlaybackProgress(
+        "RickAndMorty",
+        "1",
+        10,
+        10
+      )
+      Truth.assertThat(result).isEqualTo(expectedResponse)
+      verify(progressionApi).updatePlaybackProgress(
+        "1", PlaybackProgress("RickAndMorty", 10, 10)
+      )
+      verifyNoMoreInteractions(progressionApi)
+    }
+  }
 }

@@ -7,18 +7,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.work.WorkManager
 import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentBookmarksBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import com.raywenderlich.emitron.model.CompletionStatus
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.ui.common.ShimmerProgressDelegate
+import com.raywenderlich.emitron.ui.common.StartEndBottomMarginDecoration
+import com.raywenderlich.emitron.ui.common.SwipeActionCallback
 import com.raywenderlich.emitron.ui.content.ContentAdapter
 import com.raywenderlich.emitron.ui.content.ContentPagedFragment
 import com.raywenderlich.emitron.ui.mytutorial.MyTutorialFragmentDirections
+import com.raywenderlich.emitron.ui.player.workers.UpdateOfflineProgressWorker
 import com.raywenderlich.emitron.utils.NetworkState
-import com.raywenderlich.emitron.ui.common.StartEndBottomMarginDecoration
-import com.raywenderlich.emitron.ui.common.SwipeActionCallback
 import com.raywenderlich.emitron.utils.extensions.*
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -78,6 +80,18 @@ class ProgressionFragment : DaggerFragment() {
 
   private lateinit var progressDelegate: ShimmerProgressDelegate
 
+  private val swipeActionCallback by lazy {
+    SwipeActionCallback.build(
+      R.drawable.bg_swipe_progression,
+      getSwipeText(),
+      onSwipe = {
+        updateContentProgression(adapter.getItemFor(it))
+      }
+    )
+  }
+
+  private val itemTouchHelper = ItemTouchHelper(swipeActionCallback)
+
   /**
    * See [androidx.fragment.app.Fragment.onCreateView]
    */
@@ -106,21 +120,17 @@ class ProgressionFragment : DaggerFragment() {
   private fun initUi() {
     pagedFragment.value.initPaging(this, binding.recyclerView)
     binding.recyclerView.addItemDecoration(StartEndBottomMarginDecoration())
-    addSwipeToUpdateProgress()
     progressDelegate = ShimmerProgressDelegate(requireView())
   }
 
   private fun addSwipeToUpdateProgress() {
-    val swipeHandler = SwipeActionCallback.build(
-      R.drawable.bg_swipe_progression,
-      getSwipeText(),
-      onSwipe = {
-        updateContentProgression(adapter.getItemFor(it))
-      }
-    )
-    val itemTouchHelper = ItemTouchHelper(swipeHandler)
     itemTouchHelper.attachToRecyclerView(binding.recyclerView)
   }
+
+  private fun removeSwipeToUpdateProgress() {
+    itemTouchHelper.attachToRecyclerView(null)
+  }
+
 
   private fun getSwipeText(): Int = if (completionStatus == CompletionStatus.Completed) {
     R.string.button_mark_in_progress
@@ -136,7 +146,7 @@ class ProgressionFragment : DaggerFragment() {
     }
 
   private fun updateContentProgression(data: Data?) {
-    viewModel.updateContentProgression(data)
+    viewModel.updateContentProgression(isNetConnected(), data)
   }
 
   private fun initObservers() {
@@ -168,6 +178,12 @@ class ProgressionFragment : DaggerFragment() {
         }
       }
     }
+
+    viewModel.enqueueOfflineProgressUpdate.observe(viewLifecycleOwner) {
+      it?.let {
+        UpdateOfflineProgressWorker.enqueue(WorkManager.getInstance(requireContext()))
+      }
+    }
   }
 
   private fun handleInitialProgress(networkState: NetworkState?) {
@@ -175,9 +191,16 @@ class ProgressionFragment : DaggerFragment() {
       NetworkState.INIT -> {
         progressDelegate.showProgressView()
       }
-      NetworkState.INIT_SUCCESS,
+      NetworkState.INIT_SUCCESS -> {
+        addSwipeToUpdateProgress()
+        progressDelegate.hideProgressView()
+      }
       NetworkState.INIT_EMPTY,
       NetworkState.INIT_FAILED,
+      NetworkState.FAILED -> {
+        removeSwipeToUpdateProgress()
+        progressDelegate.hideProgressView()
+      }
       NetworkState.SUCCESS -> {
         progressDelegate.hideProgressView()
       }

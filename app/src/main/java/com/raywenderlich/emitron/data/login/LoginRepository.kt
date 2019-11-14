@@ -1,6 +1,7 @@
 package com.raywenderlich.emitron.data.login
 
 import com.raywenderlich.emitron.model.Contents
+import com.raywenderlich.emitron.model.PermissionTag
 import com.raywenderlich.emitron.network.AuthInterceptor
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import com.raywenderlich.guardpost.data.SSOUser
@@ -51,6 +52,14 @@ class LoginRepository @Inject constructor(
   }
 
   /**
+   * Remove user permissions
+   *
+   */
+  fun removePermissions() {
+    loginPrefs.removePermissions()
+  }
+
+  /**
    * Delete saved user details
    *
    */
@@ -70,4 +79,23 @@ class LoginRepository @Inject constructor(
       loginApi.getPermissions()
     }
   }
+
+  /**
+   * Check if user has download permission
+   *
+   * @return true if user has [PermissionTag.Download] permission
+   */
+  fun isDownloadAllowed(): Boolean =
+    loginPrefs.getPermissions().contains(PermissionTag.Download.param)
+
+  /**
+   * Check if user has permission to stream professional courses
+   */
+  fun isProfessionalVideoPlaybackAllowed(): Boolean =
+    loginPrefs.getPermissions().contains(PermissionTag.StreamProfessional.param)
+
+  /**
+   * Get stored permissions
+   */
+  fun getPermissionsFromPrefs(): List<String> = loginPrefs.getPermissions()
 }

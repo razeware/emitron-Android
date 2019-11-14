@@ -39,7 +39,7 @@ class ProgressionBoundaryCallback(
     }
     updateNetworkState(NetworkState.INIT)
     updateCallbackType(PagedBoundaryCallback.BoundaryCallbackType.INIT)
-    requestAndSaveBookmarks()
+    requestAndSaveProgressions()
   }
 
   /**
@@ -55,10 +55,10 @@ class ProgressionBoundaryCallback(
     }
     updateNetworkState(NetworkState.RUNNING)
     updateCallbackType(PagedBoundaryCallback.BoundaryCallbackType.APPENDING)
-    requestAndSaveBookmarks()
+    requestAndSaveProgressions()
   }
 
-  private fun requestAndSaveBookmarks() {
+  private fun requestAndSaveProgressions() {
     if (isRunning()) return
 
     threadManager.networkExecutor.execute {

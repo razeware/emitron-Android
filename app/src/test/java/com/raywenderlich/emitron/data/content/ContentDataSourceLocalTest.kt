@@ -10,16 +10,12 @@ import com.raywenderlich.emitron.data.progressions.dao.ProgressionDao
 import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.entity.*
-import com.raywenderlich.emitron.model.entity.Download
 import com.raywenderlich.emitron.utils.TestCoroutineRule
 import com.raywenderlich.emitron.utils.isEqualTo
 import com.raywenderlich.emitron.utils.observeForTestingResultNullable
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.threeten.bp.LocalDateTime
-import org.threeten.bp.Month
-import org.threeten.bp.format.DateTimeFormatter
 
 class ContentDataSourceLocalTest {
 
@@ -205,7 +201,7 @@ class ContentDataSourceLocalTest {
             name = "Introduction to Kotlin Lambdas: Getting Started",
             description = "In this tutorial you will learn how to use lambda.",
             contributors = "Luke",
-            professional = true,
+            professional = false,
             deleted = false,
             contentType = "screencast",
             difficulty = "beginner",
@@ -216,7 +212,6 @@ class ContentDataSourceLocalTest {
             cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
             videoId = null,
             bookmarkId = "1",
-            progressionId = "1",
             updatedAt = ""
           ),
           com.raywenderlich.emitron.model.entity.Content(
@@ -224,7 +219,7 @@ class ContentDataSourceLocalTest {
             name = "Introduction to Kotlin Lambdas: Getting Started",
             description = "In this tutorial you will learn how to use lambda.",
             contributors = "Luke",
-            professional = true,
+            professional = false,
             deleted = false,
             contentType = "screencast",
             difficulty = "beginner",
@@ -235,7 +230,6 @@ class ContentDataSourceLocalTest {
             cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
             videoId = null,
             bookmarkId = "2",
-            progressionId = "2",
             updatedAt = ""
           )
         ),
@@ -312,7 +306,11 @@ class ContentDataSourceLocalTest {
                 type = "progressions",
                 attributes = Attributes(percentComplete = 99.0, finished = true),
                 links = null,
-                relationships = null,
+                relationships = Relationships(
+                  content = Content(
+                    datum = Data(id = "1")
+                  )
+                ),
                 meta = null,
                 included = null
               ), links = null, meta = null, included = null
@@ -378,7 +376,11 @@ class ContentDataSourceLocalTest {
                 type = "progressions",
                 attributes = Attributes(percentComplete = 50.0, finished = false),
                 links = null,
-                relationships = null,
+                relationships = Relationships(
+                  content = Content(
+                    datum = Data(id = "2")
+                  )
+                ),
                 meta = null,
                 included = null
               ), links = null, meta = null, included = null
@@ -398,7 +400,7 @@ class ContentDataSourceLocalTest {
             name = "Introduction to Kotlin Lambdas: Getting Started",
             description = "In this tutorial you will learn how to use lambda.",
             contributors = "Luke",
-            professional = true,
+            professional = false,
             deleted = false,
             contentType = "screencast",
             difficulty = "beginner",
@@ -409,7 +411,6 @@ class ContentDataSourceLocalTest {
             cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
             videoId = null,
             bookmarkId = "1",
-            progressionId = "1",
             updatedAt = ""
           ),
           com.raywenderlich.emitron.model.entity.Content(
@@ -417,7 +418,7 @@ class ContentDataSourceLocalTest {
             name = "Introduction to Kotlin Lambdas: Getting Started",
             description = "In this tutorial you will learn how to use lambda.",
             contributors = "Luke",
-            professional = true,
+            professional = false,
             deleted = false,
             contentType = "screencast",
             difficulty = "beginner",
@@ -428,13 +429,24 @@ class ContentDataSourceLocalTest {
             cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
             videoId = null,
             bookmarkId = "2",
-            progressionId = "2",
             updatedAt = ""
           )
         ),
         listOf(
-          Progression(progressionId = "1", percentComplete = 99, finished = true),
-          Progression(progressionId = "2", percentComplete = 50, finished = false)
+          Progression(
+            contentId = "1",
+            progressionId = "1",
+            percentComplete = 99,
+            finished = true,
+            synced = true
+          ),
+          Progression(
+            contentId = "2",
+            progressionId = "2",
+            percentComplete = 50,
+            finished = false,
+            synced = true
+          )
         ),
         progressionDao,
         listOf(
@@ -464,7 +476,6 @@ class ContentDataSourceLocalTest {
       cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
       videoId = "1",
       bookmarkId = "1",
-      progressionId = "1",
       updatedAt = "2019-08-08T00:00:00.000Z"
     )
     val contents = MutableLiveData<List<com.raywenderlich.emitron.model.entity.Content>>().apply {
@@ -501,15 +512,6 @@ class ContentDataSourceLocalTest {
   }
 
   @Test
-  fun updateProgress() {
-    testCoroutineRule.runBlockingTest {
-      contentDataSourceLocal.updateProgress("1", true)
-      verify(progressionDao).updateProgress("1", true)
-      verifyNoMoreInteractions(progressionDao)
-    }
-  }
-
-  @Test
   fun deleteAll() {
     testCoroutineRule.runBlockingTest {
       contentDataSourceLocal.deleteAll()
@@ -528,115 +530,6 @@ class ContentDataSourceLocalTest {
   }
 
   @Test
-  fun updateDownloadUrl() {
-    testCoroutineRule.runBlockingTest {
-      contentDataSourceLocal.updateDownloadUrl("1", "download/1")
-      verify(downloadDao).updateUrl("1", "download/1", 2)
-      verifyNoMoreInteractions(downloadDao)
-    }
-  }
-
-  @Test
-  fun updateDownloadProgress() {
-    testCoroutineRule.runBlockingTest {
-      contentDataSourceLocal.updateDownloadProgress(
-        "1", 25,
-        DownloadState.COMPLETED
-      )
-      verify(downloadDao).updateProgress("1", 25, 3)
-      verifyNoMoreInteractions(downloadDao)
-    }
-  }
-
-  @Test
-  fun updateDownloadState() {
-    testCoroutineRule.runBlockingTest {
-      contentDataSourceLocal.updateDownloadState(
-        "1",
-        DownloadState.COMPLETED
-      )
-      verify(downloadDao).updateState("1", 3)
-      verifyNoMoreInteractions(downloadDao)
-    }
-  }
-
-  @Test
-  fun insertDownload() {
-    testCoroutineRule.runBlockingTest {
-      val today = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
-      val download = Download(
-        "1",
-        state = 3,
-        createdAt = today.format(DateTimeFormatter.ISO_DATE_TIME)
-      )
-      contentDataSourceLocal.insertDownload("1", DownloadState.COMPLETED, today)
-      verify(downloadDao).insert(download)
-      verifyNoMoreInteractions(downloadDao)
-    }
-  }
-
-  @Test
-  fun deleteDownload() {
-    testCoroutineRule.runBlockingTest {
-      contentDataSourceLocal.deleteDownload(listOf("1"))
-      verify(downloadDao).delete(
-        listOf("1")
-      )
-      verifyNoMoreInteractions(downloadDao)
-    }
-  }
-
-  @Test
-  fun deleteAllDownloads() {
-    testCoroutineRule.runBlockingTest {
-      contentDataSourceLocal.deleteAllDownloads()
-      verify(downloadDao).deleteAll()
-      verifyNoMoreInteractions(downloadDao)
-    }
-  }
-
-  @Test
-  fun getQueuedDownloads_A() {
-    testCoroutineRule.runBlockingTest {
-      contentDataSourceLocal.getQueuedDownloads(
-        1,
-        arrayOf(1, 2),
-        arrayOf("screencast", "episode")
-      )
-      verify(downloadDao).getQueuedDownloads(1, arrayOf(1, 2), arrayOf("screencast", "episode"))
-      verifyNoMoreInteractions(downloadDao)
-    }
-  }
-
-  @Test
-  fun getQueuedDownload() {
-    testCoroutineRule.runBlockingTest {
-      contentDataSourceLocal.getDownload("1")
-      verify(downloadDao).getDownload("1")
-      verifyNoMoreInteractions(downloadDao)
-    }
-  }
-
-  @Test
-  fun getQueuedDownloads_B() {
-    testCoroutineRule.runBlockingTest {
-      contentDataSourceLocal.getQueuedDownloads()
-      verify(downloadDao).getQueuedDownloads(arrayOf("collection", "screencast"))
-      verifyNoMoreInteractions(downloadDao)
-    }
-  }
-
-  @Test
-  fun getDownloadsById() {
-    testCoroutineRule.runBlockingTest {
-      val downloadIds = listOf("1", "2", "3")
-      contentDataSourceLocal.getDownloadsById(downloadIds)
-      verify(downloadDao).getDownloadsById(downloadIds)
-      verifyNoMoreInteractions(downloadDao)
-    }
-  }
-
-  @Test
   fun insertContent() {
     testCoroutineRule.runBlockingTest {
       val content = com.raywenderlich.emitron.data.createContent()
@@ -648,7 +541,7 @@ class ContentDataSourceLocalTest {
             name = "Introduction to Kotlin Lambdas: Getting Started",
             description = "In this tutorial you will learn how to use lambda.",
             contributors = "Luke",
-            professional = true,
+            professional = false,
             deleted = false,
             contentType = "screencast",
             difficulty = "beginner",
@@ -659,12 +552,17 @@ class ContentDataSourceLocalTest {
             cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
             videoId = null,
             bookmarkId = "1",
-            progressionId = null,
             updatedAt = ""
           )
         ),
         listOf(
-          Progression(progressionId = "1", percentComplete = 99, finished = true)
+          Progression(
+            contentId = "1",
+            progressionId = "1",
+            percentComplete = 99,
+            finished = true,
+            synced = true
+          )
         ),
         progressionDao,
         listOf(ContentDomainJoin("1", "2")),

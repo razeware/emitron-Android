@@ -174,7 +174,7 @@ interface ContentDao {
     """
           SELECT * FROM contents 
           INNER JOIN progressions
-          ON progressions.progression_id = contents.progression_id
+          ON progressions.content_id = contents.content_id
           WHERE progressions.finished = :completed
           AND contents.content_type in(:contentTypes)
           ORDER BY progression_id DESC

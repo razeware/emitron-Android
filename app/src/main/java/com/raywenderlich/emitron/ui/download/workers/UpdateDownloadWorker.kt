@@ -94,12 +94,10 @@ class UpdateDownloadWorker @AssistedInject constructor(
 
       val startDownloadWorkRequest = OneTimeWorkRequestBuilder<UpdateDownloadWorker>()
         .setInputData(downloadData)
-        .setConstraints(constraints)
         .addTag(DOWNLOAD_WORKER_TAG)
         .build()
 
       val downloadWorkRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
-        .setInputData(downloadData)
         .setConstraints(constraints)
         .addTag(DOWNLOAD_WORKER_TAG)
         .build()

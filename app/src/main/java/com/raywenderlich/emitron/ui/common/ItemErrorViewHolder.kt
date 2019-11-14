@@ -16,14 +16,14 @@ import com.raywenderlich.emitron.utils.extensions.toVisibility
  * View holder for error
  */
 class ItemErrorViewHolder(
-  private val viewDataBinding: ItemErrorBinding,
+  private val binding: ItemErrorBinding,
   private val retryCallback: () -> Unit,
   private val emptyCallback: (() -> Unit)?
-) : RecyclerView.ViewHolder(viewDataBinding.root) {
+) : RecyclerView.ViewHolder(binding.root) {
 
   init {
-    viewDataBinding.textViewProgress.visibility = View.GONE
-    viewDataBinding.buttonRetry.visibility = View.GONE
+    binding.textViewProgress.visibility = View.GONE
+    binding.buttonRetry.visibility = View.GONE
   }
 
   /**
@@ -35,12 +35,12 @@ class ItemErrorViewHolder(
     adapterContentType: ContentAdapter.AdapterContentType
   ) {
 
-    with(viewDataBinding) {
+    with(binding) {
       progressBar.toVisibility(uiState == UiStateManager.UiState.LOADING)
       textViewProgress.toVisibility(uiState == UiStateManager.UiState.LOADING)
       textViewError.toVisibility(uiState?.hasError() == true)
       buttonRetry.toVisibility(uiState?.hasError() == true)
-      viewDataBinding.buttonRetry.setOnClickListener {
+      buttonRetry.setOnClickListener {
         if (uiState?.isEmpty() == true) {
           emptyCallback?.invoke()
         } else {
@@ -48,30 +48,38 @@ class ItemErrorViewHolder(
         }
       }
 
-      viewDataBinding.buttonRetry.setIconResource(
+      buttonRetry.setIconResource(
         getRetryActionIconResource(
           adapterContentType
         )
       )
 
+      val resources = root.resources
+
       when (uiState) {
-        UiStateManager.UiState.ERROR_CONNECTION -> viewDataBinding.textViewError.text =
-          viewDataBinding.root.resources.getString(R.string.error_no_internet)
+        UiStateManager.UiState.ERROR_CONNECTION -> {
+          textViewError.text = resources.getString(R.string.error_no_internet)
+          imageError.setImageResource(R.drawable.ic_emoji_crying)
+        }
         UiStateManager.UiState.ERROR_EMPTY -> {
           textViewError.text = getEmptyErrorForAdapterType(adapterContentType)
           textViewErrorBody.text =
-            viewDataBinding.root.resources.getString(R.string.error_library_no_content_body)
+            resources.getString(R.string.error_library_no_content_body)
           textViewErrorBody.toVisibility(adapterContentType.isContentWithFilters())
           buttonRetry.toVisibility(!adapterContentType.isContentWithFilters())
           buttonRetry.text =
             getRetryButtonLabelForAdapterType(adapterContentType)
+          val emptyDrawable = getEmptyDrawable(adapterContentType)
+          emptyDrawable?.let { drawable ->
+            imageError.setImageResource(drawable)
+          }
         }
         else -> if (root.context.isNetNotConnected()) {
           textViewError.text =
-            viewDataBinding.root.resources.getString(R.string.error_no_internet)
+            resources.getString(R.string.error_no_internet)
         } else {
           textViewError.text =
-            viewDataBinding.root.resources.getString(R.string.error_generic)
+            resources.getString(R.string.error_generic)
         }
       }
     }
@@ -82,15 +90,15 @@ class ItemErrorViewHolder(
       ContentAdapter.AdapterContentType.Content,
       ContentAdapter.AdapterContentType.ContentWithFilters,
       ContentAdapter.AdapterContentType.ContentWithSearch ->
-        viewDataBinding.root.resources.getString(R.string.error_library_no_content)
+        binding.root.resources.getString(R.string.error_library_no_content)
       ContentAdapter.AdapterContentType.ContentBookmarked ->
-        viewDataBinding.root.resources.getString(R.string.body_bookmarks_empty)
+        binding.root.resources.getString(R.string.body_bookmarks_empty)
       ContentAdapter.AdapterContentType.ContentInProgress ->
-        viewDataBinding.root.resources.getString(R.string.body_progressions_empty)
+        binding.root.resources.getString(R.string.body_progressions_empty)
       ContentAdapter.AdapterContentType.ContentCompleted ->
-        viewDataBinding.root.resources.getString(R.string.body_progressions_completed_empty)
+        binding.root.resources.getString(R.string.body_progressions_completed_empty)
       ContentAdapter.AdapterContentType.ContentDownloaded ->
-        viewDataBinding.root.resources.getString(R.string.body_downloads_empty)
+        binding.root.resources.getString(R.string.body_downloads_empty)
     }
 
   private fun getRetryButtonLabelForAdapterType(
@@ -101,12 +109,12 @@ class ItemErrorViewHolder(
       ContentAdapter.AdapterContentType.ContentWithSearch,
       ContentAdapter.AdapterContentType.Content,
       ContentAdapter.AdapterContentType.ContentWithFilters ->
-        viewDataBinding.root.resources.getString(R.string.button_retry)
+        binding.root.resources.getString(R.string.button_retry)
       ContentAdapter.AdapterContentType.ContentBookmarked,
       ContentAdapter.AdapterContentType.ContentCompleted,
       ContentAdapter.AdapterContentType.ContentInProgress,
       ContentAdapter.AdapterContentType.ContentDownloaded ->
-        viewDataBinding.root.resources.getString(R.string.button_explore_tutorials)
+        binding.root.resources.getString(R.string.button_explore_tutorials)
     }
 
   private fun getRetryActionIconResource(
@@ -122,6 +130,22 @@ class ItemErrorViewHolder(
       ContentAdapter.AdapterContentType.ContentInProgress,
       ContentAdapter.AdapterContentType.ContentDownloaded ->
         R.drawable.ic_material_button_icon_arrow_right_green_contained
+    }
+
+  private fun getEmptyDrawable(
+    adapterContentType:
+    ContentAdapter.AdapterContentType
+  ): Int? =
+    when (adapterContentType) {
+      ContentAdapter.AdapterContentType.ContentBookmarked ->
+        R.drawable.ic_bookmarks
+      ContentAdapter.AdapterContentType.ContentCompleted ->
+        R.drawable.ic_completed
+      ContentAdapter.AdapterContentType.ContentInProgress ->
+        R.drawable.ic_in_progress
+      ContentAdapter.AdapterContentType.ContentDownloaded ->
+        R.drawable.ic_suitcaseempty
+      else -> null
     }
 
   companion object {

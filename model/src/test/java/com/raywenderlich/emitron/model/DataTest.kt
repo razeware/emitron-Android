@@ -3,6 +3,7 @@ package com.raywenderlich.emitron.model
 import com.google.common.truth.Truth.assertThat
 import com.raywenderlich.emitron.model.entity.Category
 import com.raywenderlich.emitron.model.entity.Domain
+import com.raywenderlich.emitron.model.entity.Progression
 import com.raywenderlich.emitron.model.utils.TimeUtils
 import com.raywenderlich.emitron.model.utils.isEqualTo
 import org.junit.Test
@@ -106,15 +107,6 @@ class DataTest {
   fun isFinished() {
     val data = Data(attributes = Attributes(finished = true))
     data.isFinished() isEqualTo true
-  }
-
-  @Test
-  fun isProLabelVisible() {
-    val data = Data(attributes = Attributes(free = false, finished = false), type = "contents")
-    data.isProLabelVisible() isEqualTo false
-
-    val data2 = Data(attributes = Attributes(free = true, finished = false), type = "progressions")
-    data2.isProLabelVisible() isEqualTo false
   }
 
   @Test
@@ -230,7 +222,7 @@ class DataTest {
     val result = data.updateRelationships(domainsAndProgressions)
 
     result.getDomain() isEqualTo "iOS & Swift"
-    result.isFinished() isEqualTo true
+    result.isFinished() isEqualTo false
     result.isBookmarked() isEqualTo true
 
     val result2 = data2.updateRelationships(emptyList())
@@ -261,13 +253,13 @@ class DataTest {
     val result = data.addRelationships(domainsAndProgressions)
 
     result.getDomain() isEqualTo "iOS & Swift, Android & Kotlin"
-    result.isFinished() isEqualTo true
+    result.isProgressionFinished() isEqualTo true
     result.isBookmarked() isEqualTo true
 
     val result2 = data.updateRelationships(emptyList())
 
     result2.getDomain() isEqualTo null
-    result2.isFinished() isEqualTo false
+    result2.isProgressionFinished() isEqualTo false
     result2.isBookmarked() isEqualTo false
 
     val result3 = data.addRelationships(emptyList())
@@ -450,7 +442,18 @@ class DataTest {
 
   @Test
   fun getEpisodeNumber() {
-    val data = Data(attributes = Attributes(finished = true))
+    val data = Data(
+      attributes = Attributes(finished = true),
+      relationships = Relationships(
+        progression = Content(
+          datum = Data(
+            attributes = Attributes(
+              finished = true
+            )
+          )
+        )
+      )
+    )
     val result = data.getEpisodeNumber(1, true)
     assertThat(result).isEmpty()
 
@@ -460,11 +463,22 @@ class DataTest {
 
     val data3 = Data(attributes = Attributes(finished = false))
     val result3 = data3.getEpisodeNumber(1, true)
-    assertThat(result3).isEmpty()
+    assertThat(result3).isEqualTo("1")
 
-    val data4 = Data(attributes = Attributes(finished = false))
+    val data4 = Data(
+      attributes = Attributes(finished = true),
+      relationships = Relationships(
+        progression = Content(
+          datum = Data(
+            attributes = Attributes(
+              finished = false
+            )
+          )
+        )
+      )
+    )
     val result4 = data4.getEpisodeNumber(1, false)
-    assertThat(result4).isEqualTo("1")
+    assertThat(result4).isEmpty()
   }
 
   @Test
@@ -776,5 +790,90 @@ class DataTest {
       )
     )
     data.getUrl() isEqualTo "WubbaLubbaDubDub"
+  }
+
+  @Test
+  fun newProgression() {
+
+    val today = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
+
+    val progression =
+      Data.newProgression("1", false, updatedAt = today)
+
+    progression.isFinished() isEqualTo false
+  }
+
+  @Test
+  fun toProgression() {
+
+    val data = Data(
+      id = "1",
+      attributes = Attributes(percentComplete = 10.0, finished = false),
+      relationships = Relationships(
+        content = Content(datum = Data(id = "2"))
+      )
+    )
+
+    data.toProgression() isEqualTo Progression(
+      contentId = "2",
+      progressionId = "1",
+      percentComplete = 10,
+      finished = false,
+      synced = true
+    )
+  }
+
+  @Test
+  fun toProgression_withContentId() {
+
+    val data = Data(
+      id = "1",
+      attributes = Attributes(percentComplete = 10.0, finished = false),
+      relationships = Relationships(
+        content = Content(datum = Data(id = "2"))
+      )
+    )
+
+    data.toProgression("1") isEqualTo Progression(
+      contentId = "1",
+      progressionId = "1",
+      percentComplete = 10,
+      finished = false,
+      synced = true
+    )
+  }
+
+  @Test
+  fun toggleProgressionFinished() {
+
+    val data = Data(
+      id = "1",
+      relationships = Relationships(
+        progression = Content(
+          datum = Data(
+            id = "1",
+            attributes = Attributes(percentComplete = 10.0, finished = false),
+            relationships = Relationships(
+              content = Content(datum = Data(id = "2"))
+            )
+          )
+        )
+      )
+    )
+
+    data.toggleProgressionFinished() isEqualTo Data(
+      id = "1",
+      relationships = Relationships(
+        progression = Content(
+          datum = Data(
+            id = "1",
+            attributes = Attributes(percentComplete = 10.0, finished = true),
+            relationships = Relationships(
+              content = Content(datum = Data(id = "2"))
+            )
+          )
+        )
+      )
+    )
   }
 }

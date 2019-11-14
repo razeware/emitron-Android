@@ -13,12 +13,12 @@ import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.ui.common.PagedAdapter
 import com.raywenderlich.emitron.ui.common.ShimmerProgressDelegate
+import com.raywenderlich.emitron.ui.common.StartEndBottomMarginDecoration
+import com.raywenderlich.emitron.ui.common.SwipeActionCallback
 import com.raywenderlich.emitron.ui.content.ContentAdapter
 import com.raywenderlich.emitron.ui.content.ContentPagedFragment
 import com.raywenderlich.emitron.ui.mytutorial.MyTutorialFragmentDirections
 import com.raywenderlich.emitron.utils.NetworkState
-import com.raywenderlich.emitron.ui.common.StartEndBottomMarginDecoration
-import com.raywenderlich.emitron.ui.common.SwipeActionCallback
 import com.raywenderlich.emitron.utils.extensions.*
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -61,6 +61,17 @@ class BookmarkFragment : DaggerFragment() {
 
   private lateinit var progressDelegate: ShimmerProgressDelegate
 
+  private val swipeActionCallback by lazy {
+    SwipeActionCallback.build(
+      R.drawable.bg_swipe_bookmark,
+      R.string.button_delete,
+      onSwipe = {
+        updateContentBookmark(adapter.getItemFor(it))
+      })
+  }
+
+  private val itemTouchHelper = ItemTouchHelper(swipeActionCallback)
+
   /**
    * See [androidx.fragment.app.Fragment.onCreateView]
    */
@@ -86,20 +97,15 @@ class BookmarkFragment : DaggerFragment() {
   private fun initUi() {
     pagedFragment.value.initPaging(this, binding.recyclerView)
     binding.recyclerView.addItemDecoration(StartEndBottomMarginDecoration())
-    addSwipeToDelete()
     progressDelegate = ShimmerProgressDelegate(requireView())
   }
 
   private fun addSwipeToDelete() {
-    val swipeHandler = SwipeActionCallback.build(
-      R.drawable.bg_swipe_bookmark,
-      R.string.button_delete,
-      onSwipe = {
-        updateContentBookmark(adapter.getItemFor(it))
-      }
-    )
-    val itemTouchHelper = ItemTouchHelper(swipeHandler)
     itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+  }
+
+  private fun removeSwipeToDelete() {
+    itemTouchHelper.attachToRecyclerView(null)
   }
 
   private fun updateContentBookmark(data: Data?) {
@@ -130,11 +136,15 @@ class BookmarkFragment : DaggerFragment() {
       NetworkState.INIT -> {
         progressDelegate.showProgressView()
       }
-      NetworkState.INIT_SUCCESS,
+      NetworkState.SUCCESS,
+      NetworkState.INIT_SUCCESS -> {
+        addSwipeToDelete()
+        progressDelegate.hideProgressView()
+      }
       NetworkState.INIT_EMPTY,
       NetworkState.INIT_FAILED,
-      NetworkState.FAILED,
-      NetworkState.SUCCESS -> {
+      NetworkState.FAILED -> {
+        removeSwipeToDelete()
         progressDelegate.hideProgressView()
       }
       else -> {
@@ -162,7 +172,6 @@ class BookmarkFragment : DaggerFragment() {
   }
 
   private fun handleEmpty() {
-    findNavController()
-      .navigate(R.id.action_navigation_my_tutorials_to_navigation_library)
+    findNavController().navigate(R.id.action_navigation_my_tutorials_to_navigation_library)
   }
 }

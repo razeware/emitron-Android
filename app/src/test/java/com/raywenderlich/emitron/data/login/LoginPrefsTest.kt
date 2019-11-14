@@ -69,4 +69,12 @@ class LoginPrefsTest {
     verify(prefUtils).get("user_permissions", "")
     verifyNoMoreInteractions(prefUtils)
   }
+
+  @Test
+  fun removePermissions() {
+    loginPrefs.removePermissions()
+    verify(prefUtils).init("accounts")
+    verify(prefUtils).set("user_permissions", "")
+    verify(prefUtils).commit()
+  }
 }

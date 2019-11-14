@@ -59,22 +59,22 @@ data class Attributes(
   /**
    * Content duration
    */
-  val duration: Long? = 0,
+  val duration: Long? = null,
 
   /**
    * Is content free?
    */
-  val free: Boolean? = false,
+  val free: Boolean? = null,
 
   /**
    * Is content free?
    */
-  val professional: Boolean? = false,
+  val professional: Boolean? = null,
 
   /**
    * Content popularity
    */
-  val popularity: Double? = 0.0,
+  val popularity: Double? = null,
 
   /**
    * Content released at date
@@ -90,23 +90,23 @@ data class Attributes(
   /**
    * Content target
    */
-  val target: Long? = 0,
+  val target: Long? = null,
 
   /**
    * Content current progress
    */
-  val progress: Long? = 0,
+  val progress: Long? = null,
 
   /**
    * User has finished content
    */
-  val finished: Boolean? = false,
+  val finished: Boolean? = null,
 
   /**
    * Content completion percentage
    */
   @Json(name = "percent_complete")
-  val percentComplete: Double? = 0.0,
+  val percentComplete: Double? = null,
 
   /**
    * Content updated at
@@ -145,7 +145,7 @@ data class Attributes(
   /**
    * Content position
    */
-  val ordinal: Int? = 0,
+  val ordinal: Int? = null,
 
   /**
    * Tag
@@ -153,10 +153,17 @@ data class Attributes(
   val tag: String? = null,
 
   /**
-   * Tag
+   * Video Id
    */
   @Json(name = "video_identifier")
-  val videoId: String? = null
+  val videoId: String? = null,
+
+
+  /**
+   * Content Id
+   */
+  @Json(name = "content_id")
+  val contentId: String? = null
 ) : Parcelable {
 
   /**

@@ -9,15 +9,32 @@ import com.raywenderlich.emitron.utils.BoundaryCallbackNotifier
 import com.raywenderlich.emitron.utils.Event
 import com.raywenderlich.emitron.utils.decrement
 import com.raywenderlich.emitron.utils.increment
+import org.threeten.bp.LocalDateTime
 import java.io.IOException
 import javax.inject.Inject
+
+/**
+ * Session permission action
+ */
+interface ProgressionAction {
+  /**
+   * LiveData for permission action
+   */
+  val completionActionResult: LiveData<
+      Pair<Event<ProgressionActionDelegate.EpisodeProgressionActionResult>, Int>>
+
+  /**
+   * LiveData to enqueue offline progress update
+   */
+  val enqueueOfflineProgressUpdate: LiveData<String>
+}
 
 /**
  * Delegate class to mark a content in progress/finished
  */
 class ProgressionActionDelegate @Inject constructor(
   private val progressionRepository: ProgressionRepository
-) {
+) : ProgressionAction {
 
   /**
    * Progression action API result
@@ -28,88 +45,220 @@ class ProgressionActionDelegate @Inject constructor(
      */
     EpisodeMarkedCompleted,
     /**
-     * Episode progression complete request succeeded
+     * Episode progression in progress request succeeded
      */
     EpisodeMarkedInProgress,
     /**
-     * Episode progression in progress request succeeded
+     * Episode progression complete request failed
      */
     EpisodeFailedToMarkComplete,
     /**
-     * Episode progression in progress request succeeded
+     * Episode progression in progress request failed
      */
-    EpisodeFailedToMarkInProgress,
+    EpisodeFailedToMarkInProgress
   }
 
   private val _completionActionResult =
     MutableLiveData<Pair<Event<EpisodeProgressionActionResult>, Int>>()
+
+  private val _enqueueOfflineProgressUpdate = MutableLiveData<String>()
+
   /**
    * Observer for bookmark action
    *
    */
-  val completionActionResult: LiveData<Pair<Event<EpisodeProgressionActionResult>, Int>>
+  override val completionActionResult: LiveData<Pair<Event<EpisodeProgressionActionResult>, Int>>
     get() {
       return _completionActionResult
     }
 
   /**
+   * Observer for offline progress update
+   */
+  override val enqueueOfflineProgressUpdate: LiveData<String>
+    get() = _enqueueOfflineProgressUpdate
+
+  /**
    * Mark episode completed/in-progress
    */
   suspend fun updateContentProgression(
+    hasConnection: Boolean,
     episode: Data?,
     position: Int,
-    boundaryCallbackNotifier: BoundaryCallbackNotifier? = null
+    boundaryCallbackNotifier: BoundaryCallbackNotifier? = null,
+    updatedAt: LocalDateTime
   ) {
-    if (null == episode) {
-      return
-    }
+    episode ?: return
+    val id = episode.id ?: return
+    val isCompleted = episode.isProgressionFinished()
+    val progress = episode.getProgress()
+    val percentComplete = episode.getPercentComplete()
+    val progressionId = episode.getProgressionId()
 
+    if (hasConnection) {
+      updateContentProgressionToServer(
+        id,
+        percentComplete,
+        progress,
+        isCompleted,
+        position,
+        boundaryCallbackNotifier,
+        updatedAt,
+        progressionId
+      )
+    } else {
+      updateContentProgressionLocal(
+        id,
+        percentComplete,
+        progress,
+        isCompleted,
+        position,
+        updatedAt,
+        progressionId
+      )
+    }
+  }
+
+  private suspend fun updateContentProgressionToServer(
+    id: String,
+    percentComplete: Int,
+    progress: Long,
+    isCompleted: Boolean,
+    position: Int,
+    boundaryCallbackNotifier: BoundaryCallbackNotifier? = null,
+    updatedAt: LocalDateTime,
+    progressionId: String?
+  ) {
     boundaryCallbackNotifier.increment()
-    if (episode.isFinished()) {
-      updateContentInProgress(episode.id, position)
+    if (isCompleted) {
+      updateContentInProgress(
+        id,
+        percentComplete,
+        progress,
+        position,
+        updatedAt,
+        progressionId
+      )
       boundaryCallbackNotifier.decrement()
     } else {
-      updateContentCompleted(episode.id, position)
+      updateContentCompleted(
+        id,
+        percentComplete,
+        progress,
+        position,
+        updatedAt,
+        progressionId
+      )
       boundaryCallbackNotifier.decrement()
     }
   }
 
-  private suspend fun updateContentCompleted(episodeId: String?, position: Int) {
-    episodeId?.let {
-      val (_, result) = try {
-        progressionRepository.updateProgression(episodeId)
-      } catch (exception: IOException) {
-        null to false
-      } catch (exception: HttpException) {
-        null to false
-      }
+  private suspend fun updateContentProgressionLocal(
+    id: String,
+    percentComplete: Int,
+    progress: Long,
+    isCompleted: Boolean,
+    position: Int,
+    updatedAt: LocalDateTime,
+    progressionId: String?
+  ) {
 
-      _completionActionResult.value = if (result) {
-        progressionRepository.updateProgressionInDb(episodeId, true)
-        Event(EpisodeProgressionActionResult.EpisodeMarkedCompleted) to position
-      } else {
-        progressionRepository.updateProgressionInDb(episodeId, false)
-        Event(EpisodeProgressionActionResult.EpisodeFailedToMarkComplete) to position
-      }
+    progressionRepository.updateLocalProgression(
+      id,
+      percentComplete,
+      progress,
+      finished = false,
+      synced = false,
+      updatedAt = updatedAt,
+      progressionId = progressionId
+    )
+
+    _completionActionResult.value = if (isCompleted) {
+      Event(EpisodeProgressionActionResult.EpisodeMarkedInProgress) to position
+    } else {
+      Event(EpisodeProgressionActionResult.EpisodeMarkedCompleted) to position
+    }
+    _enqueueOfflineProgressUpdate.value = id
+  }
+
+  private suspend fun updateContentCompleted(
+    id: String,
+    percentComplete: Int,
+    progress: Long,
+    position: Int,
+    updatedAt: LocalDateTime,
+    progressionId: String?
+  ) {
+    val contents = try {
+      progressionRepository.updateProgression(id, true, updatedAt)
+    } catch (exception: IOException) {
+      null
+    } catch (exception: HttpException) {
+      null
+    }
+
+    _completionActionResult.value = if (null != contents) {
+      progressionRepository.updateLocalProgression(
+        contentId = id,
+        percentComplete = percentComplete,
+        progress = progress,
+        finished = true,
+        synced = true,
+        updatedAt = updatedAt,
+        progressionId = progressionId
+      )
+      Event(EpisodeProgressionActionResult.EpisodeMarkedCompleted) to position
+    } else {
+      progressionRepository.updateLocalProgression(
+        contentId = id,
+        percentComplete = percentComplete,
+        progress = progress,
+        finished = false,
+        synced = true,
+        updatedAt = updatedAt,
+        progressionId = progressionId
+      )
+      Event(EpisodeProgressionActionResult.EpisodeFailedToMarkComplete) to position
     }
   }
 
-  private suspend fun updateContentInProgress(episodeId: String?, position: Int) {
-    episodeId?.let {
-      val (_, result) = try {
-        progressionRepository.updateProgression(episodeId)
-      } catch (exception: IOException) {
-        null to false
-      } catch (exception: HttpException) {
-        null to false
-      }
-      _completionActionResult.value = if (result) {
-        progressionRepository.updateProgressionInDb(episodeId, false)
-        Event(EpisodeProgressionActionResult.EpisodeMarkedInProgress) to position
-      } else {
-        progressionRepository.updateProgressionInDb(episodeId, true)
-        Event(EpisodeProgressionActionResult.EpisodeFailedToMarkInProgress) to position
-      }
+  private suspend fun updateContentInProgress(
+    id: String,
+    percentComplete: Int,
+    progress: Long,
+    position: Int,
+    updatedAt: LocalDateTime,
+    progressionId: String?
+  ) {
+    val contents = try {
+      progressionRepository.updateProgression(id, false, updatedAt)
+    } catch (exception: IOException) {
+      null
+    } catch (exception: HttpException) {
+      null
+    }
+    _completionActionResult.value = if (null != contents) {
+      progressionRepository.updateLocalProgression(
+        id,
+        percentComplete,
+        progress,
+        finished = false,
+        synced = true,
+        updatedAt = updatedAt,
+        progressionId = progressionId
+      )
+      Event(EpisodeProgressionActionResult.EpisodeMarkedInProgress) to position
+    } else {
+      progressionRepository.updateLocalProgression(
+        id,
+        percentComplete,
+        progress,
+        finished = true,
+        synced = true,
+        updatedAt = updatedAt,
+        progressionId = progressionId
+      )
+      Event(EpisodeProgressionActionResult.EpisodeFailedToMarkInProgress) to position
     }
   }
 }

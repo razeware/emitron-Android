@@ -21,11 +21,11 @@ import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentLibraryBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import com.raywenderlich.emitron.model.Data
+import com.raywenderlich.emitron.ui.common.BottomMarginDecoration
 import com.raywenderlich.emitron.ui.common.ShimmerProgressDelegate
 import com.raywenderlich.emitron.ui.content.ContentAdapter
 import com.raywenderlich.emitron.ui.content.ContentPagedFragment
 import com.raywenderlich.emitron.ui.library.search.RecentSearchAdapter
-import com.raywenderlich.emitron.ui.common.BottomMarginDecoration
 import com.raywenderlich.emitron.utils.NetworkState
 import com.raywenderlich.emitron.utils.extensions.*
 import dagger.android.support.DaggerFragment
@@ -127,7 +127,10 @@ class LibraryFragment : DaggerFragment() {
     }
 
     binding.editTextLibrarySearch.setOnEditorActionListener { _, actionId, _ ->
-      val allowedImeActions = arrayOf(IME_ACTION_SEARCH, IME_ACTION_DONE, IME_ACTION_GO)
+      val allowedImeActions = arrayOf(
+        IME_ACTION_SEARCH, IME_ACTION_DONE, IME_ACTION_GO,
+        IME_ACTION_UNSPECIFIED
+      )
       if (actionId in allowedImeActions) {
         handleSearchImeAction()
         true

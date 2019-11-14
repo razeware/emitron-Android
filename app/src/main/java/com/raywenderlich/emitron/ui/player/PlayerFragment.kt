@@ -6,7 +6,6 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.RadioGroup
 import android.widget.Toast
@@ -21,10 +20,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.setupWithNavController
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
+import androidx.work.WorkManager
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.android.exoplayer2.upstream.cache.Cache
 import com.google.android.gms.cast.framework.CastContext
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.raywenderlich.emitron.BuildConfig
@@ -34,13 +33,14 @@ import com.raywenderlich.emitron.databinding.FragmentPlayerBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.notifications.NotificationChannels
+import com.raywenderlich.emitron.ui.common.getDefaultAppBarConfiguration
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.player.cast.Episode
+import com.raywenderlich.emitron.ui.player.workers.UpdateOfflineProgressWorker
 import com.raywenderlich.emitron.utils.Log
 import com.raywenderlich.emitron.utils.createCountDownTimer
 import com.raywenderlich.emitron.utils.createMainThreadScheduledHandler
 import com.raywenderlich.emitron.utils.extensions.*
-import com.raywenderlich.emitron.ui.common.getDefaultAppBarConfiguration
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -197,6 +197,10 @@ class PlayerFragment : DaggerFragment() {
   @Inject
   lateinit var viewModelFactory: ViewModelFactory
 
+  /**
+   * Cache for offline playback
+   *
+   */
   @Inject
   lateinit var cache: Cache
 
@@ -244,6 +248,8 @@ class PlayerFragment : DaggerFragment() {
   private lateinit var castNextButton: MaterialButton
 
   private lateinit var playerBookmarkButton: MaterialButton
+
+  private lateinit var playerPlaylistButton: MaterialButton
 
   private lateinit var settingsBottomSheet: BottomSheetDialog
 
@@ -331,13 +337,17 @@ class PlayerFragment : DaggerFragment() {
       playbackBufferingProgress =
         findViewById(R.id.player_play_back_buffering)
 
-      val buttonPlaylist: View = findViewById(R.id.button_player_playlist)
-      buttonPlaylist.setOnClickListener {
+      playerPlaylistButton = findViewById(R.id.button_player_playlist)
+      playerPlaylistButton.setOnClickListener {
         findNavController().popBackStack()
       }
 
       playerNextButton = findViewById(R.id.player_next_episode)
       playerNextButton.setOnClickListener { viewModel.playNextEpisode() }
+
+      binding.playerView.setControllerVisibilityListener {
+        binding.toolbar.toVisibility(it == View.VISIBLE)
+      }
     }
 
     binding.buttonAutoPlayCancel.setOnClickListener {
@@ -506,12 +516,19 @@ class PlayerFragment : DaggerFragment() {
         val showNextButton = viewModel.hasMoreEpisodes() &&
             !viewModel.isContentTypeScreencast()
         playerNextButton.toVisibility(showNextButton)
+        playerPlaylistButton.toVisibility(!viewModel.isContentTypeScreencast())
+      }
+    }
+
+    viewModel.enqueueOfflineProgressUpdate.observe(viewLifecycleOwner) {
+      it?.let {
+        UpdateOfflineProgressWorker.enqueue(WorkManager.getInstance(requireContext()))
       }
     }
   }
 
   private fun showPlaybackTokenErrorBottomSheet() {
-    if (::playbackTokenErrorBottomSheet.isInitialized && playbackTokenErrorBottomSheet.isShowing) {
+    if (isShowingPlaybackTokenBottomSheet()) {
       return
     }
     val sheetView = requireActivity().layoutInflater
@@ -557,24 +574,6 @@ class PlayerFragment : DaggerFragment() {
 
     settingsBottomSheet.show()
   }
-
-  private fun createBottomSheetDialog(view: View) =
-    BottomSheetDialog(requireActivity()).apply {
-      setContentView(view)
-      setOnShowListener { dialog ->
-        val d = dialog as BottomSheetDialog
-        val bottomSheet =
-          d.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as? FrameLayout
-
-        bottomSheet?.let {
-          BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_EXPANDED
-        }
-
-        val closeButton =
-          dialog.findViewById<View>(R.id.button_player_settings_close)
-        closeButton?.setOnClickListener { dialog.dismiss() }
-      }
-    }
 
   private fun handlePlaybackSpeedSettings(bottomSheetView: View) {
     val playbackSpeedRadioGroup: RadioGroup =
@@ -659,11 +658,8 @@ class PlayerFragment : DaggerFragment() {
     subtitlesBottomSheet.show()
   }
 
-  /**
-   * See [Fragment.onDestroy]
-   */
-  override fun onDestroy() {
-    super.onDestroy()
+  override fun onDestroyView() {
+    super.onDestroyView()
     dismissBottomSheets()
     countDownTimer.cancel()
     requestLandscapeOrientation(false)
@@ -698,7 +694,7 @@ class PlayerFragment : DaggerFragment() {
       return
     }
 
-    viewModel.updateProgress(playerManager.getContentPosition())
+    viewModel.updateProgress(isNetConnected(), playerManager.getContentPosition())
   }
 
   /**

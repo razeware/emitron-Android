@@ -2,10 +2,7 @@ package com.raywenderlich.emitron.data.content.dao
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.raywenderlich.emitron.model.entity.Download
 import com.raywenderlich.emitron.model.entity.DownloadWithContent
 
@@ -20,6 +17,9 @@ interface DownloadDao {
    */
   @Insert(onConflict = OnConflictStrategy.IGNORE)
   suspend fun insert(download: Download)
+
+  @Insert(onConflict = OnConflictStrategy.IGNORE)
+  suspend fun insert(download: List<Download>)
 
   /**
    * Delete queued download
@@ -63,7 +63,7 @@ interface DownloadDao {
              WHERE download_id = :downloadId
           """
   )
-  fun updateState(downloadId: String, state: Int)
+  suspend fun updateState(downloadId: String, state: Int)
 
   /**
    * Update content download url
@@ -78,7 +78,7 @@ interface DownloadDao {
              WHERE download_id = :downloadId
           """
   )
-  fun updateUrl(downloadId: String, url: String, state: Int)
+  suspend fun updateUrl(downloadId: String, url: String, state: Int)
 
   /**
    * Get queued downloads
@@ -93,6 +93,7 @@ interface DownloadDao {
              LIMIT :limit
           """
   )
+  @Transaction
   suspend fun getQueuedDownloads(
     limit: Int,
     states: Array<Int>,
@@ -109,6 +110,7 @@ interface DownloadDao {
              WHERE downloads.download_id = :id
           """
   )
+  @Transaction
   suspend fun getDownload(
     id: String
   ): DownloadWithContent?
@@ -124,6 +126,7 @@ interface DownloadDao {
              ORDER BY created_at
           """
   )
+  @Transaction
   fun getQueuedDownloads(
     contentTypes: Array<String>
   ): DataSource.Factory<Int, DownloadWithContent>

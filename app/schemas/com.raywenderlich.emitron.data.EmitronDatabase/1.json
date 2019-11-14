@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "780c0a9480dada8910fada37f62a8519",
+    "identityHash": "c6bc05694e72a34c34172271e8ac5814",
     "entities": [
       {
         "tableName": "domains",
@@ -64,7 +64,7 @@
       },
       {
         "tableName": "contents",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`content_id` TEXT NOT NULL, `description` TEXT, `contributors` TEXT, `professional` INTEGER NOT NULL, `deleted` INTEGER NOT NULL, `name` TEXT, `content_type` TEXT, `difficulty` TEXT, `released_at` TEXT NOT NULL, `technology` TEXT, `duration` INTEGER NOT NULL, `stream_url` TEXT, `card_artwork_url` TEXT, `video_id` TEXT, `bookmark_id` TEXT, `progression_id` TEXT, `updated_at` TEXT NOT NULL, PRIMARY KEY(`content_id`), FOREIGN KEY(`progression_id`) REFERENCES `progressions`(`progression_id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`content_id` TEXT NOT NULL, `description` TEXT, `contributors` TEXT, `professional` INTEGER NOT NULL, `deleted` INTEGER NOT NULL, `name` TEXT, `content_type` TEXT, `difficulty` TEXT, `released_at` TEXT NOT NULL, `technology` TEXT, `duration` INTEGER NOT NULL, `stream_url` TEXT, `card_artwork_url` TEXT, `video_id` TEXT, `bookmark_id` TEXT, `updated_at` TEXT NOT NULL, PRIMARY KEY(`content_id`))",
         "fields": [
           {
             "fieldPath": "contentId",
@@ -157,12 +157,6 @@
             "notNull": false
           },
           {
-            "fieldPath": "progressionId",
-            "columnName": "progression_id",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
             "fieldPath": "updatedAt",
             "columnName": "updated_at",
             "affinity": "TEXT",
@@ -183,60 +177,78 @@
               "content_id"
             ],
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_contents_content_id` ON `${TABLE_NAME}` (`content_id`)"
-          },
-          {
-            "name": "index_contents_progression_id",
-            "unique": false,
-            "columnNames": [
-              "progression_id"
-            ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_contents_progression_id` ON `${TABLE_NAME}` (`progression_id`)"
           }
         ],
-        "foreignKeys": [
-          {
-            "table": "progressions",
-            "onDelete": "CASCADE",
-            "onUpdate": "CASCADE",
-            "columns": [
-              "progression_id"
-            ],
-            "referencedColumns": [
-              "progression_id"
-            ]
-          }
-        ]
+        "foreignKeys": []
       },
       {
         "tableName": "progressions",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`progression_id` TEXT NOT NULL, `percent_complete` INTEGER, `finished` INTEGER NOT NULL, PRIMARY KEY(`progression_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `content_id` TEXT NOT NULL, `progression_id` TEXT, `percent_complete` INTEGER NOT NULL, `progress` INTEGER NOT NULL, `finished` INTEGER NOT NULL, `updated_at` TEXT, `synced` INTEGER NOT NULL)",
         "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "contentId",
+            "columnName": "content_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
           {
             "fieldPath": "progressionId",
             "columnName": "progression_id",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "percentComplete",
             "columnName": "percent_complete",
             "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
+          },
+          {
+            "fieldPath": "progress",
+            "columnName": "progress",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "finished",
             "columnName": "finished",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "synced",
+            "columnName": "synced",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "progression_id"
+            "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [
+          {
+            "name": "index_progressions_id",
+            "unique": true,
+            "columnNames": [
+              "id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_progressions_id` ON `${TABLE_NAME}` (`id`)"
+          },
           {
             "name": "index_progressions_progression_id",
             "unique": true,
@@ -244,6 +256,14 @@
               "progression_id"
             ],
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_progressions_progression_id` ON `${TABLE_NAME}` (`progression_id`)"
+          },
+          {
+            "name": "index_progressions_content_id",
+            "unique": true,
+            "columnNames": [
+              "content_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_progressions_content_id` ON `${TABLE_NAME}` (`content_id`)"
           }
         ],
         "foreignKeys": []
@@ -535,7 +555,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '780c0a9480dada8910fada37f62a8519')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c6bc05694e72a34c34172271e8ac5814')"
     ]
   }
 }

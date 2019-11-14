@@ -1,10 +1,8 @@
 package com.raywenderlich.emitron.data.video
 
 import com.raywenderlich.emitron.model.Content
-import com.raywenderlich.emitron.model.PlaybackProgress
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import kotlinx.coroutines.withContext
-import retrofit2.Response
 import javax.inject.Inject
 
 /**
@@ -29,25 +27,9 @@ class VideoRepository @Inject constructor(
    * Get video playback token
    */
   @Throws(Exception::class)
-  suspend fun getVideoPlaybackToken(): Content {
+  suspend fun getVideoPlaybackToken(): Content? {
     return withContext(threadManager.io) {
       videoApi.getPlaybackToken()
-    }
-  }
-
-  /**
-   * Update content Playback
-   */
-  @Throws(Exception::class)
-  suspend fun updateContentPlayback(
-    playbackToken: String,
-    contentId: String,
-    progress: Long,
-    seconds: Long
-  ): Response<Content> {
-    val playbackProgress = PlaybackProgress(playbackToken, progress, seconds)
-    return withContext(threadManager.io) {
-      videoApi.updateContentPlayback(contentId, playbackProgress)
     }
   }
 }

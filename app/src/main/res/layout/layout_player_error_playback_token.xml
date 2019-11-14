@@ -28,10 +28,11 @@
 
     <com.google.android.material.textview.MaterialTextView
       android:id="@+id/text_playback_token_error"
-      style="@style/TextAppearance.Label"
+      style="@style/TextAppearance.Body.1.Inverse"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/player_playback_token_error_margin_top"
+      android:gravity="center"
       android:text="@string/player_playback_token_error"
       android:textIsSelectable="false"
       app:layout_constraintBottom_toTopOf="@id/button_playback_token_play"

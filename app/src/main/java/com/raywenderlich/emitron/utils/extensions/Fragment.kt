@@ -2,16 +2,24 @@ package com.raywenderlich.emitron.utils.extensions
 
 import android.content.Context
 import android.content.pm.ActivityInfo
+import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.FrameLayout
 import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.raywenderlich.emitron.R
 
 /**
- * File will contain all the extension functions for [Fragment]s
+ * File will contain all the extension functions for [androidx.fragment.app.Fragment]s
  */
 
 /**
@@ -35,7 +43,6 @@ fun Fragment.isNetNotConnected(): Boolean = !isNetConnected()
  *
  * Call this function from [Fragment.onCreateView] to get [ViewDataBinding]
  *
- * @param inflater LayoutInflater
  * @param layoutId Int Layout resource id
  * @param container parent layout
  *
@@ -85,6 +92,9 @@ fun Fragment.showSuccessSnackbar(text: String) {
   (requireActivity() as? AppCompatActivity)?.showSnackbar(text, SnackbarType.Success)
 }
 
+/**
+ * Hide keyboard
+ */
 fun Fragment.hideKeyboard() {
   val inputMethodManager =
     requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -94,6 +104,9 @@ fun Fragment.hideKeyboard() {
   }
 }
 
+/**
+ * Request landscape orientation
+ */
 fun Fragment.requestLandscapeOrientation(isLandscape: Boolean = true) {
   requireActivity().requestedOrientation = if (isLandscape) {
     ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
@@ -101,3 +114,52 @@ fun Fragment.requestLandscapeOrientation(isLandscape: Boolean = true) {
     ActivityInfo.SCREEN_ORIENTATION_USER
   }
 }
+
+/**
+ * Create a [BottomSheetDialog]
+ */
+fun Fragment.createBottomSheetDialog(view: View): BottomSheetDialog =
+  BottomSheetDialog(requireActivity()).apply {
+    setContentView(view)
+    setOnShowListener { dialog ->
+      val d = dialog as BottomSheetDialog
+      val bottomSheet =
+        d.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as? FrameLayout
+
+      bottomSheet?.let {
+        BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_EXPANDED
+      }
+
+      val closeButton =
+        dialog.findViewById<View>(R.id.button_player_settings_close)
+      closeButton?.setOnClickListener { dialog.dismiss() }
+    }
+  }
+
+/**
+ * Create a [AlertDialog]
+ */
+fun Fragment.createDialog(
+  @StringRes title: Int,
+  @StringRes message: Int,
+  @StringRes positiveButton: Int,
+  positiveButtonClickListener: (() -> Unit)? = null,
+  @StringRes negativeButton: Int,
+  negativeButtonClickListener: (() -> Unit)? = null,
+  cancellable: Boolean = true
+): AlertDialog? = if (isVisible) {
+  MaterialAlertDialogBuilder(requireContext())
+    .setTitle(getString(title))
+    .setMessage(getString(message))
+    .setPositiveButton(getString(positiveButton)) { dialog, _ ->
+      positiveButtonClickListener?.invoke()
+      dialog.dismiss()
+    }
+    .setNegativeButton(getString(negativeButton)) { dialog, _ ->
+      negativeButtonClickListener?.invoke()
+      dialog.dismiss()
+    }.setCancelable(cancellable).create()
+} else {
+  null
+}
+

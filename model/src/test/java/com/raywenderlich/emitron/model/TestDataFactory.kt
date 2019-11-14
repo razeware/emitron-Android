@@ -10,7 +10,8 @@ fun createContent(): com.raywenderlich.emitron.model.Content =
       withRelationship(
         withRelatedBookmark(),
         withRelatedDomains(),
-        groups = withGroups(withGroupContents())
+        groups = withGroups(withGroupContents()),
+        progressions = withRelatedProgression()
       )
     ),
     included = listOf(
@@ -46,7 +47,6 @@ fun createContentDetail(contentType: String = "collection"): ContentDetail = Con
     cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
     videoId = "1",
     bookmarkId = "1",
-    progressionId = "1",
     updatedAt = "2019-08-08T00:00:00.000Z"
   ),
   domains = listOf(
@@ -55,7 +55,7 @@ fun createContentDetail(contentType: String = "collection"): ContentDetail = Con
     )
   ),
   progressions = listOf(
-    Progression(progressionId = "1", percentComplete = 99, finished = true)
+    Progression(contentId = "1", progressionId = "1", percentComplete = 99, finished = true)
   ),
   groups = listOf(
     createGroupEpisodeJoinWithEpisode()
@@ -94,13 +94,13 @@ fun buildContentData(
     difficulty = "beginner",
     duration = 408,
     free = false,
-    popularity = 0.0,
+    popularity = null,
     releasedAt = "2019-08-08T00:00:00.000Z",
     videoId = null,
-    target = 0,
-    progress = 0,
-    finished = false,
-    percentComplete = 0.0,
+    target = null,
+    progress = null,
+    finished = null,
+    percentComplete = null,
     updatedAt = null,
     technology = "Swift, iOS",
     contributors = "Luke",
@@ -120,7 +120,14 @@ fun withProgression(): Data = Data(
   type = "progressions",
   attributes = Attributes(
     percentComplete = 99.0,
-    finished = true
+    progress = 0,
+    finished = true,
+    contentId = "1"
+  ),
+  relationships = Relationships(
+    content = Content(
+      datum = Data(id = "1")
+    )
   )
 )
 
@@ -214,7 +221,6 @@ fun createContentWithDomainAndProgression(): ContentWithDomainAndProgression =
       cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
       videoId = "1",
       bookmarkId = "1",
-      progressionId = "1",
       updatedAt = "2019-08-08T00:00:00.000Z"
     ),
     domains = listOf(
@@ -225,7 +231,7 @@ fun createContentWithDomainAndProgression(): ContentWithDomainAndProgression =
       )
     ),
     progressions = listOf(
-      Progression(progressionId = "1", percentComplete = 99, finished = true)
+      Progression(contentId = "1", progressionId = "1", percentComplete = 99, finished = true)
     ),
     downloads = listOf(
       Download(
@@ -249,7 +255,7 @@ fun createDownloadWithContent(
   )
 )
 
-fun createDownload(state: Int = DownloadState.COMPLETED.ordinal): Download =
+internal fun createDownload(state: Int = DownloadState.COMPLETED.ordinal): Download =
   Download(
     "1",
     "download/1",

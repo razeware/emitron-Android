@@ -30,7 +30,8 @@ import javax.inject.Inject
 class DownloadRepository @Inject constructor(
   private val downloadApi: DownloadApi,
   private val threadManager: ThreadManager,
-  private val contentDataSourceLocal: ContentDataSourceLocal
+  private val contentDataSource: ContentDataSourceLocal,
+  private val downloadDataSource: DownloadDataSourceLocal
 ) {
 
   companion object {
@@ -58,7 +59,7 @@ class DownloadRepository @Inject constructor(
         null
       }
       if (null != content) {
-        contentDataSourceLocal.insertContent(content)
+        contentDataSource.insertContent(content)
       }
       content
     }
@@ -78,7 +79,7 @@ class DownloadRepository @Inject constructor(
     contentTypes: Array<String>
   ): List<DownloadWithContent> {
     return withContext(threadManager.db) {
-      contentDataSourceLocal.getQueuedDownloads(
+      downloadDataSource.getQueuedDownloads(
         limit,
         states.map { it.ordinal }.toTypedArray(),
         contentTypes
@@ -94,7 +95,16 @@ class DownloadRepository @Inject constructor(
   @AnyThread
   suspend fun getDownload(downloadId: String): DownloadWithContent? {
     return withContext(threadManager.db) {
-      contentDataSourceLocal.getDownload(downloadId)
+      downloadDataSource.getDownload(downloadId)
+    }
+  }
+
+  /**
+   * Add Downloads
+   */
+  suspend fun addDownloads(downloads: List<Download>) {
+    return withContext(threadManager.db) {
+      downloadDataSource.addDownloads(downloads)
     }
   }
 
@@ -106,23 +116,24 @@ class DownloadRepository @Inject constructor(
    */
   @AnyThread
   suspend fun addDownload(
-    downloadId: String, downloadState: DownloadState,
+    downloadId: String,
+    downloadState: DownloadState,
     createdAt: LocalDateTime = LocalDateTime.now(Clock.systemUTC())
   ) {
     withContext(threadManager.db) {
-      contentDataSourceLocal.insertDownload(downloadId, downloadState, createdAt)
+      downloadDataSource.insertDownload(downloadId, downloadState, createdAt)
     }
   }
 
   /**
    * Remove a download
    *
-   * @param downloadId Download id
+   * @param downloadIds List of Download id
    */
   @AnyThread
   suspend fun removeDownload(downloadIds: List<String>) {
     withContext(threadManager.db) {
-      contentDataSourceLocal.deleteDownload(downloadIds)
+      downloadDataSource.deleteDownload(downloadIds)
     }
   }
 
@@ -132,7 +143,7 @@ class DownloadRepository @Inject constructor(
   @WorkerThread
   suspend fun removeAllDownloads() {
     withContext(threadManager.db) {
-      contentDataSourceLocal.deleteAllDownloads()
+      downloadDataSource.deleteAllDownloads()
     }
   }
 
@@ -161,10 +172,12 @@ class DownloadRepository @Inject constructor(
    * @param contentId Content id
    * @param url Download url
    */
-  @WorkerThread
-  fun updateDownloadUrl(contentId: String, url: String) {
-    return contentDataSourceLocal
-      .updateDownloadUrl(contentId, url)
+  @AnyThread
+  suspend fun updateDownloadUrl(contentId: String, url: String) {
+    withContext(threadManager.db) {
+      downloadDataSource
+        .updateDownloadUrl(contentId, url)
+    }
   }
 
   /**
@@ -174,14 +187,14 @@ class DownloadRepository @Inject constructor(
    * @param progress Int
    * @param state Download state [DownloadState]
    */
-  @WorkerThread
+  @AnyThread
   suspend fun updateDownloadProgress(
     contentId: String,
     progress: Int,
     state: DownloadState
   ) {
     withContext(threadManager.db) {
-      contentDataSourceLocal.updateDownloadProgress(contentId, progress, state)
+      downloadDataSource.updateDownloadProgress(contentId, progress, state)
     }
   }
 
@@ -191,12 +204,14 @@ class DownloadRepository @Inject constructor(
    * @param contentId Content id
    * @param state Download state [DownloadState]
    */
-  @WorkerThread
-  fun updateDownloadState(
+  @AnyThread
+  suspend fun updateDownloadState(
     contentId: String,
     state: DownloadState
   ) {
-    return contentDataSourceLocal.updateDownloadState(contentId, state)
+    withContext(threadManager.db) {
+      downloadDataSource.updateDownloadState(contentId, state)
+    }
   }
 
   /**
@@ -209,7 +224,7 @@ class DownloadRepository @Inject constructor(
   fun getDownloads(): LocalPagedResponse<Data> {
 
     val sourceFactory =
-      contentDataSourceLocal.getQueuedDownloads().map { it.toData() }
+      downloadDataSource.getQueuedDownloads().map { it.toData() }
 
     val boundaryCallback =
       DownloadBoundaryCallback(PagedBoundaryCallbackImpl())
@@ -239,5 +254,5 @@ class DownloadRepository @Inject constructor(
    * @param ids Download ids
    */
   fun getDownloadsById(ids: List<String>): LiveData<List<Download>> =
-    contentDataSourceLocal.getDownloadsById(ids)
+    downloadDataSource.getDownloadsById(ids)
 }

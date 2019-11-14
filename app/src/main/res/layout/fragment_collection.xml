@@ -149,10 +149,11 @@
         tools:text="@string/body_pro_course" />
 
       <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_professional_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="@{data.isFreeContent()? View.GONE : View.VISIBLE}"
-        app:constraint_referenced_ids="image_collection_pro,text_collection_title_pro,text_collection_body_pro"
+        android:visibility="gone"
+        app:constraint_referenced_ids="image_collection_pro,text_collection_title_pro,text_collection_body_pro,text_collection_label_pro"
         tools:visibility="gone" />
 
       <androidx.appcompat.widget.AppCompatTextView
@@ -176,7 +177,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/label_pro"
-        android:visibility="@{data.isFreeContent()? View.GONE : View.VISIBLE}"
         app:layout_constraintBottom_toBottomOf="@+id/text_collection_language"
         app:layout_constraintEnd_toEndOf="@+id/guideline_right"
         app:layout_constraintStart_toEndOf="@+id/text_collection_language"
@@ -213,8 +213,8 @@ Values and References" />
 
       <com.raywenderlich.emitron.ui.common.DownloadButton
         android:id="@+id/button_collection_download"
-        android:layout_width="@dimen/button_icon_height_width_3"
-        android:layout_height="@dimen/button_icon_height_width_3"
+        android:layout_width="@dimen/collection_detail_button_download_height_width"
+        android:layout_height="@dimen/collection_detail_button_download_height_width"
         app:downloadIcon="@drawable/ic_material_icon_download_2"
         app:downloadIconTint="@color/colorIcon"
         app:downloadStopIcon="@drawable/ic_material_icon_download_pause"

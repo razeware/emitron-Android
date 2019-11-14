@@ -1,6 +1,5 @@
 package com.raywenderlich.emitron.ui.mytutorial.progressions
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.raywenderlich.emitron.data.progressions.ProgressionRepository
@@ -8,8 +7,9 @@ import com.raywenderlich.emitron.model.CompletionStatus
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.ui.content.ContentPagedViewModel
 import com.raywenderlich.emitron.utils.BoundaryCallbackNotifier
-import com.raywenderlich.emitron.utils.Event
 import kotlinx.coroutines.launch
+import org.threeten.bp.Clock
+import org.threeten.bp.LocalDateTime
 import javax.inject.Inject
 
 /**
@@ -20,18 +20,7 @@ class ProgressionViewModel @Inject constructor(
   private val contentPagedViewModel: ContentPagedViewModel,
   private val progressionActionDelegate: ProgressionActionDelegate,
   private val boundaryCallbackNotifier: BoundaryCallbackNotifier
-) : ViewModel() {
-
-
-  /**
-   * Observer for progressions completion action
-   *
-   */
-  val completionActionResult:
-      LiveData<Pair<Event<ProgressionActionDelegate.EpisodeProgressionActionResult>, Int>>
-    get() {
-      return progressionActionDelegate.completionActionResult
-    }
+) : ViewModel(), ProgressionAction by progressionActionDelegate {
 
   /**
    * Load progressions from database
@@ -52,13 +41,25 @@ class ProgressionViewModel @Inject constructor(
 
   /**
    * Update content progression state
+   *
+   * @param isConnected Device has internet?
+   * @param content Content for which progression to be updated
+   * @param position Content position in list
+   * @param updatedAt [LocalDateTime] Update time (Default to current time)
    */
-  fun updateContentProgression(episode: Data?, position: Int = 0) {
+  fun updateContentProgression(
+    isConnected: Boolean,
+    content: Data?,
+    position: Int = 0,
+    updatedAt: LocalDateTime = LocalDateTime.now(Clock.systemUTC())
+  ) {
     viewModelScope.launch {
       progressionActionDelegate.updateContentProgression(
-        episode,
+        isConnected,
+        content,
         position,
-        boundaryCallbackNotifier
+        boundaryCallbackNotifier,
+        updatedAt
       )
     }
   }

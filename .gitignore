@@ -70,3 +70,10 @@ fastlane/readme.md
 /gradle.properties
 .DS_Store
 .cxx
+
+# VSCode
+.project
+.settings/org.eclipse.buildship.core.prefs
+*/.classpath
+*/.project
+*/.settings/org.eclipse.buildship.core.prefs

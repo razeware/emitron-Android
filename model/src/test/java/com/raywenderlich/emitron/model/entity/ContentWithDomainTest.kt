@@ -28,7 +28,6 @@ class ContentWithDomainTest {
       cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
       videoId = "1",
       bookmarkId = "1",
-      progressionId = "1",
       updatedAt = "2019-08-08T00:00:00.000Z"
     )
     val domains = listOf(
@@ -66,7 +65,6 @@ class ContentWithDomainTest {
         cardArtworkUrl = "https://koenig-media.raywenderlich.com/",
         videoId = "1",
         bookmarkId = "1",
-        progressionId = "1",
         updatedAt = "2019-08-08T00:00:00.000Z"
       ),
       domains = listOf(
@@ -94,13 +92,13 @@ class ContentWithDomainTest {
           difficulty = "beginner",
           duration = 408,
           free = false,
-          popularity = 0.0,
+          popularity = null,
           releasedAt = "2019-08-08T00:00:00.000Z",
           uri = null,
-          target = 0,
-          progress = 0,
-          finished = false,
-          percentComplete = 0.0,
+          target = null,
+          progress = null,
+          finished = null,
+          percentComplete = null,
           updatedAt = null,
           technology = "Swift, iOS",
           contributors = "Luke",

@@ -1,6 +1,7 @@
 package com.raywenderlich.emitron.model
 
 import com.google.common.truth.Truth.assertThat
+import com.raywenderlich.emitron.model.entity.Progression
 import com.raywenderlich.emitron.model.utils.isEqualTo
 import org.junit.Test
 
@@ -11,6 +12,10 @@ class ContentTest {
     val datum = Data(attributes = Attributes(percentComplete = 10.0))
     val content = Content(datum = datum)
     assertThat(content.getPercentComplete()).isEqualTo(10)
+
+    val datum2 = null
+    val content2 = Content(datum = datum2)
+    assertThat(content2.getPercentComplete()).isEqualTo(0)
   }
 
   @Test
@@ -48,6 +53,48 @@ class ContentTest {
 
     val content2 = Content()
     assertThat(content2.getChildId()).isNull()
+  }
+
+  @Test
+  fun toProgression() {
+    val datum = Data(
+      id = "1",
+      attributes = Attributes(percentComplete = 10.0),
+      relationships = Relationships(
+        content = Content(datum = Data(id = "2"))
+      )
+    )
+    val content = Content(datum = datum)
+
+    content.toProgression() isEqualTo Progression(
+      contentId = "2",
+      progressionId = "1",
+      percentComplete = 10,
+      finished = false,
+      synced = true
+    )
+  }
+
+  @Test
+  fun toggleFinished() {
+    val datum = Data(
+      id = "1",
+      attributes = Attributes(percentComplete = 10.0, finished = false),
+      relationships = Relationships(
+        content = Content(datum = Data(id = "2"))
+      )
+    )
+    val content = Content(datum = datum)
+
+    content.toggleFinished() isEqualTo Content(
+      datum = Data(
+        id = "1",
+        attributes = Attributes(percentComplete = 10.0, finished = true),
+        relationships = Relationships(
+          content = Content(datum = Data(id = "2"))
+        )
+      )
+    )
   }
 
   @Test
@@ -198,14 +245,6 @@ class ContentTest {
   fun newBookmark() {
     val bookmark = Content.newBookmark("1")
     assertThat(bookmark.datum?.type).isEqualTo("bookmarks")
-    assertThat(bookmark.datum?.relationships?.content?.getChildId()).isEqualTo("1")
-    assertThat(bookmark.datum?.relationships?.content?.datum?.type).isEqualTo("contents")
-  }
-
-  @Test
-  fun newProgression() {
-    val bookmark = Content.newProgression("1")
-    assertThat(bookmark.datum?.type).isEqualTo("progressions")
     assertThat(bookmark.datum?.relationships?.content?.getChildId()).isEqualTo("1")
     assertThat(bookmark.datum?.relationships?.content?.datum?.type).isEqualTo("contents")
   }

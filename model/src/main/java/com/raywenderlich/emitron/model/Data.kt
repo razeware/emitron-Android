@@ -3,10 +3,12 @@ package com.raywenderlich.emitron.model
 import android.os.Parcelable
 import com.raywenderlich.emitron.model.entity.Category
 import com.raywenderlich.emitron.model.entity.Domain
+import com.raywenderlich.emitron.model.entity.Progression
 import com.raywenderlich.emitron.model.utils.TimeUtils
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 import org.threeten.bp.LocalDateTime
+import org.threeten.bp.format.DateTimeFormatter
 
 /**
  *  Model class for Bookmark, Domain, Progression, Content, Group.
@@ -101,7 +103,7 @@ data class Data(
   /**
    *  @return true if content doesn't require subscription, else false
    */
-  fun isFreeContent(): Boolean = attributes?.professional != true
+  fun isProfessional(): Boolean = attributes?.professional == true
 
   /**
    *  If data represents a progression object
@@ -128,13 +130,7 @@ data class Data(
   /**
    *  @return true if user has watched the content, else false
    */
-  fun isFinished(): Boolean = attributes?.finished ?: false || isProgressionFinished()
-
-  /**
-   *  @return true if content requires subscription, else false
-   */
-  fun isProLabelVisible(): Boolean =
-    !isTypeProgression() && !isFreeContent() && !isFinished()
+  fun isFinished(): Boolean = attributes?.finished ?: false
 
   /**
    *  @return [TimeUtils.Day] after parsing release date of content
@@ -212,7 +208,7 @@ data class Data(
 
     val updatedRelationships = relationships
       ?.updateDomains(updatedRelations)
-      ?.updateProgression(updatedRelations)
+      ?.updateProgression(id, updatedRelations)
       ?.updateBookmark(updatedRelations) ?: Relationships()
 
     return this.copy(relationships = updatedRelationships)
@@ -286,6 +282,15 @@ data class Data(
   }
 
   /**
+   *  Remove download from data
+   *
+   *  @return Data after removing bookmark
+   */
+  fun removeDownload(): Data {
+    return this.copy(download = null)
+  }
+
+  /**
    *  @return true if type is [DataType.Groups], otherwise false
    */
   fun isTypeGroup(): Boolean = DataType.Groups == DataType.fromValue(type)
@@ -319,6 +324,18 @@ data class Data(
   /**
    * Mark episode finished/ or in-progress
    */
+  fun toggleProgressionFinished(): Data {
+    val relationships = if (null != relationships) {
+      this.relationships.toggleFinished()
+    } else {
+      Relationships().toggleFinished()
+    }
+    return this.copy(relationships = relationships)
+  }
+
+  /**
+   * Mark episode finished/ or in-progress
+   */
   fun toggleFinished(): Data =
     this.copy(attributes = this.attributes?.copy(finished = !this.isFinished()))
 
@@ -326,13 +343,13 @@ data class Data(
    * Get episode number
    *
    * @param position Episode position
-   * @param episodeIsProContent Episode requires subscription
+   * @param playbackAllowed Episode playback allowed
    *
    * @return Empty String if episode is finished or it requires subscription,
    * else String of position
    */
-  fun getEpisodeNumber(position: Int, episodeIsProContent: Boolean): String =
-    if (episodeIsProContent || isFinished()) "" else position.toString()
+  fun getEpisodeNumber(position: Int, playbackAllowed: Boolean): String =
+    if (!playbackAllowed || isProgressionFinished()) "" else position.toString()
 
   /**
    *  @return content id for relationships
@@ -411,6 +428,32 @@ data class Data(
   fun updateDownloadProgress(download: Download?): Data {
     return this.copy(download = download)
   }
+
+  /**
+   * Create [Progression] from [Data]
+   *
+   * @param contentId Content id for progression
+   */
+  fun toProgression(contentId: String): Progression = Progression(
+    contentId = contentId,
+    progressionId = id,
+    percentComplete = getPercentComplete(),
+    finished = isFinished(),
+    synced = true
+  )
+
+
+  /**
+   * Create [Progression] from response [Data]
+   */
+  fun toProgression(): Progression = Progression(
+    contentId = getContentId(),
+    progressionId = id,
+    progress = getProgress(),
+    percentComplete = getPercentComplete(),
+    finished = isFinished(),
+    synced = true
+  )
 
   companion object {
 
@@ -540,6 +583,29 @@ data class Data(
           name = sortOrder
         )
       )
+
+    /**
+     * Create content object for creating new progression
+     *
+     * @param contentId id of content for which progression has to be created/updated
+     * @param finished true if content is completed else false
+     * @param progress
+     * @param updatedAt Update at time
+     */
+    fun newProgression(
+      contentId: String,
+      finished: Boolean = false,
+      progress: Long = 0,
+      updatedAt: LocalDateTime
+    ): Data =
+      Data(
+        type = DataType.Progressions.toRequestFormat(),
+        attributes = Attributes(
+          contentId = contentId,
+          progress = progress,
+          finished = finished,
+          updatedAt = updatedAt.format(DateTimeFormatter.ISO_DATE_TIME)
+        )
+      )
   }
 }
-

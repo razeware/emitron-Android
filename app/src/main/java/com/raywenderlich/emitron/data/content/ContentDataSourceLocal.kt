@@ -9,10 +9,7 @@ import com.raywenderlich.emitron.data.progressions.dao.ProgressionDao
 import com.raywenderlich.emitron.model.ContentType
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.DataType
-import com.raywenderlich.emitron.model.DownloadState
 import com.raywenderlich.emitron.model.entity.*
-import org.threeten.bp.LocalDateTime
-import org.threeten.bp.format.DateTimeFormatter
 import javax.inject.Inject
 
 /**
@@ -43,8 +40,7 @@ class ContentDataSourceLocal @Inject constructor(
     val progressionList = when (dataType) {
       DataType.Bookmarks -> emptyList()
       else -> {
-        val progressions = contents.mapNotNull { it.relationships?.progression }
-        Progression.listFrom(progressions)
+        Progression.listFrom(contents)
       }
     }
 
@@ -126,8 +122,9 @@ class ContentDataSourceLocal @Inject constructor(
    * @param contentId Content id
    * @param bookmarkId Bookmark id
    */
-  suspend fun updateBookmark(contentId: String, bookmarkId: String?): Unit =
+  suspend fun updateBookmark(contentId: String, bookmarkId: String?) {
     contentDao.updateBookmark(contentId, bookmarkId)
+  }
 
   /**
    * Get progressions DataSource.Factory
@@ -135,15 +132,6 @@ class ContentDataSourceLocal @Inject constructor(
   fun getProgressions(completed: Boolean):
       DataSource.Factory<Int, ContentWithDomainAndProgression> =
     contentDao.getProgressions(completed, ContentType.getAllowedContentTypes())
-
-  /**
-   * Update content progress
-   *
-   * @param contentId Content id
-   * @param finished Content finished
-   */
-  suspend fun updateProgress(contentId: String, finished: Boolean): Unit =
-    progressionDao.updateProgress(contentId, finished)
 
   /**
    * Delete all tables
@@ -160,115 +148,4 @@ class ContentDataSourceLocal @Inject constructor(
       downloadDao
     )
   }
-
-  /**
-   * Update content download url
-   *
-   * @param contentId Content id
-   * @param url Download url
-   */
-  fun updateDownloadUrl(
-    contentId: String,
-    url: String
-  ): Unit = downloadDao.updateUrl(contentId, url, DownloadState.IN_PROGRESS.ordinal)
-
-  /**
-   * Update download progress
-   *
-   * @param contentId Content id
-   * @param progress Int
-   * @param state Download state [DownloadState]
-   */
-  suspend fun updateDownloadProgress(
-    contentId: String,
-    progress: Int,
-    state: DownloadState
-  ): Unit =
-    downloadDao.updateProgress(contentId, progress, state.ordinal)
-
-  /**
-   * Update download state
-   *
-   * @param contentId Content id
-   * @param state Download state [DownloadState]
-   */
-  fun updateDownloadState(
-    contentId: String,
-    state: DownloadState
-  ): Unit =
-    downloadDao.updateState(contentId, state.ordinal)
-
-  /**
-   * Add new download
-   *
-   * @param contentId Content id
-   * @param state Download state
-   * @param createdAt LocalDateTime
-   */
-  suspend fun insertDownload(
-    contentId: String,
-    state: DownloadState,
-    createdAt: LocalDateTime
-  ) {
-    val download = Download(
-      contentId,
-      state = state.ordinal,
-      createdAt = createdAt.format(DateTimeFormatter.ISO_DATE_TIME)
-    )
-    downloadDao.insert(download)
-  }
-
-  /**
-   * Remove a download
-   *
-   * @param downloadIds Download id
-   */
-  suspend fun deleteDownload(
-    downloadIds: List<String>
-  ) {
-    downloadDao.delete(downloadIds)
-  }
-
-  /**
-   * Delete all downloads
-   */
-  suspend fun deleteAllDownloads() {
-    downloadDao.deleteAll()
-  }
-
-  /**
-   * Get queued downloads
-   *
-   * @param limit no. of pending downloads to fetch
-   * @param states download states
-   * @param contentTypes download contentTypes
-   */
-  suspend fun getQueuedDownloads(
-    limit: Int = 1,
-    states: Array<Int>,
-    contentTypes: Array<String>
-  ): List<DownloadWithContent> =
-    downloadDao.getQueuedDownloads(limit, states, contentTypes)
-
-  /**
-   * Get queued download by id
-   *
-   * @param downloadId Download id
-   */
-  suspend fun getDownload(downloadId: String): DownloadWithContent? =
-    downloadDao.getDownload(downloadId)
-
-  /**
-   * Get queued downloads factory
-   */
-  fun getQueuedDownloads(): DataSource.Factory<Int, DownloadWithContent> =
-    downloadDao.getQueuedDownloads(ContentType.getAllowedContentTypes())
-
-  /**
-   * Get downloads by id
-   *
-   * @param ids Download ids
-   */
-  fun getDownloadsById(ids: List<String>): LiveData<List<Download>> =
-    downloadDao.getDownloadsById(ids)
 }
