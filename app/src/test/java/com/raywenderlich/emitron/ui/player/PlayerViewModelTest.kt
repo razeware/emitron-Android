@@ -806,4 +806,23 @@ class PlayerViewModelTest {
       viewModel.hasMoreEpisodes() isEqualTo false
     }
   }
+
+  @Test
+  fun getAllEpisodes() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      whenever(videoRepository.getVideoStream(anyString())).doReturn(createContent())
+      whenever(videoRepository.getVideoPlaybackToken()).doReturn(createContent())
+
+      // When
+      viewModel.startPlayback(createPlaylist(createContentData()))
+
+      viewModel.getAllEpisodes() isEqualTo listOf(
+        createContentData(id = "1", videoId = 1),
+        createContentData(id = "2", videoId = 2),
+        createContentData(id = "3", videoId = 3),
+        createContentData(id = "4", videoId = 4)
+      )
+    }
+  }
 }

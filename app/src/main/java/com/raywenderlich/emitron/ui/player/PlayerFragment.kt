@@ -19,6 +19,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import androidx.work.WorkManager
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
@@ -257,6 +260,8 @@ class PlayerFragment : DaggerFragment() {
 
   private lateinit var subtitlesBottomSheet: BottomSheetDialog
 
+  private lateinit var playlistBottomSheet: BottomSheetDialog
+
   private lateinit var playbackBufferingProgress: ProgressBar
 
   private var progressHandler: Handler? = null
@@ -339,7 +344,7 @@ class PlayerFragment : DaggerFragment() {
 
       playerPlaylistButton = findViewById(R.id.button_player_playlist)
       playerPlaylistButton.setOnClickListener {
-        findNavController().popBackStack()
+        showPlaylistBottomSheet()
       }
 
       playerNextButton = findViewById(R.id.player_next_episode)
@@ -632,6 +637,9 @@ class PlayerFragment : DaggerFragment() {
   private fun isShowingPlaybackTokenBottomSheet() =
     ::playbackTokenErrorBottomSheet.isInitialized && playbackTokenErrorBottomSheet.isShowing
 
+  private fun isShowingPlaylistBottomSheet() =
+    ::playlistBottomSheet.isInitialized && playlistBottomSheet.isShowing
+
 
   private fun showSubtitleBottomSheet() {
     if (isShowingSubtitlesBottomSheet()) {
@@ -658,6 +666,9 @@ class PlayerFragment : DaggerFragment() {
     subtitlesBottomSheet.show()
   }
 
+  /**
+   * [Fragment.onDestroyView]
+   */
   override fun onDestroyView() {
     super.onDestroyView()
     dismissBottomSheets()
@@ -728,5 +739,30 @@ class PlayerFragment : DaggerFragment() {
       playerView.useController = !isInPictureInPictureMode
       toolbar.toVisibility(!isInPictureInPictureMode)
     }
+  }
+
+  private fun showPlaylistBottomSheet() {
+    if (isShowingPlaylistBottomSheet()) {
+      return
+    }
+    val sheetView = requireActivity().layoutInflater
+      .inflate(R.layout.layout_player_playlist, null)
+    playlistBottomSheet = createBottomSheetDialog(sheetView)
+
+    val recycleView: RecyclerView =
+      sheetView.findViewById(R.id.recycler_view_playlist)
+
+    with(recycleView) {
+      layoutManager = GridLayoutManager(
+        requireContext(),
+        3,
+        LinearLayoutManager.HORIZONTAL,
+        false
+      )
+      adapter = PlaylistBottomSheetAdapter(viewModel.getAllEpisodes()) {
+
+      }
+    }
+    playlistBottomSheet.show()
   }
 }

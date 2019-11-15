@@ -447,5 +447,10 @@ class PlayerViewModel @Inject constructor(
     private const val MILLIS_IN_A_SEC: Long = 1000L
     private val COMPLETION_PERCENTAGE: Array<Int> = arrayOf(99, 100)
   }
+
+  /**
+   * Get all playlist episodes
+   */
+  fun getAllEpisodes(): List<Data> = _playlist.value?.episodes ?: emptyList()
 }
 
