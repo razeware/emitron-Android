@@ -7,11 +7,16 @@ import android.os.Build
 import com.raywenderlich.emitron.BuildConfig
 import com.raywenderlich.emitron.R
 
-
+/**
+ * Utility class for app support
+ */
 object Support {
 
   private const val supportEmails = "support@razeware.com"
 
+  /**
+   * Share App
+   */
   fun shareApp(ctx: Context) {
     val shareIntent = Intent(Intent.ACTION_SEND).apply {
       type = "text/plain";//NON-NLS
@@ -21,6 +26,9 @@ object Support {
     ctx.startActivity(shareIntent)
   }
 
+  /**
+   * Send Feedback
+   */
   fun sendFeedback(ctx: Context) {
     val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
       data = Uri.parse("mailto:")

@@ -1,5 +1,6 @@
 package com.raywenderlich.emitron.ui.settings
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.navigation.navGraphViewModels
 import androidx.navigation.ui.setupWithNavController
 import androidx.work.WorkManager
 import com.crashlytics.android.Crashlytics
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.raywenderlich.emitron.BuildConfig
 import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentSettingsBinding
@@ -79,110 +81,120 @@ class SettingsFragment : DaggerFragment() {
       SignOutWorker.enqueue(WorkManager.getInstance(requireContext()))
       findNavController().navigate(R.id.action_navigation_settings_to_navigation_login)
     })
-    viewModel.nightMode.observe(viewLifecycleOwner) {
-      it?.let { nightMode ->
-        val nightModeResId = when (nightMode) {
-          AppCompatDelegate.MODE_NIGHT_YES -> R.string.button_on
-          AppCompatDelegate.MODE_NIGHT_NO -> R.string.button_off
-          else -> R.string.button_system_default
-        }
-        binding.settingsSelectedNightMode.text = getString(nightModeResId)
-        AppCompatDelegate.setDefaultNightMode(nightMode)
-      }
-    }
-    viewModel.crashReportingAllowed.observe(viewLifecycleOwner) {
-      it?.let {
-        binding.switchCrashReporting.isChecked = it
-        if (it) {
-          Fabric.with(requireContext(), Crashlytics())
+
+    with(viewModel) {
+      nightMode.observe(viewLifecycleOwner) {
+        it?.let { nightMode ->
+          val nightModeResId = when (nightMode) {
+            AppCompatDelegate.MODE_NIGHT_YES -> R.string.button_on
+            AppCompatDelegate.MODE_NIGHT_NO -> R.string.button_off
+            else -> R.string.button_system_default
+          }
+          binding.settingsSelectedNightMode.text = getString(nightModeResId)
+          AppCompatDelegate.setDefaultNightMode(nightMode)
         }
       }
-    }
-    viewModel.playbackQuality.observe(viewLifecycleOwner) {
-      it?.let { quality ->
-        binding.settingsSelectedVideoQuality.text = getString(
-          playbackQualityToResIdMap.getOrElse(
-            quality
-          ) {
-            R.string.playback_quality_1080p
+      crashReportingAllowed.observe(viewLifecycleOwner) {
+        it?.let {
+          binding.switchCrashReporting.isChecked = it
+          if (it) {
+            Fabric.with(requireContext(), Crashlytics())
           }
-        )
+        }
       }
-    }
-    viewModel.playbackSpeed.observe(viewLifecycleOwner) {
-      it?.let { speed ->
-        binding.settingsSelectedVideoSpeed.text = getString(
-          playbackSpeedToResIdMap.getOrElse(
-            speed
-          ) {
-            R.string.playback_speed_normal
-          }
-        )
+      playbackQuality.observe(viewLifecycleOwner) {
+        it?.let { quality ->
+          binding.settingsSelectedVideoQuality.text = getString(
+            playbackQualityToResIdMap.getOrElse(
+              quality
+            ) {
+              R.string.playback_quality_1080p
+            }
+          )
+        }
       }
-    }
-    viewModel.subtitlesLanguage.observe(viewLifecycleOwner) {
-      it?.let { language ->
-        binding.settingsSelectedSubtitleLanguage.text = getString(
-          playbackSubtitleLanguageToResIdMap.getOrElse(
-            language
-          ) {
-            R.string.button_off
-          })
+      playbackSpeed.observe(viewLifecycleOwner) {
+        it?.let { speed ->
+          binding.settingsSelectedVideoSpeed.text = getString(
+            playbackSpeedToResIdMap.getOrElse(
+              speed
+            ) {
+              R.string.playback_speed_normal
+            }
+          )
+        }
       }
-    }
-    viewModel.downloadQuality.observe(viewLifecycleOwner) {
-      it?.let { quality ->
-        binding.settingsSelectedDownloadQuality.text = getString(
-          downloadQualityToResIdMap.getOrElse(
-            quality
-          ) {
-            R.string.download_quality_high
-          })
+      subtitlesLanguage.observe(viewLifecycleOwner) {
+        it?.let { language ->
+          binding.settingsSelectedSubtitleLanguage.text = getString(
+            playbackSubtitleLanguageToResIdMap.getOrElse(
+              language
+            ) {
+              R.string.button_off
+            })
+        }
       }
-    }
-    viewModel.downloadsWifiOnly.observe(viewLifecycleOwner) {
-      it?.let {
-        binding.switchDownloadNetwork.isChecked = it
+      downloadQuality.observe(viewLifecycleOwner) {
+        it?.let { quality ->
+          binding.settingsSelectedDownloadQuality.text = getString(
+            downloadQualityToResIdMap.getOrElse(
+              quality
+            ) {
+              R.string.download_quality_high
+            })
+        }
+      }
+      downloadsWifiOnly.observe(viewLifecycleOwner) {
+        it?.let {
+          binding.switchDownloadNetwork.isChecked = it
+        }
       }
     }
   }
 
   private fun initUi() {
-    binding.toolbar.setupWithNavController(
-      findNavController(),
-      getDefaultAppBarConfiguration()
-    )
+    with(binding) {
+      toolbar.setupWithNavController(
+        findNavController(),
+        getDefaultAppBarConfiguration()
+      )
 
-    binding.titleVersionName.text = BuildConfig.VERSION_NAME
-    binding.switchCrashReporting.setOnCheckedChangeListener { _, checked ->
-      viewModel.updateCrashReportingAllowed(checked)
-    }
-    binding.settingsNightMode.setOnClickListener {
-      showSettingsBottomSheet(R.string.label_night_mode)
-    }
-    binding.settingsVideoQuality.setOnClickListener {
-      showSettingsBottomSheet(R.string.label_video_playback_quality)
-    }
-    binding.settingsVideoSpeed.setOnClickListener {
-      showSettingsBottomSheet(R.string.label_video_playback_speed)
-    }
-    binding.settingsSubtitleLanguage.setOnClickListener {
-      showSettingsBottomSheet(R.string.label_subtitles)
-    }
-    binding.switchDownloadNetwork.setOnCheckedChangeListener { _, checked ->
-      viewModel.updateDownloadsWifiOnly(checked)
-    }
-    binding.settingsDownloadQuality.setOnClickListener {
-      showSettingsBottomSheet(R.string.label_download_quality)
-    }
-    binding.buttonLogout.setOnClickListener {
-      guardpostDelegate.logout()
-    }
-    binding.settingsShareApp.setOnClickListener {
-      Support.shareApp(requireContext())
-    }
-    binding.settingsSendFeedback.setOnClickListener {
-      Support.sendFeedback(requireContext())
+      titleVersionName.text = getString(
+        R.string.label_version, BuildConfig.VERSION_NAME
+      )
+      switchCrashReporting.setOnCheckedChangeListener { _, checked ->
+        viewModel.updateCrashReportingAllowed(checked)
+      }
+      settingsNightMode.setOnClickListener {
+        showSettingsBottomSheet(R.string.label_night_mode)
+      }
+      settingsVideoQuality.setOnClickListener {
+        showSettingsBottomSheet(R.string.label_video_playback_quality)
+      }
+      settingsVideoSpeed.setOnClickListener {
+        showSettingsBottomSheet(R.string.label_video_playback_speed)
+      }
+      settingsSubtitleLanguage.setOnClickListener {
+        showSettingsBottomSheet(R.string.label_subtitles)
+      }
+      switchDownloadNetwork.setOnCheckedChangeListener { _, checked ->
+        viewModel.updateDownloadsWifiOnly(checked)
+      }
+      settingsDownloadQuality.setOnClickListener {
+        showSettingsBottomSheet(R.string.label_download_quality)
+      }
+      buttonLogout.setOnClickListener {
+        guardpostDelegate.logout()
+      }
+      settingsShareApp.setOnClickListener {
+        Support.shareApp(requireContext())
+      }
+      settingsSendFeedback.setOnClickListener {
+        Support.sendFeedback(requireContext())
+      }
+      settingsOssLicenses.setOnClickListener {
+        startActivity(Intent(requireActivity(), OssLicensesMenuActivity::class.java))
+      }
     }
   }
 

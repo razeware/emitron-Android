@@ -136,6 +136,8 @@
   <string name="share_app_title">Share Raywenderlich.com App</string>
   <string name="share_app_body">High quality programming tutorials: iOS, Android, Swift, Kotlin, Flutter, Server Side Swift, Unity, and more!
   Download the App at market://com.raywenderlich.com/emitron</string>
+  <string name="label_open_source">Open-source licenses</string>
+  <string name="label_version">Version %1$s</string>
 
   <!-- My tutorials -->
   <string name="button_delete">Delete</string>

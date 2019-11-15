@@ -12,6 +12,8 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 
+apply plugin: 'com.google.android.gms.oss-licenses-plugin'
+
 android {
   compileSdkVersion versions.compileSdk
 
@@ -180,6 +182,10 @@ dependencies {
   implementation "com.jakewharton.threetenabp:threetenabp:${versions.threetenabp}"
   implementation "com.afollestad:viewpagerdots:${versions.viewpagerdots}"
 
+  implementation "com.squareup.inject:assisted-inject-annotations-dagger2:${versions.assistedInject}"
+  kapt "com.squareup.inject:assisted-inject-processor-dagger2:${versions.assistedInject}"
+
+  implementation "com.google.android.gms:play-services-oss-licenses:${versions.playOss}"
 }
 
 apply plugin: 'com.google.gms.google-services'

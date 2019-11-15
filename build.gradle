@@ -68,11 +68,15 @@ buildscript {
       'firebaseConfig'              : '18.0.0',
       'firebasePerf'                : '19.0.2',
 
+      // play services
+      'playOss'                     : '17.0.0',
+
       // plugins
       'firebasePerfPlugin'          : "1.2.1",
       'fabricToolsPlugin'           : "1.29.0",
       'jacocoPlugin'                : "0.8.1",
       'googleServicesPlugin'        : "4.2.0",
+      'ossLicenses'                 : "0.9.5"
   ]
 
   repositories {
@@ -92,6 +96,7 @@ buildscript {
     classpath "com.google.gms:google-services:${versions.googleServicesPlugin}"
     classpath "com.google.firebase:perf-plugin:${versions.firebasePerfPlugin}"
     classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.navigation}"
+    classpath "com.google.android.gms:oss-licenses-plugin:${versions.ossLicenses}"
   }
 }
 
