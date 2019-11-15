@@ -13,8 +13,8 @@ import com.raywenderlich.emitron.model.DownloadState
 import com.raywenderlich.emitron.ui.common.UiStateViewModel
 import com.raywenderlich.emitron.ui.download.DownloadAction
 import com.raywenderlich.emitron.ui.download.DownloadActionDelegate
-import com.raywenderlich.emitron.ui.download.PermissionActionDelegate
-import com.raywenderlich.emitron.ui.download.PermissionsAction
+import com.raywenderlich.emitron.ui.login.PermissionActionDelegate
+import com.raywenderlich.emitron.ui.login.PermissionsAction
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionAction
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate

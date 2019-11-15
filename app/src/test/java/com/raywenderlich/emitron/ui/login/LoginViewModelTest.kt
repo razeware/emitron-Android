@@ -5,7 +5,6 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.raywenderlich.emitron.data.login.LoginRepository
-import com.raywenderlich.emitron.ui.download.PermissionActionDelegate
 import com.raywenderlich.emitron.utils.TestCoroutineRule
 import com.raywenderlich.guardpost.data.SSOUser
 import org.junit.Before

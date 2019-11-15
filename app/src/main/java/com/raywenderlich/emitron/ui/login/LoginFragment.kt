@@ -10,7 +10,6 @@ import androidx.work.WorkManager
 import com.raywenderlich.emitron.R
 import com.raywenderlich.emitron.databinding.FragmentLoginBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
-import com.raywenderlich.emitron.ui.download.PermissionActionDelegate
 import com.raywenderlich.emitron.ui.download.workers.VerifyDownloadWorker
 import com.raywenderlich.emitron.utils.extensions.*
 import dagger.android.support.DaggerFragment

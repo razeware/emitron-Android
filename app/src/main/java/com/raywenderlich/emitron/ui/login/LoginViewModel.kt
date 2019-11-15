@@ -3,8 +3,6 @@ package com.raywenderlich.emitron.ui.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.raywenderlich.emitron.data.login.LoginRepository
-import com.raywenderlich.emitron.ui.download.PermissionActionDelegate
-import com.raywenderlich.emitron.ui.download.PermissionsAction
 import com.raywenderlich.guardpost.data.SSOUser
 import kotlinx.coroutines.launch
 import javax.inject.Inject

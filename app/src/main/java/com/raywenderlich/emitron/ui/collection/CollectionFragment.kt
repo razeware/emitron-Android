@@ -23,9 +23,9 @@ import com.raywenderlich.emitron.model.isScreencast
 import com.raywenderlich.emitron.ui.common.getDefaultAppBarConfiguration
 import com.raywenderlich.emitron.ui.content.getReadableContributors
 import com.raywenderlich.emitron.ui.content.getReadableReleaseAtWithTypeAndDuration
-import com.raywenderlich.emitron.ui.download.PermissionActionDelegate
 import com.raywenderlich.emitron.ui.download.workers.RemoveDownloadWorker
 import com.raywenderlich.emitron.ui.download.workers.StartDownloadWorker
+import com.raywenderlich.emitron.ui.login.PermissionActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
 import com.raywenderlich.emitron.ui.onboarding.OnboardingView

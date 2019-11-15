@@ -9,7 +9,7 @@ import com.raywenderlich.emitron.data.content.ContentRepository
 import com.raywenderlich.emitron.data.login.LoginRepository
 import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.ui.download.DownloadActionDelegate
-import com.raywenderlich.emitron.ui.download.PermissionActionDelegate
+import com.raywenderlich.emitron.ui.login.PermissionActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.raywenderlich.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
 import com.raywenderlich.emitron.ui.onboarding.OnboardingActionDelegate

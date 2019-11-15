@@ -1,4 +1,4 @@
-package com.raywenderlich.emitron.ui.download
+package com.raywenderlich.emitron.ui.login
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth

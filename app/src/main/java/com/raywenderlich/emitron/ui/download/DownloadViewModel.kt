@@ -3,6 +3,8 @@ package com.raywenderlich.emitron.ui.download
 import androidx.lifecycle.ViewModel
 import com.raywenderlich.emitron.data.download.DownloadRepository
 import com.raywenderlich.emitron.ui.content.ContentPagedViewModel
+import com.raywenderlich.emitron.ui.login.PermissionActionDelegate
+import com.raywenderlich.emitron.ui.login.PermissionsAction
 import com.raywenderlich.emitron.ui.onboarding.OnboardingAction
 import com.raywenderlich.emitron.ui.onboarding.OnboardingActionDelegate
 import javax.inject.Inject
