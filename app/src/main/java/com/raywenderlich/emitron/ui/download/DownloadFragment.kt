@@ -19,6 +19,8 @@ import com.raywenderlich.emitron.ui.common.StartEndBottomMarginDecoration
 import com.raywenderlich.emitron.ui.common.SwipeActionCallback
 import com.raywenderlich.emitron.ui.content.ContentAdapter
 import com.raywenderlich.emitron.ui.content.ContentPagedFragment
+import com.raywenderlich.emitron.ui.download.helpers.DownloadHelper
+import com.raywenderlich.emitron.ui.download.helpers.DownloadProgressHelper
 import com.raywenderlich.emitron.ui.download.workers.RemoveDownloadWorker
 import com.raywenderlich.emitron.ui.mytutorial.MyTutorialFragmentDirections
 import com.raywenderlich.emitron.ui.onboarding.OnboardingView
@@ -68,18 +70,29 @@ class DownloadFragment : DaggerFragment() {
       retryCallback = ::loadDownloads,
       emptyCallback = ::handleEmpty,
       onItemRetry = ::loadDownloads,
-      adapterContentType = ContentAdapter.AdapterContentType.ContentDownloaded
+      adapterContentType = ContentAdapter.AdapterContentType.ContentDownloaded,
+      downloadCallback = { data, _ -> handleDownload(data) }
     )
   }
 
-  private val pagedFragment = lazy(LazyThreadSafetyMode.NONE) {
+  private val pagedFragment = lazy {
     ContentPagedFragment(
       viewModel.getPaginationViewModel(),
       adapter
     )
   }
 
+  private val downloadHelper: DownloadHelper by lazy {
+    DownloadHelper(this)
+  }
+
   private lateinit var binding: FragmentDownloadsBinding
+
+  /**
+   * Helper to observer download progress from [DownloadManager]
+   */
+  @Inject
+  lateinit var downloadProgressHelper: DownloadProgressHelper
 
   /**
    * See [Fragment.onCreateView]
@@ -103,6 +116,13 @@ class DownloadFragment : DaggerFragment() {
     loadDownloads()
     checkAndShowOnboarding()
     checkAndShowDownloadSubscription()
+    initDownloadProgress()
+  }
+
+  private fun initDownloadProgress() {
+    downloadProgressHelper.init(isVisible, requireContext(), emptyList()) {
+      viewModel.updateDownload(it)
+    }
   }
 
   private fun initUi() {
@@ -185,5 +205,10 @@ class DownloadFragment : DaggerFragment() {
 
   private fun checkAndShowDownloadSubscription() {
     binding.groupDownloadNoSubscription.toVisibility(!viewModel.isDownloadAllowed())
+  }
+
+  private fun handleDownload(content: Data? = null) {
+    val contentId = content?.id ?: return
+    downloadHelper.showDeleteDownloadedContentDialog(contentId)
   }
 }

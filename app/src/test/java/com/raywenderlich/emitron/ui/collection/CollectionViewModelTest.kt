@@ -857,11 +857,13 @@ class CollectionViewModelTest {
   fun updateDownload() {
     createViewModel()
     testCoroutineRule.runBlockingTest {
-      viewModel.updateDownload("1", 25, DownloadState.PAUSED)
-      verify(downloadActionDelegate).updateDownloadProgress(
-        "1", 25,
-        DownloadState.PAUSED
+      val downloadProgress = DownloadProgress(
+        "1",
+        25,
+        DownloadState.COMPLETED
       )
+      viewModel.updateDownload(downloadProgress)
+      verify(downloadActionDelegate).updateDownloadProgress(downloadProgress)
     }
   }
 

@@ -9,7 +9,7 @@ import com.raywenderlich.emitron.data.content.ContentRepository
 import com.raywenderlich.emitron.model.Content
 import com.raywenderlich.emitron.model.ContentType
 import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.model.DownloadState
+import com.raywenderlich.emitron.model.DownloadProgress
 import com.raywenderlich.emitron.ui.common.UiStateViewModel
 import com.raywenderlich.emitron.ui.download.DownloadAction
 import com.raywenderlich.emitron.ui.download.DownloadActionDelegate
@@ -315,13 +315,11 @@ class CollectionViewModel @Inject constructor(
   /**
    * Update download progress
    *
-   * @param contentId Content id
-   * @param progress Int
-   * @state Download state
+   * @param downloadProgress Download progress
    */
-  fun updateDownload(contentId: String, progress: Int, state: DownloadState) {
+  fun updateDownload(downloadProgress: DownloadProgress) {
     viewModelScope.launch {
-      downloadActionDelegate.updateDownloadProgress(contentId, progress, state)
+      downloadActionDelegate.updateDownloadProgress(downloadProgress)
     }
   }
 

@@ -6,6 +6,7 @@ import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.raywenderlich.emitron.data.*
 import com.raywenderlich.emitron.data.download.DownloadRepository
 import com.raywenderlich.emitron.model.Download
+import com.raywenderlich.emitron.model.DownloadProgress
 import com.raywenderlich.emitron.model.DownloadState
 import com.raywenderlich.emitron.utils.TestCoroutineRule
 import com.raywenderlich.emitron.utils.isEqualTo
@@ -42,14 +43,17 @@ class DownloadActionDelegateTest {
   fun updateDownloadProgress() {
     testCoroutineRule.runBlockingTest {
 
-      // When
-      viewModel.updateDownloadProgress("1", 25, DownloadState.COMPLETED)
-
-      verify(downloadRepository).updateDownloadProgress(
+      // Given
+      val downloadProgress = DownloadProgress(
         "1",
         25,
         DownloadState.COMPLETED
       )
+
+      // When
+      viewModel.updateDownloadProgress(downloadProgress)
+
+      verify(downloadRepository).updateDownloadProgress(downloadProgress)
       verifyNoMoreInteractions(downloadRepository)
     }
   }
@@ -135,8 +139,8 @@ class DownloadActionDelegateTest {
 
     // Then
     result isEqualTo Download(
-      progress = 0,
-      state = 5,
+      progress = 100,
+      state = DownloadState.COMPLETED.ordinal,
       failureReason = 0,
       url = null
     )

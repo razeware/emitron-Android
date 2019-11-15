@@ -3,10 +3,8 @@ package com.raywenderlich.emitron.ui.download
 import androidx.lifecycle.LiveData
 import com.raywenderlich.emitron.data.download.DownloadRepository
 import com.raywenderlich.emitron.model.Data
-import com.raywenderlich.emitron.model.DownloadState
+import com.raywenderlich.emitron.model.DownloadProgress
 import com.raywenderlich.emitron.model.entity.Download
-import com.raywenderlich.emitron.model.entity.inProgress
-import com.raywenderlich.emitron.model.entity.isCompleted
 import javax.inject.Inject
 
 /**
@@ -40,15 +38,9 @@ interface DownloadAction {
   /**
    * Update download progress
    *
-   * @param contentId Content id
-   * @param progress Int
-   * @state Download state
+   * @param progress [DownloadProgress]
    */
-  suspend fun updateDownloadProgress(
-    contentId: String,
-    progress: Int,
-    state: DownloadState
-  )
+  suspend fun updateDownloadProgress(progress: DownloadProgress)
 }
 
 /**
@@ -78,45 +70,17 @@ class DownloadActionDelegate @Inject constructor(
         downloads.first { it.downloadId == collectionId }.toDownloadState()
       download
     } else {
-      getVideoCourseDownloadState(downloads, downloadIds)
+      getVideoCourseDownloadState(downloads)
     }
   }
 
   private fun getVideoCourseDownloadState(
-    downloads: List<Download>,
-    downloadIds: List<String>
+    downloads: List<Download>
   ): com.raywenderlich.emitron.model.Download? {
-    if (downloads.isEmpty()) {
-      return null
-    }
-
-    val downloadProgress: Pair<Int, Int> = when {
-      downloads.any { it.inProgress() } -> {
-        downloads.map {
-          it.progress
-        }.reduce { acc, i ->
-          i + acc
-        } to DownloadState.IN_PROGRESS.ordinal
-      }
-      downloadIds.size == downloads.size && downloads.all { it.isCompleted() } -> {
-        100 to DownloadState.COMPLETED.ordinal
-      }
-      else -> {
-        0 to DownloadState.PAUSED.ordinal
-      }
-    }
-
-    return com.raywenderlich.emitron.model.Download(
-      progress = downloadProgress.first,
-      state = downloadProgress.second
-    )
+    return com.raywenderlich.emitron.model.Download.fromEpisodeDownloads(downloads)
   }
 
-  override suspend fun updateDownloadProgress(
-    contentId: String,
-    progress: Int,
-    state: DownloadState
-  ) {
-    downloadRepository.updateDownloadProgress(contentId, progress, state)
+  override suspend fun updateDownloadProgress(progress: DownloadProgress) {
+    downloadRepository.updateDownloadProgress(progress)
   }
 }
