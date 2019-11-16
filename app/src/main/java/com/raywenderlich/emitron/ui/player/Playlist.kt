@@ -32,3 +32,36 @@ fun Playlist?.isNotDownloaded(): Boolean =
   null != this &&
       this.collection?.isDownloaded() != true &&
       this.episodes.any { !it.isDownloaded() }
+
+/**
+ * Playlist items
+ */
+fun Playlist?.size(): Int {
+  this ?: return 0
+  return if (this.episodes.isNullOrEmpty()) {
+    1
+  } else {
+    this.episodes.size
+  }
+}
+
+/**
+ * Playlist items
+ */
+fun Playlist?.hasEpisodes(): Boolean =
+  null != this &&
+      !this.episodes.isNullOrEmpty()
+
+/**
+ * Update current episode by position
+ *
+ * @param position Int
+ */
+fun Playlist.updateCurrentEpisode(position: Int): Playlist {
+  if (!hasEpisodes() || position > size()) {
+    return this
+  }
+  return copy(currentEpisode = episodes[position])
+}
+
+

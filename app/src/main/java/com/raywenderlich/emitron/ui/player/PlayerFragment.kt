@@ -301,7 +301,7 @@ class PlayerFragment : DaggerFragment() {
     requestLandscapeOrientation()
     initUi()
     initObservers()
-    startPlayback()
+    startPlayback(args.playlist)
   }
 
   private fun initToolbar() {
@@ -379,8 +379,7 @@ class PlayerFragment : DaggerFragment() {
     )
   }
 
-  private fun startPlayback() {
-    val playlist = args.playlist
+  private fun startPlayback(playlist: Playlist?) {
     if (playlist.isNotDownloaded() && isNetNotConnected()) {
       showErrorSnackbar(getString(R.string.error_no_connection))
       return
@@ -760,9 +759,16 @@ class PlayerFragment : DaggerFragment() {
         false
       )
       adapter = PlaylistBottomSheetAdapter(viewModel.getAllEpisodes()) {
-
+        startPlaybackAtPosition(it)
       }
     }
     playlistBottomSheet.show()
+  }
+
+  private fun startPlaybackAtPosition(position: Int) {
+    val playlist = args.playlist
+    playlist ?: return
+    startPlayback(playlist.updateCurrentEpisode(position))
+    playlistBottomSheet.dismiss()
   }
 }
