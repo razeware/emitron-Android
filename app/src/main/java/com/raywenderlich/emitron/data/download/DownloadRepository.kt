@@ -88,6 +88,22 @@ class DownloadRepository @Inject constructor(
   }
 
   /**
+   * Get in progress downloads
+   *
+   * @param contentTypes
+   */
+  @AnyThread
+  suspend fun getInProgressDownloads(
+    contentTypes: Array<String>
+  ): List<DownloadWithContent> {
+    return withContext(threadManager.db) {
+      downloadDataSource.getInProgressDownloads(
+        contentTypes
+      )
+    }
+  }
+
+  /**
    * Get queued download by id
    *
    * @param downloadId Download id
@@ -206,7 +222,7 @@ class DownloadRepository @Inject constructor(
    */
   @AnyThread
   suspend fun updateDownloadState(
-    contentId: String,
+    contentId: List<String>,
     state: DownloadState
   ) {
     withContext(threadManager.db) {

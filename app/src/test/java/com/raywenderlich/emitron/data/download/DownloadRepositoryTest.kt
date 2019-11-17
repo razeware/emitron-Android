@@ -5,7 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.content.ContentDataSourceLocal
 import com.raywenderlich.emitron.data.createContent
-import com.raywenderlich.emitron.model.*
+import com.raywenderlich.emitron.model.Attributes
+import com.raywenderlich.emitron.model.Contents
+import com.raywenderlich.emitron.model.Data
+import com.raywenderlich.emitron.model.DownloadState
 import com.raywenderlich.emitron.model.entity.Download
 import com.raywenderlich.emitron.utils.TestCoroutineRule
 import com.raywenderlich.emitron.utils.async.ThreadManager
@@ -88,7 +91,7 @@ class DownloadRepositoryTest {
         downloadDataSourceLocal.getQueuedDownloads(
           1,
           states = arrayOf(1, 5),
-          contentTypes = ContentType.getAllowedDownloadTypes()
+          contentTypes = arrayOf("screencast", "episode")
         )
       ).doReturn(
         expected
@@ -96,7 +99,7 @@ class DownloadRepositoryTest {
       val result = repository.getQueuedDownloads(
         1,
         states = arrayOf(DownloadState.CREATED, DownloadState.PAUSED),
-        contentTypes = ContentType.getAllowedDownloadTypes()
+        contentTypes = arrayOf("screencast", "episode")
       )
       result isEqualTo expected
       verify(downloadDataSourceLocal).getQueuedDownloads(
@@ -109,7 +112,7 @@ class DownloadRepositoryTest {
   }
 
   @Test
-  fun getInProgressDownloads() {
+  fun getDownload() {
     testCoroutineRule.runBlockingTest {
       val expected = com.raywenderlich.emitron.data.createDownloadWithContent()
       whenever(downloadDataSourceLocal.getDownload("1")).doReturn(
@@ -119,6 +122,31 @@ class DownloadRepositoryTest {
 
       result isEqualTo expected
       verify(downloadDataSourceLocal).getDownload("1")
+      verifyNoMoreInteractions(contentDataSourceLocal)
+    }
+  }
+
+  @Test
+  fun getInProgressDownloads() {
+    testCoroutineRule.runBlockingTest {
+      val expected = listOf(
+        com.raywenderlich.emitron.data.createDownloadWithContent(),
+        com.raywenderlich.emitron.data.createDownloadWithContent()
+      )
+      whenever(
+        downloadDataSourceLocal.getInProgressDownloads(
+          contentTypes = arrayOf("screencast", "episode")
+        )
+      ).doReturn(
+        expected
+      )
+      val result = repository.getInProgressDownloads(
+        contentTypes = arrayOf("screencast", "episode")
+      )
+      result isEqualTo expected
+      verify(downloadDataSourceLocal).getInProgressDownloads(
+        arrayOf("screencast", "episode")
+      )
       verifyNoMoreInteractions(contentDataSourceLocal)
     }
   }
@@ -200,9 +228,9 @@ class DownloadRepositoryTest {
   @Test
   fun updateDownloadState() {
     testCoroutineRule.runBlockingTest {
-      repository.updateDownloadState("1", DownloadState.COMPLETED)
+      repository.updateDownloadState(listOf("1"), DownloadState.COMPLETED)
       verify(downloadDataSourceLocal)
-        .updateDownloadState("1", DownloadState.COMPLETED)
+        .updateDownloadState(listOf("1"), DownloadState.COMPLETED)
       verifyNoMoreInteractions(contentDataSourceLocal)
     }
   }

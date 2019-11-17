@@ -14,12 +14,14 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.WorkManager
 import com.crashlytics.android.Crashlytics
 import com.google.android.gms.cast.framework.CastButtonFactory
 import com.google.android.gms.cast.framework.CastContext
 import com.raywenderlich.emitron.databinding.ActivityMainBinding
 import com.raywenderlich.emitron.di.modules.viewmodel.ViewModelFactory
 import com.raywenderlich.emitron.notifications.NotificationChannels
+import com.raywenderlich.emitron.ui.download.workers.PendingDownloadWorker
 import com.raywenderlich.emitron.ui.player.PipActionDelegate
 import com.raywenderlich.emitron.utils.extensions.*
 import dagger.android.support.DaggerAppCompatActivity
@@ -72,6 +74,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
     initObservers()
     CastContext.getSharedInstance(this)
+    initPendingDownloadsWorker()
   }
 
   private fun createNotificationChannels() {
@@ -144,5 +147,9 @@ class MainActivity : DaggerAppCompatActivity() {
       R.id.media_route_menu_item
     )
     return true
+  }
+
+  private fun initPendingDownloadsWorker() {
+    PendingDownloadWorker.queue(WorkManager.getInstance(this))
   }
 }

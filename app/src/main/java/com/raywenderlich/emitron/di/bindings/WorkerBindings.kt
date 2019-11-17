@@ -47,4 +47,9 @@ abstract class WorkerBindings {
   @WorkerKey(UpdateOfflineProgressWorker::class)
   abstract fun bindUpdateOfflineProgressWorker(factory: UpdateOfflineProgressWorker.Factory): ChildWorkerFactory
 
+  @Binds
+  @IntoMap
+  @WorkerKey(PendingDownloadWorker::class)
+  abstract fun bindPendingDownloadWorker(factory: PendingDownloadWorker.Factory): ChildWorkerFactory
+
 }
