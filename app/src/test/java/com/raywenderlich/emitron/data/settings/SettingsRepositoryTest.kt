@@ -3,6 +3,7 @@ package com.raywenderlich.emitron.data.settings
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.*
 import com.raywenderlich.emitron.data.content.ContentDataSourceLocal
+import com.raywenderlich.emitron.data.progressions.ProgressionDataSourceLocal
 import com.raywenderlich.emitron.ui.onboarding.OnboardingView
 import com.raywenderlich.emitron.utils.CurrentThreadExecutor
 import com.raywenderlich.emitron.utils.TestCoroutineRule
@@ -23,6 +24,8 @@ class SettingsRepositoryTest {
 
   private val contentDataSourceLocal: ContentDataSourceLocal = mock()
 
+  private val progressionDataSourceLocal: ProgressionDataSourceLocal = mock()
+
   @get:Rule
   val instantTaskExecutorRule: InstantTaskExecutorRule = InstantTaskExecutorRule()
 
@@ -34,7 +37,12 @@ class SettingsRepositoryTest {
     whenever(threadManager.io).doReturn(Dispatchers.Unconfined)
     whenever(threadManager.db).doReturn(Dispatchers.Unconfined)
     whenever(threadManager.networkExecutor).doReturn(CurrentThreadExecutor())
-    settingsRepository = SettingsRepository(threadManager, settingsPrefs, contentDataSourceLocal)
+    settingsRepository = SettingsRepository(
+      threadManager,
+      settingsPrefs,
+      contentDataSourceLocal,
+      progressionDataSourceLocal
+    )
   }
 
   @Test
@@ -174,6 +182,7 @@ class SettingsRepositoryTest {
     testCoroutineRule.runBlockingTest {
       settingsRepository.logout()
       verify(contentDataSourceLocal).deleteAll()
+      verify(progressionDataSourceLocal).deleteWatchStats()
       verify(settingsPrefs).clear()
       verifyNoMoreInteractions(contentDataSourceLocal)
       verifyNoMoreInteractions(settingsPrefs)

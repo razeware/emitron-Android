@@ -3,21 +3,25 @@ package com.raywenderlich.emitron.model
 /**
  * Data types
  */
-enum class DataType {
+enum class DataType(val jsonName: String) {
   /** Domains */
-  Domains,
+  Domains("domains"),
   /** Bookmarks */
-  Bookmarks,
+  Bookmarks("bookmarks"),
   /** Progressions */
-  Progressions,
+  Progressions("progressions"),
   /** Categories */
-  Categories,
+  Categories("categories"),
   /** Groups */
-  Groups,
+  Groups("groups"),
   /** Contents */
-  Contents,
+  Contents("contents"),
   /** Permissions */
-  Permissions;
+  Permissions("permissions"),
+  /**
+   * WatchStats
+   */
+  WatchStats("watch_stats");
 
   companion object {
 
@@ -58,4 +62,4 @@ fun DataType?.isBookmark(): Boolean = this == DataType.Bookmarks
 /**
  * Convert the [DataType] name to lowercase for use in post requests
  */
-fun DataType.toRequestFormat(): String = this.name.toLowerCase()
+fun DataType.toRequestFormat(): String = this.jsonName

@@ -190,7 +190,7 @@ class ProgressionActionDelegate @Inject constructor(
     progressionId: String?
   ) {
     val contents = try {
-      progressionRepository.updateProgression(id, true, updatedAt)
+      progressionRepository.updateProgressions(id, true, updatedAt)
     } catch (exception: IOException) {
       null
     } catch (exception: HttpException) {
@@ -231,7 +231,7 @@ class ProgressionActionDelegate @Inject constructor(
     progressionId: String?
   ) {
     val contents = try {
-      progressionRepository.updateProgression(id, false, updatedAt)
+      progressionRepository.updateProgressions(id, false, updatedAt)
     } catch (exception: IOException) {
       null
     } catch (exception: HttpException) {

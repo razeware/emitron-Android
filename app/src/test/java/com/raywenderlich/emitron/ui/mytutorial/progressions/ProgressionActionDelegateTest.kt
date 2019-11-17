@@ -43,7 +43,7 @@ class ProgressionActionDelegateTest {
           )
         )
       )
-      whenever(progressionRepository.updateProgression("8", true, day))
+      whenever(progressionRepository.updateProgressions("8", true, day))
         .doReturn(response)
 
       val episodeData = Data(
@@ -75,7 +75,7 @@ class ProgressionActionDelegateTest {
       )
 
       // Then
-      verify(progressionRepository).updateProgression("8", true, day)
+      verify(progressionRepository).updateProgressions("8", true, day)
       verify(progressionRepository).updateLocalProgression(
         contentId = "8",
         percentComplete = 0,
@@ -102,7 +102,7 @@ class ProgressionActionDelegateTest {
       val day = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
 
       // Given
-      whenever(progressionRepository.updateProgression("8", true, day))
+      whenever(progressionRepository.updateProgressions("8", true, day))
         .doReturn(null)
 
       val episodeData = Data(
@@ -126,7 +126,7 @@ class ProgressionActionDelegateTest {
       viewModel.updateContentProgression(true, episodeData, episodePosition, updatedAt = day)
 
       // Then
-      verify(progressionRepository).updateProgression("8", true, day)
+      verify(progressionRepository).updateProgressions("8", true, day)
       verify(progressionRepository).updateLocalProgression(
         contentId = "8",
         percentComplete = 0,
@@ -151,7 +151,7 @@ class ProgressionActionDelegateTest {
       val day = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
 
       // Given
-      whenever(progressionRepository.updateProgression("8", true, day))
+      whenever(progressionRepository.updateProgressions("8", true, day))
         .doThrow(IOException())
 
       val episodeData = Data(
@@ -175,7 +175,7 @@ class ProgressionActionDelegateTest {
       viewModel.updateContentProgression(true, episodeData, episodePosition, updatedAt = day)
 
       // Then
-      verify(progressionRepository).updateProgression("8", true, day)
+      verify(progressionRepository).updateProgressions("8", true, day)
       verify(progressionRepository).updateLocalProgression(
         contentId = "8",
         percentComplete = 0,
@@ -207,7 +207,7 @@ class ProgressionActionDelegateTest {
           )
         )
       )
-      whenever(progressionRepository.updateProgression("8", false, day))
+      whenever(progressionRepository.updateProgressions("8", false, day))
         .doReturn(response)
 
       val episodeData = Data(
@@ -236,7 +236,7 @@ class ProgressionActionDelegateTest {
       )
 
       // Then
-      verify(progressionRepository).updateProgression("8", false, day)
+      verify(progressionRepository).updateProgressions("8", false, day)
       verify(progressionRepository).updateLocalProgression(
         contentId = "8",
         percentComplete = 0,
@@ -261,7 +261,7 @@ class ProgressionActionDelegateTest {
       val day = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
 
       // Given
-      whenever(progressionRepository.updateProgression("8", false, day))
+      whenever(progressionRepository.updateProgressions("8", false, day))
         .doReturn(null)
 
       val episodeData = Data(
@@ -285,7 +285,7 @@ class ProgressionActionDelegateTest {
       viewModel.updateContentProgression(true, episodeData, episodePosition, updatedAt = day)
 
       // Then
-      verify(progressionRepository).updateProgression("8", false, day)
+      verify(progressionRepository).updateProgressions("8", false, day)
       verify(progressionRepository).updateLocalProgression(
         contentId = "8",
         percentComplete = 0,
@@ -325,7 +325,7 @@ class ProgressionActionDelegateTest {
           )
         )
       )
-      whenever(progressionRepository.updateProgression("8", false, day))
+      whenever(progressionRepository.updateProgressions("8", false, day))
         .doThrow(IOException())
 
       val episodePosition = 4
@@ -335,7 +335,7 @@ class ProgressionActionDelegateTest {
       viewModel.updateContentProgression(true, episodeData, episodePosition, updatedAt = day)
 
       // Then
-      verify(progressionRepository).updateProgression("8", false, day)
+      verify(progressionRepository).updateProgressions("8", false, day)
       verify(progressionRepository).updateLocalProgression(
         contentId = "8",
         percentComplete = 0,
@@ -374,7 +374,7 @@ class ProgressionActionDelegateTest {
           )
         )
       )
-      whenever(progressionRepository.updateProgression("8", false, day))
+      whenever(progressionRepository.updateProgressions("8", false, day))
         .doThrow(IOException())
 
       val episodePosition = 4

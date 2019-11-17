@@ -2,6 +2,7 @@ package com.raywenderlich.emitron.data.settings
 
 import androidx.annotation.WorkerThread
 import com.raywenderlich.emitron.data.content.ContentDataSourceLocal
+import com.raywenderlich.emitron.data.progressions.ProgressionDataSourceLocal
 import com.raywenderlich.emitron.ui.onboarding.OnboardingView
 import com.raywenderlich.emitron.utils.async.ThreadManager
 import kotlinx.coroutines.withContext
@@ -13,7 +14,8 @@ import javax.inject.Inject
 class SettingsRepository @Inject constructor(
   private val threadManager: ThreadManager,
   private val settingsPrefs: SettingsPrefs,
-  private val contentDataSourceLocal: ContentDataSourceLocal
+  private val contentDataSourceLocal: ContentDataSourceLocal,
+  private val progressionDataSourceLocal: ProgressionDataSourceLocal
 ) {
 
   /**
@@ -157,6 +159,7 @@ class SettingsRepository @Inject constructor(
   suspend fun logout() {
     withContext(threadManager.db) {
       contentDataSourceLocal.deleteAll()
+      progressionDataSourceLocal.deleteWatchStats()
     }
     settingsPrefs.clear()
   }

@@ -24,10 +24,16 @@ class UpdateOfflineProgressWorker @AssistedInject constructor(
    * See [Worker.doWork]
    */
   override suspend fun doWork(): Result {
+    updateProgress()
+    updateWatchStats()
+    return Result.success()
+  }
+
+  private suspend fun updateProgress() {
     val progressions = progressionRepository.getLocalProgressions()
 
     if (progressions.isEmpty() || progressions.all { it.synced }) {
-      return Result.success()
+      return
     }
 
     val contents = Contents.from(*(progressions.map {
@@ -36,7 +42,7 @@ class UpdateOfflineProgressWorker @AssistedInject constructor(
 
     val response =
       try {
-        progressionRepository.updateProgression(contents)
+        progressionRepository.updateProgressions(contents)
       } catch (exception: IOException) {
         null
       } catch (exception: HttpException) {
@@ -62,7 +68,17 @@ class UpdateOfflineProgressWorker @AssistedInject constructor(
         }
       )
     }
-    return Result.success()
+  }
+
+  private suspend fun updateWatchStats() {
+    val watchStats = progressionRepository.getWatchStats()
+    val contents = Contents.from(*(watchStats.map {
+      it.toData()
+    }.toTypedArray()))
+    val response = progressionRepository.updateWatchStats(contents)
+    if (response.isSuccessful) {
+      progressionRepository.deleteWatchStats()
+    }
   }
 
   /**

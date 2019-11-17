@@ -98,6 +98,11 @@ data class Attributes(
   val progress: Long? = null,
 
   /**
+   * Content duration seconds
+   */
+  val seconds: Long? = null,
+
+  /**
    * User has finished content
    */
   val finished: Boolean? = null,
@@ -163,7 +168,12 @@ data class Attributes(
    * Content Id
    */
   @Json(name = "content_id")
-  val contentId: String? = null
+  val contentId: String? = null,
+  /**
+   * Content watched on
+   */
+  @Json(name = "watched_on")
+  val watchedOn: String? = null
 ) : Parcelable {
 
   /**

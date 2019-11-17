@@ -7,6 +7,7 @@ import androidx.paging.toLiveData
 import com.raywenderlich.emitron.data.content.ContentDataSourceLocal
 import com.raywenderlich.emitron.model.*
 import com.raywenderlich.emitron.model.entity.Progression
+import com.raywenderlich.emitron.model.entity.WatchStat
 import com.raywenderlich.emitron.utils.BoundaryCallbackNotifier
 import com.raywenderlich.emitron.utils.LocalPagedResponse
 import com.raywenderlich.emitron.utils.PagedBoundaryCallbackImpl
@@ -43,7 +44,7 @@ class ProgressionRepository @Inject constructor(
    */
   @WorkerThread
   @Throws(Exception::class)
-  suspend fun updateProgression(
+  suspend fun updateProgressions(
     contentId: String,
     finished: Boolean,
     updatedAt: LocalDateTime
@@ -136,17 +137,15 @@ class ProgressionRepository @Inject constructor(
   /**
    * Create/Update a progression
    *
-   * @param updatedProgressions [Contents]
+   * @param progressions New/Updated progressions[Contents]
    *
    * @return [Contents]
    */
   @WorkerThread
   @Throws(Exception::class)
-  suspend fun updateProgression(
-    updatedProgressions: Contents
-  ): Contents? {
+  suspend fun updateProgressions(progressions: Contents): Contents? {
     return withContext(threadManager.io) {
-      api.updateProgression(updatedProgressions)
+      api.updateProgression(progressions)
     }
   }
 
@@ -199,6 +198,62 @@ class ProgressionRepository @Inject constructor(
         updatedAt,
         progressionId
       )
+    }
+  }
+
+  /**
+   * Update offline watch stat
+   *
+   * @param contentId Content id
+   * @param duration Long
+   * @param watchedAt Content watched at time
+   */
+  @WorkerThread
+  @Throws(Exception::class)
+  suspend fun updateWatchStat(
+    contentId: String,
+    duration: Long,
+    watchedAt: LocalDateTime
+  ) {
+    return withContext(threadManager.io) {
+      progressionDataSource.updateWatchStat(contentId, duration, watchedAt)
+    }
+  }
+
+  /**
+   * Get watch stats
+   */
+  suspend fun getWatchStats(): List<WatchStat> {
+    return withContext(threadManager.db) {
+      progressionDataSource.getWatchStats()
+    }
+  }
+
+  /**
+   * Create/Update a watch stats
+   *
+   * @param watchStats New/Updated WatchStats [Contents]
+   *
+   * @return [Contents]
+   */
+  @WorkerThread
+  @Throws(Exception::class)
+  suspend fun updateWatchStats(
+    watchStats: Contents
+  ): Response<Contents?> {
+    return withContext(threadManager.io) {
+      api.updateWatchStats(watchStats)
+    }
+  }
+
+  /**
+   * Delete all watch stats
+   */
+  @WorkerThread
+  @Throws(Exception::class)
+  suspend fun deleteWatchStats() {
+    return withContext(threadManager.db) {
+      progressionDataSource.deleteWatchStats()
     }
   }
 }

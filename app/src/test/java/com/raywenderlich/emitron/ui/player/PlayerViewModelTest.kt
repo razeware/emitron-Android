@@ -701,11 +701,13 @@ class PlayerViewModelTest {
         )
       )
 
+      // When
       viewModel.updateProgress(false, 5002, today)
 
       val enqueueOfflineProgressUpdate =
         viewModel.enqueueOfflineProgressUpdate.observeForTestingResult()
 
+      // Then
       verify(progressionRepository).updateLocalProgression(
         contentId = "1",
         percentComplete = 50,
@@ -713,6 +715,76 @@ class PlayerViewModelTest {
         finished = false,
         synced = false,
         updatedAt = today
+      )
+      verifyNoMoreInteractions(progressionRepository)
+
+      enqueueOfflineProgressUpdate isEqualTo "1"
+    }
+  }
+
+  @Test
+  fun updateProgress_updateLocal_updateWatchStat() {
+    createViewModel()
+
+    testCoroutineRule.runBlockingTest {
+      // Given
+      val today = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
+      viewModel.startPlayback(
+        createPlaylist(
+          createContentData(
+            type = "screencast",
+            download = Download(
+              progress = 100,
+              state = 3,
+              failureReason = 0,
+              url = "download/1"
+            )
+          ),
+          currentEpisode = createContentData(
+            type = "screencast",
+            download = Download(
+              progress = 100,
+              state = 3,
+              failureReason = 0,
+              url = "download/1"
+            )
+          )
+        )
+      )
+
+      // When
+      viewModel.updateProgress(false, 5002, today)
+      viewModel.updateProgress(false, 10002, today)
+
+      val enqueueOfflineProgressUpdate =
+        viewModel.enqueueOfflineProgressUpdate.observeForTestingResult()
+
+      // Then
+      verify(progressionRepository).updateLocalProgression(
+        contentId = "1",
+        percentComplete = 50,
+        progress = 5L,
+        finished = false,
+        synced = false,
+        updatedAt = today
+      )
+      verify(progressionRepository).updateLocalProgression(
+        contentId = "1",
+        percentComplete = 100,
+        progress = 10L,
+        finished = true,
+        synced = false,
+        updatedAt = today
+      )
+      verify(progressionRepository).updateWatchStat(
+        contentId = "1",
+        duration = 0L,
+        watchedAt = today
+      )
+      verify(progressionRepository).updateWatchStat(
+        contentId = "1",
+        duration = 5L,
+        watchedAt = today
       )
       verifyNoMoreInteractions(progressionRepository)
 

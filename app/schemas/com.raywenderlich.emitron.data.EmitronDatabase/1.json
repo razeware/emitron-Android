@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c6bc05694e72a34c34172271e8ac5814",
+    "identityHash": "57c260476f350a317de23820806588dd",
     "entities": [
       {
         "tableName": "domains",
@@ -550,12 +550,59 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "watch_stats",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`content_id` TEXT NOT NULL, `duration` INTEGER NOT NULL, `watched_at` TEXT NOT NULL, `updated_at` TEXT NOT NULL, PRIMARY KEY(`watched_at`))",
+        "fields": [
+          {
+            "fieldPath": "contentId",
+            "columnName": "content_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "duration",
+            "columnName": "duration",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "watchedAt",
+            "columnName": "watched_at",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "watched_at"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_watch_stats_watched_at",
+            "unique": true,
+            "columnNames": [
+              "watched_at"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_watch_stats_watched_at` ON `${TABLE_NAME}` (`watched_at`)"
+          }
+        ],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c6bc05694e72a34c34172271e8ac5814')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '57c260476f350a317de23820806588dd')"
     ]
   }
 }

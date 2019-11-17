@@ -6,6 +6,7 @@ import com.raywenderlich.emitron.data.content.dao.*
 import com.raywenderlich.emitron.data.filter.dao.CategoryDao
 import com.raywenderlich.emitron.data.filter.dao.DomainDao
 import com.raywenderlich.emitron.data.progressions.dao.ProgressionDao
+import com.raywenderlich.emitron.data.progressions.dao.WatchStatDao
 import dagger.Module
 import dagger.Provides
 
@@ -59,5 +60,10 @@ class DataModule {
     @Provides
     fun provideDownloadDao(application: Application): DownloadDao =
       EmitronDatabase.getInstance(application).downloadDao()
+
+    @JvmStatic
+    @Provides
+    fun provideWatchStatDao(application: Application): WatchStatDao =
+      EmitronDatabase.getInstance(application).watchStateDao()
   }
 }

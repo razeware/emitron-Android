@@ -60,7 +60,7 @@ class ProgressionRepositoryTest {
 
       val expectedContent = Contents()
       whenever(progressionApi.updateProgression(any())).doReturn(expectedContent)
-      val result = repository.updateProgression(
+      val result = repository.updateProgressions(
         "1",
         true,
         day
@@ -83,7 +83,7 @@ class ProgressionRepositoryTest {
       whenever(progressionApi.updateProgression(any())).doReturn(null)
 
       val result =
-        repository.updateProgression("1", true, day)
+        repository.updateProgressions("1", true, day)
 
       verify(progressionApi).updateProgression(
         Contents(
@@ -162,7 +162,7 @@ class ProgressionRepositoryTest {
       repository.updateLocalProgressions(progressions)
 
       verify(progressionDataSourceLocal).updateLocalProgressions(progressions)
-      verifyNoMoreInteractions(contentDataSourceLocal)
+      verifyNoMoreInteractions(progressionDataSourceLocal)
     }
   }
 
@@ -208,6 +208,49 @@ class ProgressionRepositoryTest {
         "1", PlaybackProgress("RickAndMorty", 10, 10)
       )
       verifyNoMoreInteractions(progressionApi)
+    }
+  }
+
+  @Test
+  fun updateWatchStat() {
+    testCoroutineRule.runBlockingTest {
+      val today = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
+
+      repository.updateWatchStat("1", 50, today)
+
+      verify(progressionDataSourceLocal).updateWatchStat("1", 50, today)
+      verifyNoMoreInteractions(progressionDataSourceLocal)
+    }
+  }
+
+  @Test
+  fun getWatchStats() {
+    testCoroutineRule.runBlockingTest {
+      repository.getWatchStats()
+
+      verify(progressionDataSourceLocal).getWatchStats()
+      verifyNoMoreInteractions(progressionDataSourceLocal)
+    }
+  }
+
+  @Test
+  fun updateWatchStats() {
+    testCoroutineRule.runBlockingTest {
+      val contents = Contents(datum = listOf(Data(type = "watch_stats")))
+      repository.updateWatchStats(contents)
+
+      verify(progressionApi).updateWatchStats(contents)
+      verifyNoMoreInteractions(progressionApi)
+    }
+  }
+
+  @Test
+  fun deleteWatchStats() {
+    testCoroutineRule.runBlockingTest {
+      repository.deleteWatchStats()
+
+      verify(progressionDataSourceLocal).deleteWatchStats()
+      verifyNoMoreInteractions(progressionDataSourceLocal)
     }
   }
 }

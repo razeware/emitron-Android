@@ -6,6 +6,8 @@ import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.raywenderlich.emitron.data.content.dao.ContentDao
 import com.raywenderlich.emitron.data.progressions.dao.ProgressionDao
+import com.raywenderlich.emitron.data.progressions.dao.WatchStatDao
+import com.raywenderlich.emitron.model.entity.WatchStat
 import com.raywenderlich.emitron.utils.TestCoroutineRule
 import org.junit.Before
 import org.junit.Rule
@@ -16,6 +18,8 @@ import org.threeten.bp.Month
 class ProgressionDataSourceLocalTest {
 
   private val progressionDao: ProgressionDao = mock()
+
+  private val watchStatDao: WatchStatDao = mock()
 
   private val contentDao: ContentDao = mock()
 
@@ -30,7 +34,7 @@ class ProgressionDataSourceLocalTest {
   @Before
   fun setUp() {
     progressionDataSourceLocal =
-      ProgressionDataSourceLocal(progressionDao, contentDao)
+      ProgressionDataSourceLocal(progressionDao, contentDao, watchStatDao)
   }
 
   @Test
@@ -58,6 +62,43 @@ class ProgressionDataSourceLocalTest {
         contentDao = contentDao
       )
       verifyNoMoreInteractions(progressionDao)
+    }
+  }
+
+  @Test
+  fun deleteWatchStats() {
+    testCoroutineRule.runBlockingTest {
+      progressionDataSourceLocal.deleteWatchStats()
+      verify(watchStatDao).deleteAll()
+      verifyNoMoreInteractions(watchStatDao)
+    }
+  }
+
+  @Test
+  fun getWatchStats() {
+    testCoroutineRule.runBlockingTest {
+      progressionDataSourceLocal.getWatchStats()
+      verify(watchStatDao).getAll()
+      verifyNoMoreInteractions(watchStatDao)
+    }
+  }
+
+  @Test
+  fun updateWatchStat() {
+    testCoroutineRule.runBlockingTest {
+      val today = LocalDateTime.of(2019, Month.AUGUST, 11, 2, 0, 0)
+
+      progressionDataSourceLocal.updateWatchStat(
+        contentId = "1",
+        duration = 50,
+        watchedAt = today
+      )
+      verify(watchStatDao).insertOrUpdateWatchStat(
+        WatchStat(
+          "1", 50, "2019081102", "2019-08-11T02:00:00"
+        )
+      )
+      verifyNoMoreInteractions(watchStatDao)
     }
   }
 }
