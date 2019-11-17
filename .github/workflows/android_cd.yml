@@ -38,6 +38,6 @@ jobs:
       run: |
          scripts/download_s3.sh gradle.properties > gradle.properties
          scripts/download_s3.sh google-services.json > app/google-services.json
-    - name: Run Tests
+    - name: Distribute app
       run: bundle exec fastlane distribute
 

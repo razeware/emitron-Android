@@ -25,7 +25,7 @@ end
 platform :android do
   desc "Upload to Firebase distribution"
   lane :distribute do
-    build_android_app(...) # build_android_app is a built-in fastlane action.
+    build_android_app()
 
     firebase_app_distribution(
         app: "1:668411328030:android:ed2ee43398e8b56b",
