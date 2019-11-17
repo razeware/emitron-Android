@@ -25,12 +25,12 @@ end
 platform :android do
   desc "Upload to Firebase distribution"
   lane :distribute do
-    build_android_app()
+    build_android_app(task:'assemble', build_type: 'release')
 
     firebase_app_distribution(
-        app: "1:668411328030:android:ed2ee43398e8b56b",
-        groups: "rw-internal",
-        release_notes_file: "/release-notes.txt"
+        app: ENV["FIREBASE_APP_ID"],
+        groups: 'rw-emitron-android',
+        release_notes_file: 'release-notes.txt'
     )
   end
 end
