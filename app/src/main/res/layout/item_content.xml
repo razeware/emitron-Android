@@ -7,7 +7,7 @@
 
     <variable
       name="data"
-      type="com.raywenderlich.emitron.model.Data" />
+      type="com.razeware.emitron.model.Data" />
 
     <variable
       name="releaseDateWithTypeAndDuration"
@@ -232,15 +232,15 @@
         style="@style/TextAppearance.Overline.Raised.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/label_completed"
         android:layout_marginEnd="@dimen/button_spacing_horizontal_2"
+        android:text="@string/label_completed"
         android:visibility="@{data.isFinished()? View.VISIBLE : View.GONE}"
         app:layout_constraintBottom_toBottomOf="@+id/spacer"
+        app:layout_constraintEnd_toStartOf="@+id/text_collection_label_pro"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="@+id/text_title"
         app:layout_constraintTop_toTopOf="@+id/spacer"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintEnd_toStartOf="@+id/text_collection_label_pro"
         tools:text="Completed"
         tools:visibility="visible" />
 

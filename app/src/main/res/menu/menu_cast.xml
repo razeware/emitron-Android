@@ -6,5 +6,5 @@
     android:id="@+id/media_route_menu_item"
     android:title="@string/title_cast"
     app:actionProviderClass="androidx.mediarouter.app.MediaRouteActionProvider"
-    app:showAsAction="always"/>
+    app:showAsAction="always" />
 </menu>
