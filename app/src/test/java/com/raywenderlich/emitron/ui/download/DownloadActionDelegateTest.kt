@@ -5,6 +5,7 @@ import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.raywenderlich.emitron.data.*
 import com.raywenderlich.emitron.data.download.DownloadRepository
+import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.model.Download
 import com.raywenderlich.emitron.model.DownloadState
 import com.raywenderlich.emitron.utils.TestCoroutineRule
@@ -17,11 +18,13 @@ class DownloadActionDelegateTest {
 
   private val downloadRepository: DownloadRepository = mock()
 
+  private val settingsRepository: SettingsRepository = mock()
+
   private lateinit var viewModel: DownloadActionDelegate
 
   @Before
   fun setUp() {
-    viewModel = DownloadActionDelegate(downloadRepository)
+    viewModel = DownloadActionDelegate(downloadRepository, settingsRepository)
   }
 
   @get:Rule
@@ -36,6 +39,13 @@ class DownloadActionDelegateTest {
       verify(downloadRepository).getDownloadsById(downloadIds)
       verifyNoMoreInteractions(downloadRepository)
     }
+  }
+
+  @Test
+  fun downloadsWifiOnly() {
+    viewModel.downloadsWifiOnly()
+    verify(settingsRepository).getDownloadsWifiOnly()
+    verifyNoMoreInteractions(settingsRepository)
   }
 
   @Test

@@ -9,6 +9,7 @@ import com.raywenderlich.emitron.model.Attributes
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.FilterType
 import com.raywenderlich.emitron.model.toRequestFormat
+import com.raywenderlich.emitron.ui.download.DownloadActionDelegate
 import com.raywenderlich.emitron.utils.isEqualTo
 import com.raywenderlich.emitron.utils.observeForTestingResult
 import org.junit.Before
@@ -19,6 +20,7 @@ class MainViewModelTest {
 
   private val loginRepository: LoginRepository = mock()
   private val settingsRepository: SettingsRepository = mock()
+  private val downloadActionDelegate: DownloadActionDelegate = mock()
 
   private lateinit var viewModel: MainViewModel
 
@@ -27,7 +29,7 @@ class MainViewModelTest {
 
   @Before
   fun setUp() {
-    viewModel = MainViewModel(loginRepository, settingsRepository)
+    viewModel = MainViewModel(loginRepository, settingsRepository, downloadActionDelegate)
   }
 
   @Test

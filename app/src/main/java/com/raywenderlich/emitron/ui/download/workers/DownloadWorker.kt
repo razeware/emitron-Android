@@ -2,9 +2,7 @@ package com.raywenderlich.emitron.ui.download.workers
 
 import android.content.Context
 import android.net.Uri
-import androidx.work.CoroutineWorker
-import androidx.work.Worker
-import androidx.work.WorkerParameters
+import androidx.work.*
 import com.raywenderlich.emitron.data.download.DownloadRepository
 import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.di.modules.worker.ChildWorkerFactory
@@ -140,5 +138,27 @@ class DownloadWorker @AssistedInject constructor(
      * Download id
      */
     const val DOWNLOAD_ID: String = "download_id"
+
+    private const val DOWNLOAD_WORKER_TAG: String = "downloads"
+
+    /**
+     * Build Download work request
+     */
+    fun buildWorkRequest(downloadOnlyOnWifi: Boolean = false): OneTimeWorkRequest {
+      val networkType = if (downloadOnlyOnWifi) {
+        NetworkType.UNMETERED
+      } else {
+        NetworkType.CONNECTED
+      }
+      val constraints = Constraints.Builder()
+        .setRequiredNetworkType(networkType)
+        .setRequiresStorageNotLow(true)
+        .build()
+
+      return OneTimeWorkRequestBuilder<DownloadWorker>()
+        .setConstraints(constraints)
+        .addTag(DOWNLOAD_WORKER_TAG)
+        .build()
+    }
   }
 }

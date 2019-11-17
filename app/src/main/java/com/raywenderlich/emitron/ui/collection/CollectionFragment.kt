@@ -190,7 +190,8 @@ class CollectionFragment : DaggerFragment() {
     StartDownloadWorker.enqueue(
       WorkManager.getInstance(requireContext()),
       contentId,
-      episodeId
+      episodeId,
+      viewModel.downloadsWifiOnly()
     )
 
     initDownloadProgressHandler()

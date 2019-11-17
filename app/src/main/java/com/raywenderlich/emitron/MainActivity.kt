@@ -150,6 +150,9 @@ class MainActivity : DaggerAppCompatActivity() {
   }
 
   private fun initPendingDownloadsWorker() {
-    PendingDownloadWorker.queue(WorkManager.getInstance(this))
+    PendingDownloadWorker.enqueue(
+      WorkManager.getInstance(this),
+      viewModel.downloadsWifiOnly()
+    )
   }
 }

@@ -2,6 +2,7 @@ package com.raywenderlich.emitron.ui.download
 
 import androidx.lifecycle.LiveData
 import com.raywenderlich.emitron.data.download.DownloadRepository
+import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.model.Data
 import com.raywenderlich.emitron.model.DownloadState
 import com.raywenderlich.emitron.model.entity.Download
@@ -49,13 +50,19 @@ interface DownloadAction {
     progress: Int,
     state: DownloadState
   )
+
+  /**
+   * Should only download only on wifi
+   */
+  fun downloadsWifiOnly(): Boolean
 }
 
 /**
  * [DownloadAction] implementation
  */
 class DownloadActionDelegate @Inject constructor(
-  private val downloadRepository: DownloadRepository
+  private val downloadRepository: DownloadRepository,
+  private val settingsRepository: SettingsRepository
 ) : DownloadAction {
 
   override fun getDownloads(downloadIds: List<String>): LiveData<List<Download>> {
@@ -119,4 +126,6 @@ class DownloadActionDelegate @Inject constructor(
   ) {
     downloadRepository.updateDownloadProgress(contentId, progress, state)
   }
+
+  override fun downloadsWifiOnly(): Boolean = settingsRepository.getDownloadsWifiOnly()
 }

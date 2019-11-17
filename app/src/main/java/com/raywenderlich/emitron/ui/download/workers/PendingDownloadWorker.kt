@@ -51,29 +51,20 @@ class PendingDownloadWorker @AssistedInject constructor(
 
   companion object {
 
-    private const val DOWNLOAD_WORKER_TAG: String = "failed_downloads"
-    private const val DOWNLOAD_WORKER_NAME: String = "failed_download"
+    private const val DOWNLOAD_WORKER_NAME: String = "pending_downloads"
 
     /**
      * Queue verify download worker
      *
      * @param workManager WorkManager
      */
-    fun queue(workManager: WorkManager) {
-
-      val constraints = Constraints.Builder()
-        .setRequiredNetworkType(NetworkType.UNMETERED)
-        .setRequiresStorageNotLow(true)
-        .build()
+    fun enqueue(workManager: WorkManager, downloadOnlyOnWifi: Boolean) {
 
       val updatePendingDownloads = OneTimeWorkRequestBuilder<UpdateDownloadWorker>()
-        .addTag(DOWNLOAD_WORKER_TAG)
         .build()
 
-      val downloadWorkRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
-        .setConstraints(constraints)
-        .addTag(DOWNLOAD_WORKER_TAG)
-        .build()
+      val downloadWorkRequest =
+        DownloadWorker.buildWorkRequest(downloadOnlyOnWifi)
 
       workManager
         .beginUniqueWork(

@@ -716,6 +716,11 @@ class PlayerViewModelTest {
         synced = false,
         updatedAt = today
       )
+      verify(progressionRepository).updateWatchStat(
+        contentId = "1",
+        duration = 0L,
+        watchedAt = today
+      )
       verifyNoMoreInteractions(progressionRepository)
 
       enqueueOfflineProgressUpdate isEqualTo "1"

@@ -17,6 +17,7 @@ import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
 import com.google.android.exoplayer2.util.NotificationUtil
 import com.google.android.exoplayer2.util.Util
 import com.raywenderlich.emitron.R
+import com.raywenderlich.emitron.data.settings.SettingsRepository
 import com.raywenderlich.emitron.model.DownloadState
 import com.raywenderlich.emitron.notifications.NotificationChannels
 import com.raywenderlich.emitron.ui.download.workers.UpdateDownloadWorker
@@ -45,8 +46,17 @@ class DownloadService : ExoDownloadService(
 
   private var notificationHelper: DownloadNotificationHelper? = null
 
+  /**
+   * Download Manager
+   */
   @Inject
   lateinit var eDownloadManager: DownloadManager
+
+  /**
+   * Settings Repository
+   */
+  @Inject
+  lateinit var settingsRepository: SettingsRepository
 
   init {
     nextNotificationId = FOREGROUND_NOTIFICATION_ID + 1
@@ -127,7 +137,8 @@ class DownloadService : ExoDownloadService(
       WorkManager.getInstance(this),
       downloadId = download.request.id,
       progress = download.percentDownloaded.roundToInt(),
-      state = DownloadState.COMPLETED
+      state = DownloadState.COMPLETED,
+      downloadOnlyOnWifi = settingsRepository.getDownloadsWifiOnly()
     )
   }
 
@@ -136,7 +147,8 @@ class DownloadService : ExoDownloadService(
       WorkManager.getInstance(this),
       downloadId = download.request.id,
       progress = download.percentDownloaded.roundToInt(),
-      state = DownloadState.FAILED
+      state = DownloadState.FAILED,
+      downloadOnlyOnWifi = settingsRepository.getDownloadsWifiOnly()
     )
   }
 
@@ -145,7 +157,8 @@ class DownloadService : ExoDownloadService(
       WorkManager.getInstance(this),
       downloadId = download.request.id,
       progress = 0,
-      state = DownloadState.NONE
+      state = DownloadState.NONE,
+      downloadOnlyOnWifi = settingsRepository.getDownloadsWifiOnly()
     )
   }
 
