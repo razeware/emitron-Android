@@ -22,4 +22,15 @@ platform :android do
   end
 end
 
+platform :android do
+  desc "Upload to Firebase distribution"
+  lane :distribute do
+    build_android_app(task:'assemble', build_type: 'release')
 
+    firebase_app_distribution(
+        app: ENV["FIREBASE_APP_ID"],
+        groups: 'rw-emitron-android',
+        release_notes_file: 'release-notes.txt'
+    )
+  end
+end

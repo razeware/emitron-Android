@@ -8,7 +8,7 @@
 
     <variable
       name="data"
-      type="androidx.lifecycle.LiveData&lt;com.raywenderlich.emitron.model.Data&gt;" />
+      type="androidx.lifecycle.LiveData&lt;com.razeware.emitron.model.Data&gt;" />
 
   </data>
 

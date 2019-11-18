@@ -44,8 +44,8 @@
       android:id="@+id/text_title"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:text="@{title}"
       android:gravity="center_vertical"
+      android:text="@{title}"
       android:textAppearance="@style/TextAppearance.Body.1"
       app:layout_constraintBottom_toTopOf="@+id/collection_item_divider"
       app:layout_constraintEnd_toStartOf="@id/text_title_checked"
@@ -59,6 +59,8 @@
       android:layout_width="@dimen/icon_height_width"
       android:layout_height="@dimen/icon_height_width"
       android:button="@drawable/selector_checkbox_2"
+      android:buttonTint="@color/colorRadioButtonChecked2"
+      android:buttonTintMode="multiply"
       android:checked="@{checked}"
       android:clickable="false"
       android:focusableInTouchMode="false"
@@ -67,10 +69,7 @@
       app:layout_constraintStart_toEndOf="@id/text_title"
       app:layout_constraintTop_toTopOf="@id/text_title"
       app:layout_constraintVertical_chainStyle="packed"
-      android:buttonTint="@color/colorRadioButtonChecked2"
-      android:buttonTintMode="multiply"
-      tools:checked="true"
-      />
+      tools:checked="true" />
 
     <View
       android:id="@+id/collection_item_divider"

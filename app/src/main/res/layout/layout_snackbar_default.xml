@@ -23,13 +23,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:elevation="0dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/text_snackbar_body"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:elevation="0dp"
-        android:visibility="gone"
         tools:text="Error" />
 
       <com.google.android.material.textview.MaterialTextView
@@ -51,8 +51,8 @@
         android:layout_height="wrap_content"
         app:icon="@drawable/ic_material_icon_close"
         app:iconPadding="0dp"
-        app:iconTint="@color/colorIconInverse"
         app:iconSize="@dimen/icon_height_width_2"
+        app:iconTint="@color/colorIconInverse"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/text_snackbar_body"
