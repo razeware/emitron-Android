@@ -92,6 +92,7 @@
   <string name="error_permission">Failed to verify permissions.</string>
   <string name="button_label_yes">Yes</string>
   <string name="button_label_no">No</string>
+  <string name="message_downloads_no_subscription">Upgrade your subscription to download videos.</string>
 
 
   <!-- Filter screen -->

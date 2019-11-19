@@ -33,7 +33,7 @@ class DownloadHelper(private val fragment: Fragment) {
 
     if (!isDownloadAllowed) {
       fragment.showErrorSnackbar(
-        fragment.getString(R.string.message_download_permission_error)
+        fragment.getString(R.string.message_downloads_no_subscription)
       )
       return
     }
