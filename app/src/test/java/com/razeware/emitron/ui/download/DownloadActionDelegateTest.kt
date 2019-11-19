@@ -3,22 +3,13 @@ package com.razeware.emitron.ui.download
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
-<<<<<<< HEAD:app/src/test/java/com/raywenderlich/emitron/ui/download/DownloadActionDelegateTest.kt
-import com.raywenderlich.emitron.data.*
-import com.raywenderlich.emitron.data.download.DownloadRepository
-import com.raywenderlich.emitron.model.Download
-import com.raywenderlich.emitron.model.DownloadProgress
-import com.raywenderlich.emitron.model.DownloadState
-import com.raywenderlich.emitron.utils.TestCoroutineRule
-import com.raywenderlich.emitron.utils.isEqualTo
-=======
 import com.razeware.emitron.data.*
 import com.razeware.emitron.data.download.DownloadRepository
 import com.razeware.emitron.model.Download
+import com.razeware.emitron.model.DownloadProgress
 import com.razeware.emitron.model.DownloadState
 import com.razeware.emitron.utils.TestCoroutineRule
 import com.razeware.emitron.utils.isEqualTo
->>>>>>> development:app/src/test/java/com/razeware/emitron/ui/download/DownloadActionDelegateTest.kt
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

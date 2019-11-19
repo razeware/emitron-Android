@@ -1,6 +1,6 @@
-package com.raywenderlich.emitron.model
+package com.razeware.emitron.model
 
-import com.raywenderlich.emitron.model.utils.isEqualTo
+import com.razeware.emitron.model.utils.isEqualTo
 import org.junit.Test
 
 class DownloadTest {
@@ -9,7 +9,7 @@ class DownloadTest {
   fun forCollection() {
 
     val episodeDownloads = listOf(
-      com.raywenderlich.emitron.model.entity.Download(
+      com.razeware.emitron.model.entity.Download(
         "1",
         "download/1",
         98,
@@ -17,7 +17,7 @@ class DownloadTest {
         0,
         "createdAt"
       ),
-      com.raywenderlich.emitron.model.entity.Download(
+      com.razeware.emitron.model.entity.Download(
         "1",
         "download/1",
         0,
@@ -25,7 +25,7 @@ class DownloadTest {
         0,
         "createdAt"
       ),
-      com.raywenderlich.emitron.model.entity.Download(
+      com.razeware.emitron.model.entity.Download(
         "1",
         "download/1",
         0,
@@ -43,7 +43,7 @@ class DownloadTest {
   fun forCollection_allEpisodesDownloaded() {
 
     val episodeDownloads = listOf(
-      com.raywenderlich.emitron.model.entity.Download(
+      com.razeware.emitron.model.entity.Download(
         "1",
         "download/1",
         100,
@@ -51,7 +51,7 @@ class DownloadTest {
         0,
         "createdAt"
       ),
-      com.raywenderlich.emitron.model.entity.Download(
+      com.razeware.emitron.model.entity.Download(
         "1",
         "download/1",
         100,
@@ -59,7 +59,7 @@ class DownloadTest {
         0,
         "createdAt"
       ),
-      com.raywenderlich.emitron.model.entity.Download(
+      com.razeware.emitron.model.entity.Download(
         "1",
         "download/1",
         100,

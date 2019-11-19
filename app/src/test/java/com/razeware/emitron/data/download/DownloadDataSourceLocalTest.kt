@@ -41,7 +41,7 @@ class DownloadDataSourceLocalTest {
       verify(downloadDao).updateUrl("1", "download/1", 2)
       verifyNoMoreInteractions(downloadDao)
     }
-  }PermissionActionDelegateTest.kt
+  }
 
   @Test
   fun updateDownloadProgress() {
