@@ -65,6 +65,8 @@
       android:layout_width="@dimen/icon_height_width"
       android:layout_height="@dimen/icon_height_width"
       android:button="@drawable/selector_checkbox"
+      android:buttonTint="@color/white"
+      android:buttonTintMode="multiply"
       android:checked="@{checked}"
       android:clickable="false"
       android:focusableInTouchMode="false"
@@ -72,10 +74,8 @@
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintStart_toEndOf="@+id/title_filter_item"
       app:layout_constraintTop_toTopOf="@+id/title_filter_item"
-      android:buttonTint="@color/white"
-      android:buttonTintMode="multiply"
       tools:button="@drawable/selector_checkbox"
-      tools:checked="true"/>
+      tools:checked="true" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 

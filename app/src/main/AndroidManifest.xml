@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
-  package="com.raywenderlich.emitron">
+  package="com.razeware.emitron">
 
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -42,7 +42,7 @@
     <!-- WorkManager reset -->
     <provider
       android:name="androidx.work.impl.WorkManagerInitializer"
-      android:authorities="com.raywenderlich.emitron.workmanager-init"
+      android:authorities="com.razeware.emitron.workmanager-init"
       android:exported="false"
       tools:node="remove" />
 

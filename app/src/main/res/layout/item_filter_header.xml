@@ -18,9 +18,9 @@
   <com.google.android.material.card.MaterialCardView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/default_item_spacing_vertical"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="false"
-    android:layout_marginBottom="@dimen/default_item_spacing_vertical"
     tools:layout_margin="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout

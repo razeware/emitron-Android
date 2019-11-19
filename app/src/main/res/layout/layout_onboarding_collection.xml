@@ -109,7 +109,7 @@
       app:layout_constraintStart_toStartOf="@+id/text_title"
       app:layout_constraintTop_toBottomOf="@+id/text_title" />
 
-    <com.raywenderlich.emitron.ui.common.DownloadButton
+    <com.razeware.emitron.ui.common.DownloadButton
       android:id="@+id/button_collection_episode_download"
       android:layout_width="@dimen/button_icon_height_width_4"
       android:layout_height="@dimen/button_icon_height_width_4"
@@ -185,7 +185,7 @@
       app:layout_constraintStart_toStartOf="@+id/text_title_2"
       app:layout_constraintTop_toBottomOf="@+id/text_title_2" />
 
-    <com.raywenderlich.emitron.ui.common.DownloadButton
+    <com.razeware.emitron.ui.common.DownloadButton
       android:id="@+id/button_collection_episode_download_2"
       android:layout_width="@dimen/button_icon_height_width_4"
       android:layout_height="@dimen/button_icon_height_width_4"
@@ -260,7 +260,7 @@
       app:layout_constraintStart_toStartOf="@+id/text_title_3"
       app:layout_constraintTop_toBottomOf="@+id/text_title_3" />
 
-    <com.raywenderlich.emitron.ui.common.DownloadButton
+    <com.razeware.emitron.ui.common.DownloadButton
       android:id="@+id/button_collection_episode_download_3"
       android:layout_width="@dimen/button_icon_height_width_4"
       android:layout_height="@dimen/button_icon_height_width_4"

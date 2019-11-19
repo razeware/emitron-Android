@@ -7,7 +7,7 @@
 
   <fragment
     android:id="@+id/navigation_settings"
-    android:name="com.raywenderlich.emitron.ui.settings.SettingsFragment"
+    android:name="com.razeware.emitron.ui.settings.SettingsFragment"
     tools:layout="@layout/fragment_settings">
 
     <action
@@ -21,7 +21,7 @@
 
   <dialog
     android:id="@+id/navigation_settings_bottom_sheet"
-    android:name="com.raywenderlich.emitron.ui.settings.SettingsBottomSheetDialogFragment">
+    android:name="com.razeware.emitron.ui.settings.SettingsBottomSheetDialogFragment">
     <argument
       android:name="header"
       android:defaultValue="0"

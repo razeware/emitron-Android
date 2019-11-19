@@ -7,7 +7,7 @@
 
     <variable
       name="data"
-      type="com.raywenderlich.emitron.model.Data" />
+      type="com.razeware.emitron.model.Data" />
 
     <variable
       name="episodePosition"
@@ -15,7 +15,7 @@
 
     <variable
       name="downloadState"
-      type="com.raywenderlich.emitron.model.Download" />
+      type="com.razeware.emitron.model.Download" />
 
     <import type="android.text.TextUtils" />
 
@@ -107,10 +107,11 @@
       app:layout_constraintTop_toBottomOf="@+id/text_title"
       tools:text="1:31" />
 
-    <com.raywenderlich.emitron.ui.common.DownloadButton
+    <com.razeware.emitron.ui.common.DownloadButton
       android:id="@+id/button_collection_episode_download"
       android:layout_width="@dimen/button_icon_height_width_4"
       android:layout_height="@dimen/button_icon_height_width_4"
+      android:layout_marginTop="@dimen/collection_episode_download_button_margin_top"
       app:downloadIcon="@drawable/ic_material_icon_download_2"
       app:downloadIconTint="@color/colorIcon"
       app:downloadStopIcon="@drawable/ic_material_icon_download_pause_2"
@@ -119,7 +120,6 @@
       app:layout_constraintHorizontal_bias="1"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      android:layout_marginTop="@dimen/collection_episode_download_button_margin_top"
       app:progressDrawable="@drawable/progress_drawable" />
 
     <ProgressBar
