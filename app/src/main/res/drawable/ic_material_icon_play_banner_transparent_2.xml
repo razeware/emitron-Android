@@ -19,7 +19,6 @@
     </shape>
   </item>
 
-  <item
-    android:drawable="@drawable/ic_material_icon_play_primary" />
+  <item android:drawable="@drawable/ic_material_icon_play_primary" />
 
 </layer-list>

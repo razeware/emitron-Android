@@ -35,11 +35,11 @@
   <string name="button_sign_in">Sign In</string>
   <string name="title_login_logo">raywenderlich.com</string>
   <string name="button_sign_out">Sign out</string>
-  <string name="headline_login_no_subscription">The raywenderlich.com app is for subscribers only.</string>
+  <string name="headline_login_no_subscription">The Raywenderlich.com app is for subscribers only.</string>
   <string name="body_login_no_subscription">For more information on how to become a raywenderlich.com subscriber please visit: store.raywenderlich.com/products/subscription</string>
   <string name="error_login_subscription">Failed to login.</string>
   <string name="title_login_onboarding_1">Watch anytime, anywhere</string>
-  <string name="body_login_onboarding_1">raywenderlich Subscribers can watch over 2,000+ video tutorials on iPhone and iPad. </string>
+  <string name="body_login_onboarding_1">Raywenderlich.com Subscribers can watch over 2,000+ video tutorials on iPhone and iPad. </string>
   <string name="title_login_onboarding_2">Take your videos on the go</string>
   <string name="body_login_onboarding_2">Professional Subscribers can download and watch videos even when they’re offline.</string>
 
@@ -92,6 +92,7 @@
   <string name="error_permission">Failed to verify permissions.</string>
   <string name="button_label_yes">Yes</string>
   <string name="button_label_no">No</string>
+  <string name="message_downloads_no_subscription">Upgrade your subscription to download videos.</string>
 
 
   <!-- Filter screen -->
@@ -136,6 +137,8 @@
   <string name="share_app_title">Share Raywenderlich.com App</string>
   <string name="share_app_body">High quality programming tutorials: iOS, Android, Swift, Kotlin, Flutter, Server Side Swift, Unity, and more!
   Download the App at market://com.raywenderlich.com/emitron</string>
+  <string name="label_open_source">Open-source licenses</string>
+  <string name="label_version">Version %1$s</string>
 
   <!-- My tutorials -->
   <string name="button_delete">Delete</string>
@@ -208,7 +211,7 @@
   <string name="downloads_no_subscription_title">Are you sure you want to remove this download?</string>
   <string name="downloads_no_subscription_body">Are you sure you want to remove this download?</string>
   <string name="title_downloads_no_subscription">Upgrade your subscription to download videos</string>
-  <string name="body_downloads_no_subscription">raywenderlich Professional subscribers can download videos and watch them offline.</string>
+  <string name="body_downloads_no_subscription">Raywenderlich.com Professional subscribers can download videos and watch them offline.</string>
 
   <!-- On-boarding -->
   <string name="on_boarding_download_card_title">Mobile UX Design Tips &amp; Tricks</string>

@@ -7,7 +7,7 @@
 
     <variable
       name="data"
-      type="com.raywenderlich.emitron.model.Data" />
+      type="com.razeware.emitron.model.Data" />
 
     <variable
       name="releaseDateWithTypeAndDuration"
@@ -160,50 +160,20 @@
         tools:text="Today · Video Course (56 min)"
         tools:visibility="visible" />
 
-      <ProgressBar
-        android:id="@+id/progress_content_download"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="@dimen/height_card_progress_round_height_width"
-        android:layout_height="@dimen/height_card_progress_round_height_width"
-        android:layout_marginStart="@dimen/button_spacing_horizontal"
-        android:indeterminate="false"
-        android:progress="@{downloadProgress}"
-        android:progressDrawable="@drawable/progress_drawable"
-        app:layout_constraintBottom_toBottomOf="@+id/button_download"
-        app:layout_constraintEnd_toEndOf="@id/guideline_right"
-        app:layout_constraintTop_toTopOf="@+id/button_download"
-        tools:progress="50" />
-
-      <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_download_stop"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-        android:layout_width="@dimen/button_icon_height_width"
-        android:layout_height="@dimen/button_icon_height_width"
-        android:layout_marginStart="@dimen/button_spacing_horizontal"
-        android:gravity="center"
-        android:paddingLeft="@null"
-        android:paddingRight="@null"
-        android:textAppearance="@style/TextAppearance.Button.Regular"
-        app:icon="@drawable/ic_material_icon_download_pause"
-        app:iconSize="@dimen/button_download_pause_height"
-        app:layout_constraintBottom_toBottomOf="@+id/button_download"
-        app:layout_constraintEnd_toEndOf="@+id/button_download"
-        app:layout_constraintStart_toStartOf="@+id/button_download"
-        app:layout_constraintTop_toTopOf="@+id/button_download" />
-
-
-      <com.google.android.material.button.MaterialButton
+      <com.razeware.emitron.ui.common.DownloadButton
         android:id="@+id/button_download"
-        style="@style/Button.Icon"
-        android:layout_width="@dimen/button_icon_height_width"
-        android:layout_height="@dimen/button_icon_height_width"
-        app:icon="@drawable/ic_material_icon_download"
-        app:iconSize="@dimen/icon_height_width_2"
+        android:layout_width="@dimen/collection_detail_button_download_height_width"
+        android:layout_height="@dimen/collection_detail_button_download_height_width"
+        app:downloadIcon="@drawable/ic_material_icon_download_2"
+        app:downloadIconTint="@color/colorIcon"
+        app:downloadStopIcon="@drawable/ic_material_icon_download_pause"
+        app:downloadStopIconTint="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="@+id/spacer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/spacer" />
+        app:layout_constraintTop_toTopOf="@+id/spacer"
+        app:progressDrawable="@drawable/progress_drawable" />
 
       <com.google.android.material.button.MaterialButton
         android:id="@+id/button_bookmark"
@@ -232,15 +202,15 @@
         style="@style/TextAppearance.Overline.Raised.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/label_completed"
         android:layout_marginEnd="@dimen/button_spacing_horizontal_2"
+        android:text="@string/label_completed"
         android:visibility="@{data.isFinished()? View.VISIBLE : View.GONE}"
         app:layout_constraintBottom_toBottomOf="@+id/spacer"
+        app:layout_constraintEnd_toStartOf="@+id/text_collection_label_pro"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="@+id/text_title"
         app:layout_constraintTop_toTopOf="@+id/spacer"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintEnd_toStartOf="@+id/text_collection_label_pro"
         tools:text="Completed"
         tools:visibility="visible" />
 

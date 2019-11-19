@@ -7,7 +7,7 @@
 
     <variable
       name="data"
-      type="com.raywenderlich.emitron.model.Data" />
+      type="com.razeware.emitron.model.Data" />
 
     <variable
       name="episodePosition"

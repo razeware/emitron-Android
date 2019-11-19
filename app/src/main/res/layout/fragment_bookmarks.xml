@@ -9,27 +9,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/recycler_view"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:layout_marginTop="@dimen/activity_vertical_margin"
-    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:listitem="@layout/item_content" />
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/recycler_view"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_marginTop="@dimen/activity_vertical_margin"
+      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      tools:listitem="@layout/item_content" />
 
     <FrameLayout
       android:id="@+id/layout_shimmer_progress_container"
       android:layout_width="0dp"
       android:layout_height="0dp"
       android:background="@color/colorBackground"
-      android:elevation="@dimen/card_elevation_default"
       android:clickable="false"
+      android:elevation="@dimen/card_elevation_default"
       android:focusableInTouchMode="false"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
@@ -37,8 +37,7 @@
       app:layout_constraintTop_toTopOf="parent"
       tools:visibility="gone">
 
-      <include
-        layout="@layout/layout_my_tutorial_shimmer_progress" />
+      <include layout="@layout/layout_my_tutorial_shimmer_progress" />
     </FrameLayout>
 
   </androidx.constraintlayout.widget.ConstraintLayout>

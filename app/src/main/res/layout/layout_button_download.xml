@@ -7,7 +7,7 @@
 
     <variable
       name="downloadState"
-      type="com.raywenderlich.emitron.model.Download" />
+      type="com.razeware.emitron.model.Download" />
 
     <import type="android.view.View" />
   </data>
@@ -94,7 +94,7 @@
 
 
     <com.google.android.material.button.MaterialButton
-      android:id="@+id/button_download"
+      android:id="@+id/button_download_start"
       style="@style/Button.Icon"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
