@@ -4,14 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
-<<<<<<< HEAD:app/src/test/java/com/raywenderlich/emitron/ui/login/LoginViewModelTest.kt
-import com.raywenderlich.emitron.data.login.LoginRepository
-import com.raywenderlich.emitron.utils.TestCoroutineRule
-=======
->>>>>>> development:app/src/test/java/com/razeware/emitron/ui/login/LoginViewModelTest.kt
 import com.raywenderlich.guardpost.data.SSOUser
 import com.razeware.emitron.data.login.LoginRepository
-import com.razeware.emitron.ui.download.PermissionActionDelegate
 import com.razeware.emitron.utils.TestCoroutineRule
 import org.junit.Before
 import org.junit.Rule

@@ -36,8 +36,11 @@ data class Download(
      *
      * @param downloads Downloads for each episode
      */
-    fun fromEpisodeDownloads(downloads: List<com.razeware.emitron.model.entity.Download>)
-        : Download? {
+    fun fromEpisodeDownloads(
+      downloads: List<com.razeware.emitron.model.entity.Download>,
+      downloadIds: List<String>
+    ): Download? {
+
       return if (downloads.isNotEmpty()) {
         val downloadProgress: Pair<Int, Int> = when {
           downloads.any { it.inProgress() } -> {
@@ -47,7 +50,7 @@ data class Download(
               (i + acc)
             }.toFloat() / downloads.size).toInt() to DownloadState.IN_PROGRESS.ordinal
           }
-          downloads.all { it.isCompleted() } -> {
+          downloadIds.size == downloads.size && downloads.all { it.isCompleted() } -> {
             100 to DownloadState.COMPLETED.ordinal
           }
           else -> {

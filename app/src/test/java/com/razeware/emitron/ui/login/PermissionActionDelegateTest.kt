@@ -1,8 +1,4 @@
-<<<<<<< HEAD:app/src/test/java/com/razeware/emitron/ui/login/PermissionActionDelegateTest.kt
-package com.raywenderlich.emitron.ui.login
-=======
-package com.razeware.emitron.ui.download
->>>>>>> development:app/src/test/java/com/razeware/emitron/ui/download/PermissionActionDelegateTest.kt
+package com.razeware.emitron.ui.login
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth

@@ -6,9 +6,6 @@ import com.razeware.emitron.data.settings.SettingsRepository
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.model.Download
 import com.razeware.emitron.model.DownloadProgress
-import com.razeware.emitron.model.DownloadState
-import com.razeware.emitron.model.entity.inProgress
-import com.razeware.emitron.model.entity.isCompleted
 import javax.inject.Inject
 
 /**
@@ -92,26 +89,7 @@ class DownloadActionDelegate @Inject constructor(
       return null
     }
 
-    val downloadProgress: Pair<Int, Int> = when {
-      downloads.any { it.inProgress() } -> {
-        downloads.map {
-          it.progress
-        }.reduce { acc, i ->
-          i + acc
-        } to DownloadState.IN_PROGRESS.ordinal
-      }
-      downloadIds.size == downloads.size && downloads.all { it.isCompleted() } -> {
-        100 to DownloadState.COMPLETED.ordinal
-      }
-      else -> {
-        0 to DownloadState.PAUSED.ordinal
-      }
-    }
-
-    return Download(
-      progress = downloadProgress.first,
-      state = downloadProgress.second
-    )
+    return Download.fromEpisodeDownloads(downloads, downloadIds)
   }
 
   override suspend fun updateDownloadProgress(progress: DownloadProgress) {
