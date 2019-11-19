@@ -69,14 +69,15 @@ class DownloadActionDelegate @Inject constructor(
         downloads.first { it.downloadId == collectionId }.toDownloadState()
       download
     } else {
-      getVideoCourseDownloadState(downloads)
+      getVideoCourseDownloadState(downloads, downloadIds)
     }
   }
 
   private fun getVideoCourseDownloadState(
-    downloads: List<Download>
+    downloads: List<Download>,
+    downloadIds: List<String>
   ): com.razeware.emitron.model.Download? {
-    return com.razeware.emitron.model.Download.fromEpisodeDownloads(downloads)
+    return com.razeware.emitron.model.Download.fromEpisodeDownloads(downloads, downloadIds)
   }
 
   override suspend fun updateDownloadProgress(progress: DownloadProgress) {

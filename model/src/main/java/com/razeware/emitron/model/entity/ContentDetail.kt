@@ -131,7 +131,9 @@ data class ContentDetail(
         }
       }
     }
-    return Download.fromEpisodeDownloads(downloads)
+    return Download.fromEpisodeDownloads(downloads, getContentEpisodes().mapNotNull {
+      it.id
+    })
   }
 
   /**

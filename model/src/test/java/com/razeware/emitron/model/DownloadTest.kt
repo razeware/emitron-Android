@@ -6,7 +6,7 @@ import org.junit.Test
 class DownloadTest {
 
   @Test
-  fun forCollection() {
+  fun fromEpisodeDownloads() {
 
     val episodeDownloads = listOf(
       com.razeware.emitron.model.entity.Download(
@@ -18,7 +18,7 @@ class DownloadTest {
         "createdAt"
       ),
       com.razeware.emitron.model.entity.Download(
-        "1",
+        "2",
         "download/1",
         0,
         DownloadState.CREATED.ordinal,
@@ -26,7 +26,7 @@ class DownloadTest {
         "createdAt"
       ),
       com.razeware.emitron.model.entity.Download(
-        "1",
+        "3",
         "download/1",
         0,
         DownloadState.CREATED.ordinal,
@@ -34,13 +34,13 @@ class DownloadTest {
         "createdAt"
       )
     )
-    val download = Download.fromEpisodeDownloads(episodeDownloads)
+    val download = Download.fromEpisodeDownloads(episodeDownloads, listOf("1", "2", "3"))
 
     download isEqualTo Download(progress = 32, state = DownloadState.IN_PROGRESS.ordinal)
   }
 
   @Test
-  fun forCollection_allEpisodesDownloaded() {
+  fun fromEpisodeDownloads_allEpisodesDownloaded() {
 
     val episodeDownloads = listOf(
       com.razeware.emitron.model.entity.Download(
@@ -68,7 +68,7 @@ class DownloadTest {
         "createdAt"
       )
     )
-    val download = Download.fromEpisodeDownloads(episodeDownloads)
+    val download = Download.fromEpisodeDownloads(episodeDownloads, listOf("1", "2", "3"))
 
     download isEqualTo Download(progress = 100, state = DownloadState.COMPLETED.ordinal)
   }
