@@ -18,7 +18,7 @@ class DownloadTest {
         "createdAt"
       ),
       com.razeware.emitron.model.entity.Download(
-        "1",
+        "2",
         "download/1",
         0,
         DownloadState.CREATED.ordinal,
@@ -26,7 +26,7 @@ class DownloadTest {
         "createdAt"
       ),
       com.razeware.emitron.model.entity.Download(
-        "1",
+        "3",
         "download/1",
         0,
         DownloadState.CREATED.ordinal,
@@ -34,7 +34,7 @@ class DownloadTest {
         "createdAt"
       )
     )
-    val download = Download.fromEpisodeDownloads(episodeDownloads)
+    val download = Download.fromEpisodeDownloads(episodeDownloads, listOf("1", "2", "3"))
 
     download isEqualTo Download(progress = 32, state = DownloadState.IN_PROGRESS.ordinal)
   }
@@ -52,7 +52,7 @@ class DownloadTest {
         "createdAt"
       ),
       com.razeware.emitron.model.entity.Download(
-        "1",
+        "2",
         "download/1",
         100,
         DownloadState.COMPLETED.ordinal,
@@ -60,7 +60,7 @@ class DownloadTest {
         "createdAt"
       ),
       com.razeware.emitron.model.entity.Download(
-        "1",
+        "3",
         "download/1",
         100,
         DownloadState.COMPLETED.ordinal,
@@ -68,7 +68,7 @@ class DownloadTest {
         "createdAt"
       )
     )
-    val download = Download.fromEpisodeDownloads(episodeDownloads)
+    val download = Download.fromEpisodeDownloads(episodeDownloads, listOf("1", "2", "3"))
 
     download isEqualTo Download(progress = 100, state = DownloadState.COMPLETED.ordinal)
   }
