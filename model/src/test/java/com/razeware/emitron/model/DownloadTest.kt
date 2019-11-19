@@ -6,7 +6,7 @@ import org.junit.Test
 class DownloadTest {
 
   @Test
-  fun forCollection() {
+  fun fromEpisodeDownloads() {
 
     val episodeDownloads = listOf(
       com.razeware.emitron.model.entity.Download(
@@ -40,7 +40,7 @@ class DownloadTest {
   }
 
   @Test
-  fun forCollection_allEpisodesDownloaded() {
+  fun fromEpisodeDownloads_allEpisodesDownloaded() {
 
     val episodeDownloads = listOf(
       com.razeware.emitron.model.entity.Download(

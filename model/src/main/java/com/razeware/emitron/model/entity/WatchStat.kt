@@ -52,7 +52,7 @@ data class WatchStat(
     attributes = Attributes(
       contentId = contentId,
       seconds = duration,
-      updatedAt = updatedAt
+      watchedOn = updatedAt
     )
   )
 

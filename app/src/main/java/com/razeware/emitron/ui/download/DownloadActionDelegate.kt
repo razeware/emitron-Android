@@ -85,6 +85,7 @@ class DownloadActionDelegate @Inject constructor(
     downloads: List<com.razeware.emitron.model.entity.Download>,
     downloadIds: List<String>
   ): Download? {
+
     if (downloads.isEmpty()) {
       return null
     }

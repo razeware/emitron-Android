@@ -143,14 +143,14 @@ class DownloadActionDelegateTest {
     // When
     val result = viewModel.getCollectionDownloadState(
       contentData,
-      listOf(createDownload()),
+      listOf(createDownload(state = DownloadState.IN_PROGRESS.ordinal)),
       downloadIds = listOf("1", "2")
     )
 
     // Then
     result isEqualTo Download(
-      progress = 0,
-      state = DownloadState.CREATED.ordinal,
+      progress = 25,
+      state = DownloadState.IN_PROGRESS.ordinal,
       failureReason = 0,
       url = null
     )
