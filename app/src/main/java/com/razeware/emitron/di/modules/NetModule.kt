@@ -35,10 +35,14 @@ class NetModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
-      level =
-        if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.HEADERS else HttpLoggingInterceptor.Level.NONE
-    }
+    fun provideLoggingInterceptor(): HttpLoggingInterceptor =
+      HttpLoggingInterceptor().apply {
+        level = if (BuildConfig.DEBUG) {
+          HttpLoggingInterceptor.Level.HEADERS
+        } else {
+          HttpLoggingInterceptor.Level.NONE
+        }
+      }
 
     /**
      * Provide OkHttp
@@ -64,7 +68,7 @@ class NetModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
       Retrofit.Builder()
-        .baseUrl("https://api.razeware.com/api/") // Move to BuildConfig
+        .baseUrl(BuildConfig.BASE_API_URL)
         .addConverterFactory(
           MoshiConverterFactory.create(
             Moshi.Builder().add(
@@ -125,6 +129,4 @@ class NetModule {
     fun provideDownloadApi(retrofit: Retrofit): DownloadApi = DownloadApi.create(retrofit)
 
   }
-
-
 }
