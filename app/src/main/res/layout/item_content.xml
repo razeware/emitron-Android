@@ -190,13 +190,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/spacer" />
 
-      <androidx.constraintlayout.widget.Group
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="@{downloadProgress > 0? View.VISIBLE : View.GONE}"
-        app:constraint_referenced_ids="button_download_stop,progress_content_download"
-        tools:visibility="visible" />
-
       <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_label_completed"
         style="@style/TextAppearance.Overline.Raised.Colored"
