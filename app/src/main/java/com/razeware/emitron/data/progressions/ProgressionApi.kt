@@ -78,7 +78,7 @@ interface ProgressionApi {
   /**
    * Update watch stats
    */
-  @POST("progressions/bulk")
+  @POST("watch_stats/bulk")
   @Throws(Exception::class)
   suspend fun updateWatchStats(
     @Body data: Contents
