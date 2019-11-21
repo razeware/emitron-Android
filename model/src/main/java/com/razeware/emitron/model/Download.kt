@@ -39,8 +39,8 @@ data class Download(
     fun fromEpisodeDownloads(
       downloads: List<com.razeware.emitron.model.entity.Download>,
       downloadIds: List<String>
-    )
-        : Download? {
+    ): Download? {
+
       return if (downloads.isNotEmpty()) {
         val downloadProgress: Pair<Int, Int> = when {
           downloads.any { it.inProgress() } -> {

@@ -52,7 +52,7 @@ class DownloadDataSourceLocal @Inject constructor(
    * @param state Download state [DownloadState]
    */
   suspend fun updateDownloadState(
-    contentId: String,
+    contentId: List<String>,
     state: DownloadState
   ) {
     downloadDao.updateState(contentId, state.ordinal)
@@ -109,6 +109,16 @@ class DownloadDataSourceLocal @Inject constructor(
     contentTypes: Array<String>
   ): List<DownloadWithContent> =
     downloadDao.getQueuedDownloads(limit, states, contentTypes)
+
+  /**
+   * Get in progress downloads
+   *
+   * @param contentTypes download contentTypes
+   */
+  suspend fun getInProgressDownloads(
+    contentTypes: Array<String>
+  ): List<DownloadWithContent> =
+    downloadDao.getInProgressDownloads(DownloadState.IN_PROGRESS.ordinal, contentTypes)
 
   /**
    * Get queued download by id

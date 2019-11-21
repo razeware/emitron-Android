@@ -52,7 +52,7 @@ class DownloadTest {
         "createdAt"
       ),
       com.razeware.emitron.model.entity.Download(
-        "1",
+        "2",
         "download/1",
         100,
         DownloadState.COMPLETED.ordinal,
@@ -60,7 +60,7 @@ class DownloadTest {
         "createdAt"
       ),
       com.razeware.emitron.model.entity.Download(
-        "1",
+        "3",
         "download/1",
         100,
         DownloadState.COMPLETED.ordinal,

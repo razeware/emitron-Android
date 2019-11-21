@@ -127,7 +127,8 @@ class StartDownloadWorker @AssistedInject constructor(
     fun enqueue(
       workManager: WorkManager,
       contentId: String,
-      episodeId: String? = null
+      episodeId: String? = null,
+      downloadOnlyOnWifi: Boolean
     ) {
       val downloadData =
         workDataOf(
@@ -146,11 +147,8 @@ class StartDownloadWorker @AssistedInject constructor(
         .addTag(DOWNLOAD_WORKER_TAG)
         .build()
 
-      val downloadWorkRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
-        .setInputData(downloadData)
-        .setConstraints(constraints)
-        .addTag(DOWNLOAD_WORKER_TAG)
-        .build()
+      val downloadWorkRequest =
+        DownloadWorker.buildWorkRequest(downloadOnlyOnWifi)
 
       workManager
         .beginUniqueWork(

@@ -26,7 +26,8 @@ class DownloadHelper(private val fragment: Fragment) {
     episodeId: String? = null,
     episodeIsDownloaded: Boolean = false,
     onDownloadStarted: (() -> Unit)? = null,
-    onDownloadRemoved: ((String) -> Unit)? = null
+    onDownloadRemoved: ((String) -> Unit)? = null,
+    downloadsWifiOnly: Boolean
   ) {
 
     contentId ?: return
@@ -53,7 +54,8 @@ class DownloadHelper(private val fragment: Fragment) {
     StartDownloadWorker.enqueue(
       WorkManager.getInstance(fragment.requireContext()),
       contentId,
-      episodeId
+      episodeId,
+      downloadsWifiOnly
     )
 
     onDownloadStarted?.invoke()

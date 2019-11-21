@@ -46,6 +46,8 @@ class PlayerViewModel @Inject constructor(
 
   private var lastUpdatedProgress: Long = 0
 
+  private var playbackStartDuration: Long = -1L
+
   private val _serverContentProgress = MutableLiveData<Long>()
 
   private val _resetPlaybackToken = MutableLiveData<Boolean>()
@@ -328,6 +330,7 @@ class PlayerViewModel @Inject constructor(
         updateOnlineProgress(contentId, progressInMillis)
       } else {
         updateOfflineProgress(contentId, progressInMillis, updatedAt)
+        updateWatchStat(contentId, progressInMillis, updatedAt)
       }
     }
   }
@@ -345,14 +348,14 @@ class PlayerViewModel @Inject constructor(
   private suspend fun updateOnlineProgress(contentId: String, progressInMillis: Long) {
     val playbackToken = _playerToken.value ?: ""
 
-    val progressInSecs = progressInMillis / MILLIS_IN_A_SEC
-    val progress = getPlaybackProgress(progressInSecs) ?: return
+    val progressInSeconds = progressInMillis / MILLIS_IN_A_SEC
+    val progress = getPlaybackProgress(progressInSeconds) ?: return
 
     val result = try {
       val response = progressionRepository.updatePlaybackProgress(
         playbackToken,
         contentId,
-        progressInSecs,
+        progressInSeconds,
         progress
       )
       verifyRemoteProgressDiff(response)
@@ -398,6 +401,28 @@ class PlayerViewModel @Inject constructor(
       updatedAt
     )
     _enqueueOfflineProgressUpdate.value = contentId
+  }
+
+  private suspend fun updateWatchStat(
+    contentId: String,
+    progressInMillis: Long,
+    watchedAt: LocalDateTime
+  ) {
+    val progressInSeconds = progressInMillis / MILLIS_IN_A_SEC
+
+    getPlaybackProgress(progressInSeconds) ?: return
+
+    if (playbackStartDuration == -1L) {
+      playbackStartDuration = progressInSeconds
+    }
+
+    val playedDuration = progressInSeconds - playbackStartDuration
+
+    progressionRepository.updateWatchStat(
+      contentId,
+      playedDuration,
+      watchedAt
+    )
   }
 
   private fun getPercentageCompletion(progress: Long, duration: Long): Int {
@@ -447,5 +472,10 @@ class PlayerViewModel @Inject constructor(
     private const val MILLIS_IN_A_SEC: Long = 1000L
     private val COMPLETION_PERCENTAGE: Array<Int> = arrayOf(99, 100)
   }
+
+  /**
+   * Get all playlist episodes
+   */
+  fun getAllEpisodes(): List<Data> = _playlist.value?.episodes ?: emptyList()
 }
 

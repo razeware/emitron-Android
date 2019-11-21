@@ -2,9 +2,7 @@ package com.razeware.emitron.ui.download.workers
 
 import android.content.Context
 import android.net.Uri
-import androidx.work.CoroutineWorker
-import androidx.work.Worker
-import androidx.work.WorkerParameters
+import androidx.work.*
 import com.razeware.emitron.data.download.DownloadRepository
 import com.razeware.emitron.data.settings.SettingsRepository
 import com.razeware.emitron.di.modules.worker.ChildWorkerFactory
@@ -50,12 +48,12 @@ class DownloadWorker @AssistedInject constructor(
       downloadRepository.getDownload(downloadId)
     return when {
       download.inProgress() -> {
-        downloadRepository.updateDownloadState(downloadId, DownloadState.PAUSED)
+        downloadRepository.updateDownloadState(listOf(downloadId), DownloadState.PAUSED)
         DownloadService.pauseDownload(appContext, downloadId)
         handleQueuedDownloads()
       }
       download.isPaused() -> {
-        downloadRepository.updateDownloadState(downloadId, DownloadState.IN_PROGRESS)
+        downloadRepository.updateDownloadState(listOf(downloadId), DownloadState.IN_PROGRESS)
         DownloadService.resumeDownload(appContext, downloadId)
         Result.success()
       }
@@ -140,5 +138,27 @@ class DownloadWorker @AssistedInject constructor(
      * Download id
      */
     const val DOWNLOAD_ID: String = "download_id"
+
+    private const val DOWNLOAD_WORKER_TAG: String = "downloads"
+
+    /**
+     * Build Download work request
+     */
+    fun buildWorkRequest(downloadOnlyOnWifi: Boolean = false): OneTimeWorkRequest {
+      val networkType = if (downloadOnlyOnWifi) {
+        NetworkType.UNMETERED
+      } else {
+        NetworkType.CONNECTED
+      }
+      val constraints = Constraints.Builder()
+        .setRequiredNetworkType(networkType)
+        .setRequiresStorageNotLow(true)
+        .build()
+
+      return OneTimeWorkRequestBuilder<DownloadWorker>()
+        .setConstraints(constraints)
+        .addTag(DOWNLOAD_WORKER_TAG)
+        .build()
+    }
   }
 }

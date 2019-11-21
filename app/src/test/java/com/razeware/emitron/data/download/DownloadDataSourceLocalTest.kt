@@ -61,10 +61,10 @@ class DownloadDataSourceLocalTest {
   fun updateDownloadState() {
     testCoroutineRule.runBlockingTest {
       downloadDataSourceLocal.updateDownloadState(
-        "1",
+        listOf("1"),
         DownloadState.COMPLETED
       )
-      verify(downloadDao).updateState("1", 3)
+      verify(downloadDao).updateState(listOf("1"), 3)
       verifyNoMoreInteractions(downloadDao)
     }
   }
@@ -141,6 +141,15 @@ class DownloadDataSourceLocalTest {
       val downloadIds = listOf("1", "2", "3")
       downloadDataSourceLocal.getDownloadsById(downloadIds)
       verify(downloadDao).getDownloadsById(downloadIds)
+      verifyNoMoreInteractions(downloadDao)
+    }
+  }
+
+  @Test
+  fun getInProgressDownloads() {
+    testCoroutineRule.runBlockingTest {
+      downloadDataSourceLocal.getInProgressDownloads(arrayOf("screencast", "episode"))
+      verify(downloadDao).getInProgressDownloads(2, arrayOf("screencast", "episode"))
       verifyNoMoreInteractions(downloadDao)
     }
   }

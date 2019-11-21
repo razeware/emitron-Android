@@ -66,8 +66,6 @@ class UpdateDownloadWorker @AssistedInject constructor(
      */
     const val DOWNLOAD_STATE: String = "download_state"
 
-    private const val DOWNLOAD_WORKER_TAG: String = "downloads"
-
     /**
      * Start content download
      *
@@ -80,7 +78,8 @@ class UpdateDownloadWorker @AssistedInject constructor(
       workManager: WorkManager,
       downloadId: String,
       progress: Int,
-      state: DownloadState
+      state: DownloadState,
+      downloadOnlyOnWifi: Boolean
     ) {
       val downloadData =
         workDataOf(
@@ -89,20 +88,12 @@ class UpdateDownloadWorker @AssistedInject constructor(
           DOWNLOAD_STATE to state.ordinal
         )
 
-      val constraints = Constraints.Builder()
-        .setRequiredNetworkType(NetworkType.UNMETERED)
-        .setRequiresStorageNotLow(true)
-        .build()
-
       val startDownloadWorkRequest = OneTimeWorkRequestBuilder<UpdateDownloadWorker>()
         .setInputData(downloadData)
-        .addTag(DOWNLOAD_WORKER_TAG)
         .build()
 
-      val downloadWorkRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
-        .setConstraints(constraints)
-        .addTag(DOWNLOAD_WORKER_TAG)
-        .build()
+      val downloadWorkRequest =
+        DownloadWorker.buildWorkRequest(downloadOnlyOnWifi)
 
       workManager
         .beginUniqueWork(

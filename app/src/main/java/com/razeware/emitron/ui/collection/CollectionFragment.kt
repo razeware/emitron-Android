@@ -154,7 +154,9 @@ class CollectionFragment : DaggerFragment() {
         } else {
           episodeAdapter.removeEpisodeDownload(listOf(downloadId))
         }
-      })
+      },
+      viewModel.downloadsWifiOnly()
+    )
   }
 
   private fun initObservers() {
@@ -272,7 +274,8 @@ class CollectionFragment : DaggerFragment() {
       .observe(viewLifecycleOwner) { downloads ->
         downloads?.let {
           if (it.isNotEmpty()) {
-            val collectionDownload = viewModel.updateCollectionDownloadState(downloads, downloadIds)
+            val collectionDownload =
+              viewModel.updateCollectionDownloadState(downloads, downloadIds)
             binding.buttonCollectionDownload.updateDownloadState(collectionDownload)
             episodeAdapter.updateEpisodeDownloadProgress(downloads)
           }

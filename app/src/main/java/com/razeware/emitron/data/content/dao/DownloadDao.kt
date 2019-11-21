@@ -54,16 +54,16 @@ interface DownloadDao {
   /**
    * Update content download state
    *
-   * @param downloadId Download Id
+   * @param downloadIds List of download Ids
    * @param state New download state
    */
   @Query(
     """UPDATE downloads 
              SET state = :state
-             WHERE download_id = :downloadId
+             WHERE download_id in(:downloadIds)
           """
   )
-  suspend fun updateState(downloadId: String, state: Int)
+  suspend fun updateState(downloadIds: List<String>, state: Int)
 
   /**
    * Update content download url
@@ -97,6 +97,24 @@ interface DownloadDao {
   suspend fun getQueuedDownloads(
     limit: Int,
     states: Array<Int>,
+    contentTypes: Array<String>
+  ): List<DownloadWithContent>
+
+  /**
+   * Get in progress downloads
+   */
+  @Query(
+    """SELECT * FROM downloads
+             INNER JOIN contents
+             ON contents.content_id = downloads.download_id
+             WHERE contents.content_type in(:contentTypes)
+             AND downloads.state = :state
+             ORDER BY downloads.created_at
+          """
+  )
+  @Transaction
+  suspend fun getInProgressDownloads(
+    state: Int,
     contentTypes: Array<String>
   ): List<DownloadWithContent>
 

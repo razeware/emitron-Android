@@ -74,4 +74,13 @@ interface ProgressionApi {
       ProgressionApi::class.java
     )
   }
+
+  /**
+   * Update watch stats
+   */
+  @POST("watch_stats/bulk")
+  @Throws(Exception::class)
+  suspend fun updateWatchStats(
+    @Body data: Contents
+  ): Response<Contents?>
 }

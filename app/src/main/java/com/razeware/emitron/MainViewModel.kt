@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import com.razeware.emitron.data.login.LoginRepository
 import com.razeware.emitron.data.settings.SettingsRepository
 import com.razeware.emitron.model.Data
+import com.razeware.emitron.ui.download.DownloadAction
+import com.razeware.emitron.ui.download.DownloadActionDelegate
 import javax.inject.Inject
 
 /**
@@ -16,9 +18,9 @@ import javax.inject.Inject
  */
 class MainViewModel @Inject constructor(
   private val loginRepository: LoginRepository,
-  private val settingsRepository: SettingsRepository
-
-) : ViewModel() {
+  private val settingsRepository: SettingsRepository,
+  private val downloadActionDelegate: DownloadActionDelegate
+) : ViewModel(), DownloadAction by downloadActionDelegate {
 
   /**
    * @return True if user is logged in, otherwise False

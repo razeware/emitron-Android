@@ -8,6 +8,7 @@ import com.razeware.emitron.data.content.dao.*
 import com.razeware.emitron.data.filter.dao.CategoryDao
 import com.razeware.emitron.data.filter.dao.DomainDao
 import com.razeware.emitron.data.progressions.dao.ProgressionDao
+import com.razeware.emitron.data.progressions.dao.WatchStatDao
 import com.razeware.emitron.model.entity.*
 
 /**
@@ -23,7 +24,8 @@ import com.razeware.emitron.model.entity.*
     Group::class,
     ContentGroupJoin::class,
     GroupEpisodeJoin::class,
-    Download::class
+    Download::class,
+    WatchStat::class
   ],
   version = 1,
   exportSchema = true
@@ -74,6 +76,11 @@ abstract class EmitronDatabase : RoomDatabase() {
    * See [DownloadDao]
    */
   abstract fun downloadDao(): DownloadDao
+
+  /**
+   * See [WatchStatDao]
+   */
+  abstract fun watchStateDao(): WatchStatDao
 
   companion object {
 

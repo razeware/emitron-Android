@@ -88,7 +88,7 @@ class DownloadRepositoryTest {
         downloadDataSourceLocal.getQueuedDownloads(
           1,
           states = arrayOf(1, 5),
-          contentTypes = ContentType.getAllowedDownloadTypes()
+          contentTypes = arrayOf("screencast", "episode")
         )
       ).doReturn(
         expected
@@ -96,7 +96,7 @@ class DownloadRepositoryTest {
       val result = repository.getQueuedDownloads(
         1,
         states = arrayOf(DownloadState.CREATED, DownloadState.PAUSED),
-        contentTypes = ContentType.getAllowedDownloadTypes()
+        contentTypes = arrayOf("screencast", "episode")
       )
       result isEqualTo expected
       verify(downloadDataSourceLocal).getQueuedDownloads(
@@ -109,7 +109,7 @@ class DownloadRepositoryTest {
   }
 
   @Test
-  fun getInProgressDownloads() {
+  fun getDownload() {
     testCoroutineRule.runBlockingTest {
       val expected = com.razeware.emitron.data.createDownloadWithContent()
       whenever(downloadDataSourceLocal.getDownload("1")).doReturn(
@@ -119,6 +119,31 @@ class DownloadRepositoryTest {
 
       result isEqualTo expected
       verify(downloadDataSourceLocal).getDownload("1")
+      verifyNoMoreInteractions(contentDataSourceLocal)
+    }
+  }
+
+  @Test
+  fun getInProgressDownloads() {
+    testCoroutineRule.runBlockingTest {
+      val expected = listOf(
+        com.razeware.emitron.data.createDownloadWithContent(),
+        com.razeware.emitron.data.createDownloadWithContent()
+      )
+      whenever(
+        downloadDataSourceLocal.getInProgressDownloads(
+          contentTypes = arrayOf("screencast", "episode")
+        )
+      ).doReturn(
+        expected
+      )
+      val result = repository.getInProgressDownloads(
+        contentTypes = arrayOf("screencast", "episode")
+      )
+      result isEqualTo expected
+      verify(downloadDataSourceLocal).getInProgressDownloads(
+        arrayOf("screencast", "episode")
+      )
       verifyNoMoreInteractions(contentDataSourceLocal)
     }
   }
@@ -205,9 +230,9 @@ class DownloadRepositoryTest {
   @Test
   fun updateDownloadState() {
     testCoroutineRule.runBlockingTest {
-      repository.updateDownloadState("1", DownloadState.COMPLETED)
+      repository.updateDownloadState(listOf("1"), DownloadState.COMPLETED)
       verify(downloadDataSourceLocal)
-        .updateDownloadState("1", DownloadState.COMPLETED)
+        .updateDownloadState(listOf("1"), DownloadState.COMPLETED)
       verifyNoMoreInteractions(contentDataSourceLocal)
     }
   }

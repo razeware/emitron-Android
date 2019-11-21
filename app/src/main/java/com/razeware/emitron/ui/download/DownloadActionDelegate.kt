@@ -2,9 +2,10 @@ package com.razeware.emitron.ui.download
 
 import androidx.lifecycle.LiveData
 import com.razeware.emitron.data.download.DownloadRepository
+import com.razeware.emitron.data.settings.SettingsRepository
 import com.razeware.emitron.model.Data
+import com.razeware.emitron.model.Download
 import com.razeware.emitron.model.DownloadProgress
-import com.razeware.emitron.model.entity.Download
 import javax.inject.Inject
 
 /**
@@ -19,7 +20,8 @@ interface DownloadAction {
    *
    * @return Observable for Downloads by id
    */
-  fun getDownloads(downloadIds: List<String>): LiveData<List<Download>>
+  fun getDownloads(downloadIds: List<String>):
+      LiveData<List<com.razeware.emitron.model.entity.Download>>
 
   /**
    * Collection download state
@@ -30,9 +32,9 @@ interface DownloadAction {
    */
   fun getCollectionDownloadState(
     collection: Data?,
-    downloads: List<Download>,
+    downloads: List<com.razeware.emitron.model.entity.Download>,
     downloadIds: List<String>
-  ): com.razeware.emitron.model.Download?
+  ): Download?
 
   /**
    * Update download progress
@@ -40,25 +42,31 @@ interface DownloadAction {
    * @param progress [DownloadProgress]
    */
   suspend fun updateDownloadProgress(progress: DownloadProgress)
+
+  /**
+   * Should only download only on wifi
+   */
+  fun downloadsWifiOnly(): Boolean
 }
 
 /**
  * [DownloadAction] implementation
  */
 class DownloadActionDelegate @Inject constructor(
-  private val downloadRepository: DownloadRepository
+  private val downloadRepository: DownloadRepository,
+  private val settingsRepository: SettingsRepository
 ) : DownloadAction {
 
-  override fun getDownloads(downloadIds: List<String>): LiveData<List<Download>> {
+  override fun getDownloads(downloadIds: List<String>):
+      LiveData<List<com.razeware.emitron.model.entity.Download>> {
     return downloadRepository.getDownloadsById(downloadIds)
   }
 
   override fun getCollectionDownloadState(
     collection: Data?,
-    downloads: List<Download>,
+    downloads: List<com.razeware.emitron.model.entity.Download>,
     downloadIds: List<String>
-  ):
-      com.razeware.emitron.model.Download? {
+  ): Download? {
 
     val collectionId = collection?.id
 
@@ -74,13 +82,20 @@ class DownloadActionDelegate @Inject constructor(
   }
 
   private fun getVideoCourseDownloadState(
-    downloads: List<Download>,
+    downloads: List<com.razeware.emitron.model.entity.Download>,
     downloadIds: List<String>
-  ): com.razeware.emitron.model.Download? {
-    return com.razeware.emitron.model.Download.fromEpisodeDownloads(downloads, downloadIds)
+  ): Download? {
+
+    if (downloads.isEmpty()) {
+      return null
+    }
+
+    return Download.fromEpisodeDownloads(downloads, downloadIds)
   }
 
   override suspend fun updateDownloadProgress(progress: DownloadProgress) {
     downloadRepository.updateDownloadProgress(progress)
   }
+
+  override fun downloadsWifiOnly(): Boolean = settingsRepository.getDownloadsWifiOnly()
 }
