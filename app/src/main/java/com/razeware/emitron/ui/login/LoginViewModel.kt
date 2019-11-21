@@ -4,8 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.raywenderlich.guardpost.data.SSOUser
 import com.razeware.emitron.data.login.LoginRepository
-import com.razeware.emitron.ui.download.PermissionActionDelegate
-import com.razeware.emitron.ui.download.PermissionsAction
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

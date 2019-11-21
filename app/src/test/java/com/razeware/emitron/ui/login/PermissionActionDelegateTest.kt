@@ -1,4 +1,4 @@
-package com.razeware.emitron.ui.download
+package com.razeware.emitron.ui.login
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth

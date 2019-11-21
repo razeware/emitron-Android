@@ -7,10 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import com.razeware.emitron.data.content.ContentDataSourceLocal
-import com.razeware.emitron.model.Content
-import com.razeware.emitron.model.Contents
-import com.razeware.emitron.model.Data
-import com.razeware.emitron.model.DownloadState
+import com.razeware.emitron.model.*
 import com.razeware.emitron.model.entity.Download
 import com.razeware.emitron.model.entity.DownloadWithContent
 import com.razeware.emitron.utils.LocalPagedResponse
@@ -183,18 +180,12 @@ class DownloadRepository @Inject constructor(
   /**
    * Update download progress
    *
-   * @param contentId Content id
-   * @param progress Int
-   * @param state Download state [DownloadState]
+   * @param progress [DownloadProgress]
    */
   @AnyThread
-  suspend fun updateDownloadProgress(
-    contentId: String,
-    progress: Int,
-    state: DownloadState
-  ) {
+  suspend fun updateDownloadProgress(progress: DownloadProgress) {
     withContext(threadManager.db) {
-      downloadDataSource.updateDownloadProgress(contentId, progress, state)
+      downloadDataSource.updateDownloadProgress(progress)
     }
   }
 

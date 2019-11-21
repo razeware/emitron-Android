@@ -1,7 +1,6 @@
 package com.razeware.emitron.ui.collection
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,30 +11,27 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.WorkManager
-import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.FragmentCollectionBinding
 import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
 import com.razeware.emitron.model.Data
-import com.razeware.emitron.model.DownloadState
 import com.razeware.emitron.model.isScreencast
 import com.razeware.emitron.ui.common.getDefaultAppBarConfiguration
 import com.razeware.emitron.ui.content.getReadableContributors
 import com.razeware.emitron.ui.content.getReadableReleaseAtWithTypeAndDuration
-import com.razeware.emitron.ui.download.PermissionActionDelegate
+import com.razeware.emitron.ui.download.helpers.DownloadHelper
+import com.razeware.emitron.ui.download.helpers.DownloadProgressHelper
 import com.razeware.emitron.ui.download.workers.RemoveDownloadWorker
-import com.razeware.emitron.ui.download.workers.StartDownloadWorker
+import com.razeware.emitron.ui.login.PermissionActionDelegate
 import com.razeware.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.razeware.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
 import com.razeware.emitron.ui.onboarding.OnboardingView
 import com.razeware.emitron.ui.player.workers.UpdateOfflineProgressWorker
 import com.razeware.emitron.utils.UiStateManager
-import com.razeware.emitron.utils.createMainThreadScheduledHandler
 import com.razeware.emitron.utils.extensions.*
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 /**
  * Collection detail view
@@ -58,43 +54,17 @@ class CollectionFragment : DaggerFragment() {
 
   private lateinit var binding: FragmentCollectionBinding
 
-  companion object {
-    /**
-     * Handler interval to update download progress
-     */
-    const val downloadProgressUpdateIntervalMillis: Long = 5000L
-  }
-
-  /**
-   * Download manager instance to observe download progress
-   */
-  @Inject
-  lateinit var downloadManager: DownloadManager
-
-  private var downloadProgressHandler: Handler? = null
-
   private var verifyDownloadDialog: AlertDialog? = null
 
-  private var removeDownloadDialog: AlertDialog? = null
-
   /**
-   * Download listener
+   * Helper to observer download progress from [DownloadManager]
    */
-  class DownloadStartListener(private val onDownloadStart: () -> Unit) : DownloadManager.Listener {
+  @Inject
+  lateinit var downloadProgressHelper: DownloadProgressHelper
 
-    /**
-     * See [DownloadManager.Listener.onDownloadChanged]
-     */
-    override fun onDownloadChanged(downloadManager: DownloadManager?, download: Download?) {
-      if (download?.state == Download.STATE_DOWNLOADING
-        || download?.state == Download.STATE_RESTARTING
-      ) {
-        onDownloadStart()
-      }
-    }
+  private val downloadHelper: DownloadHelper by lazy {
+    DownloadHelper(this)
   }
-
-  private var downloadStartListener: DownloadStartListener? = null
 
   /**
    * See [androidx.fragment.app.Fragment.onCreateView]
@@ -142,7 +112,7 @@ class CollectionFragment : DaggerFragment() {
         viewModel.updateContentProgression(isNetConnected(), episode, position)
       },
       onEpisodeDownload = { episode, _ ->
-        startDownload(episode?.id, episode?.isDownloaded() == true)
+        handleDownload(episode?.id, episode?.isDownloaded() == true)
       }
     )
 
@@ -162,67 +132,29 @@ class CollectionFragment : DaggerFragment() {
     }
 
     binding.buttonCollectionDownload.setOnClickListener {
-      startDownload()
+      handleDownload()
     }
   }
 
-  private fun startDownload(episodeId: String? = null, episodeIsDownloaded: Boolean = false) {
-
-    if (!viewModel.isDownloadAllowed()) {
-      showErrorSnackbar(getString(R.string.message_download_permission_error))
-      return
-    }
-
-    val contentId = viewModel.getContentId() ?: return
-
-    // Delete downloaded episode
-    if (!episodeId.isNullOrBlank() && episodeIsDownloaded) {
-      showDeleteDownloadedContentDialog(episodeId)
-      return
-    }
-
-    // Delete downloaded collection
-    if (viewModel.isDownloaded()) {
-      showDeleteDownloadedContentDialog(contentId, true)
-      return
-    }
-
-    StartDownloadWorker.enqueue(
-      WorkManager.getInstance(requireContext()),
-      contentId,
-      episodeId
-    )
-
-    initDownloadProgressHandler()
-  }
-
-  private fun showDeleteDownloadedContentDialog(downloadId: String, isCollection: Boolean = false) {
-    if (isShowingRemoveDownloadDialog()) {
-      return
-    }
-    removeDownloadDialog = createDialog(
-      title = R.string.title_download_remove,
-      message = R.string.message_download_remove,
-      positiveButton = R.string.button_label_yes,
-      positiveButtonClickListener = {
-        handleRemoveDownload(downloadId, isCollection)
-      },
-      negativeButton = R.string.button_label_no
-    )
-    removeDownloadDialog?.show()
-  }
-
-  private fun handleRemoveDownload(downloadId: String, isCollection: Boolean = false) {
-    if (isCollection) {
-      binding.buttonCollectionDownload.updateDownloadState(null)
-      episodeAdapter.removeEpisodeDownload(viewModel.getContentIds())
-    } else {
-      episodeAdapter.removeEpisodeDownload(listOf(downloadId))
-    }
-    RemoveDownloadWorker.enqueue(
-      WorkManager.getInstance(requireContext()),
-      downloadId
-    )
+  private fun handleDownload(episodeId: String? = null, episodeIsDownloaded: Boolean = false) {
+    val contentIsDownloaded = viewModel.isDownloaded()
+    downloadHelper.startDownload(
+      viewModel.isDownloadAllowed(),
+      viewModel.getContentId(),
+      contentIsDownloaded,
+      episodeId,
+      episodeIsDownloaded,
+      {
+        initDownloadProgress()
+      }, { downloadId ->
+        if (contentIsDownloaded) {
+          binding.buttonCollectionDownload.updateDownloadState(null)
+          viewModel.removeDownload()
+          episodeAdapter.removeEpisodeDownload(viewModel.getContentIds())
+        } else {
+          episodeAdapter.removeEpisodeDownload(listOf(downloadId))
+        }
+      })
   }
 
   private fun initObservers() {
@@ -271,7 +203,7 @@ class CollectionFragment : DaggerFragment() {
         showErrorSnackbar(getString(R.string.message_collection_episode_load_failed))
       } else {
         initDownloadObserver()
-        initDownloadProgressHandler()
+        initDownloadProgress()
       }
     }
 
@@ -386,55 +318,6 @@ class CollectionFragment : DaggerFragment() {
     }
   }
 
-  private fun initDownloadProgressHandler() {
-    val downloads = downloadManager.currentDownloads
-
-    if (!downloads.isNullOrEmpty()) {
-      val downloadIds = downloads.map {
-        it.request.id
-      }.intersect(viewModel.getContentIds())
-
-      if (downloadIds.isNotEmpty()) {
-        createDownloadProgressHandler()
-      }
-    }
-    if (null == downloadStartListener) {
-      downloadStartListener = DownloadStartListener {
-        createDownloadProgressHandler()
-      }
-      downloadManager.addListener(downloadStartListener)
-    }
-  }
-
-  private fun updateDownloadProgress() {
-    val downloads = downloadManager.currentDownloads
-
-    val downloadIds = downloads.map {
-      it.request.id
-    }.intersect(viewModel.getContentIds())
-
-    if (downloadIds.isEmpty()) {
-      downloadProgressHandler?.removeCallbacksAndMessages(null)
-      return
-    }
-
-    downloads.map {
-      val state = when {
-        it.state == Download.STATE_FAILED -> DownloadState.FAILED
-        it.state == Download.STATE_COMPLETED -> DownloadState.COMPLETED
-        it.state == Download.STATE_DOWNLOADING -> DownloadState.IN_PROGRESS
-        it.state == Download.STATE_QUEUED -> DownloadState.PAUSED
-        it.state == Download.STATE_STOPPED -> DownloadState.PAUSED
-        else -> DownloadState.IN_PROGRESS
-      }
-      viewModel.updateDownload(
-        it.request.id,
-        it.percentDownloaded.roundToInt(),
-        state
-      )
-    }
-  }
-
   /**
    * See [androidx.fragment.app.Fragment.onDestroyView]
    */
@@ -443,22 +326,8 @@ class CollectionFragment : DaggerFragment() {
     if (isShowingVerifyDownloadDialog()) {
       verifyDownloadDialog?.dismiss()
     }
-    if (isShowingRemoveDownloadDialog()) {
-      removeDownloadDialog?.dismiss()
-    }
-    downloadProgressHandler?.removeCallbacksAndMessages(null)
-  }
 
-  private fun createDownloadProgressHandler() {
-    if (null == downloadProgressHandler && isVisible) {
-      downloadProgressHandler =
-        createMainThreadScheduledHandler(
-          requireContext(),
-          downloadProgressUpdateIntervalMillis
-        ) {
-          updateDownloadProgress()
-        }
-    }
+    downloadProgressHelper.clear()
   }
 
   private fun showVerifyDownloadBottomSheet(currentEpisode: Data? = null) {
@@ -486,8 +355,6 @@ class CollectionFragment : DaggerFragment() {
 
   private fun isShowingVerifyDownloadDialog() = verifyDownloadDialog?.isShowing == true
 
-  private fun isShowingRemoveDownloadDialog() = removeDownloadDialog?.isShowing == true
-
   private fun initPermissionObserver(currentEpisode: Data? = null) {
     viewModel.permissionActionResult.observe(viewLifecycleOwner) {
       when (it) {
@@ -508,6 +375,12 @@ class CollectionFragment : DaggerFragment() {
           // Will be handled by data binding.
         }
       }
+    }
+  }
+
+  private fun initDownloadProgress() {
+    downloadProgressHelper.init(isVisible, requireContext(), viewModel.getContentIds()) {
+      viewModel.updateDownload(it)
     }
   }
 }

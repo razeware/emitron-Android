@@ -9,7 +9,7 @@ import com.razeware.emitron.data.content.ContentRepository
 import com.razeware.emitron.data.login.LoginRepository
 import com.razeware.emitron.model.*
 import com.razeware.emitron.ui.download.DownloadActionDelegate
-import com.razeware.emitron.ui.download.PermissionActionDelegate
+import com.razeware.emitron.ui.login.PermissionActionDelegate
 import com.razeware.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.razeware.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
 import com.razeware.emitron.ui.onboarding.OnboardingActionDelegate
@@ -857,11 +857,13 @@ class CollectionViewModelTest {
   fun updateDownload() {
     createViewModel()
     testCoroutineRule.runBlockingTest {
-      viewModel.updateDownload("1", 25, DownloadState.PAUSED)
-      verify(downloadActionDelegate).updateDownloadProgress(
-        "1", 25,
-        DownloadState.PAUSED
+      val downloadProgress = DownloadProgress(
+        "1",
+        25,
+        DownloadState.COMPLETED
       )
+      viewModel.updateDownload(downloadProgress)
+      verify(downloadActionDelegate).updateDownloadProgress(downloadProgress)
     }
   }
 

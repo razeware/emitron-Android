@@ -6,7 +6,6 @@ import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.raywenderlich.guardpost.data.SSOUser
 import com.razeware.emitron.data.login.LoginRepository
-import com.razeware.emitron.ui.download.PermissionActionDelegate
 import com.razeware.emitron.utils.TestCoroutineRule
 import org.junit.Before
 import org.junit.Rule

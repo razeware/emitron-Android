@@ -6,6 +6,7 @@ import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.razeware.emitron.data.*
 import com.razeware.emitron.data.download.DownloadRepository
 import com.razeware.emitron.model.Download
+import com.razeware.emitron.model.DownloadProgress
 import com.razeware.emitron.model.DownloadState
 import com.razeware.emitron.utils.TestCoroutineRule
 import com.razeware.emitron.utils.isEqualTo
@@ -42,14 +43,17 @@ class DownloadActionDelegateTest {
   fun updateDownloadProgress() {
     testCoroutineRule.runBlockingTest {
 
-      // When
-      viewModel.updateDownloadProgress("1", 25, DownloadState.COMPLETED)
-
-      verify(downloadRepository).updateDownloadProgress(
+      // Given
+      val downloadProgress = DownloadProgress(
         "1",
         25,
         DownloadState.COMPLETED
       )
+
+      // When
+      viewModel.updateDownloadProgress(downloadProgress)
+
+      verify(downloadRepository).updateDownloadProgress(downloadProgress)
       verifyNoMoreInteractions(downloadRepository)
     }
   }
@@ -129,14 +133,14 @@ class DownloadActionDelegateTest {
     // When
     val result = viewModel.getCollectionDownloadState(
       contentData,
-      listOf(createDownload()),
+      listOf(createDownload(state = DownloadState.IN_PROGRESS.ordinal)),
       downloadIds = listOf("1", "2")
     )
 
     // Then
     result isEqualTo Download(
-      progress = 0,
-      state = 5,
+      progress = 25,
+      state = DownloadState.IN_PROGRESS.ordinal,
       failureReason = 0,
       url = null
     )

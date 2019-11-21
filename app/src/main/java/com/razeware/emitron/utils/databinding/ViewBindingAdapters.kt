@@ -16,7 +16,7 @@ object ViewBindingAdapters {
 
   /**
    * Glide data binding adapter
-   * Custom binding adapter to fetch and load image in an [AppCompatImageView] using [Glide]
+   * Custom binding adapter to fetch and load image in an [android.widget.ImageView] using [Glide]
    *
    * @param imageView ImageView to load image
    * @param url Url of image to be loaded
@@ -56,21 +56,44 @@ object ViewBindingAdapters {
     requestApplyInsetsWhenAttached()
   }
 
+  /**
+   * Data class to save initial view padding
+   */
   data class InitialPadding(
-    val left: Int, val top: Int,
-    val right: Int, val bottom: Int
+    /**
+     * Left
+     */
+    val left: Int,
+    /**
+     * Top
+     */
+    val top: Int,
+    /**
+     * Right
+     */
+    val right: Int,
+    /**
+     * Bottom
+     */
+    val bottom: Int
   )
 
   private fun recordInitialPaddingForView(view: View) = InitialPadding(
     view.paddingLeft, view.paddingTop, view.paddingRight, view.paddingBottom
   )
 
+  /**
+   * Binding adapter to apply inset padding
+   *
+   * @param view View to apply inset padding
+   * @param applyBottomInset true if bottom inset should be applied else false
+   */
   @JvmStatic
   @BindingAdapter("paddingBottomSystemWindowInsets")
   fun applySystemWindowBottomInset(view: View, applyBottomInset: Boolean) {
-    view.doOnApplyWindowInsets { view, insets, padding ->
+    view.doOnApplyWindowInsets { insetView, insets, padding ->
       val bottom = if (applyBottomInset) insets.systemWindowInsetBottom else 0
-      view.updatePadding(bottom = padding.bottom + insets.systemWindowInsetBottom)
+      insetView.updatePadding(bottom = padding.bottom + bottom)
     }
   }
 

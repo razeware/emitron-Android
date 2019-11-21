@@ -91,7 +91,7 @@ class DownloadButton : FrameLayout {
     val root = inflate(context, R.layout.layout_button_download, this)
 
     with(root) {
-      downloadButton = findViewById(R.id.button_download)
+      downloadButton = findViewById(R.id.button_download_start)
       downloadStopButton = findViewById(R.id.button_download_stop)
       progressDownloadingPending = findViewById(R.id.progress_download_pending)
       progressDownload = findViewById(R.id.progress_download)

@@ -230,7 +230,7 @@ class DownloadService : ExoDownloadService(
         ctx, DownloadService::class.java,
         contentId,
         Download.STOP_REASON_NONE,
-        false
+        true
       )
     }
 
@@ -249,7 +249,7 @@ class DownloadService : ExoDownloadService(
         ctx, DownloadService::class.java,
         contentId,
         1,
-        false
+        true
       )
     }
 
@@ -265,7 +265,7 @@ class DownloadService : ExoDownloadService(
       contentId: String
     ) {
       sendRemoveDownload(
-        ctx, DownloadService::class.java, contentId, false
+        ctx, DownloadService::class.java, contentId, true
       )
     }
 
@@ -278,7 +278,7 @@ class DownloadService : ExoDownloadService(
       ctx: Context
     ) {
       sendRemoveAllDownloads(
-        ctx, DownloadService::class.java, false
+        ctx, DownloadService::class.java, true
       )
     }
   }

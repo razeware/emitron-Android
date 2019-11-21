@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import com.razeware.emitron.data.content.dao.DownloadDao
 import com.razeware.emitron.model.ContentType
+import com.razeware.emitron.model.DownloadProgress
 import com.razeware.emitron.model.DownloadState
 import com.razeware.emitron.model.entity.Download
 import com.razeware.emitron.model.entity.DownloadWithContent
@@ -34,16 +35,14 @@ class DownloadDataSourceLocal @Inject constructor(
   /**
    * Update download progress
    *
-   * @param contentId Content id
-   * @param progress Int
-   * @param state Download state [DownloadState]
+   * @param progress [DownloadProgress]
    */
-  suspend fun updateDownloadProgress(
-    contentId: String,
-    progress: Int,
-    state: DownloadState
-  ) {
-    downloadDao.updateProgress(contentId, progress, state.ordinal)
+  suspend fun updateDownloadProgress(progress: DownloadProgress) {
+    downloadDao.updateProgress(
+      progress.contentId,
+      progress.percentDownloaded,
+      progress.state.ordinal
+    )
   }
 
   /**

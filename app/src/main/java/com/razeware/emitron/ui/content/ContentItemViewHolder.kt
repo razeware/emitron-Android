@@ -43,16 +43,15 @@ class ContentItemViewHolder(private val binding: ItemContentBinding) :
           content?.isFinished() != true &&
           content?.isProfessional() == true
     )
-    binding.buttonDownload.toVisibility(!adapterContent.isDownloaded())
+    binding.buttonDownload.toVisibility(adapterContent.isDownloaded())
+    binding.buttonDownload.updateDownloadState(content?.download)
+
     binding.buttonBookmark.toVisibility(adapterContent.isBookmarked())
     binding.buttonBookmark.setOnClickListener {
       bookmarkCallback?.invoke(adapterPosition)
     }
     binding.buttonDownload.setOnClickListener {
       downloadCallback?.invoke(adapterPosition, 1)
-    }
-    binding.buttonDownloadStop.setOnClickListener {
-      downloadCallback?.invoke(adapterPosition, 0)
     }
     binding.executePendingBindings()
   }
@@ -65,7 +64,6 @@ class ContentItemViewHolder(private val binding: ItemContentBinding) :
     binding.root.setOnClickListener(null)
     binding.buttonBookmark.setOnClickListener(null)
     binding.buttonDownload.setOnClickListener(null)
-    binding.buttonDownloadStop.setOnClickListener(null)
   }
 
   companion object {

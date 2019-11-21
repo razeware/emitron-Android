@@ -5,6 +5,7 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.razeware.emitron.data.content.dao.DownloadDao
+import com.razeware.emitron.model.DownloadProgress
 import com.razeware.emitron.model.DownloadState
 import com.razeware.emitron.model.entity.Download
 import com.razeware.emitron.utils.TestCoroutineRule
@@ -45,10 +46,12 @@ class DownloadDataSourceLocalTest {
   @Test
   fun updateDownloadProgress() {
     testCoroutineRule.runBlockingTest {
-      downloadDataSourceLocal.updateDownloadProgress(
-        "1", 25,
+      val downloadProgress = DownloadProgress(
+        "1",
+        25,
         DownloadState.COMPLETED
       )
+      downloadDataSourceLocal.updateDownloadProgress(downloadProgress)
       verify(downloadDao).updateProgress("1", 25, 3)
       verifyNoMoreInteractions(downloadDao)
     }

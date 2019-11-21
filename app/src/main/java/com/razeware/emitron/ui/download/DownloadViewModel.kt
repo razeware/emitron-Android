@@ -1,10 +1,15 @@
 package com.razeware.emitron.ui.download
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.razeware.emitron.data.download.DownloadRepository
+import com.razeware.emitron.model.DownloadProgress
 import com.razeware.emitron.ui.content.ContentPagedViewModel
+import com.razeware.emitron.ui.login.PermissionActionDelegate
+import com.razeware.emitron.ui.login.PermissionsAction
 import com.razeware.emitron.ui.onboarding.OnboardingAction
 import com.razeware.emitron.ui.onboarding.OnboardingActionDelegate
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -14,9 +19,10 @@ class DownloadViewModel @Inject constructor(
   private val downloadRepository: DownloadRepository,
   private val contentPagedViewModel: ContentPagedViewModel,
   private val onboardingActionDelegate: OnboardingActionDelegate,
-  private val permissionActionDelegate: PermissionActionDelegate
+  private val permissionActionDelegate: PermissionActionDelegate,
+  private val downloadActionDelegate: DownloadActionDelegate
 ) : ViewModel(), OnboardingAction by onboardingActionDelegate,
-  PermissionsAction by permissionActionDelegate {
+  PermissionsAction by permissionActionDelegate, DownloadAction by downloadActionDelegate {
 
   /**
    * Load bookmarks from database
@@ -30,4 +36,15 @@ class DownloadViewModel @Inject constructor(
    * Get pagination helper
    */
   fun getPaginationViewModel(): ContentPagedViewModel = contentPagedViewModel
+
+  /**
+   * Update download progress
+   *
+   * @param downloadProgress Download progress
+   */
+  fun updateDownload(downloadProgress: DownloadProgress) {
+    viewModelScope.launch {
+      downloadActionDelegate.updateDownloadProgress(downloadProgress)
+    }
+  }
 }

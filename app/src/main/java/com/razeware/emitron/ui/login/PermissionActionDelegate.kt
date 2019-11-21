@@ -1,4 +1,4 @@
-package com.razeware.emitron.ui.download
+package com.razeware.emitron.ui.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -34,7 +34,7 @@ interface PermissionsAction {
 }
 
 /**
- * [DownloadAction] implementation
+ * [PermissionsAction] implementation
  */
 class PermissionActionDelegate @Inject constructor(
   private val loginRepository: LoginRepository
@@ -82,18 +82,23 @@ class PermissionActionDelegate @Inject constructor(
         val userPermissions = PermissionTag.values().map { it.param }.toSet()
           .intersect(permissions).toList()
         loginRepository.updatePermissions(userPermissions)
-        _permissionActionResult.value = PermissionActionResult.HasPermission
+        _permissionActionResult.value =
+          PermissionActionResult.HasPermission
 
         if (isDownloadAllowed()) {
-          _permissionActionResult.value = PermissionActionResult.HasDownloadPermission
+          _permissionActionResult.value =
+            PermissionActionResult.HasDownloadPermission
         }
       } else {
-        _permissionActionResult.value = PermissionActionResult.NoPermission
+        _permissionActionResult.value =
+          PermissionActionResult.NoPermission
       }
     } catch (exception: RuntimeException) {
-      _permissionActionResult.value = PermissionActionResult.PermissionRequestFailed
+      _permissionActionResult.value =
+        PermissionActionResult.PermissionRequestFailed
     } catch (exception: IOException) {
-      _permissionActionResult.value = PermissionActionResult.PermissionRequestFailed
+      _permissionActionResult.value =
+        PermissionActionResult.PermissionRequestFailed
     }
   }
 

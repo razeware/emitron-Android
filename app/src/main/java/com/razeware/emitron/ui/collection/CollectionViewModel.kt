@@ -9,12 +9,12 @@ import com.razeware.emitron.data.content.ContentRepository
 import com.razeware.emitron.model.Content
 import com.razeware.emitron.model.ContentType
 import com.razeware.emitron.model.Data
-import com.razeware.emitron.model.DownloadState
+import com.razeware.emitron.model.DownloadProgress
 import com.razeware.emitron.ui.common.UiStateViewModel
 import com.razeware.emitron.ui.download.DownloadAction
 import com.razeware.emitron.ui.download.DownloadActionDelegate
-import com.razeware.emitron.ui.download.PermissionActionDelegate
-import com.razeware.emitron.ui.download.PermissionsAction
+import com.razeware.emitron.ui.login.PermissionActionDelegate
+import com.razeware.emitron.ui.login.PermissionsAction
 import com.razeware.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.razeware.emitron.ui.mytutorial.progressions.ProgressionAction
 import com.razeware.emitron.ui.mytutorial.progressions.ProgressionActionDelegate
@@ -315,13 +315,11 @@ class CollectionViewModel @Inject constructor(
   /**
    * Update download progress
    *
-   * @param contentId Content id
-   * @param progress Int
-   * @state Download state
+   * @param downloadProgress Download progress
    */
-  fun updateDownload(contentId: String, progress: Int, state: DownloadState) {
+  fun updateDownload(downloadProgress: DownloadProgress) {
     viewModelScope.launch {
-      downloadActionDelegate.updateDownloadProgress(contentId, progress, state)
+      downloadActionDelegate.updateDownloadProgress(downloadProgress)
     }
   }
 

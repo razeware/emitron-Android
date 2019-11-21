@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.*
 import com.razeware.emitron.data.download.DownloadRepository
 import com.razeware.emitron.di.modules.worker.ChildWorkerFactory
+import com.razeware.emitron.model.DownloadProgress
 import com.razeware.emitron.model.DownloadState
 import com.razeware.emitron.ui.download.DownloadService
 import com.squareup.inject.assisted.Assisted
@@ -33,11 +34,12 @@ class UpdateDownloadWorker @AssistedInject constructor(
 
     val downloadState = inputData.getInt(DOWNLOAD_STATE, DownloadState.FAILED.ordinal)
 
-    downloadRepository.updateDownloadProgress(
+    val progress = DownloadProgress(
       downloadId,
       downloadProgress,
       DownloadState.values()[downloadState]
     )
+    downloadRepository.updateDownloadProgress(progress)
 
     return Result.success()
   }

@@ -190,9 +190,14 @@ class DownloadRepositoryTest {
   @Test
   fun updateDownloadProgress() {
     testCoroutineRule.runBlockingTest {
-      repository.updateDownloadProgress("1", 25, DownloadState.IN_PROGRESS)
+      val downloadProgress = DownloadProgress(
+        "1",
+        25,
+        DownloadState.COMPLETED
+      )
+      repository.updateDownloadProgress(downloadProgress)
       verify(downloadDataSourceLocal)
-        .updateDownloadProgress("1", 25, DownloadState.IN_PROGRESS)
+        .updateDownloadProgress(downloadProgress)
       verifyNoMoreInteractions(contentDataSourceLocal)
     }
   }

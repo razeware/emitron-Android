@@ -4,7 +4,6 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.model.Download
-import com.razeware.emitron.model.DownloadState
 
 /**
  * Relation representing a Content including it's domain, progressions, groups, episodes
@@ -125,38 +124,16 @@ data class ContentDetail(
    * Get [Download] for [ContentDetail]
    */
   fun getDownload(): Download? {
-    val episodeDownloads = groups.flatMap { contentGroupJoin ->
+    val downloads = groups.flatMap { contentGroupJoin ->
       contentGroupJoin.episodes.flatMap { groupEpisodeJoin ->
         groupEpisodeJoin.episodes.flatMap { contentWithDomainAndProgression ->
           contentWithDomainAndProgression.downloads
         }
       }
     }
-
-    return if (episodeDownloads.isNotEmpty()) {
-      val downloadProgress: Pair<Int, Int> = when {
-        episodeDownloads.any { it.inProgress() } -> {
-          episodeDownloads.map {
-            it.progress
-          }.reduce { acc, i ->
-            i + acc
-          } to DownloadState.IN_PROGRESS.ordinal
-        }
-        episodeDownloads.all { it.isCompleted() } -> {
-          100 to DownloadState.COMPLETED.ordinal
-        }
-        else -> {
-          0 to DownloadState.IN_PROGRESS.ordinal
-        }
-      }
-
-      Download(
-        progress = downloadProgress.first,
-        state = downloadProgress.second
-      )
-    } else {
-      null
-    }
+    return Download.fromEpisodeDownloads(downloads, getContentEpisodes().mapNotNull {
+      it.id
+    })
   }
 
   /**
