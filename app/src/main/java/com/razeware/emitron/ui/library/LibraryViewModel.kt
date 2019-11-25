@@ -6,7 +6,8 @@ import com.razeware.emitron.data.content.ContentRepository
 import com.razeware.emitron.data.filter.FilterRepository
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.ui.content.ContentPagedViewModel
-import com.razeware.emitron.utils.Log
+import com.razeware.emitron.utils.Logger
+import com.razeware.emitron.utils.LoggerImpl
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -18,8 +19,9 @@ import javax.inject.Inject
 class LibraryViewModel @Inject constructor(
   private val repository: ContentRepository,
   private val contentPagedViewModel: ContentPagedViewModel,
-  private val filterRepository: FilterRepository
-) : ViewModel() {
+  private val filterRepository: FilterRepository,
+  private val loggerImpl: LoggerImpl
+) : ViewModel(), Logger by loggerImpl {
 
   /**
    * Load collections
@@ -53,9 +55,9 @@ class LibraryViewModel @Inject constructor(
       try {
         filterRepository.fetchDomainsAndCategories()
       } catch (exception: IOException) {
-        Log.exception(exception)
+        log(exception)
       } catch (exception: HttpException) {
-        Log.exception(exception)
+        log(exception)
       }
     }
   }

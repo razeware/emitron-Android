@@ -38,6 +38,7 @@ jobs:
       run: |
          scripts/download_s3.sh gradle.properties > gradle.properties
          scripts/download_s3.sh google-services.json > app/google-services.json
+         scripts/download_s3.sh emitron_keystore.jks > emitron_keystore.jks
     - name: Distribute app via Firebase
       env:
          FIREBASE_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}

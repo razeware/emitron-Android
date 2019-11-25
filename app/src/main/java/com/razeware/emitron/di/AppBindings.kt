@@ -6,6 +6,8 @@ import com.razeware.emitron.di.bindings.ViewModelBindings
 import com.razeware.emitron.network.AuthInterceptor
 import com.razeware.emitron.network.AuthInterceptorImpl
 import com.razeware.emitron.ui.download.DownloadService
+import com.razeware.emitron.utils.Logger
+import com.razeware.emitron.utils.LoggerImpl
 import com.razeware.emitron.utils.async.ThreadManager
 import com.razeware.emitron.utils.async.ThreadManagerImpl
 import dagger.Binds
@@ -27,9 +29,12 @@ abstract class AppBindings {
   abstract fun contributeDownloadService(): DownloadService
 
   @Binds
-  abstract fun provideThreadManager(schedulerProvider: ThreadManagerImpl): ThreadManager
+  abstract fun provideThreadManager(threadManager: ThreadManagerImpl): ThreadManager
 
   @Binds
   abstract fun provideAuthInterceptor(authInterceptor: AuthInterceptorImpl): AuthInterceptor
+
+  @Binds
+  abstract fun provideLogger(logger: LoggerImpl): Logger
 }
 

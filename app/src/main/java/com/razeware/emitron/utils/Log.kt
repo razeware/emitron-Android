@@ -3,6 +3,7 @@ package com.razeware.emitron.utils
 import android.util.Log
 import com.crashlytics.android.Crashlytics
 import com.razeware.emitron.BuildConfig
+import com.razeware.emitron.data.settings.SettingsRepository
 import javax.inject.Inject
 
 /**
@@ -23,20 +24,24 @@ interface Logger {
 /**
  * LoggerImpl
  */
-class LoggerImpl @Inject constructor() : Logger {
+class LoggerImpl @Inject constructor(private val settingsRepository: SettingsRepository) : Logger {
   override fun log(e: Throwable) {
-    com.razeware.emitron.utils.Log.exception(e)
+    if (settingsRepository.isCrashReportingAllowed()) {
+      com.razeware.emitron.utils.Log.exception(e)
+    }
   }
 
   override fun log(e: Error) {
-    com.razeware.emitron.utils.Log.error(e)
+    if (settingsRepository.isCrashReportingAllowed()) {
+      com.razeware.emitron.utils.Log.error(e)
+    }
   }
 }
 
 /**
  * Log Utils
  */
-object Log {
+internal object Log {
 
   /**
    * Log debug message

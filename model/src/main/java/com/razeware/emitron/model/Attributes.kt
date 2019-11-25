@@ -3,12 +3,14 @@ package com.razeware.emitron.model
 import android.os.Parcelable
 import com.razeware.emitron.model.utils.TimeUtils
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 import org.threeten.bp.LocalDateTime
 
 /**
  * Model class for content attributes
  */
+@JsonClass(generateAdapter = true)
 @Parcelize
 data class Attributes(
 
