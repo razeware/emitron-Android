@@ -2,8 +2,8 @@
 buildscript {
   ext.versions = [
       // build
-      'versionCode'                 : 2,
-      'versionName'                 : "0.2",
+      'versionCode'                 : 3,
+      'versionName'                 : "0.3",
       'minSdk'                      : 21,
       'targetSdk'                   : 29,
       'compileSdk'                  : 29,
@@ -47,7 +47,7 @@ buildscript {
 
       //network
       'retrofit'                    : '2.6.2',
-      'moshi'                       : '1.9.1',
+      'moshi'                       : '1.9.2',
       'okHttp'                      : '4.2.2',
       'glide'                       : '4.10.0',
 

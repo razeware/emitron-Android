@@ -9,7 +9,6 @@ import com.razeware.emitron.model.Data
 import com.razeware.emitron.ui.common.ItemErrorViewHolder
 import com.razeware.emitron.ui.common.ItemFooterViewHolder
 import com.razeware.emitron.ui.common.PagedAdapter
-import com.razeware.emitron.utils.Log
 import com.razeware.emitron.utils.NetworkState
 import com.razeware.emitron.utils.UiStateManager
 
@@ -210,7 +209,7 @@ class ContentAdapter private constructor(
 
   private fun bindContentItem(viewHolder: ContentItemViewHolder, position: Int) {
     val data = getItem(position)?.updateRelationships(included)
-    if (null != data) {
+    data?.let {
       (viewHolder).bindTo(
         content = data,
         adapterContent = adapterContentType,
@@ -223,8 +222,6 @@ class ContentAdapter private constructor(
         downloadCallback = { clickPosition, status ->
           downloadCallback?.invoke(getItem(clickPosition), status)
         })
-    } else {
-      Log.exception(IllegalArgumentException("Item was null!"))
     }
   }
 

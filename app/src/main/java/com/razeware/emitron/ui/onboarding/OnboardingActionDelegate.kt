@@ -3,6 +3,9 @@ package com.razeware.emitron.ui.onboarding
 import com.razeware.emitron.data.settings.SettingsRepository
 import javax.inject.Inject
 
+/**
+ * Onboarding Actions
+ */
 interface OnboardingAction {
   /**
    *
@@ -18,6 +21,9 @@ interface OnboardingAction {
   fun isOnboardingAllowed(): Boolean
 }
 
+/**
+ * Onboarding action delegate
+ */
 class OnboardingActionDelegate @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) :

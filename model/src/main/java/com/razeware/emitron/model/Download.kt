@@ -3,11 +3,13 @@ package com.razeware.emitron.model
 import android.os.Parcelable
 import com.razeware.emitron.model.entity.inProgress
 import com.razeware.emitron.model.entity.isCompleted
+import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 
 /**
  * Download VO
  */
+@JsonClass(generateAdapter = true)
 @Parcelize
 data class Download(
   /**
