@@ -154,7 +154,7 @@
         android:maxLines="1"
         android:text="@{releaseDateWithTypeAndDuration}"
         android:textAppearance="@style/TextAppearance.Footnote"
-        android:visibility="@{data.isFinished()? View.GONE : View.VISIBLE}"
+        android:visibility="@{data.isProgressionFinished()? View.GONE : View.VISIBLE}"
         app:layout_constraintBottom_toBottomOf="@+id/spacer"
         app:layout_constraintEnd_toStartOf="@+id/button_bookmark"
         app:layout_constraintHorizontal_chainStyle="spread"
