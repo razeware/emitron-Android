@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import androidx.work.WorkManager
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.razeware.emitron.R
@@ -95,6 +96,8 @@ class CollectionFragment : DaggerFragment() {
       findNavController(),
       getDefaultAppBarConfiguration()
     )
+    binding.toolbar.navigationIcon =
+      VectorDrawableCompat.create(resources, R.drawable.ic_arrow_back, null)
 
     binding.textCollectionBodyPro.removeUnderline()
 
