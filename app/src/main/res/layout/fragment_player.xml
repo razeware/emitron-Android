@@ -101,27 +101,37 @@
 
     <com.google.android.material.textview.MaterialTextView
       android:id="@+id/player_auto_play_message"
-      style="@style/TextAppearance.Label"
+      style="@style/TextAppearance.Label.Inverse"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      app:layout_constraintBottom_toTopOf="@id/button_auto_play_cancel"
+      android:layout_height="0dp"
+      android:gravity="bottom"
+      android:paddingBottom="@dimen/player_auto_play_progress_margin_top"
+      app:layout_constraintBottom_toTopOf="@id/guideline_play_pause"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       tools:text="@string/progress_next_episode" />
+
+    <View
+      android:id="@+id/guideline_play_pause"
+      android:layout_width="@dimen/button_play_pause_height_width"
+      android:layout_height="@dimen/button_play_pause_height_width"
+      app:layout_constraintBottom_toBottomOf="@+id/player_auto_play_progress"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@+id/player_auto_play_progress" />
 
     <ProgressBar
       android:id="@+id/player_auto_play_progress"
       style="?android:attr/progressBarStyleHorizontal"
       android:layout_width="@dimen/button_play_pause_height_width"
       android:layout_height="@dimen/button_play_pause_height_width"
-      android:layout_marginTop="@dimen/player_auto_play_progress_margin_top"
       android:indeterminate="false"
       android:progressDrawable="@drawable/progress_drawable_2"
-      app:layout_constraintBottom_toTopOf="@id/button_auto_play_cancel"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/player_auto_play_message"
+      app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_chainStyle="spread_inside"
       tools:progress="50" />
 
@@ -138,7 +148,8 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/player_auto_play_progress" />
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="1" />
 
     <androidx.constraintlayout.widget.Group
       android:id="@+id/group_auto_play_progress"
