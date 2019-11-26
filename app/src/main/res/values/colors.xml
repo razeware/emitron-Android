@@ -35,6 +35,7 @@
   <color name="colorOnSurface">@color/white</color>
   <color name="colorOnBackground">@color/white</color>
   <color name="cardShadow">@color/charcoal_black_0_05</color>
+  <color name="colorNavBarBackground">@color/white</color>
 
   <color name="colorButton1">@color/dark_sea_green</color>
   <color name="colorButtonDialog">@color/dark_sea_green</color>
@@ -50,12 +51,15 @@
   <color name="textColorButtonInverse">@color/white</color>
   <color name="textColorButtonOnError">@color/white</color>
   <color name="textColorOverline">@color/raven_grey</color>
+  <color name="textColorOverline3">@color/raven_grey</color>
   <color name="textColorOverlineOnSurface">@color/bright_grey</color>
   <color name="textColorOverlineInverse">@color/white</color>
+  <color name="textColorOverlineInverse2">@color/white</color>
   <color name="textColorBody2">@color/raven_grey</color>
   <color name="textColorBody2Inverse">@color/white</color>
   <color name="textColorLabel">@color/light_gray_blue</color>
   <color name="textColorLabel2">@color/light_gray_blue</color>
+  <color name="textColorLabelInverse">@color/white</color>
   <color name="textColorFootnote">@color/raven_grey</color>
   <color name="textColorCaption">@color/raven_grey</color>
   <color name="textColorHeadline">@color/charcoal_black</color>
@@ -98,5 +102,6 @@
   <color name="colorRadioButtonDefault">@color/transparent</color>
 
   <color name="colorViewPagerIndicator">@color/pale_blue</color>
+  <color name="colorBadge">@color/charcoal_black</color>
 
 </resources>

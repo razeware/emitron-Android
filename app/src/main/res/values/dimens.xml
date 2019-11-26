@@ -30,7 +30,8 @@
   <dimen name="nav_icon_height_width">22dp</dimen>
 
   <!-- Overline -->
-  <dimen name="overline_padding_internal">6dp</dimen>
+  <dimen name="overline_padding_horizontal">6dp</dimen>
+  <dimen name="overline_padding_vertical">4dp</dimen>
   <dimen name="overline_elevation">1dp</dimen>
 
   <!-- Button -->
@@ -52,6 +53,7 @@
 
   <!-- Chip -->
   <dimen name="chip_height_default">40dp</dimen>
+  <dimen name="chip_padding_default">12dp</dimen>
 
   <!-- TabLayout -->
   <dimen name="tab_indicator_height">2dp</dimen>
@@ -168,7 +170,7 @@
   <dimen name="player_progress_bar_margin_start_end">12dp</dimen>
   <dimen name="player_progress_bar_margin_height">16dp</dimen>
   <dimen name="player_settings_button_row_margin_top">32dp</dimen>
-  <dimen name="player_auto_play_progress_margin_top">32dp</dimen>
+  <dimen name="player_auto_play_progress_margin_top">24dp</dimen>
   <dimen name="player_playback_token_error_margin_top">24dp</dimen>
   <dimen name="player_episode_artwork_height_width">48dp</dimen>
   <dimen name="player_episode_card_internal_margin">6dp</dimen>

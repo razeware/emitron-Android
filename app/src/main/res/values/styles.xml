@@ -208,6 +208,10 @@
     <item name="android:textColor">@color/textColorLabel2</item>
   </style>
 
+  <style name="TextAppearance.Label.Inverse" parent="TextAppearance.Label">
+    <item name="android:textColor">@color/textColorLabelInverse</item>
+  </style>
+
   <style name="TextAppearance.Caption" parent="Text">
     <item name="android:textSize">@dimen/text_size_caption</item>
     <item name="android:textColor">@color/textColorCaption</item>
@@ -220,6 +224,7 @@
     <item name="android:letterSpacing">@fraction/letter_spacing_footnote</item>
   </style>
 
+  <!-- Default overline style -->
   <style name="TextAppearance.Overline" parent="Text.Bold">
     <item name="android:textSize">@dimen/text_size_overline</item>
     <item name="android:textColor">@color/textColorOverline</item>
@@ -239,12 +244,23 @@
     <item name="android:textColor">@color/textColorOverline3</item>
     <item name="android:letterSpacing">@fraction/letter_spacing_overline_3</item>
   </style>
+
+  <!-- TextAppearance.Overline.4 -->
+  <style name="TextAppearance.Overline.4" parent="Text.Bold">
+    <item name="android:textSize">@dimen/text_size_overline</item>
+    <item name="android:textColor">@color/textColorOverline</item>
+    <item name="android:letterSpacing">@fraction/letter_spacing_overline_3</item>
+  </style>
+
   <style name="TextAppearance.Button" parent="Text.Bold">
     <item name="android:textColor">@color/textColorButton</item>
   </style>
 
-  <style name="TextAppearance.Overline.Raised" parent="TextAppearance.Overline">
-    <item name="android:padding">@dimen/overline_padding_internal</item>
+  <style name="TextAppearance.Overline.Raised" parent="TextAppearance.Overline.4">
+    <item name="android:paddingStart">@dimen/overline_padding_horizontal</item>
+    <item name="android:paddingEnd">@dimen/overline_padding_horizontal</item>
+    <item name="android:paddingTop">@dimen/overline_padding_vertical</item>
+    <item name="android:paddingBottom">@dimen/overline_padding_vertical</item>
     <item name="android:elevation">@dimen/overline_elevation</item>
     <item name="android:textAllCaps">true</item>
     <item name="android:gravity">center</item>
@@ -252,12 +268,12 @@
 
   <style name="TextAppearance.Overline.Raised.Colored" parent="TextAppearance.Overline.Raised">
     <item name="android:background">@drawable/bg_caption_primary</item>
-    <item name="android:textColor">@color/textColorOverlineInverse</item>
+    <item name="android:textColor">@color/textColorOverlineInverse2</item>
   </style>
 
   <style name="TextAppearance.Overline.Raised.Colored.White" parent="TextAppearance.Overline.Raised">
     <item name="android:background">@drawable/bg_caption_white</item>
-    <item name="android:textColor">@color/textColorOverlineOnSurface</item>
+    <item name="android:textColor">@color/textColorOverlineInverse</item>
   </style>
 
   <style name="TextAppearance.Button.Regular" parent="TextAppearance.Button">
