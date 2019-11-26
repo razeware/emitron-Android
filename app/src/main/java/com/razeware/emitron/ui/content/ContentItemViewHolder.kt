@@ -59,11 +59,13 @@ class ContentItemViewHolder(private val binding: ItemContentBinding) :
     with(binding) {
       val progress = content?.getProgressionPercentComplete() ?: 0
 
-      val updatedProgress = if (progress == 0) {
-        DEFAULT_PROGRESS
-      } else {
-        progress
-      }
+      val contentIsInProgress = null != content?.getProgressionId() && progress < DEFAULT_PROGRESS
+      val updatedProgress =
+        if (contentIsInProgress) {
+          DEFAULT_PROGRESS
+        } else {
+          progress
+        }
 
       progressContentProgression.toVisibility(!adapterContent.isCompleted())
       progressContentProgression.progress = updatedProgress
