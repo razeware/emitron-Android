@@ -141,7 +141,17 @@
     <item name="fontFamily">@font/bitter_bold</item>
   </style>
 
+  <style name="Text.Headline.Normal">
+    <item name="android:fontFamily">@font/bitter</item>
+    <item name="fontFamily">@font/bitter</item>
+  </style>
+
   <style name="TextAppearance.Headline" parent="Text.Headline">
+    <item name="android:textColor">@color/textColorHeadline</item>
+    <item name="android:letterSpacing">@fraction/letter_spacing_headline</item>
+  </style>
+
+  <style name="TextAppearance.Headline.Normal" parent="Text.Headline.Normal">
     <item name="android:textColor">@color/textColorHeadline</item>
     <item name="android:letterSpacing">@fraction/letter_spacing_headline</item>
   </style>
@@ -287,6 +297,11 @@
   <style name="TextAppearance.Headline.5" parent="TextAppearance.Headline">
     <item name="android:textSize">@dimen/text_size_h5</item>
   </style>
+
+  <style name="TextAppearance.Headline.5.Normal" parent="TextAppearance.Headline.Normal">
+    <item name="android:textSize">@dimen/text_size_h5</item>
+  </style>
+
 
   <style name="SearchTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
     <item name="boxBackgroundColor">@color/colorSurface</item>
