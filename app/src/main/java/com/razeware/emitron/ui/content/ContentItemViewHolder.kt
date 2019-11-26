@@ -33,11 +33,7 @@ class ContentItemViewHolder(private val binding: ItemContentBinding) :
       content?.getReadableReleaseAtWithTypeAndDuration(binding.root.context)
     binding.textLanguage.text = content?.getReadableDomain(binding.root.context)
 
-    binding.progressContentProgression.toVisibility(
-      !adapterContent.isContent()
-          && !adapterContent.isBookmarked()
-          && !adapterContent.isCompleted()
-    )
+    binding.progressContentProgression.toVisibility(!adapterContent.isCompleted())
     binding.textCollectionLabelPro.toVisibility(
       adapterContent.isContent() &&
           content?.isFinished() != true &&
