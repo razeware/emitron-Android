@@ -40,7 +40,7 @@ import com.razeware.emitron.ui.common.getDefaultAppBarConfiguration
 import com.razeware.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.razeware.emitron.ui.player.cast.Episode
 import com.razeware.emitron.ui.player.workers.UpdateOfflineProgressWorker
-import com.razeware.emitron.utils.Log
+import com.razeware.emitron.utils.Logger
 import com.razeware.emitron.utils.createCountDownTimer
 import com.razeware.emitron.utils.createMainThreadScheduledHandler
 import com.razeware.emitron.utils.extensions.*
@@ -206,6 +206,9 @@ class PlayerFragment : DaggerFragment() {
    */
   @Inject
   lateinit var cache: Cache
+
+  @Inject
+  lateinit var logger: Logger
 
   private val viewModel: PlayerViewModel by viewModels { viewModelFactory }
 
@@ -419,9 +422,9 @@ class PlayerFragment : DaggerFragment() {
           .show()
       }
       MediaPlaybackState.ERROR, null ->
-        Log.exception(IllegalArgumentException("Error occurred"))
+        logger.log(IllegalArgumentException("Error occurred"))
       MediaPlaybackState.UNKNOWN_MEDIA ->
-        Log.exception(IllegalArgumentException("Unknown media"))
+        logger.log(IllegalArgumentException("Unknown media"))
     }
   }
 
@@ -666,7 +669,7 @@ class PlayerFragment : DaggerFragment() {
   }
 
   /**
-   * [Fragment.onDestroyView]
+   * See [Fragment.onDestroyView]
    */
   override fun onDestroyView() {
     super.onDestroyView()

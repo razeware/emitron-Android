@@ -35,11 +35,13 @@ jobs:
       env:
          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-         FIREBASE_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
-         FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
       run: |
          scripts/download_s3.sh gradle.properties > gradle.properties
          scripts/download_s3.sh google-services.json > app/google-services.json
-    - name: Distribute app
+         scripts/download_s3.sh emitron_keystore.jks > emitron_keystore.jks
+    - name: Distribute app via Firebase
+      env:
+         FIREBASE_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
+         FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
       run: bundle exec fastlane distribute
 

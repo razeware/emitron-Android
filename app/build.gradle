@@ -21,6 +21,17 @@ android {
     enabled = true
   }
 
+  signingConfigs {
+    release {
+      storeFile rootProject.file("${keystore}")
+      storePassword "${keystore_password}"
+      keyAlias "${keystore_key_alias}"
+      keyPassword "${keystore_key_password}"
+      v1SigningEnabled true
+      v2SigningEnabled true
+    }
+  }
+
   defaultConfig {
     applicationId "com.razeware.emitron"
     minSdkVersion versions.minSdk
@@ -44,9 +55,17 @@ android {
 
   buildTypes {
     release {
-      minifyEnabled false
+      signingConfig signingConfigs.release
+      minifyEnabled true
+      shrinkResources true
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
+
+    debug {
+      versionNameSuffix "-debug"
+      ext.alwaysUpdateBuildId = false
+    }
+
   }
 
   compileOptions {

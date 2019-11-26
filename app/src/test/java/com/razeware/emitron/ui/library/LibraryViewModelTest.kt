@@ -8,10 +8,7 @@ import com.razeware.emitron.data.filter.FilterRepository
 import com.razeware.emitron.model.Contents
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.ui.content.ContentPagedViewModel
-import com.razeware.emitron.utils.PagedResponse
-import com.razeware.emitron.utils.TestCoroutineRule
-import com.razeware.emitron.utils.isEqualTo
-import com.razeware.emitron.utils.observeForTestingResult
+import com.razeware.emitron.utils.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -22,6 +19,7 @@ class LibraryViewModelTest {
 
   private val contentRepository: ContentRepository = mock()
   private val filterRepository: FilterRepository = mock()
+  private val logger: LoggerImpl = mock()
 
   private val contentViewModel: ContentPagedViewModel = ContentPagedViewModel()
 
@@ -35,7 +33,7 @@ class LibraryViewModelTest {
 
   @Before
   fun setUp() {
-    viewModel = LibraryViewModel(contentRepository, contentViewModel, filterRepository)
+    viewModel = LibraryViewModel(contentRepository, contentViewModel, filterRepository, logger)
   }
 
   @Test

@@ -11,7 +11,6 @@ import com.razeware.emitron.model.Content
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.razeware.emitron.utils.Event
-import com.razeware.emitron.utils.Log
 import com.razeware.emitron.utils.Logger
 import com.razeware.emitron.utils.LoggerImpl
 import com.razeware.emitron.utils.extensions.isBadRequest
@@ -144,7 +143,7 @@ class PlayerViewModel @Inject constructor(
           _nowPlayingEpisode.value = episode.setVideoUrl(videoContent.datum)
           nowPlayingPosition = position
         } catch (error: Throwable) {
-          Log.exception(error)
+          log(error)
         }
       }
     }
@@ -439,7 +438,7 @@ class PlayerViewModel @Inject constructor(
         _playerToken.value = repository.getVideoPlaybackToken()?.getPlayerToken()
         false
       } catch (error: Throwable) {
-        Log.exception(error)
+        log(error)
         true
       }
 
