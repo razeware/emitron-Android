@@ -22,7 +22,6 @@ import com.razeware.emitron.utils.extensions.observe
 import com.razeware.emitron.utils.extensions.setDataBindingView
 import com.razeware.emitron.utils.extensions.showErrorSnackbar
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_filter.*
 import javax.inject.Inject
 
 /**
@@ -88,7 +87,7 @@ class FilterFragment : DaggerFragment() {
       findNavController().navigate(R.id.action_navigation_filter_to_navigation_library)
     }
 
-    with(recycler_view_filter) {
+    with(binding.recyclerViewFilter) {
       layoutManager = LinearLayoutManager(context)
       setHasFixedSize(true)
       adapter = filterAdapter
