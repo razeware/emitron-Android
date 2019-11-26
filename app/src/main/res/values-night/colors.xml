@@ -3,6 +3,7 @@
   <color name="colorBackground">@color/charcoal_black</color>
   <color name="colorSurface">@color/bright_grey</color>
   <color name="colorOnBackground">@color/white</color>
+  <color name="colorNavBarBackground">@color/charcoal_black</color>
 
   <color name="textColorBody1">@color/white</color>
   <color name="textColorButton">@color/white</color>
