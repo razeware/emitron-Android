@@ -108,7 +108,7 @@ fun buildContentData(
     technology = "Swift, iOS",
     contributors = "Luke",
     kind = null,
-    professional = null,
+    professional = false,
     free = false
   ),
   relationships = relationships,

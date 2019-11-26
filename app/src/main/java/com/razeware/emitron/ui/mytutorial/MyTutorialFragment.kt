@@ -9,7 +9,6 @@ import androidx.navigation.Navigation
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.FragmentMyTutorialsBinding
 import com.razeware.emitron.utils.extensions.setDataBindingView
-import kotlinx.android.synthetic.main.fragment_my_tutorials.*
 
 /**
  * My tutorials view
@@ -41,7 +40,7 @@ class MyTutorialFragment : Fragment() {
   private fun initView() {
     val adapter = MyTutorialsPagerAdapter(context, childFragmentManager)
     binding.viewPager.adapter = adapter
-    binding.tabLayout.setupWithViewPager(view_pager)
+    binding.tabLayout.setupWithViewPager(binding.viewPager)
     binding.navigationActionSettings.setOnClickListener(
       Navigation.createNavigateOnClickListener(
         R.id.action_navigation_my_tutorials_to_navigation_settings

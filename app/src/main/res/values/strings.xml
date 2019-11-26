@@ -84,8 +84,8 @@
 
   <string name="message_episode_marked_completed">Episode marked completed.</string>
   <string name="message_episode_failed_to_mark_completed">Failed to mark episode completed.</string>
-  <string name="message_episode_marked_in_progress">Episode marked in progress.</string>
-  <string name="message_episode_failed_to_mark_in_progress">Failed to mark episode in progress.</string>
+  <string name="message_episode_marked_in_progress">Progress removed from episode.</string>
+  <string name="message_episode_failed_to_mark_in_progress">Failed to remove progress from episode.</string>
   <string name="button_label_verify">Verify</string>
   <string name="button_label_cancel">Cancel</string>
   <string name="button_label_play_online">Play online</string>

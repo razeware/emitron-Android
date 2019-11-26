@@ -100,7 +100,7 @@ fun Data.getReadableContributors(context: Context): String {
 /**
  * @return Domain of content, or `Multiplatform` if content has multiple domains
  */
-fun Data.getDomain(context: Context): String? {
+fun Data.getReadableDomain(context: Context): String? {
   with(context) {
     return if (getDomainIds().size > 1) {
       getString(R.string.label_multi_platform)

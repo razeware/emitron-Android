@@ -3,10 +3,13 @@
   <color name="colorBackground">@color/charcoal_black</color>
   <color name="colorSurface">@color/bright_grey</color>
   <color name="colorOnBackground">@color/white</color>
+  <color name="colorNavBarBackground">@color/charcoal_black</color>
 
   <color name="textColorBody1">@color/white</color>
   <color name="textColorButton">@color/white</color>
   <color name="textColorOverline">@color/white</color>
+  <color name="textColorOverline3">@color/light_gray_blue</color>
+  <color name="textColorOverlineInverse">@color/bright_grey</color>
   <color name="textColorBody2">@color/white</color>
   <color name="textColorLabel">@color/white</color>
   <color name="textColorFootnote">@color/light_gray_blue</color>
@@ -18,7 +21,6 @@
   <color name="colorButtonDialog">@color/white</color>
   <color name="colorIcon2">@color/white</color>
   <color name="colorIcon3">@color/blue_grey</color>
-  <color name="colorIcon">@color/light_gray_blue</color>
   <color name="colorProgressItemBackground">#1161656c</color>
   <color name="colorProgressItemBackground_200">#2261656c</color>
   <color name="colorProgressItemBackground_100">#61656c</color>
@@ -34,4 +36,5 @@
   <color name="colorRadioButtonChecked2">@color/white</color>
 
   <color name="colorViewPagerIndicator">@color/colorPrimary</color>
+  <color name="colorBadge">@color/white</color>
 </resources>

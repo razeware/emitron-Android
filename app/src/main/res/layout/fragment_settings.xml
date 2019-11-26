@@ -482,7 +482,7 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/button_logout"
-      style="@style/Button.Colored.3"
+      style="@style/Button.Colored.3.Icon"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom"
@@ -492,8 +492,7 @@
       app:iconGravity="end"
       app:iconTint="@color/white"
       app:iconTintMode="multiply"
-      tools:visibility="gone" />
+      tools:visibility="visible" />
 
   </LinearLayout>
-
 </layout>

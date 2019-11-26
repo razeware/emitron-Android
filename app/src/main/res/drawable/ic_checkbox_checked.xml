@@ -3,8 +3,8 @@
   <item>
     <shape android:shape="rectangle">
       <size
-        android:width="@dimen/icon_height_width"
-        android:height="@dimen/icon_height_width" />
+        android:width="@dimen/filter_checkbox_height_width"
+        android:height="@dimen/filter_checkbox_height_width" />
       <solid
         android:width="@dimen/checkbox_icon_stroke_width"
         android:color="@color/colorPrimary" />

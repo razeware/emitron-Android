@@ -48,6 +48,7 @@
       app:layout_constraintBottom_toTopOf="@+id/recycler_view_filter"
       app:layout_constraintTop_toTopOf="@+id/guideline_top"
       app:layout_constraintVertical_bias="0"
+      android:layout_marginBottom="@dimen/filter_progress_margin_start_end"
       app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <androidx.recyclerview.widget.RecyclerView

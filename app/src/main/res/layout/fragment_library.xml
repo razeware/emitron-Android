@@ -135,11 +135,13 @@
       style="@style/TextAppearance.Label.Colored.Grey"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
+      android:textColor="@color/textColorButton"
       app:layout_constraintBottom_toBottomOf="@+id/button_library_sort"
       app:layout_constraintEnd_toStartOf="@+id/button_library_sort"
       app:layout_constraintHorizontal_chainStyle="spread_inside"
       app:layout_constraintStart_toStartOf="@id/guideline_left"
-      app:layout_constraintTop_toTopOf="@+id/button_library_sort" />
+      app:layout_constraintTop_toTopOf="@+id/button_library_sort"
+      tools:text="404 Tutorials" />
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/button_library_sort"

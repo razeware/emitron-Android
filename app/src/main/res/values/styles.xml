@@ -34,7 +34,7 @@
   </style>
 
   <style name="Card" parent="Widget.MaterialComponents.CardView">
-    <item name="cardCornerRadius">@dimen/card_radius</item>
+    <item name="cardCornerRadius">@dimen/card_corner_radius</item>
     <item name="cardUseCompatPadding">true</item>
     <item name="cardPreventCornerOverlap">true</item>
   </style>
@@ -56,10 +56,17 @@
     <item name="cornerRadius">@dimen/button_wide_corner_radius</item>
     <item name="android:insetTop">@dimen/button_wide_inset</item>
     <item name="android:insetBottom">@dimen/button_wide_inset</item>
+    <item name="android:paddingEnd">@dimen/button_wide_padding_internal_start_end</item>
+    <item name="android:paddingStart">@dimen/button_wide_padding_internal_start_end</item>
   </style>
 
   <style name="Button.Colored" parent="Button.Wide">
     <item name="android:backgroundTint">@color/colorButton1</item>
+  </style>
+
+  <style name="Button.Colored.Icon" parent="Button.Wide">
+    <item name="android:backgroundTint">@color/colorButton1</item>
+    <item name="android:paddingStart">@dimen/button_wide_icon_padding_internal_start</item>
   </style>
 
   <style name="Button.Colored.2" parent="Button.Wide">
@@ -68,6 +75,11 @@
 
   <style name="Button.Colored.3" parent="Button.Wide">
     <item name="android:backgroundTint">@color/colorButton3</item>
+  </style>
+
+  <style name="Button.Colored.3.Icon" parent="Button.Colored.3">
+    <item name="android:backgroundTint">@color/colorButton3</item>
+    <item name="android:paddingStart">@dimen/button_wide_icon_padding_internal_start</item>
   </style>
 
   <style name="Button.Colored.4" parent="Button.Wide">
@@ -141,7 +153,17 @@
     <item name="fontFamily">@font/bitter_bold</item>
   </style>
 
+  <style name="Text.Headline.Normal">
+    <item name="android:fontFamily">@font/bitter</item>
+    <item name="fontFamily">@font/bitter</item>
+  </style>
+
   <style name="TextAppearance.Headline" parent="Text.Headline">
+    <item name="android:textColor">@color/textColorHeadline</item>
+    <item name="android:letterSpacing">@fraction/letter_spacing_headline</item>
+  </style>
+
+  <style name="TextAppearance.Headline.Normal" parent="Text.Headline.Normal">
     <item name="android:textColor">@color/textColorHeadline</item>
     <item name="android:letterSpacing">@fraction/letter_spacing_headline</item>
   </style>
@@ -186,6 +208,10 @@
     <item name="android:textColor">@color/textColorLabel2</item>
   </style>
 
+  <style name="TextAppearance.Label.Inverse" parent="TextAppearance.Label">
+    <item name="android:textColor">@color/textColorLabelInverse</item>
+  </style>
+
   <style name="TextAppearance.Caption" parent="Text">
     <item name="android:textSize">@dimen/text_size_caption</item>
     <item name="android:textColor">@color/textColorCaption</item>
@@ -198,6 +224,7 @@
     <item name="android:letterSpacing">@fraction/letter_spacing_footnote</item>
   </style>
 
+  <!-- Default overline style -->
   <style name="TextAppearance.Overline" parent="Text.Bold">
     <item name="android:textSize">@dimen/text_size_overline</item>
     <item name="android:textColor">@color/textColorOverline</item>
@@ -210,12 +237,30 @@
     <item name="android:letterSpacing">@fraction/letter_spacing_overline_2</item>
   </style>
 
+  <!-- TextAppearance.Overline.3 -->
+  <style name="TextAppearance.Overline.3" parent="Text.Medium">
+    <item name="android:textSize">@dimen/text_size_overline_2</item>
+    <!-- Text color remains unchanged for light and dark themes -->
+    <item name="android:textColor">@color/textColorOverline3</item>
+    <item name="android:letterSpacing">@fraction/letter_spacing_overline_3</item>
+  </style>
+
+  <!-- TextAppearance.Overline.4 -->
+  <style name="TextAppearance.Overline.4" parent="Text.Bold">
+    <item name="android:textSize">@dimen/text_size_overline</item>
+    <item name="android:textColor">@color/textColorOverline</item>
+    <item name="android:letterSpacing">@fraction/letter_spacing_overline_3</item>
+  </style>
+
   <style name="TextAppearance.Button" parent="Text.Bold">
     <item name="android:textColor">@color/textColorButton</item>
   </style>
 
-  <style name="TextAppearance.Overline.Raised" parent="TextAppearance.Overline">
-    <item name="android:padding">@dimen/overline_padding_internal</item>
+  <style name="TextAppearance.Overline.Raised" parent="TextAppearance.Overline.4">
+    <item name="android:paddingStart">@dimen/overline_padding_horizontal</item>
+    <item name="android:paddingEnd">@dimen/overline_padding_horizontal</item>
+    <item name="android:paddingTop">@dimen/overline_padding_vertical</item>
+    <item name="android:paddingBottom">@dimen/overline_padding_vertical</item>
     <item name="android:elevation">@dimen/overline_elevation</item>
     <item name="android:textAllCaps">true</item>
     <item name="android:gravity">center</item>
@@ -223,12 +268,12 @@
 
   <style name="TextAppearance.Overline.Raised.Colored" parent="TextAppearance.Overline.Raised">
     <item name="android:background">@drawable/bg_caption_primary</item>
-    <item name="android:textColor">@color/textColorOverlineInverse</item>
+    <item name="android:textColor">@color/textColorOverlineInverse2</item>
   </style>
 
   <style name="TextAppearance.Overline.Raised.Colored.White" parent="TextAppearance.Overline.Raised">
     <item name="android:background">@drawable/bg_caption_white</item>
-    <item name="android:textColor">@color/textColorOverlineOnSurface</item>
+    <item name="android:textColor">@color/textColorOverlineInverse</item>
   </style>
 
   <style name="TextAppearance.Button.Regular" parent="TextAppearance.Button">
@@ -239,10 +284,6 @@
   <style name="TextAppearance.Button.Small" parent="TextAppearance.Button">
     <item name="android:textSize">@dimen/text_size_button_small</item>
     <item name="android:letterSpacing">@fraction/letter_spacing_button_small</item>
-  </style>
-
-  <style name="TextAppearance.Button.Small.Colored.Grey" parent="TextAppearance.Button.Small">
-    <item name="android:textColor">@color/textColorButton2</item>
   </style>
 
   <style name="TextAppearance.Button.Small.Inverse" parent="TextAppearance.Button.Small">
@@ -278,6 +319,10 @@
   </style>
 
   <style name="TextAppearance.Headline.5" parent="TextAppearance.Headline">
+    <item name="android:textSize">@dimen/text_size_h5</item>
+  </style>
+
+  <style name="TextAppearance.Headline.5.Normal" parent="TextAppearance.Headline.Normal">
     <item name="android:textSize">@dimen/text_size_h5</item>
   </style>
 

@@ -41,7 +41,7 @@ class DownloadHelper(private val fragment: Fragment) {
 
     // Delete downloaded episode
     if (!episodeId.isNullOrBlank() && episodeIsDownloaded) {
-      showDeleteDownloadedContentDialog(episodeId)
+      showDeleteDownloadedContentDialog(episodeId, onDownloadRemoved)
       return
     }
 
