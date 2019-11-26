@@ -5,7 +5,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import androidx.core.view.updatePadding
 import androidx.core.view.updatePaddingRelative
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.snackbar.Snackbar
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.LayoutSnackbarDefaultBinding
@@ -41,7 +40,6 @@ fun Snackbar.customiseForEmitron(
       .inflateDatabindingLayout(R.layout.layout_snackbar_default)
 
   val layout = view as? Snackbar.SnackbarLayout
-  val card: MaterialCardView? = layout?.findViewById(R.id.card)
   val getColor = { colorResId: Int ->
     ContextCompat.getColor(
       context,
@@ -56,7 +54,7 @@ fun Snackbar.customiseForEmitron(
     textSnackbarBody.text = text
 
     val updateSnackbarUi: (color: Int, message: String) -> Unit = { color, message ->
-      card?.setCardBackgroundColor(color)
+      snackbarCard.setCardBackgroundColor(color)
       textSnackbarType.setTextColor(color)
       textSnackbarType.text = message
     }

@@ -6,7 +6,7 @@
   <data />
 
   <com.google.android.material.card.MaterialCardView
-    android:id="@+id/card"
+    android:id="@+id/snackbar_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="@dimen/card_corner_radius_snackbar"
