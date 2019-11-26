@@ -31,7 +31,7 @@ class ContentItemViewHolder(private val binding: ItemContentBinding) :
     binding.data = content
     binding.releaseDateWithTypeAndDuration =
       content?.getReadableReleaseAtWithTypeAndDuration(binding.root.context)
-    binding.textLanguage.text = content?.getDomain()
+    binding.textLanguage.text = content?.getReadableDomain(binding.root.context)
 
     binding.progressContentProgression.toVisibility(
       !adapterContent.isContent()
