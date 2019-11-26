@@ -129,8 +129,8 @@
   <dimen name="button_episode_number_margin_end">16dp</dimen>
   <dimen name="collection_detail_item_vertical_spacing">12dp</dimen>
   <dimen name="collection_episode_headline_margin_top">20dp</dimen>
-  <dimen name="banner_play_icon_width_height">56dp</dimen>
-  <dimen name="banner_play_icon_padding">12dp</dimen>
+  <dimen name="banner_play_icon_width_height">64dp</dimen>
+  <dimen name="banner_play_icon_padding">8dp</dimen>
   <dimen name="banner_play_stroke_width">4dp</dimen>
   <dimen name="banner_play_corner_radius">9dp</dimen>
   <dimen name="episode_progress_corner_radius">6dp</dimen>
@@ -162,6 +162,7 @@
   <!-- Player -->
   <dimen name="button_forward_rewind_height_width">44dp</dimen>
   <dimen name="button_play_pause_height_width">64dp</dimen>
+  <dimen name="button_play_pause_icon_height_width">40dp</dimen>
   <dimen name="button_play_progress_height_width">56dp</dimen>
   <dimen name="button_player_settings_height_width">40dp</dimen>
   <dimen name="player_progress_bar_margin_start_end">12dp</dimen>

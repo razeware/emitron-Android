@@ -8,8 +8,8 @@
         android:width="@dimen/banner_play_stroke_width"
         android:color="@color/colorIconInverse" />
       <size
-        android:width="@dimen/banner_play_icon_width_height"
-        android:height="@dimen/banner_play_icon_width_height" />
+        android:width="@dimen/button_play_pause_height_width"
+        android:height="@dimen/button_play_pause_height_width" />
     </shape>
   </item>
 
