@@ -124,7 +124,8 @@ data class Content(
       difficulty = difficulty,
       releasedAt = releasedAt,
       technology = technology,
-      cardArtworkUrl = cardArtworkUrl
+      cardArtworkUrl = cardArtworkUrl,
+      professional = professional
     ),
     download = downloadState
   ).addBookmark(bookmarkId)

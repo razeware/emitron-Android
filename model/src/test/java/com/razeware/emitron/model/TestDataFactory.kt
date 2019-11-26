@@ -94,6 +94,7 @@ fun buildContentData(
     difficulty = "beginner",
     duration = 408,
     free = false,
+    professional = false,
     popularity = null,
     releasedAt = "2019-08-08T00:00:00.000Z",
     videoId = null,

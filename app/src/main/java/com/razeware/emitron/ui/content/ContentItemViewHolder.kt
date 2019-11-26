@@ -37,8 +37,7 @@ class ContentItemViewHolder(private val binding: ItemContentBinding) :
 
       setProgress(content, adapterContent)
       textCollectionLabelPro.toVisibility(
-        adapterContent.isContent() &&
-            content?.isFinished() != true &&
+        content?.isProgressionFinished() != true &&
             content?.isProfessional() == true
       )
       buttonDownload.toVisibility(adapterContent.isDownloaded())
