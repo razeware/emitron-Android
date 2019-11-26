@@ -210,6 +210,13 @@
     <item name="android:letterSpacing">@fraction/letter_spacing_overline_2</item>
   </style>
 
+  <!-- TextAppearance.Overline.3 -->
+  <style name="TextAppearance.Overline.3" parent="Text.Medium">
+    <item name="android:textSize">@dimen/text_size_overline_2</item>
+    <!-- Text color remains unchanged for light and dark themes -->
+    <item name="android:textColor">@color/textColorOverline3</item>
+    <item name="android:letterSpacing">@fraction/letter_spacing_overline_3</item>
+  </style>
   <style name="TextAppearance.Button" parent="Text.Bold">
     <item name="android:textColor">@color/textColorButton</item>
   </style>

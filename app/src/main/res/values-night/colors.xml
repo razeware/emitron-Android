@@ -7,6 +7,7 @@
   <color name="textColorBody1">@color/white</color>
   <color name="textColorButton">@color/white</color>
   <color name="textColorOverline">@color/white</color>
+  <color name="textColorOverline3">@color/light_gray_blue</color>
   <color name="textColorBody2">@color/white</color>
   <color name="textColorLabel">@color/white</color>
   <color name="textColorFootnote">@color/light_gray_blue</color>
