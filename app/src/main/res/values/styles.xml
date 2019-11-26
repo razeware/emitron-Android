@@ -270,10 +270,6 @@
     <item name="android:letterSpacing">@fraction/letter_spacing_button_small</item>
   </style>
 
-  <style name="TextAppearance.Button.Small.Colored.Grey" parent="TextAppearance.Button.Small">
-    <item name="android:textColor">@color/textColorButton2</item>
-  </style>
-
   <style name="TextAppearance.Button.Small.Inverse" parent="TextAppearance.Button.Small">
     <item name="android:textColor">@color/textColorButtonOnError</item>
   </style>
@@ -313,7 +309,6 @@
   <style name="TextAppearance.Headline.5.Normal" parent="TextAppearance.Headline.Normal">
     <item name="android:textSize">@dimen/text_size_h5</item>
   </style>
-
 
   <style name="SearchTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
     <item name="boxBackgroundColor">@color/colorSurface</item>

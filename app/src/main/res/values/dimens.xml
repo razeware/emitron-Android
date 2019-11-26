@@ -15,6 +15,8 @@
   <dimen name="card_corner_radius">6dp</dimen>
   <dimen name="card_elevation_default">2dp</dimen>
   <dimen name="card_corner_radius_snackbar">4dp</dimen>
+  <dimen name="card_wide_corner_radius">9dp</dimen>
+  <dimen name="card_margin_vertical">8dp</dimen>
 
   <!-- Search view -->
   <dimen name="search_view_height_default">44dp</dimen>
@@ -155,6 +157,7 @@
   <!-- Filter view -->
   <dimen name="filter_progress_height">4dp</dimen>
   <dimen name="filter_progress_margin_start_end">4dp</dimen>
+  <dimen name="filter_checkbox_height_width">26dp</dimen>
 
   <!-- Player -->
   <dimen name="button_forward_rewind_height_width">44dp</dimen>

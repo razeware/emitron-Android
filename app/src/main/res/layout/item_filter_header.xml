@@ -19,6 +19,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/default_item_spacing_vertical"
+    app:cardCornerRadius="@dimen/card_wide_corner_radius"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="false"
     tools:layout_margin="16dp">
@@ -53,14 +54,15 @@
         android:paddingStart="@null"
         android:paddingEnd="@dimen/activity_horizontal_margin"
         android:text="@{isSelected ? @string/button_hide : @string/button_show}"
-        android:textAppearance="@style/TextAppearance.Button.Small.Colored.Grey"
         app:iconGravity="textEnd"
-        app:iconPadding="@dimen/button_padding_internal_dense"
-        app:iconSize="@dimen/icon_height_width_2"
+        app:iconSize="@dimen/icon_height_width"
+        app:iconTint="@color/colorIcon2"
+        app:iconTintMode="multiply"
         app:layout_constraintBottom_toBottomOf="@+id/headline_filter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/headline_filter"
         app:layout_constraintTop_toTopOf="@+id/headline_filter"
+        tools:icon="@drawable/ic_material_icon_chevron"
         tools:text="@string/button_hide" />
     </androidx.constraintlayout.widget.ConstraintLayout>
   </com.google.android.material.card.MaterialCardView>

@@ -24,7 +24,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
-      app:layout_constraintGuide_begin="16dp" />
+      app:layout_constraintGuide_begin="@dimen/activity_vertical_margin" />
 
     <androidx.constraintlayout.widget.Guideline
       android:id="@+id/guideline_left"
@@ -62,8 +62,8 @@
 
     <com.google.android.material.checkbox.MaterialCheckBox
       android:id="@+id/checkbox_filter_item"
-      android:layout_width="@dimen/icon_height_width"
-      android:layout_height="@dimen/icon_height_width"
+      android:layout_width="@dimen/filter_checkbox_height_width"
+      android:layout_height="@dimen/filter_checkbox_height_width"
       android:button="@drawable/selector_checkbox"
       android:buttonTint="@color/white"
       android:buttonTintMode="multiply"
