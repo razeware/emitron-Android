@@ -94,6 +94,7 @@ class OnboardingFragment : DaggerFragment() {
       buttonOnBoardingClose.applyUnderline()
       buttonOnBoardingClose.setOnClickListener {
         viewModel.updateOnboardingAllowed()
+        findNavController().popBackStack()
       }
       buttonOnBoardingSubmit.setOnClickListener {
         findNavController().popBackStack()
