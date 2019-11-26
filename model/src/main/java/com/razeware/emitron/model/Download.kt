@@ -56,7 +56,7 @@ data class Download(
             100 to DownloadState.COMPLETED.ordinal
           }
           else -> {
-            0 to DownloadState.CREATED.ordinal
+            0 to DownloadState.PAUSED.ordinal
           }
         }
 
