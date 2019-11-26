@@ -200,7 +200,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/button_spacing_horizontal_2"
         android:text="@string/label_completed"
-        android:visibility="@{data.isFinished()? View.VISIBLE : View.GONE}"
+        android:visibility="@{data.isProgressionFinished()? View.VISIBLE : View.GONE}"
         app:drawableStartCompat="@drawable/ic_material_icon_checkmark_1"
         app:layout_constraintBottom_toBottomOf="@+id/spacer"
         app:layout_constraintEnd_toStartOf="@+id/text_collection_label_pro"
