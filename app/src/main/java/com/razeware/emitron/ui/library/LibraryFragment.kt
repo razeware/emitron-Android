@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo.*
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
+import androidx.core.view.setPadding
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -325,11 +326,13 @@ class LibraryFragment : DaggerFragment() {
     with(chip) {
       this.shapeAppearanceModel = shapeAppearanceModel
       isCloseIconVisible = true
-      closeIcon = context.getDrawable(R.drawable.ic_material_icon_close)
+      closeIcon = context.getDrawable(R.drawable.ic_material_icon_x_light)
+      setCloseIconSizeResource(R.dimen.icon_height_width_2)
       setChipIconTintResource(R.color.white)
       setChipBackgroundColorResource(R.color.colorSurface)
       isClickable = true
       isCheckable = false
+      setPadding(resources.getDimensionPixelSize(R.dimen.chip_padding_default))
       setChipMinHeightResource(R.dimen.chip_height_default)
       setTextAppearance(R.style.TextAppearance_Button_Small)
     }
