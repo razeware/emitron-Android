@@ -25,31 +25,49 @@ class ContentItemViewHolder(private val binding: ItemContentBinding) :
     bookmarkCallback: ((Int) -> Unit)? = null,
     downloadCallback: ((Int, Int) -> Unit)? = null
   ) {
-    binding.root.setOnClickListener {
-      onItemClick(adapterPosition)
-    }
-    binding.data = content
-    binding.releaseDateWithTypeAndDuration =
-      content?.getReadableReleaseAtWithTypeAndDuration(binding.root.context)
-    binding.textLanguage.text = content?.getReadableDomain(binding.root.context)
 
-    binding.progressContentProgression.toVisibility(!adapterContent.isCompleted())
-    binding.textCollectionLabelPro.toVisibility(
-      adapterContent.isContent() &&
-          content?.isFinished() != true &&
-          content?.isProfessional() == true
-    )
-    binding.buttonDownload.toVisibility(adapterContent.isDownloaded())
-    binding.buttonDownload.updateDownloadState(content?.download)
+    with(binding) {
+      root.setOnClickListener {
+        onItemClick(adapterPosition)
+      }
+      data = content
+      releaseDateWithTypeAndDuration =
+        content?.getReadableReleaseAtWithTypeAndDuration(root.context)
+      textLanguage.text = content?.getReadableDomain(root.context)
 
-    binding.buttonBookmark.toVisibility(adapterContent.isBookmarked())
-    binding.buttonBookmark.setOnClickListener {
-      bookmarkCallback?.invoke(adapterPosition)
+      setProgress(content, adapterContent)
+      textCollectionLabelPro.toVisibility(
+        adapterContent.isContent() &&
+            content?.isFinished() != true &&
+            content?.isProfessional() == true
+      )
+      buttonDownload.toVisibility(adapterContent.isDownloaded())
+      buttonDownload.updateDownloadState(content?.download)
+      buttonDownload.setOnClickListener {
+        downloadCallback?.invoke(adapterPosition, 1)
+      }
+
+      buttonBookmark.toVisibility(adapterContent.isBookmarked())
+      buttonBookmark.setOnClickListener {
+        bookmarkCallback?.invoke(adapterPosition)
+      }
+      executePendingBindings()
     }
-    binding.buttonDownload.setOnClickListener {
-      downloadCallback?.invoke(adapterPosition, 1)
+  }
+
+  private fun setProgress(content: Data?, adapterContent: ContentAdapter.AdapterContentType) {
+    with(binding) {
+      val progress = content?.getProgressionPercentComplete() ?: 0
+
+      val updatedProgress = if (progress == 0) {
+        DEFAULT_PROGRESS
+      } else {
+        progress
+      }
+
+      progressContentProgression.toVisibility(!adapterContent.isCompleted())
+      progressContentProgression.progress = updatedProgress
     }
-    binding.executePendingBindings()
   }
 
   /**
@@ -57,12 +75,20 @@ class ContentItemViewHolder(private val binding: ItemContentBinding) :
    * Remove click listener
    */
   fun unBind() {
-    binding.root.setOnClickListener(null)
-    binding.buttonBookmark.setOnClickListener(null)
-    binding.buttonDownload.setOnClickListener(null)
+    with(binding) {
+      root.setOnClickListener(null)
+      buttonBookmark.setOnClickListener(null)
+      buttonDownload.setOnClickListener(null)
+    }
   }
 
   companion object {
+
+    /**
+     * In progress items will show a minimum progress if the items are in progress and
+     * the progress percentage is 0
+     */
+    const val DEFAULT_PROGRESS: Int = 10
 
     /**
      * Factory function to create [ContentItemViewHolder]

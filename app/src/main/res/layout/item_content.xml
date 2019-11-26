@@ -26,7 +26,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardPreventCornerOverlap="true"
-    app:cardUseCompatPadding="false">
+    app:cardUseCompatPadding="false"
+    tools:layout_marginBottom="@dimen/card_margin_vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
@@ -149,6 +150,8 @@
         android:id="@+id/text_duration"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="@{releaseDateWithTypeAndDuration}"
         android:textAppearance="@style/TextAppearance.Footnote"
         android:visibility="@{data.isFinished()? View.GONE : View.VISIBLE}"
@@ -215,7 +218,6 @@
         android:layout_height="@dimen/height_card_progress_height"
         android:layout_marginTop="@dimen/margin_card_progress_top"
         android:indeterminate="false"
-        android:progress="@{data.getProgressionPercentComplete()}"
         android:progressDrawable="@drawable/progress_drawable_horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
