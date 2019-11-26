@@ -5,12 +5,14 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.razeware.emitron.R
+
 
 /**
  * File will contain all the extension functions for [Activity]s
@@ -76,12 +78,31 @@ fun AppCompatActivity.showSuccessSnackbar(text: String) =
 /**
  * Extension function for showing the Activity in fullscreen mode
  */
-fun AppCompatActivity.requestGestureUi() {
+fun Activity.requestGestureUi() {
+  val view = window.decorView
   if (hasGestureUiSupport()) {
-    val view = window.decorView
     view.systemUiVisibility =
-      view.systemUiVisibility or
-          View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+      View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+    window.navigationBarColor = ContextCompat.getColor(this, R.color.transparent)
+    window.statusBarColor = ContextCompat.getColor(this, R.color.transparent)
+  } else {
+    view.systemUiVisibility = 0
+  }
+}
+
+
+/**
+ * Hide Navigation bar
+ */
+fun Activity.requestLowProfileUi(request: Boolean = true) {
+  val view = window.decorView
+  if (request) {
+    view.apply {
+      systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+          View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+    }
+  } else {
+    view.systemUiVisibility = 0
   }
 }
 

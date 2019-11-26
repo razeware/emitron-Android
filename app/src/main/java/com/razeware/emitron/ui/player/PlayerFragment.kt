@@ -202,11 +202,13 @@ class PlayerFragment : DaggerFragment() {
 
   /**
    * Cache for offline playback
-   *
    */
   @Inject
   lateinit var cache: Cache
 
+  /**
+   * Logger
+   */
   @Inject
   lateinit var logger: Logger
 
@@ -302,6 +304,7 @@ class PlayerFragment : DaggerFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     requestLandscapeOrientation()
+    requireActivity().requestLowProfileUi()
     initUi()
     initObservers()
     startPlayback(args.playlist)
@@ -355,6 +358,7 @@ class PlayerFragment : DaggerFragment() {
 
       binding.playerView.setControllerVisibilityListener {
         binding.toolbar.toVisibility(it == View.VISIBLE)
+        requireActivity().requestLowProfileUi(it != View.VISIBLE)
       }
     }
 
@@ -683,6 +687,7 @@ class PlayerFragment : DaggerFragment() {
     playbackNotificationManager.setPlayer(null)
     pipActionDelegate.clear()
     parentViewModel.updateIsPlaying(false)
+    requireActivity().requestGestureUi()
   }
 
   private fun dismissBottomSheets() {

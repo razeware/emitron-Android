@@ -11,7 +11,6 @@
     <item name="colorSurface">@color/colorSurface</item>
     <item name="colorPrimarySurface">@color/colorBackground</item>
     <item name="materialCardViewStyle">@style/Card</item>
-    <item name="android:navigationBarColor">@android:color/transparent</item>
     <item name="materialAlertDialogTheme">@style/AlertDialog</item>
   </style>
 

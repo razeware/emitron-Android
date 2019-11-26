@@ -14,7 +14,8 @@
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:paddingBottomSystemWindowInsets="@{true}">
 
     <androidx.appcompat.widget.AppCompatImageView
       android:id="@+id/cast_control_cover_art"
@@ -85,7 +86,6 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:resize_mode="fill"
       app:rewind_increment="10000"
       tools:visibility="gone" />
 
@@ -163,7 +163,6 @@
       android:id="@+id/toolbar"
       android:layout_width="match_parent"
       android:layout_height="?android:actionBarSize"
-      android:layout_marginTop="@dimen/guideline_top_status_bar"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_bias="0"
       app:layout_constraintVertical_chainStyle="packed" />
