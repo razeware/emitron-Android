@@ -116,7 +116,7 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/button_on_boarding_submit"
-      style="@style/Button.Colored"
+      style="@style/Button.Colored.Icon"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/on_boarding_button_submit_margin_top"

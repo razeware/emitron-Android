@@ -105,7 +105,7 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/button_sign_in"
-      style="@style/Button.Colored"
+      style="@style/Button.Colored.Icon"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:text="@string/button_sign_in"
@@ -153,7 +153,7 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/button_sign_out"
-      style="@style/Button.Colored.3"
+      style="@style/Button.Colored.3.Icon"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:text="@string/button_sign_out"

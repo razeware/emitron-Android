@@ -37,6 +37,8 @@
   <dimen name="button_wide_inset">2dp</dimen>
   <dimen name="button_corner_radius">6dp</dimen>
   <dimen name="button_padding_internal">8dp</dimen>
+  <dimen name="button_wide_padding_internal_start_end">16dp</dimen>
+  <dimen name="button_wide_icon_padding_internal_start">40dp</dimen>
   <dimen name="button_padding_internal_dense">4dp</dimen>
   <dimen name="button_inset">2dp</dimen>
   <dimen name="button_icon_height_width">48dp</dimen>
@@ -64,7 +66,7 @@
   <dimen name="text_size_body_2">14sp</dimen>
   <dimen name="text_size_footnote">13sp</dimen>
   <dimen name="text_size_caption">12sp</dimen>
-  <dimen name="text_size_button">15sp</dimen>
+  <dimen name="text_size_button">16sp</dimen>
   <dimen name="text_size_button_small">13sp</dimen>
   <dimen name="text_size_overline">10sp</dimen>
   <dimen name="text_size_overline_2">11sp</dimen>
