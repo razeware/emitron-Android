@@ -19,7 +19,7 @@
   </style>
 
   <style name="Card" parent="Widget.MaterialComponents.CardView">
-    <item name="cardCornerRadius">@dimen/card_radius</item>
+    <item name="cardCornerRadius">@dimen/card_corner_radius</item>
     <item name="cardUseCompatPadding">true</item>
     <item name="cardPreventCornerOverlap">true</item>
     <item name="android:outlineSpotShadowColor">@color/cardShadow</item>

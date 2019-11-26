@@ -12,9 +12,9 @@
   <dimen name="guideline_bottom_gesture">16dp</dimen>
 
   <!-- Card View -->
-  <dimen name="card_radius">6dp</dimen>
+  <dimen name="card_corner_radius">6dp</dimen>
   <dimen name="card_elevation_default">2dp</dimen>
-  <dimen name="card_radius_snackbar">4dp</dimen>
+  <dimen name="card_corner_radius_snackbar">4dp</dimen>
 
   <!-- Search view -->
   <dimen name="search_view_height_default">44dp</dimen>
