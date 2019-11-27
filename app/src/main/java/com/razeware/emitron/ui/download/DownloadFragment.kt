@@ -25,7 +25,6 @@ import com.razeware.emitron.ui.download.workers.RemoveDownloadWorker
 import com.razeware.emitron.ui.mytutorial.MyTutorialFragmentDirections
 import com.razeware.emitron.ui.onboarding.OnboardingView
 import com.razeware.emitron.utils.NetworkState
-import com.razeware.emitron.utils.extensions.observe
 import com.razeware.emitron.utils.extensions.setDataBindingView
 import com.razeware.emitron.utils.extensions.toVisibility
 import dagger.android.support.DaggerFragment
@@ -112,7 +111,6 @@ class DownloadFragment : DaggerFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     initUi()
-    initObservers()
     loadDownloads()
     checkAndShowOnboarding()
     checkAndShowDownloadSubscription()
@@ -126,7 +124,11 @@ class DownloadFragment : DaggerFragment() {
   }
 
   private fun initUi() {
-    pagedFragment.value.initPaging(this, binding.recyclerView)
+    pagedFragment.value.initPaging(
+      this,
+      binding.recyclerView,
+      onNetworkStateChange = ::handleInitialProgress
+    )
     binding.recyclerView.addItemDecoration(StartEndBottomMarginDecoration())
   }
 
@@ -145,12 +147,6 @@ class DownloadFragment : DaggerFragment() {
         WorkManager.getInstance(requireContext()),
         contentId
       )
-    }
-  }
-
-  private fun initObservers() {
-    viewModel.getPaginationViewModel().networkState.observe(viewLifecycleOwner) {
-      handleInitialProgress(it)
     }
   }
 

@@ -95,7 +95,11 @@ class BookmarkFragment : DaggerFragment() {
   }
 
   private fun initUi() {
-    pagedFragment.value.initPaging(this, binding.recyclerView)
+    pagedFragment.value.initPaging(
+      this,
+      binding.recyclerView,
+      onNetworkStateChange = ::handleInitialProgress
+    )
     binding.recyclerView.addItemDecoration(StartEndBottomMarginDecoration())
     progressDelegate = ShimmerProgressDelegate(requireView())
   }
@@ -113,10 +117,6 @@ class BookmarkFragment : DaggerFragment() {
   }
 
   private fun initObservers() {
-    viewModel.getPaginationViewModel().networkState.observe(viewLifecycleOwner) {
-      handleInitialProgress(it)
-    }
-
     viewModel.bookmarkDeleteActionResult.observe(viewLifecycleOwner) {
       when (it?.getContentIfNotHandled()) {
         BookmarkActionDelegate.BookmarkActionResult.BookmarkDeleted -> {
