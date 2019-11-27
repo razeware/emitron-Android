@@ -158,7 +158,7 @@ class CollectionViewModelTest {
     createViewModel()
 
     testCoroutineRule.runBlockingTest {
-      val contentData = createContentData()
+      val contentData = createContentData(download = Download())
       val content = createContent(data = contentData, included = getIncludedDataForCollection())
       val expectedEpisodes =
         listOf(
