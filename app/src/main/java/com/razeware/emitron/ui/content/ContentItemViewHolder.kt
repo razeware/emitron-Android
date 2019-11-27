@@ -66,7 +66,10 @@ class ContentItemViewHolder(private val binding: ItemContentBinding) :
           progress
         }
 
-      progressContentProgression.toVisibility(!adapterContent.isCompleted())
+      progressContentProgression.toVisibility(
+        content?.isProgressionFinished() != true &&
+            !adapterContent.isCompleted()
+      )
       progressContentProgression.progress = updatedProgress
     }
   }
