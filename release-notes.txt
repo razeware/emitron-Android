@@ -1,1 +1,2 @@
-- Fix downloads progress
+- Fix #42
+- Fix #97
