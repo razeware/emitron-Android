@@ -99,7 +99,7 @@ class ContentRepository @Inject constructor(
   @AnyThread
   suspend fun getContentFromDb(id: String): Content? {
     return withContext(threadManager.io) {
-      contentDataSourceLocal.getContent(id).toContent()
+      contentDataSourceLocal.getContent(id)?.toContent()
     }
   }
 

@@ -45,6 +45,17 @@ class ContentTest {
   }
 
   @Test
+  fun isDownloaded() {
+    val datum = Data()
+    val content = Content(datum = datum)
+    assertThat(content.isDownloaded()).isFalse()
+
+    val datum2 = Data(attributes = Attributes(finished = true), download = Download())
+    val content2 = Content(datum = datum2)
+    assertThat(content2.isDownloaded()).isTrue()
+  }
+
+  @Test
   fun getChildId() {
     val datum = Data(id = "1")
     val content = Content(datum = datum)

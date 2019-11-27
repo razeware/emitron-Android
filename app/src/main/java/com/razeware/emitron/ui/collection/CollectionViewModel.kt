@@ -152,10 +152,13 @@ class CollectionViewModel @Inject constructor(
 
     content ?: return false
 
-    updateContentEpisodes(content)
-    _loadCollectionResult.value = Event(true)
-
-    return true
+    return if (content.isDownloaded()) {
+      updateContentEpisodes(content)
+      _loadCollectionResult.value = Event(true)
+      true
+    } else {
+      false
+    }
   }
 
   private suspend fun loadContentFromApi(contentId: String): Boolean {
