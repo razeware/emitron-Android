@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.ItemCollectionEpisodeBinding
 import com.razeware.emitron.model.Data
+import com.razeware.emitron.utils.extensions.toVisibility
 
 /**
  * View holder for Episode item in Collection detail view
@@ -30,26 +31,31 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
     onEpisodeCompleted: (Int) -> Unit,
     onEpisodeDownload: (Int) -> Unit
   ) {
-    binding.root.setOnClickListener {
-      onEpisodeSelected(adapterPosition)
-    }
-    binding.buttonCollectionEpisode.setOnClickListener {
-      onEpisodeCompleted(adapterPosition)
-    }
-    binding.buttonCollectionEpisodeDownload.setOnClickListener {
-      onEpisodeDownload(adapterPosition)
-    }
-    binding.buttonCollectionEpisodeDownload.updateDownloadState(episode?.download)
-    binding.data = episode
-    binding.episodePosition = episode?.getEpisodeNumber(position, isPlaybackAllowed)
 
-    if (isPlaybackAllowed) {
-      checkEpisodeCompleted(episode?.isProgressionFinished() ?: false)
-    } else {
-      setEpisodeLocked()
-    }
+    with(binding) {
+      root.setOnClickListener {
+        onEpisodeSelected(adapterPosition)
+      }
+      buttonCollectionEpisode.setOnClickListener {
+        onEpisodeCompleted(adapterPosition)
+      }
+      buttonCollectionEpisodeDownload.setOnClickListener {
+        onEpisodeDownload(adapterPosition)
+      }
+      buttonCollectionEpisodeDownload.updateDownloadState(episode?.download)
+      data = episode
+      episodePosition = episode?.getEpisodeNumber(position, isPlaybackAllowed)
 
-    binding.executePendingBindings()
+      progressCompletion.toVisibility(episode?.isProgressionFinished() != true)
+
+      if (isPlaybackAllowed) {
+        checkEpisodeCompleted(episode?.isProgressionFinished() ?: false)
+      } else {
+        setEpisodeLocked()
+      }
+
+      executePendingBindings()
+    }
   }
 
   private fun checkEpisodeCompleted(isContentFinished: Boolean) {
@@ -61,31 +67,37 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
   }
 
   private fun setEpisodeLocked() {
-    binding.buttonCollectionEpisode.setIconResource(R.drawable.ic_material_icon_padlock)
-    binding.buttonCollectionEpisode.setIconTintResource(R.color.colorIcon)
-    binding.buttonCollectionEpisode.isEnabled = false
+    with(binding) {
+      buttonCollectionEpisode.setIconResource(R.drawable.ic_material_icon_padlock)
+      buttonCollectionEpisode.setIconTintResource(R.color.colorIcon)
+      buttonCollectionEpisode.isEnabled = false
+    }
   }
 
   private fun markEpisodeComplete() {
-    binding.buttonCollectionEpisode.setIconResource(R.drawable.ic_material_icon_checkmark)
-    binding.buttonCollectionEpisode.setIconTintResource(R.color.colorIconInverse)
-    binding.buttonCollectionEpisode.setBackgroundColor(
-      ContextCompat.getColor(
-        binding.root.context,
-        R.color.colorPrimary
+    with(binding) {
+      buttonCollectionEpisode.setIconResource(R.drawable.ic_material_icon_checkmark)
+      buttonCollectionEpisode.setIconTintResource(R.color.colorIconInverse)
+      buttonCollectionEpisode.setBackgroundColor(
+        ContextCompat.getColor(
+          root.context,
+          R.color.colorPrimary
+        )
       )
-    )
+    }
   }
 
   private fun markEpisodeInProgress() {
-    binding.buttonCollectionEpisode.icon = null
-    binding.buttonCollectionEpisode.isEnabled = true
-    binding.buttonCollectionEpisode.setBackgroundColor(
-      ContextCompat.getColor(
-        binding.root.context,
-        R.color.colorSurfaceDark
+    with(binding) {
+      buttonCollectionEpisode.icon = null
+      buttonCollectionEpisode.isEnabled = true
+      buttonCollectionEpisode.setBackgroundColor(
+        ContextCompat.getColor(
+          root.context,
+          R.color.colorSurfaceDark
+        )
       )
-    )
+    }
   }
 
   companion object {
