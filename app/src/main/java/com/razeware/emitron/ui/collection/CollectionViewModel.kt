@@ -127,9 +127,7 @@ class CollectionViewModel @Inject constructor(
     }
 
     viewModelScope.launch {
-      if (content.isDownloaded()) {
-        loadContentFromDb(contentId)
-      } else {
+      if (!loadContentFromDb(contentId)) {
         loadContentFromApi(contentId)
       }
 
@@ -137,7 +135,7 @@ class CollectionViewModel @Inject constructor(
     }
   }
 
-  private suspend fun loadContentFromDb(contentId: String) {
+  private suspend fun loadContentFromDb(contentId: String): Boolean {
     val onFailure = {
       _loadCollectionResult.value = Event(false)
     }
@@ -151,11 +149,16 @@ class CollectionViewModel @Inject constructor(
       onFailure()
       null
     }
+
+    content ?: return false
+
     updateContentEpisodes(content)
     _loadCollectionResult.value = Event(true)
+
+    return true
   }
 
-  private suspend fun loadContentFromApi(contentId: String) {
+  private suspend fun loadContentFromApi(contentId: String): Boolean {
     val onFailure = {
       _loadCollectionResult.value = Event(false)
     }
@@ -169,12 +172,17 @@ class CollectionViewModel @Inject constructor(
       onFailure()
       null
     }
+
+    content ?: return false
+
     updateContentEpisodes(content)
     _loadCollectionResult.value = Event(true)
+
+    return true
   }
 
-  private fun updateContentEpisodes(content: Content?) {
-    content?.apply {
+  private fun updateContentEpisodes(content: Content) {
+    content.apply {
       _collection.value = content.datum?.updateRelationships(content.included)
 
       // If content is not screencast, set the episodes
