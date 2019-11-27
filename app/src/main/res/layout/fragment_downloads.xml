@@ -86,7 +86,7 @@
       app:layout_constraintStart_toStartOf="@id/guideline_left"
       app:layout_constraintTop_toBottomOf="@+id/toolbar"
       app:layout_constraintVertical_chainStyle="packed"
-      app:srcCompat="@drawable/ic_suitcaseempty" />
+      app:srcCompat="@drawable/ic_download_offline_switch" />
 
     <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/downloads_no_subscription_title"
