@@ -86,7 +86,9 @@ interface PagedBoundaryCallback {
 class PagedBoundaryCallbackImpl : PagedBoundaryCallback {
 
 
-  private val _networkState = MutableLiveData<NetworkState>()
+  private val _networkState = MutableLiveData<NetworkState>().apply {
+    value = NetworkState.INIT_SUCCESS
+  }
 
   private var requestInProgress = false
 

@@ -158,7 +158,7 @@ class CollectionViewModelTest {
     createViewModel()
 
     testCoroutineRule.runBlockingTest {
-      val contentData = createContentData()
+      val contentData = createContentData(download = Download())
       val content = createContent(data = contentData, included = getIncludedDataForCollection())
       val expectedEpisodes =
         listOf(
@@ -923,6 +923,7 @@ class CollectionViewModelTest {
         )
       )
       val content = createContent(data = contentData)
+      whenever(contentRepository.getContentFromDb("1")).doReturn(content)
       whenever(contentRepository.getContent("1")).doReturn(content)
       viewModel.loadCollection(Data(id = "1"))
       whenever(permissionActionDelegate.isDownloadAllowed()).doReturn(true)
@@ -932,32 +933,8 @@ class CollectionViewModelTest {
 
       // Then
       result isEqualTo true
-    }
-  }
-
-  @Test
-  fun isContentPlaybackAllowed_isOffline() {
-    createViewModel()
-    testCoroutineRule.runBlockingTest {
-      // Given
-      val contentData = createContentData(
-        type = "screencast",
-        groups = null,
-        professional = false,
-        download = Download(
-          state = DownloadState.COMPLETED.ordinal
-        )
-      )
-      val content = createContent(data = contentData)
-      whenever(contentRepository.getContent("1")).doReturn(content)
-      viewModel.loadCollection(Data(id = "1"))
-      whenever(loginRepository.isDownloadAllowed()).doReturn(false)
-
-      // When
-      val result = viewModel.isContentPlaybackAllowed(false)
-
-      // Then
-      result isEqualTo false
+      verify(contentRepository).getContentFromDb("1")
+      verifyNoMoreInteractions(contentRepository)
     }
   }
 

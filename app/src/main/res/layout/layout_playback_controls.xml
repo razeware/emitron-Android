@@ -134,23 +134,29 @@
     android:layout_marginStart="@dimen/button_spacing_horizontal"
     app:icon="@drawable/ic_material_icon_settings"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toStartOf="@id/button_player_playlist"
+    app:layout_constraintEnd_toStartOf="@id/button_player_playlist_layout"
     app:layout_constraintHorizontal_chainStyle="spread_inside"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/exo_progress" />
 
-  <com.google.android.material.button.MaterialButton
-    android:id="@+id/button_player_playlist"
-    style="@style/Button.Text.Icon"
+  <FrameLayout
+    android:id="@+id/button_player_playlist_layout"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:text="@string/episodes"
-    app:icon="@drawable/ic_material_icon_episodes"
     app:layout_constraintBottom_toBottomOf="@+id/button_player_settings"
     app:layout_constraintEnd_toStartOf="@+id/button_player_subtitles"
     app:layout_constraintStart_toEndOf="@id/button_player_settings"
-    app:layout_constraintTop_toTopOf="@+id/button_player_settings"
-    android:visibility="gone"/>
+    app:layout_constraintTop_toTopOf="@+id/button_player_settings">
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_player_playlist"
+      style="@style/Button.Text.Icon"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/episodes"
+      app:icon="@drawable/ic_material_icon_episodes" />
+
+  </FrameLayout>
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/button_player_subtitles"
@@ -160,27 +166,33 @@
     android:text="@string/subtitles"
     app:icon="@drawable/ic_material_icon_subtitles"
     app:layout_constraintBottom_toBottomOf="@+id/button_player_settings"
-    app:layout_constraintEnd_toStartOf="@id/player_next_episode"
-    app:layout_constraintStart_toEndOf="@id/button_player_playlist"
+    app:layout_constraintEnd_toStartOf="@id/player_next_episode_layout"
+    app:layout_constraintStart_toEndOf="@id/button_player_playlist_layout"
     app:layout_constraintTop_toTopOf="@+id/button_player_settings" />
 
-
-  <com.google.android.material.button.MaterialButton
-    android:id="@+id/player_next_episode"
-    style="@style/Button.Text.Icon"
+  <FrameLayout
+    android:id="@+id/player_next_episode_layout"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:ellipsize="end"
-    android:maxLines="1"
-    android:textColor="@color/colorIcon"
-    android:visibility="gone"
-    app:icon="@drawable/ic_material_icon_next_episode"
     app:layout_constraintBottom_toBottomOf="@+id/button_player_settings"
     app:layout_constraintEnd_toStartOf="@+id/button_player_bookmark"
     app:layout_constraintStart_toEndOf="@+id/button_player_subtitles"
-    app:layout_constraintTop_toTopOf="@+id/button_player_settings"
-    tools:text="What's New in Swift 5: Types"
-    tools:visibility="gone" />
+    app:layout_constraintTop_toTopOf="@+id/button_player_settings">
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/player_next_episode"
+      style="@style/Button.Text.Icon"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:textColor="@color/colorIcon"
+      android:visibility="gone"
+      app:icon="@drawable/ic_material_icon_next_episode"
+      tools:text="What's New in Swift 5: Types"
+      tools:visibility="visible" />
+
+  </FrameLayout>
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/button_player_bookmark"
@@ -191,7 +203,7 @@
     app:icon="@drawable/ic_material_icon_bookmark"
     app:layout_constraintBottom_toBottomOf="@+id/button_player_settings"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@+id/player_next_episode"
+    app:layout_constraintStart_toEndOf="@+id/player_next_episode_layout"
     app:layout_constraintTop_toTopOf="@+id/button_player_settings" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -47,6 +47,11 @@ data class Content(
   fun isFinished(): Boolean = datum?.isFinished() ?: false
 
   /**
+   * @return true if user has downloaded content, else false
+   */
+  fun isDownloaded(): Boolean = datum?.isDownloaded() ?: false
+
+  /**
    * Get id for content
    *
    * @return String content id

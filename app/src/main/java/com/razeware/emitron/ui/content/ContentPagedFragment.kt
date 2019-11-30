@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.razeware.emitron.model.Contents
+import com.razeware.emitron.utils.NetworkState
 import com.razeware.emitron.utils.UiStateManager
 
 
@@ -44,19 +45,21 @@ class ContentPagedFragment(
   fun initPaging(
     owner: LifecycleOwner,
     recyclerView: RecyclerView,
+    onNetworkStateChange: ((NetworkState) -> Unit)? = null,
     onContentsChange: ((Contents) -> Unit)? = null
   ) {
 
     initStateObserver(owner, contentPagedViewModel.uiState)
 
+    contentPagedViewModel.networkState.observe(owner, Observer {
+      contentAdapter.updateNetworkState(it)
+      onNetworkStateChange?.invoke(it)
+    })
+
     contentPagedViewModel.contentPagedList.observe(owner, Observer { pagedList ->
       pagedList?.let {
         contentAdapter.submitList(it)
       }
-    })
-
-    contentPagedViewModel.networkState.observe(owner, Observer {
-      contentAdapter.updateNetworkState(it)
     })
 
     contentPagedViewModel.contents.observe(owner, Observer {

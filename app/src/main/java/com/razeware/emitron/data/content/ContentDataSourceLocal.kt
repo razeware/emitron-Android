@@ -108,7 +108,7 @@ class ContentDataSourceLocal @Inject constructor(
    *
    * @return [ContentDetail]
    */
-  suspend fun getContent(id: String): ContentDetail = contentDao.getContentDetail(id)
+  suspend fun getContent(id: String): ContentDetail? = contentDao.getContentDetail(id)
 
   /**
    * Get bookmarks DataSource.Factory

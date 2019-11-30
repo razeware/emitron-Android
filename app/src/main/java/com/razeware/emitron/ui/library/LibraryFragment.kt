@@ -103,7 +103,10 @@ class LibraryFragment : DaggerFragment() {
   @SuppressLint("ClickableViewAccessibility")
   private fun initUi() {
     binding.textLibraryCount.text = getString(R.string.label_tutorials_count, "⋯")
-    pagedFragment.value.initPaging(this, binding.recyclerViewLibrary) {
+    pagedFragment.value.initPaging(
+      this, binding.recyclerViewLibrary,
+      onNetworkStateChange = ::handleInitialProgress
+    ) {
       binding.textLibraryCount.text =
         getString(R.string.label_tutorials_count, it.getTotalCount().toString())
     }
@@ -207,9 +210,6 @@ class LibraryFragment : DaggerFragment() {
   }
 
   private fun initObservers() {
-    viewModel.getPaginationViewModel().networkState.observe(viewLifecycleOwner) {
-      handleInitialProgress(it)
-    }
     parentViewModel.selectedFilters.observe(viewLifecycleOwner) {
       handleFilters(it)
     }

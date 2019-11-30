@@ -132,10 +132,9 @@
 
     <com.google.android.material.textview.MaterialTextView
       android:id="@+id/text_library_count"
-      style="@style/TextAppearance.Label.Colored.Grey"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:textColor="@color/textColorButton"
+      android:textAppearance="@style/TextAppearance.Button.Regular"
       app:layout_constraintBottom_toBottomOf="@+id/button_library_sort"
       app:layout_constraintEnd_toStartOf="@+id/button_library_sort"
       app:layout_constraintHorizontal_chainStyle="spread_inside"

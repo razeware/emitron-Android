@@ -197,7 +197,7 @@ interface ContentDao {
           """
   )
   @Transaction
-  suspend fun getContentDetail(id: String): ContentDetail
+  suspend fun getContentDetail(id: String): ContentDetail?
 
   /**
    * Delete contents tables

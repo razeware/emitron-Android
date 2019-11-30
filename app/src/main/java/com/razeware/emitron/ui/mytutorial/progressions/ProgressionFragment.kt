@@ -118,7 +118,10 @@ class ProgressionFragment : DaggerFragment() {
   }
 
   private fun initUi() {
-    pagedFragment.value.initPaging(this, binding.recyclerView)
+    pagedFragment.value.initPaging(
+      this, binding.recyclerView,
+      onNetworkStateChange = ::handleInitialProgress
+    )
     binding.recyclerView.addItemDecoration(StartEndBottomMarginDecoration())
     progressDelegate = ShimmerProgressDelegate(requireView())
   }
@@ -150,10 +153,6 @@ class ProgressionFragment : DaggerFragment() {
   }
 
   private fun initObservers() {
-    viewModel.getPaginationViewModel().networkState.observe(viewLifecycleOwner) {
-      handleInitialProgress(it)
-    }
-
     viewModel.completionActionResult.observe(viewLifecycleOwner) {
       val (event, _) =
         it ?: (null to 0)
