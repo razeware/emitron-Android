@@ -60,6 +60,7 @@
 
   <!-- Text -->
   <dimen name="text_size_h1">30sp</dimen>
+  <dimen name="text_size_h1_1">27sp</dimen>
   <dimen name="text_size_h2">24sp</dimen>
   <dimen name="text_size_h3">20sp</dimen>
   <dimen name="text_size_h4">18sp</dimen>
@@ -151,8 +152,8 @@
 
   <!-- Login view -->
   <dimen name="login_logo_height_width">56dp</dimen>
-  <dimen name="login_onboarding_image_height_width">256dp</dimen>
-  <dimen name="login_onboarding_image_margin_top">48dp</dimen>
+  <dimen name="login_onboarding_image_height_width">240dp</dimen>
+  <dimen name="login_onboarding_image_margin_top">36dp</dimen>
   <dimen name="login_onboarding_body_margin_top">16dp</dimen>
   <dimen name="login_view_pager_indicator_height">4dp</dimen>
 
