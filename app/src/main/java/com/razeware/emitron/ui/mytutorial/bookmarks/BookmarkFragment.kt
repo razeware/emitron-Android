@@ -12,7 +12,7 @@ import com.razeware.emitron.databinding.FragmentBookmarksBinding
 import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.ui.common.PagedAdapter
-import com.razeware.emitron.ui.common.ShimmerProgressDelegate
+import com.razeware.emitron.ui.common.ProgressDelegate
 import com.razeware.emitron.ui.common.StartEndBottomMarginDecoration
 import com.razeware.emitron.ui.common.SwipeActionCallback
 import com.razeware.emitron.ui.content.ContentAdapter
@@ -59,7 +59,7 @@ class BookmarkFragment : DaggerFragment() {
 
   private lateinit var binding: FragmentBookmarksBinding
 
-  private lateinit var progressDelegate: ShimmerProgressDelegate
+  private lateinit var progressDelegate: ProgressDelegate
 
   private val swipeActionCallback by lazy {
     SwipeActionCallback.build(
@@ -101,7 +101,7 @@ class BookmarkFragment : DaggerFragment() {
       onNetworkStateChange = ::handleInitialProgress
     )
     binding.recyclerView.addItemDecoration(StartEndBottomMarginDecoration())
-    progressDelegate = ShimmerProgressDelegate(requireView())
+    progressDelegate = ProgressDelegate(requireView())
   }
 
   private fun addSwipeToDelete() {

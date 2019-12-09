@@ -173,7 +173,7 @@
       tools:listitem="@layout/item_content" />
 
     <FrameLayout
-      android:id="@+id/layout_shimmer_progress_container"
+      android:id="@+id/layout_progress_container"
       android:layout_width="0dp"
       android:layout_height="0dp"
       android:background="@color/colorBackground"
@@ -186,7 +186,7 @@
       app:layout_constraintTop_toTopOf="parent"
       tools:visibility="gone">
 
-      <include layout="@layout/layout_library_shimmer_progress" />
+      <include layout="@layout/layout_progress" />
     </FrameLayout>
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -102,6 +102,8 @@
 
   <!-- Progress bar -->
   <dimen name="progress_bar_small_height_width">24dp</dimen>
+  <dimen name="progress_bar_medium_height_width">48dp</dimen>
+  <dimen name="progress_bar_support_text_spacing">24dp</dimen>
 
   <!-- Library view -->
   <dimen name="margin_button_sort_top">8dp</dimen>

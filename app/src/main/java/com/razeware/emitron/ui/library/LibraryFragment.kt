@@ -23,7 +23,7 @@ import com.razeware.emitron.databinding.FragmentLibraryBinding
 import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.ui.common.BottomMarginDecoration
-import com.razeware.emitron.ui.common.ShimmerProgressDelegate
+import com.razeware.emitron.ui.common.ProgressDelegate
 import com.razeware.emitron.ui.content.ContentAdapter
 import com.razeware.emitron.ui.content.ContentPagedFragment
 import com.razeware.emitron.ui.library.search.RecentSearchAdapter
@@ -52,7 +52,7 @@ class LibraryFragment : DaggerFragment() {
 
   private lateinit var binding: FragmentLibraryBinding
 
-  private lateinit var progressDelegate: ShimmerProgressDelegate
+  private lateinit var progressDelegate: ProgressDelegate
 
   private val adapter by lazy {
     ContentAdapter.build(
@@ -123,7 +123,7 @@ class LibraryFragment : DaggerFragment() {
       showSortPopup()
     }
 
-    progressDelegate = ShimmerProgressDelegate(requireView())
+    progressDelegate = ProgressDelegate(requireView())
 
     binding.editTextLibrarySearch.setOnTouchListener { _, _ ->
       toggleRecentSearchView()
@@ -235,7 +235,6 @@ class LibraryFragment : DaggerFragment() {
       NetworkState.INIT -> {
         progressDelegate.showProgressView()
         toggleControls()
-
       }
       NetworkState.INIT_SUCCESS, NetworkState.INIT_EMPTY -> {
         toggleControls(true)
