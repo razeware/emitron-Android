@@ -12,7 +12,8 @@
   <string name="label_ime_search">Search</string>
   <string name="label_completed">Completed</string>
   <string name="label_pro">Pro</string>
-  <string name="error_no_internet">No internet available</string>
+  <string name="error_no_internet">No connection</string>
+  <string name="error_no_internet_body">Please check Internet connection and try again.</string>
   <string name="button_explore_tutorials">Explore Tutorials</string>
 
   <plurals name="hours">

@@ -125,6 +125,8 @@
   <dimen name="default_item_spacing_vertical">12dp</dimen>
   <dimen name="sort_option_height">36dp</dimen>
   <dimen name="error_image_height_width">256dp</dimen>
+  <dimen name="empty_image_height_width">96dp</dimen>
+  <dimen name="error_body_margin_start_end">48dp</dimen>
 
   <!-- Collection detail view -->
   <dimen name="margin_body_pro">32dp</dimen>

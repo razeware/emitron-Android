@@ -56,9 +56,19 @@ class ItemErrorViewHolder(
 
       val resources = root.resources
 
+      imageError.layoutParams.height =
+        resources.getDimensionPixelSize(R.dimen.error_image_height_width)
+      imageError.layoutParams.width =
+        resources.getDimensionPixelSize(R.dimen.error_image_height_width)
+
       when (uiState) {
         UiStateManager.UiState.ERROR_CONNECTION -> {
           textViewError.text = resources.getString(R.string.error_no_internet)
+          textViewErrorBody.text = resources.getString(R.string.error_no_internet_body)
+          imageError.layoutParams.height =
+            resources.getDimensionPixelSize(R.dimen.empty_image_height_width)
+          imageError.layoutParams.width =
+            resources.getDimensionPixelSize(R.dimen.empty_image_height_width)
           imageError.setImageResource(R.drawable.ic_emoji_crying)
         }
         UiStateManager.UiState.ERROR_EMPTY -> {
