@@ -94,6 +94,7 @@
   <string name="button_label_yes">Yes</string>
   <string name="button_label_no">No</string>
   <string name="message_downloads_no_subscription">Upgrade your subscription to download videos.</string>
+  <string name="button_label_continue_playback">Continue</string>
 
 
   <!-- Filter screen -->

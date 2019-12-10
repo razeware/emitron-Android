@@ -104,7 +104,8 @@ class DownloadWithContentTest {
       100,
       3,
       0,
-      null
+      null,
+      cached = true
     )
     val expectedData = buildContentData(
       withRelationship(

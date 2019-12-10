@@ -38,7 +38,7 @@ class DownloadTest {
 
     download isEqualTo Download(
       progress = 32,
-      state = DownloadState.IN_PROGRESS.ordinal,
+      state = DownloadState.PAUSED.ordinal,
       cached = true
     )
   }
