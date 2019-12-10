@@ -8,7 +8,9 @@ import com.razeware.emitron.model.entity.Download
 /**
  * Factory function to test downloads
  */
-fun createContent(type: String = "screencast"): com.razeware.emitron.model.Content =
+fun createContent(
+  type: String = "screencast"
+): com.razeware.emitron.model.Content =
   com.razeware.emitron.model.Content(
     datum = buildContentData(
       withRelationship(
@@ -18,6 +20,40 @@ fun createContent(type: String = "screencast"): com.razeware.emitron.model.Conte
         progressions = withRelatedProgression()
       ),
       contentType = type
+    ),
+    included = listOf(
+      createDomain(),
+      createGroup(withGroupContents()),
+      buildContentData(
+        withRelationship(
+          withRelatedBookmark(),
+          withRelatedDomains(),
+          withRelatedProgression()
+        ),
+        download = withDownload()
+      ),
+      withProgression()
+    )
+  )
+
+fun createContentWithDownload(
+  type: String = "screencast"
+): com.razeware.emitron.model.Content =
+  com.razeware.emitron.model.Content(
+    datum = buildContentData(
+      withRelationship(
+        withRelatedBookmark(),
+        withRelatedDomains(),
+        groups = withGroups(withGroupContents()),
+        progressions = withRelatedProgression()
+      ),
+      contentType = type,
+      download = withDownload().copy(
+        progress = 100,
+        state = 3,
+        url = null,
+        cached = true
+      )
     ),
     included = listOf(
       createDomain(),
@@ -282,7 +318,8 @@ fun createContentData(
   videoUrl: String? = null,
   playbackToken: String = "",
   progress: Long = 0,
-  download: com.razeware.emitron.model.Download? = null
+  download: com.razeware.emitron.model.Download? = null,
+  progression: com.razeware.emitron.model.Content = withRelatedProgression()
 ): Data = Data(
   id = id,
   type = "contents",
@@ -300,7 +337,8 @@ fun createContentData(
   ),
   relationships = Relationships(
     groups = groups,
-    bookmark = bookmark
+    bookmark = bookmark,
+    progression = progression
   ),
   download = download
 )
@@ -328,7 +366,11 @@ fun getIncludedDataForCollection(): List<Data> = listOf(
   createEpisode(6, "six"),
   createEpisode(7, "seven"),
   createEpisode(8, "eight"),
-  Data(id = "9", type = "progressions", attributes = Attributes(percentComplete = 10.0))
+  Data(
+    id = "9", type = "progressions", attributes = Attributes(
+      percentComplete = 10.0
+    )
+  )
 )
 
 fun createRelationship(): Relationships = Relationships(

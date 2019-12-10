@@ -46,13 +46,21 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
       data = episode
       episodePosition = episode?.getEpisodeNumber(position, isPlaybackAllowed)
 
-      progressCompletion.toVisibility(episode?.isProgressionFinished() != true)
-
       if (isPlaybackAllowed) {
         checkEpisodeCompleted(episode?.isProgressionFinished() ?: false)
       } else {
         setEpisodeLocked()
       }
+
+      progressCompletion.progress = episode?.getProgressionPercentComplete() ?: 0
+      progressCompletion.toVisibility(
+        episode?.isProgressionFinished() != true
+            && episode?.getProgressionPercentComplete() != 0
+      )
+      collectionItemDivider.toVisibility(
+        episode?.isProgressionFinished() == true ||
+            episode?.getProgressionPercentComplete() == 0
+      )
 
       executePendingBindings()
     }

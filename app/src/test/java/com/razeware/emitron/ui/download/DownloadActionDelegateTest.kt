@@ -122,7 +122,8 @@ class DownloadActionDelegateTest {
       progress = 100,
       state = 3,
       failureReason = 0,
-      url = null
+      url = null,
+      cached = true
     )
     verifyNoMoreInteractions(downloadRepository)
   }
@@ -150,9 +151,10 @@ class DownloadActionDelegateTest {
     // Then
     result isEqualTo Download(
       progress = 25,
-      state = DownloadState.IN_PROGRESS.ordinal,
+      state = DownloadState.PAUSED.ordinal,
       failureReason = 0,
-      url = null
+      url = null,
+      cached = true
     )
     verifyNoMoreInteractions(downloadRepository)
   }

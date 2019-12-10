@@ -43,6 +43,7 @@
     <com.google.android.material.button.MaterialButton
       android:id="@+id/button_playback_token_play"
       style="@style/Button.Colored.4.Dense"
+      app:iconSize="@dimen/icon_height_width"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/player_playback_token_error_margin_top"

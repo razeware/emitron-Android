@@ -1,5 +1,6 @@
 package com.razeware.emitron.ui.download
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,7 @@ import com.razeware.emitron.ui.download.workers.RemoveDownloadWorker
 import com.razeware.emitron.ui.mytutorial.MyTutorialFragmentDirections
 import com.razeware.emitron.ui.onboarding.OnboardingView
 import com.razeware.emitron.utils.NetworkState
+import com.razeware.emitron.utils.extensions.launchCustomTab
 import com.razeware.emitron.utils.extensions.setDataBindingView
 import com.razeware.emitron.utils.extensions.toVisibility
 import dagger.android.support.DaggerFragment
@@ -130,6 +132,9 @@ class DownloadFragment : DaggerFragment() {
       onNetworkStateChange = ::handleInitialProgress
     )
     binding.recyclerView.addItemDecoration(StartEndBottomMarginDecoration())
+    binding.buttonManageSubscription.setOnClickListener {
+      launchCustomTab(Uri.parse(getString(R.string.manage_subscription_url)))
+    }
   }
 
   private fun addSwipeToDelete() {

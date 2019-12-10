@@ -87,6 +87,21 @@
         app:layout_constraintStart_toStartOf="@+id/image_collection_banner"
         app:layout_constraintTop_toTopOf="@+id/image_collection_banner" />
 
+      <ProgressBar
+        android:id="@+id/progress_completion"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/height_card_progress_height"
+        android:layout_marginTop="@dimen/margin_card_progress_top"
+        android:indeterminate="false"
+        android:progressDrawable="@drawable/progress_drawable_horizontal_2"
+        app:layout_constraintBottom_toBottomOf="@+id/image_collection_banner"
+        app:layout_constraintEnd_toEndOf="@+id/image_collection_banner"
+        app:layout_constraintStart_toStartOf="@+id/image_collection_banner"
+        app:layout_constraintTop_toTopOf="@+id/image_collection_banner"
+        app:layout_constraintVertical_bias="1"
+        tools:progress="24" />
+
       <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/button_collection_play"
         android:layout_width="@dimen/banner_play_icon_width_height"
@@ -97,6 +112,26 @@
         app:layout_constraintStart_toStartOf="@+id/image_collection_banner"
         app:layout_constraintTop_toTopOf="@+id/image_collection_banner"
         app:srcCompat="@drawable/ic_material_icon_play_banner"
+        tools:visibility="visible" />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_collection_resume"
+        style="@style/Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/banner_play_icon_width_height"
+        android:backgroundTint="@color/colorButton2"
+        android:text="@string/button_label_continue_playback"
+        android:visibility="gone"
+        app:icon="@drawable/ic_material_icon_play"
+        app:layout_constraintBottom_toBottomOf="@+id/image_collection_banner"
+        app:layout_constraintEnd_toEndOf="@+id/image_collection_banner"
+        app:layout_constraintStart_toStartOf="@+id/image_collection_banner"
+        app:layout_constraintTop_toTopOf="@+id/image_collection_banner"
+        app:srcCompat="@drawable/ic_material_icon_play_banner"
+        app:strokeColor="@color/white"
+        app:iconTint="@color/white"
+        app:iconTintMode="multiply"
+        app:strokeWidth="@dimen/banner_play_stroke_width"
         tools:visibility="visible" />
 
       <androidx.appcompat.widget.AppCompatImageView

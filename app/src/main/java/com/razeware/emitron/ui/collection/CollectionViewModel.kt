@@ -152,7 +152,7 @@ class CollectionViewModel @Inject constructor(
 
     content ?: return false
 
-    return if (content.isDownloaded()) {
+    return if (content.isCached()) {
       updateContentEpisodes(content)
       _loadCollectionResult.value = Event(true)
       true
@@ -217,7 +217,21 @@ class CollectionViewModel @Inject constructor(
         val playlist = collectionEpisodes.value?.let {
           it.mapNotNull { (_, data) -> data }
         }
-        Playlist(collection = collection, episodes = playlist ?: emptyList())
+        val hasProgress =
+          playlist?.mapNotNull { it.getProgressionId() }?.isNotEmpty() ?: false
+        val currentEpisode = if (hasProgress) {
+          playlist?.firstOrNull {
+            it.getProgressionId() != null &&
+                !it.isProgressionFinished()
+          }
+        } else {
+          null
+        }
+        Playlist(
+          collection = collection,
+          episodes = playlist ?: emptyList(),
+          currentEpisode = currentEpisode
+        )
       }
       ContentType.Screencast -> {
         Playlist(collection = collection, episodes = listOf(collection))
@@ -373,5 +387,22 @@ class CollectionViewModel @Inject constructor(
    */
   fun removeDownload() {
     _collection.value = _collection.value?.removeDownload()
+  }
+
+  /**
+   * Check if collection has progress
+   */
+  fun hasProgress(): Boolean {
+    return getPlaylist().episodes.mapNotNull { it.getProgressionId() }.isNotEmpty()
+  }
+
+  /**
+   * Get collection progress
+   */
+  fun getProgress(): Int {
+    return getPlaylist().episodes.firstOrNull {
+      it.getProgressionId() != null &&
+          !it.isProgressionFinished()
+    }?.getProgressionPercentComplete() ?: 0
   }
 }

@@ -28,7 +28,12 @@ data class Download(
   /**
    * Download url
    */
-  val url: String? = null
+  val url: String? = null,
+
+  /**
+   * Meta of download is cached
+   */
+  val cached: Boolean = false
 ) : Parcelable {
 
   companion object {
@@ -50,7 +55,7 @@ data class Download(
               it.progress
             }.reduce { acc, i ->
               (i + acc)
-            }.toFloat() / downloads.size).toInt() to DownloadState.IN_PROGRESS.ordinal
+            }.toFloat() / downloads.size).toInt() to DownloadState.PAUSED.ordinal
           }
           downloadIds.size == downloads.size && downloads.all { it.isCompleted() } -> {
             100 to DownloadState.COMPLETED.ordinal
@@ -60,9 +65,12 @@ data class Download(
           }
         }
 
+        val cached = downloads.any { it.inProgress() || it.isCompleted() }
+
         Download(
           progress = downloadProgress.first,
-          state = downloadProgress.second
+          state = downloadProgress.second,
+          cached = cached
         )
       } else {
         null
@@ -77,6 +85,13 @@ data class Download(
 fun Download?.isDownloaded(): Boolean {
   return this?.state == DownloadState.COMPLETED.ordinal ||
       this?.progress == 100
+}
+
+/**
+ * @return true if download has cached meta data
+ */
+fun Download?.isCached(): Boolean {
+  return this?.cached ?: false
 }
 
 /**

@@ -1,14 +1,20 @@
 package com.razeware.emitron.utils.extensions
 
 import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.FragmentActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.razeware.emitron.R
@@ -124,3 +130,25 @@ fun hasNotificationChannelSupport(): Boolean =
  */
 fun hasGestureUiSupport(): Boolean =
   Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+
+/**
+ * Open a custom tab
+ */
+fun FragmentActivity.launchCustomTab(uri: Uri) {
+  val builder = CustomTabsIntent.Builder()
+  builder.setShowTitle(true)
+  builder.setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
+  builder.setExitAnimations(this, R.anim.slide_in_left, R.anim.slide_out_right)
+  builder.setStartAnimations(this, R.anim.slide_in_right, R.anim.slide_out_left)
+  val drawable = AppCompatResources.getDrawable(
+    this, R.drawable.ic_material_icon_arrow_back
+  )
+  drawable?.let {
+    builder.setCloseButtonIcon(drawable.toBitmap())
+  }
+  val customTabsIntent = builder.build()
+  customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+  customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+  customTabsIntent.launchUrl(this, uri)
+}

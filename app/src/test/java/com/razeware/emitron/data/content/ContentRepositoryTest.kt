@@ -481,7 +481,7 @@ class ContentRepositoryTest {
   fun getContentFromDb() {
     testCoroutineRule.runBlockingTest {
       // Given
-      val expectedContent = com.razeware.emitron.data.createContent()
+      val expectedContent = com.razeware.emitron.data.createContentWithDownload()
 
       // When
       whenever(contentDataSourceLocal.getContent("1")).doReturn(

@@ -279,10 +279,14 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     }
 
     this.currentPlayer = currentPlayer
-    updateMediaQueue(false)
+    updateMediaQueue()
   }
 
-  private fun updateMediaQueue(overridePlayWhenReady: Boolean) {
+  private fun updateMediaQueue(
+    overridePlayWhenReady: Boolean = false,
+    duration: Long = 0,
+    reset: Boolean = false
+  ) {
     // Player state management.
     var playbackPositionMs = C.TIME_UNSET
     var windowIndex = C.INDEX_UNSET
@@ -301,12 +305,18 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
       this.currentPlayer?.stop(true)
     }
 
+    if (reset) {
+      playbackPositionMs = duration
+      playWhenReady = overridePlayWhenReady
+    }
+
     if (currentPlayer == mediaPlayer) {
       concatenatingMediaSource = ConcatenatingMediaSource()
       for (i in mediaQueue.indices) {
+        val mediaSource = mediaQueue[i]
         concatenatingMediaSource?.addMediaSource(
           buildMediaSource(
-            mediaQueue[i],
+            mediaSource,
             dataSourceFactory,
             cacheDataSourceFactory
           )
@@ -315,10 +325,13 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
       mediaPlayer?.prepare(concatenatingMediaSource)
       mediaPlayer?.addListener(this@PlayerManager)
       if (playbackPositionMs != C.TIME_UNSET) {
-        mediaPlayer?.seekTo(playbackPositionMs)
-        mediaPlayer?.playWhenReady = overridePlayWhenReady || playWhenReady
-      } else {
-        mediaPlayer?.playWhenReady = overridePlayWhenReady
+        if (!reset) {
+          mediaPlayer?.seekTo(playbackPositionMs)
+          mediaPlayer?.playWhenReady = overridePlayWhenReady || playWhenReady
+        } else {
+          mediaPlayer?.seekTo(duration)
+          mediaPlayer?.playWhenReady = overridePlayWhenReady
+        }
       }
     } else {
       val items = arrayOfNulls<MediaQueueItem>(mediaQueue.size)
@@ -334,12 +347,13 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
   /**
    * Start playback
    */
-  fun play(shouldAutoPlay: Boolean) {
+  fun play(shouldAutoPlay: Boolean, seekTo: Long) {
     warnLowVolume()
     if (hasPlaybackEnded()) {
       replay()
     }
-    updateMediaQueue(shouldAutoPlay)
+
+    updateMediaQueue(shouldAutoPlay, seekTo, true)
   }
 
   private fun warnLowVolume() {
@@ -607,11 +621,11 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
       cacheDataSourceFactory: CacheDataSourceFactory
     ): MediaSource {
       val uri = Uri.parse(episode.uri)
-      when (episode.mimeType) {
-        MimeTypes.APPLICATION_M3U8 -> return HlsMediaSource.Factory(dataSourceFactory)
+      return when (episode.mimeType) {
+        MimeTypes.APPLICATION_M3U8 -> HlsMediaSource.Factory(dataSourceFactory)
           .setAllowChunklessPreparation(true)
           .createMediaSource(uri)
-        MimeTypes.APPLICATION_MP4 -> return ProgressiveMediaSource
+        MimeTypes.APPLICATION_MP4 -> ProgressiveMediaSource
           .Factory(cacheDataSourceFactory)
           .createMediaSource(uri)
         else -> {

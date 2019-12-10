@@ -33,7 +33,7 @@ class PlayerViewModel @Inject constructor(
   private val logger: LoggerImpl
 ) : ViewModel(), Logger by logger {
 
-  private val _nowPlayingEpisode = MutableLiveData<Data>()
+  private val _currentEpisode = MutableLiveData<Data>()
 
   private var nowPlayingPosition: Int = 0
 
@@ -58,7 +58,7 @@ class PlayerViewModel @Inject constructor(
    *
    */
   val currentEpisode: LiveData<Data>
-    get() = _nowPlayingEpisode
+    get() = _currentEpisode
 
   /**
    * Observer for next episode
@@ -125,7 +125,7 @@ class PlayerViewModel @Inject constructor(
   private fun startPlayback(episode: Data, position: Int) {
     if (episode.isDownloaded()) {
       lastUpdatedProgress = 0
-      _nowPlayingEpisode.value = episode
+      _currentEpisode.value = episode
       nowPlayingPosition = position
     } else {
       startStream(episode, position)
@@ -140,7 +140,7 @@ class PlayerViewModel @Inject constructor(
           val playerToken = repository.getVideoPlaybackToken()?.getPlayerToken()
           _playerToken.value = playerToken
           lastUpdatedProgress = 0
-          _nowPlayingEpisode.value = episode.setVideoUrl(videoContent.datum)
+          _currentEpisode.value = episode.setVideoUrl(videoContent.datum)
           nowPlayingPosition = position
         } catch (error: Throwable) {
           log(error)
@@ -196,7 +196,7 @@ class PlayerViewModel @Inject constructor(
    * Add or remove collection from bookmarks
    */
   fun updateContentBookmark() {
-    val playingEpisode = _nowPlayingEpisode.value
+    val playingEpisode = _currentEpisode.value
     viewModelScope.launch {
       bookmarkActionDelegate.updateContentBookmark(playingEpisode)
     }
@@ -272,7 +272,7 @@ class PlayerViewModel @Inject constructor(
    * @return title
    */
   fun getNowPlayingTitle(): String? {
-    val playingEpisode = _nowPlayingEpisode.value
+    val playingEpisode = _currentEpisode.value
 
     return if (null != playingEpisode) {
       playingEpisode.getName()
@@ -287,7 +287,7 @@ class PlayerViewModel @Inject constructor(
    * @return description
    */
   fun getNowPlayingDescription(): String? {
-    val playingEpisode = _nowPlayingEpisode.value
+    val playingEpisode = _currentEpisode.value
 
     return if (null != playingEpisode) {
       playingEpisode.getDescription()
@@ -302,7 +302,7 @@ class PlayerViewModel @Inject constructor(
    * @return cover art url
    */
   fun getNowPlayingCoverArt(): String? {
-    val playingEpisode = _nowPlayingEpisode.value
+    val playingEpisode = _currentEpisode.value
 
     return if (null != playingEpisode) {
       playingEpisode.getCardArtworkUrl()
@@ -319,13 +319,19 @@ class PlayerViewModel @Inject constructor(
     progressInMillis: Long,
     updatedAt: LocalDateTime = LocalDateTime.now(Clock.systemUTC())
   ) {
-    val contentId = _nowPlayingEpisode.value?.id ?: return
+    val contentId = _currentEpisode.value?.id ?: return
+    val isDownloaded = _currentEpisode.value?.isDownloaded() ?: false
+
     if (progressInMillis == 0L) {
       return
     }
 
     viewModelScope.launch {
       if (isConnected) {
+        if (isDownloaded) {
+          val playerToken = repository.getVideoPlaybackToken()?.getPlayerToken()
+          _playerToken.value = playerToken
+        }
         updateOnlineProgress(contentId, progressInMillis)
       } else {
         updateOfflineProgress(contentId, progressInMillis, updatedAt)
@@ -387,7 +393,7 @@ class PlayerViewModel @Inject constructor(
     updatedAt: LocalDateTime
   ) {
     val progressInSeconds = progressInMillis / MILLIS_IN_A_SEC
-    val playbackDuration = _nowPlayingEpisode.value?.getDuration() ?: return
+    val playbackDuration = _currentEpisode.value?.getDuration() ?: return
 
     val percentageCompletion = getPercentageCompletion(progressInSeconds, playbackDuration)
     val finished = percentageCompletion in COMPLETION_PERCENTAGE

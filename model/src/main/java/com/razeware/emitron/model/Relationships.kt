@@ -56,18 +56,19 @@ data class Relationships(
   fun getDomainName(): String? = domains?.datum?.mapNotNull { it.attributes?.name }?.joinToString()
 
   /**
-   * Return child data id of progression
-   *
-   * @return progression id
+   * @return true/false if content is finished
    */
   fun hasFinishedContent(): Boolean = progression?.isFinished() ?: false
 
   /**
-   * Return child data id of progression
-   *
-   * @return progression id
+   * @return percent completion for progression
    */
   fun getPercentComplete(): Int = progression?.getPercentComplete() ?: 0
+
+  /**
+   * @return progression progress for content
+   */
+  fun getProgressionProgress(): Long = progression?.getProgress() ?: 0
 
   /**
    * Update domains to existing [Data.relationships] with domains

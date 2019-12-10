@@ -60,6 +60,7 @@
 
   <!-- Text -->
   <dimen name="text_size_h1">30sp</dimen>
+  <dimen name="text_size_h1_1">27sp</dimen>
   <dimen name="text_size_h2">24sp</dimen>
   <dimen name="text_size_h3">20sp</dimen>
   <dimen name="text_size_h4">18sp</dimen>
@@ -101,6 +102,8 @@
 
   <!-- Progress bar -->
   <dimen name="progress_bar_small_height_width">24dp</dimen>
+  <dimen name="progress_bar_medium_height_width">48dp</dimen>
+  <dimen name="progress_bar_support_text_spacing">24dp</dimen>
 
   <!-- Library view -->
   <dimen name="margin_button_sort_top">8dp</dimen>
@@ -122,6 +125,8 @@
   <dimen name="default_item_spacing_vertical">12dp</dimen>
   <dimen name="sort_option_height">36dp</dimen>
   <dimen name="error_image_height_width">256dp</dimen>
+  <dimen name="empty_image_height_width">96dp</dimen>
+  <dimen name="error_body_margin_start_end">48dp</dimen>
 
   <!-- Collection detail view -->
   <dimen name="margin_body_pro">32dp</dimen>
@@ -151,8 +156,8 @@
 
   <!-- Login view -->
   <dimen name="login_logo_height_width">56dp</dimen>
-  <dimen name="login_onboarding_image_height_width">256dp</dimen>
-  <dimen name="login_onboarding_image_margin_top">48dp</dimen>
+  <dimen name="login_onboarding_image_height_width">240dp</dimen>
+  <dimen name="login_onboarding_image_margin_top">36dp</dimen>
   <dimen name="login_onboarding_body_margin_top">16dp</dimen>
   <dimen name="login_view_pager_indicator_height">4dp</dimen>
 

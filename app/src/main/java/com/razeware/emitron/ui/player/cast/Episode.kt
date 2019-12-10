@@ -18,14 +18,31 @@ data class Episode(
   /**
    * MimeType for playback from [MimeTypes]
    */
-  val mimeType: String
+  val mimeType: String,
+
+  /**
+   * Playback progress
+   */
+  val progress: Long
 ) {
+
+  fun getProgressInMillis(): Long = progress * MILLIS_IN_A_SECOND
+
   companion object {
 
-    fun fromData(data: Data?): Episode? = data?.run {
+    /**
+     * Millis in a second
+     */
+    const val MILLIS_IN_A_SECOND: Int = 1000
+
+    /**
+     * @return [Episode]
+     */
+    fun fromData(data: Data): Episode = data.run {
       Episode(
         name = data.getName() ?: "",
         uri = data.getUrl(),
+        progress = data.getProgressionProgress(),
         mimeType = if (data.isDownloaded()) {
           MimeTypes.APPLICATION_MP4
         } else {

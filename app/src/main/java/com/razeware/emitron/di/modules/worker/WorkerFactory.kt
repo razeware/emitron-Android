@@ -19,8 +19,11 @@ class WorkerFactory @Inject constructor(
     val workerClass = Class.forName(workerClassName)
     val foundEntry =
       creators.entries.find { workerClass.isAssignableFrom(it.key) }
-    val factory = foundEntry?.value
-      ?: throw IllegalArgumentException("unknown worker class name: $workerClassName")
-    return factory.get().create(appContext, workerParameters)
+    return if (foundEntry != null) {
+      val factoryProvider = foundEntry.value
+      factoryProvider.get().create(appContext, workerParameters)
+    } else {
+      null
+    }
   }
 }

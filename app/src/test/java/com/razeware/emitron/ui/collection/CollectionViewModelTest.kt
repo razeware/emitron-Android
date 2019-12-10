@@ -158,7 +158,7 @@ class CollectionViewModelTest {
     createViewModel()
 
     testCoroutineRule.runBlockingTest {
-      val contentData = createContentData(download = Download())
+      val contentData = createContentData(download = Download(cached = true))
       val content = createContent(data = contentData, included = getIncludedDataForCollection())
       val expectedEpisodes =
         listOf(
@@ -293,30 +293,31 @@ class CollectionViewModelTest {
    * Test getting playlist when content type is collection
    */
   @Test
-  fun getPlaylist() {
+  fun getPlaylist_withProgress() {
     createViewModel()
     testCoroutineRule.runBlockingTest {
       val contentData = createContentData()
       val content = createContent(data = contentData, included = getIncludedDataForCollection())
       // Given
+      val inProgressEpisode = Data(
+        id = "5",
+        type = "contents",
+        attributes = Attributes(name = "five"),
+        relationships = Relationships(
+          progression = Content(
+            datum = Data(
+              id = "9",
+              type = "progressions",
+              attributes = Attributes(percentComplete = 10.0)
+            )
+          )
+        )
+      )
       val expectedPlaylist =
         Playlist(
           contentData,
           episodes = listOf(
-            Data(
-              id = "5",
-              type = "contents",
-              attributes = Attributes(name = "five"),
-              relationships = Relationships(
-                progression = Content(
-                  datum = Data(
-                    id = "9",
-                    type = "progressions",
-                    attributes = Attributes(percentComplete = 10.0)
-                  )
-                )
-              )
-            ),
+            inProgressEpisode,
             Data(
               id = "6", type = "contents",
               attributes = Attributes(name = "six"),
@@ -333,7 +334,8 @@ class CollectionViewModelTest {
               attributes = Attributes(name = "eight"),
               relationships = Relationships()
             )
-          )
+          ),
+          currentEpisode = inProgressEpisode
         )
 
       whenever(contentRepository.getContent("1")).doReturn(content)
@@ -919,7 +921,8 @@ class CollectionViewModelTest {
         groups = null,
         professional = true,
         download = Download(
-          state = DownloadState.COMPLETED.ordinal
+          state = DownloadState.COMPLETED.ordinal,
+          cached = true
         )
       )
       val content = createContent(data = contentData)
@@ -961,6 +964,44 @@ class CollectionViewModelTest {
 
       // Then
       viewModel.isDownloaded() isEqualTo false
+    }
+  }
+
+  @Test
+  fun getProgress() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      val contentData = createContentData()
+      val content = createContent(data = contentData, included = getIncludedDataForCollection())
+      // Given
+      whenever(contentRepository.getContent("1")).doReturn(content)
+
+      viewModel.loadCollection(Data(id = "1"))
+
+      // When
+      val result = viewModel.hasProgress()
+
+      // Then
+      assertThat(result).isEqualTo(true)
+    }
+  }
+
+  @Test
+  fun hasProgress() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      val contentData = createContentData()
+      val content = createContent(data = contentData, included = getIncludedDataForCollection())
+      // Given
+      whenever(contentRepository.getContent("1")).doReturn(content)
+
+      viewModel.loadCollection(Data(id = "1"))
+
+      // When
+      val result = viewModel.getProgress()
+
+      // Then
+      assertThat(result).isEqualTo(10)
     }
   }
 }

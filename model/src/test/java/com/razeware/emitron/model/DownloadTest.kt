@@ -36,7 +36,11 @@ class DownloadTest {
     )
     val download = Download.fromEpisodeDownloads(episodeDownloads, listOf("1", "2", "3"))
 
-    download isEqualTo Download(progress = 32, state = DownloadState.IN_PROGRESS.ordinal)
+    download isEqualTo Download(
+      progress = 32,
+      state = DownloadState.PAUSED.ordinal,
+      cached = true
+    )
   }
 
   @Test
@@ -70,6 +74,10 @@ class DownloadTest {
     )
     val download = Download.fromEpisodeDownloads(episodeDownloads, listOf("1", "2", "3"))
 
-    download isEqualTo Download(progress = 100, state = DownloadState.COMPLETED.ordinal)
+    download isEqualTo Download(
+      progress = 100,
+      state = DownloadState.COMPLETED.ordinal,
+      cached = true
+    )
   }
 }

@@ -92,50 +92,56 @@ class CollectionFragment : DaggerFragment() {
   }
 
   private fun initUi() {
-    binding.toolbar.setupWithNavController(
-      findNavController(),
-      getDefaultAppBarConfiguration()
-    )
-    binding.toolbar.navigationIcon =
-      VectorDrawableCompat.create(resources, R.drawable.ic_arrow_back, null)
+    with(binding) {
+      toolbar.setupWithNavController(
+        findNavController(),
+        getDefaultAppBarConfiguration()
+      )
+      toolbar.navigationIcon =
+        VectorDrawableCompat.create(resources, R.drawable.ic_arrow_back, null)
 
-    binding.textCollectionBodyPro.removeUnderline()
+      textCollectionBodyPro.removeUnderline()
 
-    episodeAdapter = CollectionEpisodeAdapter(
-      onEpisodeSelected = { currentEpisode, _ ->
-        if (viewModel.isContentPlaybackAllowed(isNetConnected())) {
-          openPlayer(currentEpisode)
-        } else {
-          if (viewModel.isDownloaded()) {
-            showVerifyDownloadBottomSheet(currentEpisode)
+      episodeAdapter = CollectionEpisodeAdapter(
+        onEpisodeSelected = { currentEpisode, _ ->
+          if (viewModel.isContentPlaybackAllowed(isNetConnected())) {
+            openPlayer(currentEpisode)
+          } else {
+            if (viewModel.isDownloaded()) {
+              showVerifyDownloadBottomSheet(currentEpisode)
+            }
           }
+        },
+        onEpisodeCompleted = { episode, position ->
+          viewModel.updateContentProgression(isNetConnected(), episode, position)
+        },
+        onEpisodeDownload = { episode, _ ->
+          handleDownload(episode?.id, episode?.isDownloaded() == true)
         }
-      },
-      onEpisodeCompleted = { episode, position ->
-        viewModel.updateContentProgression(isNetConnected(), episode, position)
-      },
-      onEpisodeDownload = { episode, _ ->
-        handleDownload(episode?.id, episode?.isDownloaded() == true)
+      )
+
+      with(recyclerViewCollectionEpisode) {
+        layoutManager = object : LinearLayoutManager(requireContext()) {
+          override fun canScrollVertically(): Boolean = false
+        }
+        adapter = episodeAdapter
       }
-    )
 
-    with(binding.recyclerViewCollectionEpisode) {
-      layoutManager = object : LinearLayoutManager(requireContext()) {
-        override fun canScrollVertically(): Boolean = false
+      buttonCollectionBookmark.setOnClickListener {
+        viewModel.updateContentBookmark()
       }
-      adapter = episodeAdapter
-    }
 
-    binding.buttonCollectionBookmark.setOnClickListener {
-      viewModel.updateContentBookmark()
-    }
+      buttonCollectionPlay.setOnClickListener {
+        openPlayer()
+      }
 
-    binding.buttonCollectionPlay.setOnClickListener {
-      openPlayer()
-    }
+      buttonCollectionResume.setOnClickListener {
+        openPlayer()
+      }
 
-    binding.buttonCollectionDownload.setOnClickListener {
-      handleDownload()
+      buttonCollectionDownload.setOnClickListener {
+        handleDownload()
+      }
     }
   }
 
@@ -170,7 +176,10 @@ class CollectionFragment : DaggerFragment() {
         with(binding) {
           groupCollectionContent.toVisibility(true)
           groupProfessionalContent.toVisibility(!playbackAllowed)
-          buttonCollectionPlay.toVisibility(playbackAllowed)
+          buttonCollectionPlay.toVisibility(playbackAllowed && !viewModel.hasProgress())
+          buttonCollectionResume.toVisibility(playbackAllowed && viewModel.hasProgress())
+          progressCompletion.toVisibility(playbackAllowed && viewModel.hasProgress())
+          progressCompletion.progress = viewModel.getProgress()
         }
       }
     }
@@ -190,14 +199,22 @@ class CollectionFragment : DaggerFragment() {
         val contributors = it.getReadableContributors(requireContext())
         binding.textCollectionDuration.text = releaseDateWithTypeAndDuration
         binding.textCollectionAuthor.text = contributors
+        if (it.isTypeScreencast()) {
+          binding.progressCompletion.progress = viewModel.getProgress()
+        }
       }
     }
 
     viewModel.collectionContentType.observe(viewLifecycleOwner) {
       it?.let {
         if (it.isScreencast()) {
-          binding.groupCollectionContent.visibility = View.GONE
-          binding.buttonCollectionPlay.toVisibility(true)
+          with(binding) {
+            groupCollectionContent.visibility = View.GONE
+            buttonCollectionPlay.toVisibility(!viewModel.hasProgress())
+            buttonCollectionResume.toVisibility(viewModel.hasProgress())
+            progressCompletion.toVisibility(viewModel.hasProgress())
+            progressCompletion.progress = viewModel.getProgress()
+          }
         }
       }
     }

@@ -140,7 +140,7 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
      */
     val playbackQualityToResIdMap: Map<Int, Int> by lazy {
       mapOf(
-        FHD to R.string.playback_quality_1080p_recommended,
+        FHD to R.string.playback_quality_1080p,
         HD to R.string.playback_quality_720p,
         QHD to R.string.playback_quality_540p,
         NHD to R.string.playback_quality_360p,

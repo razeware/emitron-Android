@@ -104,6 +104,17 @@ class DataTest {
   }
 
   @Test
+  fun getProgressionProgress() {
+    val progression = Content(datum = Data(attributes = Attributes(progress = 200)))
+    val relationShip = Relationships(progression = progression)
+    val data = Data(relationships = relationShip)
+    data.getProgressionProgress() isEqualTo 200
+
+    val data2 = Data()
+    data2.getProgressionProgress() isEqualTo 0
+  }
+
+  @Test
   fun isFinished() {
     val data = Data(attributes = Attributes(finished = true))
     data.isFinished() isEqualTo true
@@ -759,6 +770,21 @@ class DataTest {
     val result = data.getDownloadProgress()
 
     result isEqualTo 25
+  }
+
+  @Test
+  fun isCached() {
+    val data = Data(
+      attributes = Attributes(url = "WubbaLubbaDubDub"),
+      download = Download(
+        progress = 25,
+        cached = true
+      )
+    )
+
+    val result = data.isCached()
+
+    result isEqualTo true
   }
 
   @Test

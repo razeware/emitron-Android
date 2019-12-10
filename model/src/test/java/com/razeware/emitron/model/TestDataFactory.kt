@@ -4,7 +4,7 @@ import com.razeware.emitron.model.entity.*
 import com.razeware.emitron.model.entity.Content
 import com.razeware.emitron.model.entity.Download
 
-fun createContent(): com.razeware.emitron.model.Content =
+fun createContent(download: com.razeware.emitron.model.Download): com.razeware.emitron.model.Content =
   Content(
     datum = buildContentData(
       withRelationship(
@@ -12,7 +12,8 @@ fun createContent(): com.razeware.emitron.model.Content =
         withRelatedDomains(),
         groups = withGroups(withGroupContents()),
         progressions = withRelatedProgression()
-      )
+      ),
+      download = download
     ),
     included = listOf(
       createDomain(),

@@ -3,6 +3,7 @@ package com.razeware.emitron.ui.common
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.setPadding
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.razeware.emitron.R
@@ -56,23 +57,41 @@ class ItemErrorViewHolder(
 
       val resources = root.resources
 
+      imageError.layoutParams.height =
+        resources.getDimensionPixelSize(R.dimen.error_image_height_width)
+      imageError.layoutParams.width =
+        resources.getDimensionPixelSize(R.dimen.error_image_height_width)
+
       when (uiState) {
         UiStateManager.UiState.ERROR_CONNECTION -> {
           textViewError.text = resources.getString(R.string.error_no_internet)
+          textViewErrorBody.text = resources.getString(R.string.error_no_internet_body)
+          imageError.layoutParams.height =
+            resources.getDimensionPixelSize(R.dimen.empty_image_height_width)
+          imageError.layoutParams.width =
+            resources.getDimensionPixelSize(R.dimen.empty_image_height_width)
           imageError.setImageResource(R.drawable.ic_emoji_crying)
+          buttonRetry.setPadding(0)
         }
         UiStateManager.UiState.ERROR_EMPTY -> {
           textViewError.text = getEmptyErrorForAdapterType(adapterContentType)
           textViewErrorBody.text =
-            resources.getString(R.string.error_library_no_content_body)
+            if (adapterContentType == ContentAdapter.AdapterContentType.ContentWithFilters) {
+              resources.getString(R.string.error_library_no_content_body)
+            } else {
+              ""
+            }
           textViewErrorBody.toVisibility(adapterContentType.isContentWithFilters())
           buttonRetry.toVisibility(!adapterContentType.isContentWithFilters())
           buttonRetry.text =
             getRetryButtonLabelForAdapterType(adapterContentType)
           val emptyDrawable = getEmptyDrawable(adapterContentType)
-          emptyDrawable?.let { drawable ->
-            imageError.setImageResource(drawable)
+          if (null != emptyDrawable) {
+            imageError.setImageResource(emptyDrawable)
+          } else {
+            imageError.setImageDrawable(null)
           }
+          imageError.toVisibility(null != emptyDrawable)
         }
         else -> if (root.context.isNetNotConnected()) {
           textViewError.text =

@@ -37,6 +37,16 @@
       android:orientation="horizontal"
       app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
 
+    <View
+      android:id="@+id/search_view_library_click_blocker"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:elevation="@dimen/card_elevation_default"
+      app:layout_constraintBottom_toBottomOf="@+id/search_view_library"
+      app:layout_constraintEnd_toEndOf="@+id/button_library_filter"
+      app:layout_constraintStart_toStartOf="@+id/search_view_library"
+      app:layout_constraintTop_toTopOf="@+id/search_view_library" />
+
     <com.google.android.material.card.MaterialCardView
       android:id="@+id/search_view_library"
       android:layout_width="0dp"
@@ -173,7 +183,7 @@
       tools:listitem="@layout/item_content" />
 
     <FrameLayout
-      android:id="@+id/layout_shimmer_progress_container"
+      android:id="@+id/layout_progress_container"
       android:layout_width="0dp"
       android:layout_height="0dp"
       android:background="@color/colorBackground"
@@ -183,10 +193,10 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/search_view_library"
       tools:visibility="gone">
 
-      <include layout="@layout/layout_library_shimmer_progress" />
+      <include layout="@layout/layout_progress" />
     </FrameLayout>
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

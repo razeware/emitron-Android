@@ -2,10 +2,13 @@ package com.razeware.emitron.ui.player
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.razeware.emitron.R
 import com.razeware.emitron.databinding.ItemPlaylistBinding
 import com.razeware.emitron.model.Data
+import com.razeware.emitron.utils.extensions.toVisibility
 
 /**
  * View holder for playlist item
@@ -23,12 +26,60 @@ class PlaylistItemViewHolder(private val binding: ItemPlaylistBinding) :
     episode: Data?,
     onEpisodeSelected: (Int) -> Unit
   ) {
-    binding.root.setOnClickListener {
-      onEpisodeSelected(adapterPosition)
+
+    with(binding) {
+      root.setOnClickListener {
+        onEpisodeSelected(adapterPosition)
+      }
+      episodePosition = (position + 1).toString()
+      data = episode
+
+      progressCompletion.progress = episode?.getProgressionPercentComplete() ?: 0
+      checkEpisodeCompleted(episode?.isProgressionFinished() ?: false)
+      progressCompletion.toVisibility(
+        episode?.isProgressionFinished() != true
+            && episode?.getProgressionPercentComplete() != 0
+      )
+      collectionItemDivider.toVisibility(
+        episode?.isProgressionFinished() == true ||
+            episode?.getProgressionPercentComplete() == 0
+      )
+      executePendingBindings()
     }
-    binding.episodePosition = (position + 1).toString()
-    binding.data = episode
-    binding.executePendingBindings()
+  }
+
+  private fun checkEpisodeCompleted(isContentFinished: Boolean) {
+    if (isContentFinished) {
+      markEpisodeComplete()
+    } else {
+      markEpisodeInProgress()
+    }
+  }
+
+  private fun markEpisodeComplete() {
+    with(binding) {
+      buttonPlayerEpisode.setIconResource(R.drawable.ic_material_icon_checkmark)
+      buttonPlayerEpisode.setIconTintResource(R.color.colorIconInverse)
+      buttonPlayerEpisode.setBackgroundColor(
+        ContextCompat.getColor(
+          root.context,
+          R.color.colorPrimary
+        )
+      )
+    }
+  }
+
+  private fun markEpisodeInProgress() {
+    with(binding) {
+      buttonPlayerEpisode.icon = null
+      buttonPlayerEpisode.isEnabled = true
+      buttonPlayerEpisode.setBackgroundColor(
+        ContextCompat.getColor(
+          root.context,
+          R.color.colorSurfaceDark
+        )
+      )
+    }
   }
 
   companion object {

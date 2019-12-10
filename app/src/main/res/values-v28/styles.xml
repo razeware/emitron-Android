@@ -274,6 +274,10 @@
     <item name="android:textSize">@dimen/text_size_h1</item>
   </style>
 
+  <style name="TextAppearance.Headline.1_1" parent="TextAppearance.Headline">
+    <item name="android:textSize">@dimen/text_size_h1_1</item>
+  </style>
+
   <style name="TextAppearance.Headline.2" parent="TextAppearance.Headline">
     <item name="android:textSize">@dimen/text_size_h2</item>
   </style>
