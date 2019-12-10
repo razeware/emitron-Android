@@ -99,7 +99,7 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/button_retry"
-      style="@style/Button.Colored"
+      style="@style/Button.Colored.Icon"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/activity_vertical_margin"
