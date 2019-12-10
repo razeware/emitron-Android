@@ -75,7 +75,7 @@ class StartDownloadWorker @AssistedInject constructor(
       }
       // If episode id isn't null, that implies the user is only downloading a single episode
       null != episodeId -> {
-        listOf(episodeId)
+        listOf(episodeId).plus(contentId)
       }
       // Episode id is null also content type is collection
       content.isTypeCollection() -> {
@@ -136,14 +136,8 @@ class StartDownloadWorker @AssistedInject constructor(
           DOWNLOAD_EPISODE_ID to episodeId
         )
 
-      val constraints = Constraints.Builder()
-        .setRequiredNetworkType(NetworkType.UNMETERED)
-        .setRequiresStorageNotLow(true)
-        .build()
-
       val startDownloadWorkRequest = OneTimeWorkRequestBuilder<StartDownloadWorker>()
         .setInputData(downloadData)
-        .setConstraints(constraints)
         .addTag(DOWNLOAD_WORKER_TAG)
         .build()
 
