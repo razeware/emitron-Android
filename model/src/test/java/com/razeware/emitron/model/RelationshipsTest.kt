@@ -38,6 +38,16 @@ class RelationshipsTest {
   }
 
   @Test
+  fun getProgressionProgress() {
+    val progression = Content(datum = Data(attributes = Attributes(progress = 150)))
+    val relationship = Relationships(progression = progression)
+    assertThat(relationship.getProgressionProgress()).isEqualTo(150)
+
+    val relationship2 = Relationships(Content())
+    assertThat(relationship2.getProgressionProgress()).isEqualTo(0)
+  }
+
+  @Test
   fun updateDomains() {
     val domains = listOf(
       Data(

@@ -282,7 +282,8 @@ fun createContentData(
   videoUrl: String? = null,
   playbackToken: String = "",
   progress: Long = 0,
-  download: com.razeware.emitron.model.Download? = null
+  download: com.razeware.emitron.model.Download? = null,
+  progression: com.razeware.emitron.model.Content = withRelatedProgression()
 ): Data = Data(
   id = id,
   type = "contents",
@@ -300,7 +301,8 @@ fun createContentData(
   ),
   relationships = Relationships(
     groups = groups,
-    bookmark = bookmark
+    bookmark = bookmark,
+    progression = progression
   ),
   download = download
 )

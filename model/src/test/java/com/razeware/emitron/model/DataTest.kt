@@ -104,6 +104,17 @@ class DataTest {
   }
 
   @Test
+  fun getProgressionProgress() {
+    val progression = Content(datum = Data(attributes = Attributes(progress = 200)))
+    val relationShip = Relationships(progression = progression)
+    val data = Data(relationships = relationShip)
+    data.getProgressionProgress() isEqualTo 200
+
+    val data2 = Data()
+    data2.getProgressionProgress() isEqualTo 0
+  }
+
+  @Test
   fun isFinished() {
     val data = Data(attributes = Attributes(finished = true))
     data.isFinished() isEqualTo true

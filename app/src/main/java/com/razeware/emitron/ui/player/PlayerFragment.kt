@@ -1,5 +1,6 @@
 package com.razeware.emitron.ui.player
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
@@ -184,6 +185,11 @@ class PlayerFragment : DaggerFragment() {
      * No. of millis for which the auto-playback view will be shown
      */
     const val AUTO_PLAYBACK_COUNTDOWN_DURATION: Long = 5000
+
+    /**
+     * Max value for auto-playback progress
+     */
+    const val AUTO_PLAYBACK_MAX_PROGRESS: Int = 100
 
     /**
      * Playback Notification Id
@@ -403,7 +409,6 @@ class PlayerFragment : DaggerFragment() {
         R.string.progress_next_episode,
         ((timeInterval / 1000) + 1).toString()
       )
-      playerAutoPlayProgress.progress = ((120 - (timeInterval / 50)).toInt())
     }
   }
 
@@ -459,13 +464,22 @@ class PlayerFragment : DaggerFragment() {
       if (isInPictureInPictureMode) {
         viewModel.playNextEpisode()
       } else {
-        binding.groupAutoPlayProgress.visibility = View.VISIBLE
-        countDownTimer.start()
+        animateAutoPlayback()
       }
     }
 
     if (!viewModel.hasMoreEpisodes()) {
       playbackNotificationManager.setPlayer(null)
+    }
+  }
+
+  private fun animateAutoPlayback() {
+    with(binding) {
+      groupAutoPlayProgress.visibility = View.VISIBLE
+      countDownTimer.start()
+      ObjectAnimator.ofInt(playerAutoPlayProgress, "progress", AUTO_PLAYBACK_MAX_PROGRESS)
+        .setDuration(AUTO_PLAYBACK_COUNTDOWN_DURATION)
+        .start()
     }
   }
 
@@ -703,9 +717,11 @@ class PlayerFragment : DaggerFragment() {
   }
 
   private fun addToPlaylist(playbackItem: Data?) {
+    playbackItem ?: return
     with(playerManager) {
-      addItem(Episode.fromData(playbackItem))
-      play(viewModel.shouldAutoPlay())
+      val episode = Episode.fromData(playbackItem)
+      addItem(episode)
+      play(viewModel.shouldAutoPlay(), episode.getProgressInMillis())
     }
   }
 

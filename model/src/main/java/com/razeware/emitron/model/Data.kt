@@ -185,7 +185,12 @@ data class Data(
   /**
    *  @return Progress completion for content
    */
-  fun getProgressionPercentComplete(): Int? = relationships?.getPercentComplete() ?: 0
+  fun getProgressionPercentComplete(): Int = relationships?.getPercentComplete() ?: 0
+
+  /**
+   *  @return Progress completion for content
+   */
+  fun getProgressionProgress(): Long = relationships?.getProgressionProgress() ?: 0
 
   /**
    *  Domain
