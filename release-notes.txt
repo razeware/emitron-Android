@@ -1,1 +1,6 @@
-- Add fix for #42, #97, #129, #126, #122, #115, #124, #120, #128
+- Fix #200, #190, #97, #50, #108
+- Fix UI issues #116, #89, #123
+- Fix crash on starting download on Android 7
+- Added manage subscription button to downloads
+- Fix button padding
+- Fix empty/no-connection states
