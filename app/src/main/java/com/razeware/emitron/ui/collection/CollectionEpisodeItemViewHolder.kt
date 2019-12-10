@@ -54,6 +54,16 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
         setEpisodeLocked()
       }
 
+      progressCompletion.progress = episode?.getProgressionPercentComplete() ?: 0
+      progressCompletion.toVisibility(
+        episode?.isProgressionFinished() != true
+            && episode?.getProgressionPercentComplete() != 0
+      )
+      collectionItemDivider.toVisibility(
+        episode?.isProgressionFinished() == true ||
+            episode?.getProgressionPercentComplete() == 0
+      )
+
       executePendingBindings()
     }
   }
