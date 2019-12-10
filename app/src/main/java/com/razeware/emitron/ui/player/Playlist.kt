@@ -30,7 +30,7 @@ data class Playlist(
  */
 fun Playlist?.isNotDownloaded(): Boolean =
   null != this &&
-      this.collection?.isDownloaded() != true &&
+      this.collection?.isCached() != true &&
       this.episodes.any { !it.isDownloaded() }
 
 /**
