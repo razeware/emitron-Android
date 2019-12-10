@@ -13,6 +13,7 @@ class ProgressDelegate(private val view: View) {
    */
   fun showProgressView() {
     view.findViewById<View>(R.id.layout_progress_container).visibility = View.VISIBLE
+    view.findViewById<View>(R.id.search_view_library_click_blocker)?.visibility = View.VISIBLE
   }
 
   /**
@@ -20,5 +21,6 @@ class ProgressDelegate(private val view: View) {
    */
   fun hideProgressView() {
     view.findViewById<View>(R.id.layout_progress_container).visibility = View.GONE
+    view.findViewById<View>(R.id.search_view_library_click_blocker)?.visibility = View.GONE
   }
 }

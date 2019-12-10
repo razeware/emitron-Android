@@ -237,7 +237,7 @@ class LibraryFragment : DaggerFragment() {
         toggleControls()
       }
       NetworkState.INIT_SUCCESS, NetworkState.INIT_EMPTY -> {
-        toggleControls(true)
+        toggleControls(true, networkState == NetworkState.INIT_EMPTY)
         hideRecentSearchControls()
         progressDelegate.hideProgressView()
       }
@@ -273,8 +273,13 @@ class LibraryFragment : DaggerFragment() {
     }
   }
 
-  private fun toggleControls(visible: Boolean = false) {
+  private fun toggleControls(visible: Boolean = false, isEmpty: Boolean = false) {
     val visibility = if (visible) {
+      View.VISIBLE
+    } else {
+      View.GONE
+    }
+    val controlVisibility = if (visible && !isEmpty) {
       View.VISIBLE
     } else {
       View.GONE
@@ -283,8 +288,8 @@ class LibraryFragment : DaggerFragment() {
       recyclerViewLibrary.visibility = visibility
       scrollViewLibraryFilter.visibility = visibility
       if (isNetConnected()) {
-        buttonLibrarySort.visibility = visibility
-        textLibraryCount.visibility = visibility
+        buttonLibrarySort.visibility = controlVisibility
+        textLibraryCount.visibility = controlVisibility
       }
     }
   }
