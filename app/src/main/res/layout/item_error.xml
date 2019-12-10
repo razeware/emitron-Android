@@ -69,7 +69,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/text_view_error"
-      style="@style/TextAppearance.Headline.2"
+      style="@style/TextAppearance.Headline.3"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/error_title_margin_top"
@@ -86,7 +86,7 @@
       style="@style/TextAppearance.Label.Colored.Grey"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/text_spacing_vertical_title"
+      android:layout_marginTop="@dimen/progress_bar_support_text_spacing"
       android:layout_marginStart="@dimen/error_body_margin_start_end"
       android:layout_marginEnd="@dimen/error_body_margin_start_end"
       android:gravity="center"
