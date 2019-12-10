@@ -2,6 +2,7 @@ package com.razeware.emitron.utils.extensions
 
 import android.content.Context
 import android.content.pm.ActivityInfo
+import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -28,6 +29,13 @@ import com.razeware.emitron.R
  * @return Will return True if connected, otherwise False
  */
 fun Fragment.isNetConnected(): Boolean = requireContext().isNetConnected()
+
+/**
+ * Start a custom tab for Uri
+ *
+ * @param uri Url to be opened
+ */
+fun Fragment.launchCustomTab(uri: Uri) = requireActivity().launchCustomTab(uri)
 
 /**
  * Extension function to check if no connectivity

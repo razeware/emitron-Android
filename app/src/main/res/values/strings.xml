@@ -4,6 +4,7 @@
   <string name="title_library">Library</string>
   <string name="title_downloads">Downloads</string>
   <string name="title_my_tutorials">My Tutorials</string>
+  <string name="manage_subscription_url">https://accounts.raywenderlich.com/my-products</string>
 
   <!-- Generic -->
   <string name="button_retry">Retry</string>
@@ -214,6 +215,7 @@
   <string name="downloads_no_subscription_body">Are you sure you want to remove this download?</string>
   <string name="title_downloads_no_subscription">Upgrade your subscription to download videos</string>
   <string name="body_downloads_no_subscription">Raywenderlich.com Professional subscribers can download videos and watch them offline.</string>
+  <string name="button_manage_subscription">Manage Subscription</string>
 
   <!-- On-boarding -->
   <string name="on_boarding_download_card_title">Mobile UX Design Tips &amp; Tricks</string>
