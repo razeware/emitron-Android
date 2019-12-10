@@ -152,7 +152,7 @@ class CollectionViewModel @Inject constructor(
 
     content ?: return false
 
-    return if (content.isDownloaded()) {
+    return if (content.isCached()) {
       updateContentEpisodes(content)
       _loadCollectionResult.value = Event(true)
       true

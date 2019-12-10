@@ -110,7 +110,7 @@ data class ContentDetail(
       }
 
     return com.razeware.emitron.model.Content(
-      datum = content.toData().addRelationships(relationships),
+      datum = content.toData(getDownload()).addRelationships(relationships),
       included = included
     )
   }

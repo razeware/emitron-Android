@@ -52,6 +52,11 @@ data class Content(
   fun isDownloaded(): Boolean = datum?.isDownloaded() ?: false
 
   /**
+   * @return true if user has cached content, else false
+   */
+  fun isCached(): Boolean = datum?.isCached() ?: false
+
+  /**
    * Get id for content
    *
    * @return String content id

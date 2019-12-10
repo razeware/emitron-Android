@@ -56,6 +56,18 @@ class ContentTest {
   }
 
   @Test
+  fun isCached() {
+    val datum = Data()
+    val content = Content(datum = datum)
+    assertThat(content.isCached()).isFalse()
+
+    val datum2 = Data(attributes = Attributes(finished = true), download = Download(cached = true))
+    val content2 = Content(datum = datum2)
+    assertThat(content2.isCached()).isTrue()
+  }
+
+
+  @Test
   fun getChildId() {
     val datum = Data(id = "1")
     val content = Content(datum = datum)

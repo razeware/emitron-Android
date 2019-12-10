@@ -773,6 +773,21 @@ class DataTest {
   }
 
   @Test
+  fun isCached() {
+    val data = Data(
+      attributes = Attributes(url = "WubbaLubbaDubDub"),
+      download = Download(
+        progress = 25,
+        cached = true
+      )
+    )
+
+    val result = data.isCached()
+
+    result isEqualTo true
+  }
+
+  @Test
   fun updateDownloadProgress() {
     val data = Data(
       attributes = Attributes(url = "WubbaLubbaDubDub"),

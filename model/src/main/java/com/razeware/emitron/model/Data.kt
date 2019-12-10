@@ -412,6 +412,13 @@ data class Data(
   fun isDownloaded(): Boolean = download.isDownloaded()
 
   /**
+   * Check if content is cached, but not downloaded
+   *
+   * @return true if content is cached, else false
+   */
+  fun isCached(): Boolean = download.isCached()
+
+  /**
    * Check if content is downloading
    *
    * @return true if content is downloading, else false

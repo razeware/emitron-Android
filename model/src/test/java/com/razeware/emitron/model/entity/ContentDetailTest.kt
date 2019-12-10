@@ -10,7 +10,15 @@ class ContentDetailTest {
 
   @Test
   fun toContent() {
-    val expected = createContent()
+    val expected = createContent(
+      download = Download(
+        progress = 100,
+        state = 3,
+        failureReason = 0,
+        url = null,
+        cached = true
+      )
+    )
     val contentDetail = createContentDetail()
 
     val result = contentDetail.toContent()
@@ -25,7 +33,8 @@ class ContentDetailTest {
       100,
       3,
       0,
-      null
+      null,
+      cached = true
     )
   }
 
