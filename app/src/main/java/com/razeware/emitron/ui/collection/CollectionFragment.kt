@@ -161,7 +161,12 @@ class CollectionFragment : DaggerFragment() {
       episodeIsDownloaded,
       {
         initDownloadProgress()
-        showSuccessSnackbar(getString(R.string.message_download_started))
+
+        if (isActiveNetworkMetered() && viewModel.downloadsWifiOnly()) {
+          showSuccessSnackbar(getString(R.string.error_download_wifi_only))
+        } else {
+          showSuccessSnackbar(getString(R.string.message_download_started))
+        }
       }, { downloadId ->
         if (contentIsDownloaded) {
           binding.buttonCollectionDownload.updateDownloadState(null)

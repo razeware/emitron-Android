@@ -7,7 +7,6 @@ import com.razeware.emitron.R
 import com.razeware.emitron.ui.download.workers.RemoveDownloadWorker
 import com.razeware.emitron.ui.download.workers.StartDownloadWorker
 import com.razeware.emitron.utils.extensions.createDialog
-import com.razeware.emitron.utils.extensions.isActiveNetworkMetered
 import com.razeware.emitron.utils.extensions.isNetNotConnected
 import com.razeware.emitron.utils.extensions.showErrorSnackbar
 
@@ -53,10 +52,7 @@ class DownloadHelper(private val fragment: Fragment) {
 
     if (fragment.isNetNotConnected()) {
       fragment.showErrorSnackbar(fragment.getString(R.string.error_no_connection))
-    }
-
-    if (fragment.isActiveNetworkMetered() && downloadsWifiOnly) {
-      fragment.showErrorSnackbar(fragment.getString(R.string.error_download_wifi_only))
+      return
     }
 
     StartDownloadWorker.enqueue(
