@@ -189,12 +189,31 @@
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="@string/body_pro_course" />
 
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_manage_subscription"
+        style="@style/Button.Colored.Icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:text="@string/button_manage_subscription"
+        app:icon="@drawable/ic_material_button_icon_arrow_right_green_contained"
+        app:iconGravity="end"
+        app:iconTint="@color/white"
+        app:iconTintMode="multiply"
+        app:layout_constraintBottom_toBottomOf="@+id/image_collection_banner"
+        app:layout_constraintEnd_toEndOf="@id/guideline_right"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/text_collection_body_pro"
+        app:layout_constraintVertical_bias="1"
+        tools:visibility="visible" />
+
       <androidx.constraintlayout.widget.Group
         android:id="@+id/group_professional_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="image_collection_pro,text_collection_title_pro,text_collection_body_pro"
+        app:constraint_referenced_ids="image_collection_pro,text_collection_title_pro,text_collection_body_pro,button_manage_subscription"
         tools:visibility="gone" />
 
       <androidx.appcompat.widget.AppCompatTextView

@@ -1,5 +1,6 @@
 package com.razeware.emitron.ui.collection
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -142,6 +143,10 @@ class CollectionFragment : DaggerFragment() {
 
       buttonCollectionDownload.setOnClickListener {
         handleDownload()
+      }
+
+      buttonManageSubscription.setOnClickListener {
+        launchCustomTab(Uri.parse(getString(R.string.manage_subscription_url)))
       }
     }
   }
