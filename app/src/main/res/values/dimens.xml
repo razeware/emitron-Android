@@ -127,6 +127,7 @@
   <dimen name="error_image_height_width">256dp</dimen>
   <dimen name="empty_image_height_width">96dp</dimen>
   <dimen name="error_body_margin_start_end">48dp</dimen>
+  <dimen name="filter_option_text_margin">14dp</dimen>
 
   <!-- Collection detail view -->
   <dimen name="margin_body_pro">32dp</dimen>

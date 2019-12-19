@@ -24,7 +24,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
-      app:layout_constraintGuide_begin="@dimen/activity_vertical_margin" />
+      app:layout_constraintGuide_begin="@dimen/filter_option_text_margin" />
 
     <androidx.constraintlayout.widget.Guideline
       android:id="@+id/guideline_left"
@@ -45,7 +45,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
-      app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
+      app:layout_constraintGuide_end="@dimen/filter_option_text_margin" />
 
     <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/title_filter_item"
