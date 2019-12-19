@@ -1,8 +1,14 @@
 package com.razeware.emitron.ui.common
 
+import android.content.res.Resources
+import android.graphics.drawable.Drawable
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ImageSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +18,7 @@ import com.razeware.emitron.ui.content.ContentAdapter
 import com.razeware.emitron.utils.UiStateManager
 import com.razeware.emitron.utils.extensions.isNetNotConnected
 import com.razeware.emitron.utils.extensions.toVisibility
+
 
 /**
  * View holder for error
@@ -72,19 +79,16 @@ class ItemErrorViewHolder(
             resources.getDimensionPixelSize(R.dimen.empty_image_height_width)
           imageError.setImageResource(R.drawable.ic_emoji_crying)
           buttonRetry.setPadding(0)
+          buttonRetry.icon = null
         }
         UiStateManager.UiState.ERROR_EMPTY -> {
-          textViewError.text = getEmptyErrorForAdapterType(adapterContentType)
-          textViewErrorBody.text =
-            if (adapterContentType == ContentAdapter.AdapterContentType.ContentWithFilters) {
-              resources.getString(R.string.error_library_no_content_body)
-            } else {
-              ""
-            }
-          textViewErrorBody.toVisibility(adapterContentType.isContentWithFilters())
+          textViewError.text = getEmptyErrorForAdapterType(resources, adapterContentType)
+          textViewErrorBody.text = getEmptyErrorBodyForAdapterType(resources, adapterContentType)
+          textViewErrorBody.toVisibility(
+            getEmptyErrorBodyForAdapterType(resources, adapterContentType).isNotEmpty()
+          )
           buttonRetry.toVisibility(!adapterContentType.isContentWithFilters())
-          buttonRetry.text =
-            getRetryButtonLabelForAdapterType(adapterContentType)
+          buttonRetry.text = getRetryButtonLabelForAdapterType(resources, adapterContentType)
           val emptyDrawable = getEmptyDrawable(adapterContentType)
           if (null != emptyDrawable) {
             imageError.setImageResource(emptyDrawable)
@@ -98,47 +102,82 @@ class ItemErrorViewHolder(
             resources.getString(R.string.error_no_internet)
         } else {
           textViewError.text =
-            resources.getString(R.string.error_generic)
+            resources.getString(R.string.error_library_no_content)
         }
       }
     }
   }
 
-  private fun getEmptyErrorForAdapterType(adapterContentType: ContentAdapter.AdapterContentType) =
+  private fun getEmptyErrorForAdapterType(
+    resources: Resources,
+    adapterContentType: ContentAdapter.AdapterContentType
+  ) =
     when (adapterContentType) {
       ContentAdapter.AdapterContentType.Content,
       ContentAdapter.AdapterContentType.ContentWithFilters,
       ContentAdapter.AdapterContentType.ContentWithSearch ->
-        binding.root.resources.getString(R.string.error_library_no_content)
+        resources.getString(R.string.error_library_no_content)
       ContentAdapter.AdapterContentType.ContentBookmarked ->
-        binding.root.resources.getString(R.string.body_bookmarks_empty)
+        resources.getString(R.string.body_bookmarks_empty)
       ContentAdapter.AdapterContentType.ContentInProgress ->
-        binding.root.resources.getString(R.string.body_progressions_empty)
+        resources.getString(R.string.body_progressions_empty)
       ContentAdapter.AdapterContentType.ContentCompleted ->
-        binding.root.resources.getString(R.string.body_progressions_completed_empty)
+        resources.getString(R.string.body_progressions_completed_empty)
       ContentAdapter.AdapterContentType.ContentDownloaded ->
-        binding.root.resources.getString(R.string.body_downloads_empty)
+        resources.getString(R.string.title_downloads_empty)
+    }
+
+  private fun getEmptyErrorBodyForAdapterType(
+    resources: Resources,
+    adapterContentType: ContentAdapter.AdapterContentType
+  ): Spannable =
+    when (adapterContentType) {
+      ContentAdapter.AdapterContentType.ContentDownloaded -> {
+        val body = resources.getString(R.string.body_downloads_empty)
+        val imageSpanIndex = body.asSequence().indexOfFirst { it == '$' }
+        val spannable: Spannable = SpannableString(body)
+        val downloadIcon: Drawable? =
+          ContextCompat.getDrawable(binding.root.context, R.drawable.ic_material_icon_download)
+        downloadIcon?.setBounds(
+          0,
+          0,
+          resources.getDimensionPixelSize(R.dimen.icon_height_width_1),
+          resources.getDimensionPixelSize(R.dimen.icon_height_width_1)
+        )
+        downloadIcon?.let {
+          val imageSpan = ImageSpan(downloadIcon, ImageSpan.ALIGN_BOTTOM)
+          spannable.setSpan(
+            imageSpan,
+            imageSpanIndex,
+            imageSpanIndex + 1,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+          )
+        }
+        spannable
+      }
+      ContentAdapter.AdapterContentType.ContentWithFilters ->
+        SpannableString(resources.getString(R.string.error_library_no_content_body))
+      else -> SpannableString("")
     }
 
   private fun getRetryButtonLabelForAdapterType(
-    adapterContentType:
-    ContentAdapter.AdapterContentType
+    resources: Resources,
+    adapterContentType: ContentAdapter.AdapterContentType
   ) =
     when (adapterContentType) {
       ContentAdapter.AdapterContentType.ContentWithSearch,
       ContentAdapter.AdapterContentType.Content,
       ContentAdapter.AdapterContentType.ContentWithFilters ->
-        binding.root.resources.getString(R.string.button_retry)
+        resources.getString(R.string.button_retry)
       ContentAdapter.AdapterContentType.ContentBookmarked,
       ContentAdapter.AdapterContentType.ContentCompleted,
       ContentAdapter.AdapterContentType.ContentInProgress,
       ContentAdapter.AdapterContentType.ContentDownloaded ->
-        binding.root.resources.getString(R.string.button_explore_tutorials)
+        resources.getString(R.string.button_explore_tutorials)
     }
 
   private fun getRetryActionIconResource(
-    adapterContentType:
-    ContentAdapter.AdapterContentType
+    adapterContentType: ContentAdapter.AdapterContentType
   ) =
     when (adapterContentType) {
       ContentAdapter.AdapterContentType.ContentWithSearch,
@@ -152,8 +191,7 @@ class ItemErrorViewHolder(
     }
 
   private fun getEmptyDrawable(
-    adapterContentType:
-    ContentAdapter.AdapterContentType
+    adapterContentType: ContentAdapter.AdapterContentType
   ): Int? =
     when (adapterContentType) {
       ContentAdapter.AdapterContentType.ContentBookmarked ->

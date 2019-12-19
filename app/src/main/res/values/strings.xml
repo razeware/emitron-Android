@@ -207,7 +207,8 @@
   <!-- Downloads -->
   <string name="download_quality_high">High</string>
   <string name="download_quality_normal">Normal</string>
-  <string name="body_downloads_empty">You haven’t downloaded any tutorials yet</string>
+  <string name="title_downloads_empty">You haven’t downloaded any tutorials yet</string>
+  <string name="body_downloads_empty">Tap the   $   icon to download a video course or episode to watch offline.</string>
   <string name="title_download_permission_error">Verify permission</string>
   <string name="message_download_permission_error">Verify permission to watch downloaded content offline.</string>
   <string name="title_download_remove">Remove Download</string>
@@ -215,7 +216,7 @@
   <string name="downloads_no_subscription_title">Are you sure you want to remove this download?</string>
   <string name="downloads_no_subscription_body">Are you sure you want to remove this download?</string>
   <string name="title_downloads_no_subscription">Upgrade your subscription to download videos</string>
-  <string name="body_downloads_no_subscription">Raywenderlich.com Professional subscribers can download videos and watch them offline.</string>
+  <string name="body_downloads_no_subscription">raywenderlich.com Professional subscribers can download videos and watch them offline.</string>
   <string name="button_manage_subscription">Manage Subscription</string>
 
   <!-- On-boarding -->
