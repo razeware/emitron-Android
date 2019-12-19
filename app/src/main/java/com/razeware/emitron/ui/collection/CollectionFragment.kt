@@ -161,6 +161,7 @@ class CollectionFragment : DaggerFragment() {
       episodeIsDownloaded,
       {
         initDownloadProgress()
+        showSuccessSnackbar(getString(R.string.message_download_started))
       }, { downloadId ->
         if (contentIsDownloaded) {
           binding.buttonCollectionDownload.updateDownloadState(null)

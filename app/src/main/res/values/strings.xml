@@ -96,7 +96,8 @@
   <string name="button_label_no">No</string>
   <string name="message_downloads_no_subscription">Upgrade your subscription to download videos.</string>
   <string name="button_label_continue_playback">Continue</string>
-
+  <string name="message_download_started">Download added.</string>
+  <string name="error_download_wifi_only">Download will resume on WiFi connection.</string>
 
   <!-- Filter screen -->
   <string name="button_filter_clear_all">Clear All</string>
