@@ -323,8 +323,14 @@ data class Relationships(
   /**
    * Toggle progression finished
    */
-  fun toggleFinished(): Relationships {
-    val progression = progression?.toggleFinished() ?: Content().toggleFinished()
+  fun updateProgressionFinished(contentId: String, finished: Boolean): Relationships {
+    val progression = progression?.updateFinished(
+      contentId,
+      finished
+    ) ?: Content().updateFinished(
+      contentId,
+      finished
+    )
     return this.copy(progression = progression)
   }
 }

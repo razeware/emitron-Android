@@ -28,6 +28,13 @@ class RelationshipsTest {
   }
 
   @Test
+  fun updateProgressionFinished() {
+    val progression = Content(datum = Data(attributes = Attributes(finished = true)))
+    val relationship = Relationships(progression = progression)
+    relationship.hasFinishedContent() isEqualTo true
+  }
+
+  @Test
   fun getPercentComplete() {
     val progression = Content(datum = Data(attributes = Attributes(percentComplete = 10.0)))
     val relationship = Relationships(progression = progression)

@@ -393,7 +393,9 @@ class CollectionViewModel @Inject constructor(
    * Check if collection has progress
    */
   fun hasProgress(): Boolean {
-    return getPlaylist().episodes.mapNotNull { it.getProgressionId() }.isNotEmpty()
+    val collection = _collection.value ?: return false
+    return getPlaylist().episodes.mapNotNull { it.getProgressionId() }.isNotEmpty() &&
+        !collection.isProgressionFinished()
   }
 
   /**
@@ -404,5 +406,21 @@ class CollectionViewModel @Inject constructor(
       it.getProgressionId() != null &&
           !it.isProgressionFinished()
     }?.getProgressionPercentComplete() ?: 0
+  }
+
+  /**
+   * Update collection progression state on episode progression state change by user
+   *
+   * @param allEpisodesCompleted Has the user marked all episodes as completed
+   */
+  fun updateCollectionProgressionState(
+    allEpisodesCompleted: Boolean
+  ) {
+    val collection = _collection.value ?: return
+    val id = collection.id ?: return
+    _collection.value = collection.updateProgressionFinished(
+      id,
+      allEpisodesCompleted
+    )
   }
 }

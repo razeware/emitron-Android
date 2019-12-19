@@ -113,6 +113,7 @@ class CollectionFragment : DaggerFragment() {
           }
         },
         onEpisodeCompleted = { episode, position ->
+          viewModel.updateCollectionProgressionState(episodeAdapter.areAllEpisodesCompleted())
           viewModel.updateContentProgression(isNetConnected(), episode, position)
         },
         onEpisodeDownload = { episode, _ ->
@@ -202,6 +203,7 @@ class CollectionFragment : DaggerFragment() {
         if (it.isTypeScreencast()) {
           binding.progressCompletion.progress = viewModel.getProgress()
         }
+        binding.textCollectionCompleted.toVisibility(it.isProgressionFinished())
       }
     }
 
@@ -257,11 +259,11 @@ class CollectionFragment : DaggerFragment() {
         ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeMarkedInProgress ->
           showSuccessSnackbar(getString(R.string.message_episode_marked_in_progress))
         ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeFailedToMarkComplete -> {
-          episodeAdapter.updateEpisodeCompletion(episodePosition)
+          episodeAdapter.updateEpisodeCompletion(false, episodePosition)
           showErrorSnackbar(getString(R.string.message_episode_failed_to_mark_completed))
         }
         ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeFailedToMarkInProgress -> {
-          episodeAdapter.updateEpisodeCompletion(episodePosition)
+          episodeAdapter.updateEpisodeCompletion(true, episodePosition)
           showErrorSnackbar(
             getString(
               R.string.message_episode_failed_to_mark_in_progress
@@ -272,6 +274,8 @@ class CollectionFragment : DaggerFragment() {
           // Houston, We Have a Problem!
         }
       }
+      // Update Collection state as per new episode state
+      viewModel.updateCollectionProgressionState(episodeAdapter.areAllEpisodesCompleted())
     }
 
     viewModel.uiState.observe(viewLifecycleOwner) {

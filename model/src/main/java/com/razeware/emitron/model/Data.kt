@@ -329,20 +329,32 @@ data class Data(
   /**
    * Mark episode finished/ or in-progress
    */
-  fun toggleProgressionFinished(): Data {
-    val relationships = if (null != relationships) {
-      this.relationships.toggleFinished()
-    } else {
-      Relationships().toggleFinished()
-    }
+  fun updateProgressionFinished(contentId: String, finished: Boolean): Data {
+    val relationships =
+      this.relationships?.updateProgressionFinished(contentId, finished)
+        ?: Relationships().updateProgressionFinished(contentId, finished)
     return this.copy(relationships = relationships)
   }
 
   /**
    * Mark episode finished/ or in-progress
    */
-  fun toggleFinished(): Data =
-    this.copy(attributes = this.attributes?.copy(finished = !this.isFinished()))
+  fun toggleFinished(contentId: String, finished: Boolean): Data {
+    val percentComplete = if (finished) {
+      100.0
+    } else {
+      0.0
+    }
+    return this.copy(
+      attributes = this.attributes?.copy(percentComplete = percentComplete, finished = finished)
+        ?: Attributes(finished = finished), relationships = relationships ?: Relationships(
+        content = Content(
+          datum = Data(id = contentId)
+        )
+      )
+    )
+  }
+
 
   /**
    * Get episode number
@@ -424,6 +436,14 @@ data class Data(
    * @return true if content is downloading, else false
    */
   fun isDownloading(): Boolean = download.isDownloading()
+
+  /**
+   * Check if content is not downloaded and is either in progress or has failed.
+   *
+   * @return true if content is not downloaded, else false
+   */
+  fun isNotDownloaded(): Boolean =
+    download.isDownloading() || download.isFailed() || download.isPending() || download.isPaused()
 
   /**
    * Get content download progress

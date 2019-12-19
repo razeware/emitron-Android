@@ -66,6 +66,7 @@
       android:minWidth="@dimen/button_episode_number_height_width"
       android:minHeight="@dimen/button_episode_number_height_width"
       android:text="@{episodePosition}"
+      android:gravity="center"
       app:cornerRadius="@dimen/collection_episode_position_corner_radius"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintDimensionRatio="1:1"
@@ -129,11 +130,14 @@
       android:layout_height="@dimen/height_card_progress_height"
       android:layout_marginTop="@dimen/margin_card_progress_top"
       android:indeterminate="false"
+      android:max="100"
       android:progressDrawable="@drawable/progress_drawable_horizontal_2"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="@+id/guideline_right"
       app:layout_constraintStart_toStartOf="@+id/text_title"
-      app:layout_constraintTop_toBottomOf="@+id/text_duration" />
+      app:layout_constraintTop_toBottomOf="@+id/text_duration"
+      tools:progress="25"
+      tools:visibility="visible"/>
 
     <View
       android:id="@+id/collection_item_divider"
