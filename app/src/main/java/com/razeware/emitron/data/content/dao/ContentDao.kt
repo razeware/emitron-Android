@@ -177,7 +177,6 @@ interface ContentDao {
           ON progressions.content_id = contents.content_id
           WHERE progressions.finished = :completed
           AND contents.content_type in(:contentTypes)
-          ORDER BY progression_id DESC
           """
   )
   @Transaction
