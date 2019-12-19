@@ -84,7 +84,7 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
 
   private fun markEpisodeComplete() {
     with(binding) {
-      buttonCollectionEpisode.setIconResource(R.drawable.ic_material_icon_checkmark)
+      buttonCollectionEpisode.setIconResource(R.drawable.ic_material_icon_checkmark_2)
       buttonCollectionEpisode.setIconTintResource(R.color.colorIconInverse)
       buttonCollectionEpisode.setBackgroundColor(
         ContextCompat.getColor(
