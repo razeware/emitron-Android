@@ -32,8 +32,7 @@ internal abstract class SwipeActionCallback(
       buttonText: Int,
       onSwipe: (Int) -> Unit
     ): SwipeActionCallback {
-      return object : SwipeActionCallback(background, buttonText, onSwipe) {
-      }
+      return object : SwipeActionCallback(background, buttonText, onSwipe) {}
     }
   }
 
