@@ -206,6 +206,8 @@ dependencies {
   kapt "com.squareup.inject:assisted-inject-processor-dagger2:${versions.assistedInject}"
 
   implementation "com.google.android.gms:play-services-oss-licenses:${versions.playOss}"
+  implementation "androidx.viewpager2:viewpager2:${versions.viewpager}"
+
 }
 
 apply plugin: 'com.google.gms.google-services'
