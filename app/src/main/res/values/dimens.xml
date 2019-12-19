@@ -150,6 +150,10 @@
   <dimen name="collection_detail_button_download_pause_height">8dp</dimen>
   <dimen name="collection_episode_progress_margin_top">12dp</dimen>
   <dimen name="collection_episode_position_corner_radius">6dp</dimen>
+  <dimen name="collection_pro_course_icon_height_width">30dp</dimen>
+  <dimen name="collection_continue_button_margin_start">12dp</dimen>
+  <dimen name="collection_continue_button_margin_end">16dp</dimen>
+  <dimen name="collection_continue_button_margin_vertical">14dp</dimen>
 
   <!-- Card divider height -->
   <dimen name="height_card_divider">1dp</dimen>
@@ -170,6 +174,7 @@
   <dimen name="button_forward_rewind_height_width">44dp</dimen>
   <dimen name="button_play_pause_height_width">64dp</dimen>
   <dimen name="button_play_pause_icon_height_width">40dp</dimen>
+  <dimen name="button_play_pause_icon_height_width_2">36dp</dimen>
   <dimen name="button_play_progress_height_width">56dp</dimen>
   <dimen name="button_player_settings_height_width">40dp</dimen>
   <dimen name="player_progress_bar_margin_start_end">12dp</dimen>

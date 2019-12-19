@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
   <item android:id="@android:id/background">
-    <clip>
-      <shape>
-        <corners
-          android:bottomLeftRadius="@dimen/episode_progress_corner_radius"
-          android:bottomRightRadius="@dimen/episode_progress_corner_radius"
-          android:topLeftRadius="0dp"
-          android:topRightRadius="0dp" />
-        <solid android:color="@color/colorContentProgressBackground" />
-      </shape>
-    </clip>
+    <shape>
+      <corners
+        android:bottomLeftRadius="@dimen/episode_progress_corner_radius"
+        android:bottomRightRadius="@dimen/episode_progress_corner_radius"
+        android:topLeftRadius="0dp"
+        android:topRightRadius="@dimen/episode_progress_corner_radius" />
+      <solid android:color="@color/colorContentProgressBackground" />
+    </shape>
   </item>
   <item
     android:id="@android:id/progress"
     android:gravity="center">
-    <clip>
+    <scale android:scaleWidth="100%">
       <shape>
         <corners
           android:bottomLeftRadius="@dimen/episode_progress_corner_radius"
           android:bottomRightRadius="@dimen/episode_progress_corner_radius"
           android:topLeftRadius="0dp"
-          android:topRightRadius="0dp" />
+          android:topRightRadius="@dimen/episode_progress_corner_radius" />
         <solid android:color="@color/colorContentProgress" />
       </shape>
-    </clip>
+    </scale>
   </item>
 </layer-list>
