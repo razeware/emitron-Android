@@ -37,11 +37,11 @@
   <string name="button_sign_in">Sign In</string>
   <string name="title_login_logo">raywenderlich.com</string>
   <string name="button_sign_out">Sign out</string>
-  <string name="headline_login_no_subscription">The Raywenderlich.com app is for subscribers only.</string>
+  <string name="headline_login_no_subscription">The raywenderlich.com app is for subscribers only.</string>
   <string name="body_login_no_subscription">For more information on how to become a raywenderlich.com subscriber please visit: store.raywenderlich.com/products/subscription</string>
   <string name="error_login_subscription">Failed to login.</string>
   <string name="title_login_onboarding_1">Watch anytime, anywhere</string>
-  <string name="body_login_onboarding_1">Raywenderlich.com Subscribers can watch over 2,000+ video tutorials on iPhone and iPad. </string>
+  <string name="body_login_onboarding_1">raywenderlich.com Subscribers can watch over 2,000+ video tutorials on iPhone and iPad. </string>
   <string name="title_login_onboarding_2">Take your videos on the go</string>
   <string name="body_login_onboarding_2">Professional Subscribers can download and watch videos even when they’re offline.</string>
 
@@ -50,7 +50,6 @@
   <string name="button_popularity">Popularity</string>
   <string name="error_library_no_content">We couldn’t find any results</string>
   <string name="error_library_no_content_body">Try removing some filters</string>
-  <string name="error_generic">Something went wrong!</string>
   <string name="label_tutorials_count">%1$s Tutorials</string>
   <string name="label_release_type_duration">%1$s &#8226; %2$s (%3$s%4$s)</string>
   <string name="label_release_difficulty_type_duration">
@@ -73,7 +72,7 @@
   <string name="yesterday">Yesterday</string>
 
   <!-- Content Detail Screen -->
-  <string name="body_pro_course">To unlock this course visit raywenderlich.com/subscription \n for more information</string>
+  <string name="body_pro_course">To watch this course you need to upgrade to a raywenderlich.com professional plan</string>
   <string name="title_pro_course">Pro Course</string>
   <string name="course_episodes">Course Episodes</string>
   <string name="course_episodes_progress">Loading Episodes &#8230;</string>
@@ -137,8 +136,8 @@
   <string name="label_rate_app">Rate us</string>
   <string name="label_share_app">Share app</string>
   <string name="button_system_default">System default</string>
-  <string name="title_feedback_email">[Android] Raywenderlich.com support requested</string>
-  <string name="share_app_title">Share Raywenderlich.com App</string>
+  <string name="title_feedback_email">[Android] raywenderlich.com support requested</string>
+  <string name="share_app_title">Share raywenderlich.com App</string>
   <string name="share_app_body">High quality programming tutorials: iOS, Android, Swift, Kotlin, Flutter, Server Side Swift, Unity, and more!
   Download the App at market://com.raywenderlich.com/emitron</string>
   <string name="label_open_source">Open-source licenses</string>
