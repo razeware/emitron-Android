@@ -477,6 +477,7 @@ class PlayerFragment : DaggerFragment() {
     with(binding) {
       groupAutoPlayProgress.visibility = View.VISIBLE
       countDownTimer.start()
+      playerAutoPlayProgress.progress = 0
       ObjectAnimator.ofInt(playerAutoPlayProgress, "progress", AUTO_PLAYBACK_MAX_PROGRESS)
         .setDuration(AUTO_PLAYBACK_COUNTDOWN_DURATION)
         .start()
