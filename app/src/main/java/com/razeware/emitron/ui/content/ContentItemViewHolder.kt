@@ -40,15 +40,24 @@ class ContentItemViewHolder(private val binding: ItemContentBinding) :
         content?.isProgressionFinished() != true &&
             content?.isProfessional() == true
       )
-      buttonDownload.toVisibility(adapterContent.isDownloaded())
+      // Hide the download button if the content is downloaded and we are on downloads list
+      val showDownloadButton =
+        content?.isNotDownloaded() == true && adapterContent.isDownloaded()
+      buttonDownload.toVisibility(showDownloadButton)
       buttonDownload.updateDownloadState(content?.download)
+
       buttonDownload.setOnClickListener {
         downloadCallback?.invoke(adapterPosition, 1)
       }
 
-      buttonBookmark.toVisibility(adapterContent.isBookmarked())
+      buttonBookmark.toVisibility(
+        adapterContent.isContent() ||
+            adapterContent.isBookmarked()
+      )
       buttonBookmark.setOnClickListener {
-        bookmarkCallback?.invoke(adapterPosition)
+        if (adapterContent.isBookmarked()) {
+          bookmarkCallback?.invoke(adapterPosition)
+        }
       }
       executePendingBindings()
     }
