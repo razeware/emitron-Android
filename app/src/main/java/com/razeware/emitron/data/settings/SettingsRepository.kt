@@ -165,18 +165,17 @@ class SettingsRepository @Inject constructor(
   }
 
   /**
-   * Get if user allowed to report crashes
+   * Get if user wants to see onboarding views
    *
-   * @return True, if user has allowed crash reporting, else False
+   * @return True, if user has allowed onboarding views, else False
    */
   fun isOnboardingAllowed(): Boolean {
-    return settingsPrefs.isOnboardingAllowed()
+    return false
   }
 
   /**
-   * Get if user allowed to report crashes
+   * Update if user allowed onboarding views
    *
-   * @return True, if user has allowed crash reporting, else False
    */
   fun updateOnboardingAllowed(allowed: Boolean) {
     settingsPrefs.saveOnboardingAllowed(allowed)
