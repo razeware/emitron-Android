@@ -151,17 +151,17 @@ fun buildContentData(
   download = download
 )
 
-fun withRelatedProgression(): com.razeware.emitron.model.Content =
+fun withRelatedProgression(datum: Data? = withProgression()): com.razeware.emitron.model.Content =
   com.razeware.emitron.model.Content(
-    datum = withProgression()
+    datum = datum
   )
 
-fun withProgression(): Data = Data(
+fun withProgression(percentComplete: Double = 99.0, finished: Boolean = true): Data = Data(
   id = "1",
   type = "progressions",
   attributes = Attributes(
-    percentComplete = 99.0,
-    finished = true,
+    percentComplete = percentComplete,
+    finished = finished,
     progress = 0,
     contentId = "1"
   ),
