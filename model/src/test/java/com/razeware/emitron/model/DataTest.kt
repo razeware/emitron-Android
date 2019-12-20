@@ -443,12 +443,12 @@ class DataTest {
   @Test
   fun toggleFinished() {
     val data = Data(attributes = Attributes(finished = false))
-    val result = data.toggleFinished()
-    assertThat(result.isFinished()).isTrue()
+    val result = data.toggleFinished("1", false)
+    assertThat(result.isFinished()).isFalse()
 
-    val data2 = Data(attributes = Attributes(finished = true))
-    val result2 = data2.toggleFinished()
-    assertThat(result2.isFinished()).isFalse()
+    val data2 = Data()
+    val result2 = data2.toggleFinished("1", true)
+    assertThat(result2.isFinished()).isTrue()
   }
 
   @Test
@@ -733,6 +733,21 @@ class DataTest {
   }
 
   @Test
+  fun isNotDownloaded() {
+
+    val data2 = Data(
+      attributes = Attributes(url = "WubbaLubbaDubDub"),
+      download = Download(
+        state = DownloadState.IN_PROGRESS.ordinal
+      )
+    )
+
+    val result2 = data2.isNotDownloaded()
+
+    result2 isEqualTo true
+  }
+
+  @Test
   fun isDownloading() {
     val data = Data(
       attributes = Attributes(url = "WubbaLubbaDubDub"),
@@ -887,13 +902,13 @@ class DataTest {
       )
     )
 
-    data.toggleProgressionFinished() isEqualTo Data(
+    data.updateProgressionFinished("1", true) isEqualTo Data(
       id = "1",
       relationships = Relationships(
         progression = Content(
           datum = Data(
             id = "1",
-            attributes = Attributes(percentComplete = 10.0, finished = true),
+            attributes = Attributes(percentComplete = 100.0, finished = true),
             relationships = Relationships(
               content = Content(datum = Data(id = "2"))
             )

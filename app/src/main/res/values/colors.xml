@@ -56,6 +56,7 @@
   <color name="textColorOverlineInverse">@color/white</color>
   <color name="textColorOverlineInverse2">@color/white</color>
   <color name="textColorBody2">@color/raven_grey</color>
+  <color name="textColorBody3">@color/raven_grey</color>
   <color name="textColorBody2Inverse">@color/white</color>
   <color name="textColorLabel">@color/light_gray_blue</color>
   <color name="textColorLabel2">@color/light_gray_blue</color>

@@ -28,3 +28,14 @@ fun Context.isNetConnected(): Boolean {
  * @return Will return True if not connected, otherwise False
  */
 fun Context.isNetNotConnected(): Boolean = !isNetConnected()
+
+/**
+ * Extension function to check connectivity status is metered
+ *
+ * @return Will return True if metered, otherwise False
+ */
+fun Context.isActiveNetworkMetered(): Boolean {
+  val connectivityManager =
+    getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+  return connectivityManager.isActiveNetworkMetered
+}

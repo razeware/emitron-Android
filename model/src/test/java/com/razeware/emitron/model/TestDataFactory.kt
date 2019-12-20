@@ -112,12 +112,12 @@ fun buildContentData(
   download = download
 )
 
-fun withRelatedProgression(): com.razeware.emitron.model.Content =
+internal fun withRelatedProgression(): com.razeware.emitron.model.Content =
   Content(
     datum = withProgression()
   )
 
-fun withProgression(): Data = Data(
+internal fun withProgression(): Data = Data(
   id = "1",
   type = "progressions",
   attributes = Attributes(
@@ -133,7 +133,7 @@ fun withProgression(): Data = Data(
   )
 )
 
-fun withDownload(): com.razeware.emitron.model.Download =
+internal fun withDownload(): com.razeware.emitron.model.Download =
   Download(
     progress = 25,
     state = 3,
@@ -141,7 +141,7 @@ fun withDownload(): com.razeware.emitron.model.Download =
     url = "download/1"
   )
 
-fun withRelatedBookmark(): com.razeware.emitron.model.Content =
+internal fun withRelatedBookmark(): com.razeware.emitron.model.Content =
   Content(
     datum = Data(
       id = "1",

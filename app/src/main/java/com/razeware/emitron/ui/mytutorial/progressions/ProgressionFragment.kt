@@ -13,6 +13,7 @@ import com.razeware.emitron.databinding.FragmentBookmarksBinding
 import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
 import com.razeware.emitron.model.CompletionStatus
 import com.razeware.emitron.model.Data
+import com.razeware.emitron.model.isCompleted
 import com.razeware.emitron.ui.common.ProgressDelegate
 import com.razeware.emitron.ui.common.StartEndBottomMarginDecoration
 import com.razeware.emitron.ui.common.SwipeActionCallback
@@ -82,15 +83,14 @@ class ProgressionFragment : DaggerFragment() {
 
   private val swipeActionCallback by lazy {
     SwipeActionCallback.build(
-      R.drawable.bg_swipe_progression,
-      getSwipeText(),
-      onSwipe = {
+      getSwipeBackground(),
+      getSwipeText(), onSwipe = {
         updateContentProgression(adapter.getItemFor(it))
       }
     )
   }
 
-  private val itemTouchHelper = ItemTouchHelper(swipeActionCallback)
+  private val itemTouchHelper by lazy { ItemTouchHelper(swipeActionCallback) }
 
   /**
    * See [androidx.fragment.app.Fragment.onCreateView]
@@ -110,8 +110,7 @@ class ProgressionFragment : DaggerFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     completionStatus =
-      arguments?.getParcelable(EXTRA_COMPLETION_STATUS)
-        ?: CompletionStatus.Completed
+      arguments?.getParcelable(EXTRA_COMPLETION_STATUS) ?: CompletionStatus.Completed
     initUi()
     initObservers()
     loadProgressions()
@@ -135,14 +134,22 @@ class ProgressionFragment : DaggerFragment() {
   }
 
 
-  private fun getSwipeText(): Int = if (completionStatus == CompletionStatus.Completed) {
-    R.string.button_mark_in_progress
-  } else {
-    R.string.button_mark_completed
-  }
+  private fun getSwipeText(): Int =
+    if (completionStatus.isCompleted()) {
+      R.string.button_mark_in_progress
+    } else {
+      R.string.button_mark_completed
+    }
+
+  private fun getSwipeBackground(): Int =
+    if (completionStatus.isCompleted()) {
+      R.drawable.bg_swipe_progression_delete
+    } else {
+      R.drawable.bg_swipe_progression
+    }
 
   private fun getAdapterContentType(): ContentAdapter.AdapterContentType =
-    if (completionStatus == CompletionStatus.Completed) {
+    if (completionStatus.isCompleted()) {
       ContentAdapter.AdapterContentType.ContentCompleted
     } else {
       ContentAdapter.AdapterContentType.ContentInProgress

@@ -1,0 +1,10 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+  android:width="@dimen/button_play_pause_icon_height_width_2"
+  android:height="@dimen/button_play_pause_icon_height_width_2"
+  android:viewportWidth="24"
+  android:viewportHeight="24">
+  <path
+    android:fillColor="@color/colorIconInverse"
+    android:fillType="nonZero"
+    android:pathData="M19.509,10.645L7.058,3.304C5.95,2.612 5,3.144 5,4.474l0.053,14.524c0,1.33 0.95,1.862 2.057,1.17l12.346,-7.182c1.16,-0.638 1.16,-1.702 0.053,-2.34z" />
+</vector>

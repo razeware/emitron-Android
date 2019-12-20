@@ -166,6 +166,12 @@
     <item name="android:lineHeight">@dimen/line_height_body_2</item>
   </style>
 
+  <style name="TextAppearance.Body.3" parent="TextAppearance.Body">
+    <item name="android:textSize">@dimen/text_size_body_2</item>
+    <item name="android:textColor">@color/textColorBody3</item>
+    <item name="android:lineHeight">@dimen/line_height_body_2</item>
+  </style>
+
   <style name="TextAppearance.Body.2.Bold" parent="TextAppearance.Body.Bold">
     <item name="android:textSize">@dimen/text_size_body_2</item>
     <item name="android:textColor">@color/textColorBody2</item>

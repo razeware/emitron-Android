@@ -141,7 +141,7 @@ interface DownloadDao {
              INNER JOIN contents
              ON contents.content_id = downloads.download_id
              WHERE contents.content_type in(:contentTypes)
-             ORDER BY created_at
+             ORDER BY created_at DESC
           """
   )
   @Transaction

@@ -102,6 +102,7 @@ class ContentTest {
   fun toggleFinished() {
     val datum = Data(
       id = "1",
+      type = "progressions",
       attributes = Attributes(percentComplete = 10.0, finished = false),
       relationships = Relationships(
         content = Content(datum = Data(id = "2"))
@@ -109,12 +110,24 @@ class ContentTest {
     )
     val content = Content(datum = datum)
 
-    content.toggleFinished() isEqualTo Content(
+    content.updateFinished("2", false) isEqualTo Content(
       datum = Data(
         id = "1",
-        attributes = Attributes(percentComplete = 10.0, finished = true),
+        type = "progressions",
+        attributes = Attributes(percentComplete = 0.0, finished = false),
         relationships = Relationships(
           content = Content(datum = Data(id = "2"))
+        )
+      )
+    )
+
+    val content2 = Content()
+    content2.updateFinished("1", true) isEqualTo Content(
+      datum = Data(
+        type = "progressions",
+        attributes = Attributes(finished = true),
+        relationships = Relationships(
+          content = Content(datum = Data(id = "1"))
         )
       )
     )

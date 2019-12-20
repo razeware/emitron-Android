@@ -94,7 +94,8 @@
         android:layout_height="@dimen/height_card_progress_height"
         android:layout_marginTop="@dimen/margin_card_progress_top"
         android:indeterminate="false"
-        android:progressDrawable="@drawable/progress_drawable_horizontal_2"
+        android:progressDrawable="@drawable/progress_drawable_horizontal_3"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/image_collection_banner"
         app:layout_constraintEnd_toEndOf="@+id/image_collection_banner"
         app:layout_constraintStart_toStartOf="@+id/image_collection_banner"
@@ -112,32 +113,36 @@
         app:layout_constraintStart_toStartOf="@+id/image_collection_banner"
         app:layout_constraintTop_toTopOf="@+id/image_collection_banner"
         app:srcCompat="@drawable/ic_material_icon_play_banner"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
 
       <com.google.android.material.button.MaterialButton
         android:id="@+id/button_collection_resume"
         style="@style/Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/banner_play_icon_width_height"
-        android:backgroundTint="@color/colorButton2"
+        android:backgroundTint="@color/colorBackgroundDark"
+        android:paddingStart="@dimen/collection_continue_button_margin_start"
+        android:paddingTop="@dimen/collection_continue_button_margin_vertical"
+        android:paddingEnd="@dimen/collection_continue_button_margin_end"
+        android:paddingBottom="@dimen/collection_continue_button_margin_vertical"
         android:text="@string/button_label_continue_playback"
         android:visibility="gone"
-        app:icon="@drawable/ic_material_icon_play"
+        app:cornerRadius="@dimen/banner_play_corner_radius"
+        app:icon="@drawable/ic_material_icon_play_2"
+        app:iconTint="@color/white"
+        app:iconTintMode="multiply"
         app:layout_constraintBottom_toBottomOf="@+id/image_collection_banner"
         app:layout_constraintEnd_toEndOf="@+id/image_collection_banner"
         app:layout_constraintStart_toStartOf="@+id/image_collection_banner"
         app:layout_constraintTop_toTopOf="@+id/image_collection_banner"
-        app:srcCompat="@drawable/ic_material_icon_play_banner"
         app:strokeColor="@color/white"
-        app:iconTint="@color/white"
-        app:iconTintMode="multiply"
         app:strokeWidth="@dimen/banner_play_stroke_width"
         tools:visibility="visible" />
 
       <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/image_collection_pro"
-        android:layout_width="@dimen/icon_height_width"
-        android:layout_height="@dimen/icon_height_width"
+        android:layout_width="@dimen/collection_pro_course_icon_height_width"
+        android:layout_height="@dimen/collection_pro_course_icon_height_width"
         android:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/text_collection_title_pro"
         app:layout_constraintEnd_toStartOf="@+id/text_collection_title_pro"
@@ -167,7 +172,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/margin_body_pro"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:autoLink="web"
         android:gravity="center"
         android:linksClickable="true"
@@ -183,12 +189,31 @@
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="@string/body_pro_course" />
 
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_manage_subscription"
+        style="@style/Button.Colored.Icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:text="@string/button_manage_subscription"
+        app:icon="@drawable/ic_material_button_icon_arrow_right_green_contained"
+        app:iconGravity="end"
+        app:iconTint="@color/white"
+        app:iconTintMode="multiply"
+        app:layout_constraintBottom_toBottomOf="@+id/image_collection_banner"
+        app:layout_constraintEnd_toEndOf="@id/guideline_right"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/text_collection_body_pro"
+        app:layout_constraintVertical_bias="1"
+        tools:visibility="visible" />
+
       <androidx.constraintlayout.widget.Group
         android:id="@+id/group_professional_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="image_collection_pro,text_collection_title_pro,text_collection_body_pro"
+        app:constraint_referenced_ids="image_collection_pro,text_collection_title_pro,text_collection_body_pro,button_manage_subscription"
         tools:visibility="gone" />
 
       <androidx.appcompat.widget.AppCompatTextView
@@ -284,7 +309,6 @@ Values and References" />
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/collection_completed_margin_start"
         android:text="@string/label_completed"
-        android:visibility="@{data.isProgressionFinished()? View.VISIBLE : View.GONE}"
         app:drawableStartCompat="@drawable/ic_material_icon_checkmark_1"
         app:layout_constraintBottom_toBottomOf="@+id/button_collection_bookmark"
         app:layout_constraintEnd_toEndOf="@+id/guideline_right"
@@ -388,8 +412,8 @@ Values and References" />
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:visibility="gone"
-        app:constraint_referenced_ids="text_collection_episode_progress"
-        tools:visibility="visible" />
+        app:constraint_referenced_ids="text_collection_episode_progress,progress_episode"
+        tools:visibility="gone" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
   </androidx.core.widget.NestedScrollView>

@@ -7,6 +7,7 @@ import com.razeware.emitron.R
 import com.razeware.emitron.ui.download.workers.RemoveDownloadWorker
 import com.razeware.emitron.ui.download.workers.StartDownloadWorker
 import com.razeware.emitron.utils.extensions.createDialog
+import com.razeware.emitron.utils.extensions.isNetNotConnected
 import com.razeware.emitron.utils.extensions.showErrorSnackbar
 
 /**
@@ -32,13 +33,6 @@ class DownloadHelper(private val fragment: Fragment) {
 
     contentId ?: return
 
-    if (!isDownloadAllowed) {
-      fragment.showErrorSnackbar(
-        fragment.getString(R.string.message_downloads_no_subscription)
-      )
-      return
-    }
-
     // Delete downloaded episode
     if (!episodeId.isNullOrBlank() && episodeIsDownloaded) {
       showDeleteDownloadedContentDialog(episodeId, onDownloadRemoved)
@@ -48,6 +42,16 @@ class DownloadHelper(private val fragment: Fragment) {
     // Delete downloaded collection
     if (contentIsDownloaded) {
       showDeleteDownloadedContentDialog(contentId, onDownloadRemoved)
+      return
+    }
+
+    if (!isDownloadAllowed) {
+      fragment.showErrorSnackbar(fragment.getString(R.string.message_downloads_no_subscription))
+      return
+    }
+
+    if (fragment.isNetNotConnected()) {
+      fragment.showErrorSnackbar(fragment.getString(R.string.error_no_connection))
       return
     }
 

@@ -190,6 +190,15 @@ class ProgressionActionDelegate @Inject constructor(
     progressionId: String?
   ) {
     val contents = try {
+      progressionRepository.updateLocalProgression(
+        contentId = id,
+        percentComplete = percentComplete,
+        progress = progress,
+        finished = true,
+        synced = true,
+        updatedAt = updatedAt,
+        progressionId = progressionId
+      )
       progressionRepository.updateProgressions(id, true, updatedAt)
     } catch (exception: IOException) {
       null
@@ -231,6 +240,15 @@ class ProgressionActionDelegate @Inject constructor(
     progressionId: String?
   ) {
     val contents = try {
+      progressionRepository.updateLocalProgression(
+        id,
+        percentComplete,
+        progress,
+        finished = false,
+        synced = true,
+        updatedAt = updatedAt,
+        progressionId = progressionId
+      )
       progressionRepository.updateProgressions(id, false, updatedAt)
     } catch (exception: IOException) {
       null

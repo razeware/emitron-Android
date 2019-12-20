@@ -20,8 +20,7 @@ internal abstract class SwipeActionCallback(
   @StringRes
   val buttonText: Int,
   val onSwipe: (Int) -> Unit
-) :
-  ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
   companion object {
 
@@ -32,8 +31,7 @@ internal abstract class SwipeActionCallback(
       buttonText: Int,
       onSwipe: (Int) -> Unit
     ): SwipeActionCallback {
-      return object : SwipeActionCallback(background, buttonText, onSwipe) {
-      }
+      return object : SwipeActionCallback(background, buttonText, onSwipe) {}
     }
   }
 

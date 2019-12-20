@@ -110,10 +110,18 @@ class CollectionEpisodeAdapter(
       onEpisodeSelected(contentEpisode.data, nextContentEpisode.data)
     }, { selectedPosition ->
       val episode = items[selectedPosition]
-      val updatedEpisode = episode.data?.toggleProgressionFinished()
-      items[selectedPosition] = episode.copy(data = updatedEpisode)
-      onEpisodeCompleted(episode.data, selectedPosition)
-      notifyItemChanged(selectedPosition)
+      episode.data?.let { (episodeId) ->
+        episodeId?.let { id ->
+          val episodeIsCompleted = episode.data.isProgressionFinished()
+          val updatedEpisode = episode.data.updateProgressionFinished(
+            id,
+            !episodeIsCompleted
+          )
+          items[selectedPosition] = episode.copy(data = updatedEpisode)
+          onEpisodeCompleted(episode.data, selectedPosition)
+          notifyItemChanged(selectedPosition)
+        }
+      }
     }, { selectedPosition ->
       val contentEpisode = items[selectedPosition]
       onEpisodeDownload(contentEpisode.data, selectedPosition)
@@ -132,10 +140,17 @@ class CollectionEpisodeAdapter(
   /**
    * Update the respective episode UI, after episode is marked completed and the API request fails
    */
-  fun updateEpisodeCompletion(position: Int) {
-    val contentEpisode = items[position]
-    items[position] = contentEpisode.copy(data = contentEpisode.data?.toggleFinished())
-    notifyItemChanged(position)
+  fun updateEpisodeCompletion(finished: Boolean, position: Int) {
+    val episode = items[position]
+    episode.data?.let { (episodeId) ->
+      episodeId?.let { id ->
+        items[position] = episode.copy(
+          data =
+          episode.data.updateProgressionFinished(id, finished)
+        )
+        notifyItemChanged(position)
+      }
+    }
   }
 
   /**
@@ -190,6 +205,12 @@ class CollectionEpisodeAdapter(
       notifyDataSetChanged()
     }
   }
+
+  /**
+   * Are episodes completed
+   */
+  fun areAllEpisodesCompleted(): Boolean =
+    !(items.asSequence().any { it.data?.isProgressionFinished() == false })
 }
 
 /**

@@ -35,7 +35,7 @@ fun Fragment.isNetConnected(): Boolean = requireContext().isNetConnected()
  *
  * @param uri Url to be opened
  */
-fun Fragment.launchCustomTab(uri: Uri) = requireActivity().launchCustomTab(uri)
+fun Fragment.launchCustomTab(uri: Uri): Unit = requireActivity().launchCustomTab(uri)
 
 /**
  * Extension function to check if no connectivity
@@ -45,6 +45,13 @@ fun Fragment.launchCustomTab(uri: Uri) = requireActivity().launchCustomTab(uri)
  * @return Will return True if not connected, otherwise False
  */
 fun Fragment.isNetNotConnected(): Boolean = !isNetConnected()
+
+/**
+ * Extension function to check connectivity status is metered
+ *
+ * @return Will return True if metered, otherwise False
+ */
+fun Fragment.isActiveNetworkMetered(): Boolean = requireContext().isActiveNetworkMetered()
 
 /**
  * Extension function to inflate a databinding layout from a Fragment

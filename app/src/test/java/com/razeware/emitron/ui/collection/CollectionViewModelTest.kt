@@ -971,8 +971,13 @@ class CollectionViewModelTest {
   fun getProgress() {
     createViewModel()
     testCoroutineRule.runBlockingTest {
-      val contentData = createContentData()
-      val content = createContent(data = contentData, included = getIncludedDataForCollection())
+      val contentData = createContentData(
+        progression = withRelatedProgression(withProgression(45.0, false))
+      )
+      val content = createContent(
+        data = contentData,
+        included = getIncludedDataForCollection()
+      )
       // Given
       whenever(contentRepository.getContent("1")).doReturn(content)
 
@@ -1002,6 +1007,24 @@ class CollectionViewModelTest {
 
       // Then
       assertThat(result).isEqualTo(10)
+    }
+  }
+
+  @Test
+  fun updateCollectionProgressionState() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      val content =
+        createContent(data = createContentData(), included = getIncludedDataForCollection())
+      // Given
+      whenever(contentRepository.getContent("1")).doReturn(content)
+
+      viewModel.loadCollection(Data(id = "1"))
+
+      viewModel.completionActionResult.observeForTestingResultNullable()
+      viewModel.updateCollectionProgressionState(true)
+
+      viewModel.collection.value?.isProgressionFinished() isEqualTo true
     }
   }
 }

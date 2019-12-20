@@ -180,7 +180,14 @@ data class Content(
   /**
    * Toggle content finished
    */
-  fun toggleFinished(): Content = this.copy(datum = getData()?.toggleFinished())
+  fun updateFinished(contentId: String, finished: Boolean): Content = this.copy(
+    datum = getData()?.toggleFinished(contentId, finished) ?: Data(
+      type = DataType.Progressions.toRequestFormat()
+    ).toggleFinished(
+      contentId,
+      finished
+    )
+  )
 
   companion object {
 

@@ -302,7 +302,6 @@ class ContentAdapter private constructor(
    */
   fun getItemFor(position: Int): Data? {
     return position.run {
-      notifyItemRemoved(this)
       getItem(this)
     }
   }

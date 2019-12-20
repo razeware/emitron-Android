@@ -36,6 +36,7 @@
       android:launchMode="singleTask"
       android:parentActivityName=".MainActivity"
       android:resizeableActivity="true"
+      android:screenOrientation="portrait"
       android:supportsPictureInPicture="true"
       android:windowSoftInputMode="adjustNothing" />
 

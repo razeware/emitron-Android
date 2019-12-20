@@ -76,7 +76,7 @@ class ProgressionActionDelegateTest {
 
       // Then
       verify(progressionRepository).updateProgressions("8", true, day)
-      verify(progressionRepository).updateLocalProgression(
+      verify(progressionRepository, times(2)).updateLocalProgression(
         contentId = "8",
         percentComplete = 0,
         progress = 0,
@@ -126,6 +126,15 @@ class ProgressionActionDelegateTest {
       viewModel.updateContentProgression(true, episodeData, episodePosition, updatedAt = day)
 
       // Then
+      verify(progressionRepository).updateLocalProgression(
+        contentId = "8",
+        percentComplete = 0,
+        progress = 0,
+        finished = true,
+        synced = true,
+        updatedAt = day,
+        progressionId = "10"
+      )
       verify(progressionRepository).updateProgressions("8", true, day)
       verify(progressionRepository).updateLocalProgression(
         contentId = "8",
@@ -176,6 +185,15 @@ class ProgressionActionDelegateTest {
 
       // Then
       verify(progressionRepository).updateProgressions("8", true, day)
+      verify(progressionRepository).updateLocalProgression(
+        contentId = "8",
+        percentComplete = 0,
+        progress = 0L,
+        finished = true,
+        synced = true,
+        updatedAt = day,
+        progressionId = "10"
+      )
       verify(progressionRepository).updateLocalProgression(
         contentId = "8",
         percentComplete = 0,
@@ -237,7 +255,7 @@ class ProgressionActionDelegateTest {
 
       // Then
       verify(progressionRepository).updateProgressions("8", false, day)
-      verify(progressionRepository).updateLocalProgression(
+      verify(progressionRepository, times(2)).updateLocalProgression(
         contentId = "8",
         percentComplete = 0,
         progress = 0L,
@@ -290,6 +308,15 @@ class ProgressionActionDelegateTest {
         contentId = "8",
         percentComplete = 0,
         progress = 0,
+        finished = false,
+        synced = true,
+        updatedAt = day,
+        progressionId = "10"
+      )
+      verify(progressionRepository).updateLocalProgression(
+        contentId = "8",
+        percentComplete = 0,
+        progress = 0,
         finished = true,
         synced = true,
         updatedAt = day,
@@ -336,6 +363,15 @@ class ProgressionActionDelegateTest {
 
       // Then
       verify(progressionRepository).updateProgressions("8", false, day)
+      verify(progressionRepository).updateLocalProgression(
+        contentId = "8",
+        percentComplete = 0,
+        progress = 0,
+        finished = false,
+        synced = true,
+        updatedAt = day,
+        progressionId = "10"
+      )
       verify(progressionRepository).updateLocalProgression(
         contentId = "8",
         percentComplete = 0,
