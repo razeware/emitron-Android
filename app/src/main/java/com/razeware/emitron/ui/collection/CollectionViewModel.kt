@@ -56,11 +56,15 @@ class CollectionViewModel @Inject constructor(
 
   private val _collection = MutableLiveData<Data>()
 
-  private val _collectionEpisodes = MutableLiveData<List<EpisodeItem>>()
+  private val _collectionEpisodes = MutableLiveData<List<CollectionEpisode>>()
 
   private val _collectionContentType = MutableLiveData<ContentType>()
 
   private val _loadCollectionResult = MutableLiveData<Event<Boolean>>()
+
+  private val _loadEpisodesResult = MutableLiveData<Event<Boolean>>()
+
+  private val _episodeAdapterUpdatePositions = MutableLiveData<Event<List<Int>>>()
 
   /**
    * LiveData for collection details
@@ -68,14 +72,6 @@ class CollectionViewModel @Inject constructor(
   val collection: LiveData<Data>
     get() {
       return _collection
-    }
-
-  /**
-   * LiveData for episode for collection
-   */
-  val collectionEpisodes: LiveData<List<EpisodeItem>>
-    get() {
-      return _collectionEpisodes
     }
 
   /**
@@ -110,6 +106,24 @@ class CollectionViewModel @Inject constructor(
   val loadCollectionResult: LiveData<Event<Boolean>>
     get() {
       return _loadCollectionResult
+    }
+
+  /**
+   * Observer for progression action
+   *
+   */
+  val loadCollectionEpisodesResult: LiveData<Event<Boolean>>
+    get() {
+      return _loadEpisodesResult
+    }
+
+  /**
+   * Observer for progression action
+   *
+   */
+  val episodeAdapterUpdatePositions: LiveData<Event<List<Int>>>
+    get() {
+      return _episodeAdapterUpdatePositions
     }
 
   /**
@@ -192,15 +206,10 @@ class CollectionViewModel @Inject constructor(
       if (!content.isTypeScreencast()) {
 
         content.apply {
-          val fetchedCollectionEpisodes = getIncludedGroups().flatMap {
-            val childContentIds = it.getChildContentIds()
-            val data =
-              included?.filter { (id) -> id in childContentIds }
-                ?.map { data -> data.updateRelationships(included) }
-            EpisodeItem.buildFrom(it.copy(relationships = it.relationships?.setContents(data)))
-          }
-
+          val fetchedCollectionEpisodes =
+            CollectionEpisode.buildFromGroups(getIncludedGroups(), included ?: emptyList())
           _collectionEpisodes.value = fetchedCollectionEpisodes
+          _loadEpisodesResult.value = Event(true)
         }
       }
     }
@@ -211,16 +220,15 @@ class CollectionViewModel @Inject constructor(
    */
   fun getPlaylist(): Playlist {
     val collection = _collection.value
+    val collectionEpisodes = getCollectionEpisodes()
 
     return when (collection?.getContentType()) {
       ContentType.Collection -> {
-        val playlist = collectionEpisodes.value?.let {
-          it.mapNotNull { (_, data) -> data }
-        }
+        val playlist = collectionEpisodes.mapNotNull { (_, data) -> data }
         val hasProgress =
-          playlist?.mapNotNull { it.getProgressionId() }?.isNotEmpty() ?: false
+          playlist.mapNotNull { it.getProgressionId() }.isNotEmpty()
         val currentEpisode = if (hasProgress) {
-          playlist?.firstOrNull {
+          playlist.firstOrNull {
             it.getProgressionId() != null &&
                 !it.isProgressionFinished()
           }
@@ -229,7 +237,7 @@ class CollectionViewModel @Inject constructor(
         }
         Playlist(
           collection = collection,
-          episodes = playlist ?: emptyList(),
+          episodes = playlist,
           currentEpisode = currentEpisode
         )
       }
@@ -331,9 +339,9 @@ class CollectionViewModel @Inject constructor(
     return if (isScreencast()) {
       listOf(contentId)
     } else {
-      val episodes = collectionEpisodes.value
-      val episodeIds = episodes?.mapNotNull { it.data?.id }
-      episodeIds ?: emptyList()
+      val episodes = getCollectionEpisodes()
+      val episodeIds = episodes.mapNotNull { it.data?.id }
+      episodeIds
     }
   }
 
@@ -387,6 +395,7 @@ class CollectionViewModel @Inject constructor(
    */
   fun removeDownload() {
     _collection.value = _collection.value?.removeDownload()
+    removeEpisodeDownload()
   }
 
   /**
@@ -410,17 +419,131 @@ class CollectionViewModel @Inject constructor(
 
   /**
    * Update collection progression state on episode progression state change by user
-   *
-   * @param allEpisodesCompleted Has the user marked all episodes as completed
    */
-  fun updateCollectionProgressionState(
-    allEpisodesCompleted: Boolean
-  ) {
+  fun updateCollectionProgressionState() {
     val collection = _collection.value ?: return
     val id = collection.id ?: return
     _collection.value = collection.updateProgressionFinished(
       id,
-      allEpisodesCompleted
+      areAllEpisodesCompleted()
     )
   }
+
+  /**
+   * [CollectionEpisodeAdapter] Helper functions
+   */
+  private fun areAllEpisodesCompleted(): Boolean =
+    !(getCollectionEpisodes().asSequence().any { it.data?.isProgressionFinished() == false })
+
+  /**
+   * Remove download state for an episode or all episodes
+   *
+   * @param contentId Content id of episode to be removed, (if null all episodes will be removed)
+   */
+  fun removeEpisodeDownload(contentId: String? = null) {
+    val contentIdsToBeRemoved = if (null == contentId) {
+      getContentIds()
+    } else {
+      listOf(contentId)
+    }
+
+    val episodeItems = getCollectionEpisodes()
+
+    val updatedPositions = contentIdsToBeRemoved.mapNotNull { id ->
+      val position = episodeItems.indexOfFirst { it.data?.id == id }
+      if (position != -1) {
+        val contentEpisode = episodeItems[position]
+        val updateEpisodeData = contentEpisode.data?.removeDownload()
+        val updatedList = getCollectionEpisodes().toMutableList()
+        updatedList[position] = contentEpisode.copy(data = updateEpisodeData)
+        _collectionEpisodes.value = updatedList
+        position
+      } else {
+        null
+      }
+    }
+    _episodeAdapterUpdatePositions.value = Event(updatedPositions)
+  }
+
+  /**
+   * Update Episode Progression
+   *
+   * Update episode progressions for a given position
+   *
+   * @param finished Is the episode marked finished? true/false
+   * @param position Position at which the episode will be updated
+   *
+   * @return [Data] Episode that was updated
+   */
+  fun updateEpisodeProgression(finished: Boolean, position: Int) {
+    val episode = getCollectionEpisodes()[position]
+    episode.data ?: return
+    val episodeId = episode.data.id
+    episodeId ?: return
+
+    val updatedList = getCollectionEpisodes().toMutableList()
+    updatedList[position] = episode.copy(
+      data = episode.data.updateProgressionFinished(episodeId, finished)
+    )
+    _collectionEpisodes.value = updatedList
+    _episodeAdapterUpdatePositions.value = Event(listOf(position))
+  }
+
+  /**
+   * Toggle Episode Progression
+   *
+   * Update episode to completed/in-progress for a given position
+   *
+   * @param position Position at which the episode will be updated
+   *
+   * @return [Data] Episode that was updated
+   */
+  fun toggleEpisodeCompletion(position: Int): Data? {
+    val episodeItems = getCollectionEpisodes()
+    val episode = episodeItems[position]
+    episode.data ?: return null
+    val episodeId = episode.data.id
+    episodeId ?: return null
+    val episodeIsCompleted = episode.data.isProgressionFinished()
+    val updatedList = getCollectionEpisodes().toMutableList()
+    val updatedEpisode = episode.data.updateProgressionFinished(
+      episodeId,
+      !episodeIsCompleted
+    )
+    updatedList[position] = episode.copy(data = updatedEpisode)
+    _collectionEpisodes.value = updatedList
+    return episode.data
+  }
+
+
+  /**
+   * Update episode download progress
+   *
+   * @param downloads Downloads in progress
+   */
+  fun updateEpisodeDownloadProgress(downloads: List<com.razeware.emitron.model.entity.Download>) {
+    val episodes = getCollectionEpisodes()
+    val updatedPositions = downloads.mapNotNull { download ->
+      val position = episodes.indexOfFirst { it.data?.id == download.downloadId }
+      if (position != -1) {
+        val contentEpisode = episodes[position]
+        val updatedEpisodeData =
+          contentEpisode.data?.updateDownloadProgress(download.toDownloadState())
+        val updatedList = getCollectionEpisodes().toMutableList()
+        updatedList[position] = contentEpisode.copy(data = updatedEpisodeData)
+        _collectionEpisodes.value = updatedList
+        position
+      } else {
+        null
+      }
+    }
+    _episodeAdapterUpdatePositions.value = Event(updatedPositions)
+  }
+
+  /**
+   * Get collection episodes
+   *
+   * @return List<CollectionEpisode>
+   */
+  fun getCollectionEpisodes(): List<CollectionEpisode> = _collectionEpisodes.value ?: emptyList()
 }

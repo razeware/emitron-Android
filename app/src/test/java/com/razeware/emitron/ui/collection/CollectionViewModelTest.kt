@@ -91,60 +91,18 @@ class CollectionViewModelTest {
     testCoroutineRule.runBlockingTest {
       val contentData = createContentData()
       val content = createContent(data = contentData, included = getIncludedDataForCollection())
-      val expectedEpisodes =
-        listOf(
-          EpisodeItem(title = "one"),
-          EpisodeItem(
-            data = Data(
-              id = "5",
-              type = "contents",
-              attributes = Attributes(name = "five"),
-              relationships = Relationships(
-                progression = Content(
-                  datum = Data(
-                    id = "9",
-                    type = "progressions",
-                    attributes = Attributes(percentComplete = 10.0)
-                  )
-                )
-              )
-            )
-          ),
-          EpisodeItem(
-            data = Data(
-              id = "6", type = "contents",
-              attributes = Attributes(name = "six"),
-              relationships = Relationships()
-            )
-          ),
-          EpisodeItem(title = "two"),
-          EpisodeItem(
-            data = Data(
-              id = "7", type = "contents",
-              attributes = Attributes(name = "seven"),
-              relationships = Relationships()
-            )
-          ),
-          EpisodeItem(
-            data = Data(
-              id = "8", type = "contents",
-              attributes = Attributes(name = "eight"),
-              relationships = Relationships()
-            )
-          )
-        )
+      val expectedEpisodes = expectedEpisodeList()
       whenever(contentRepository.getContent("1")).doReturn(content)
 
       val data = Data(id = "1", attributes = Attributes(contentType = "collection"))
 
       viewModel.collection.observeForTestingResultNullable()
-      viewModel.collectionEpisodes.observeForTestingResultNullable()
       val uiStateObserver = viewModel.uiState.observeForTestingObserver()
 
       viewModel.loadCollection(data)
 
       assertThat(viewModel.collection.value).isEqualTo(contentData)
-      assertThat(viewModel.collectionEpisodes.value).isEqualTo(expectedEpisodes)
+      assertThat(viewModel.getCollectionEpisodes()).isEqualTo(expectedEpisodes)
 
 
       verify(uiStateObserver).onChanged(UiStateManager.UiState.LOADING)
@@ -160,48 +118,7 @@ class CollectionViewModelTest {
     testCoroutineRule.runBlockingTest {
       val contentData = createContentData(download = Download(cached = true))
       val content = createContent(data = contentData, included = getIncludedDataForCollection())
-      val expectedEpisodes =
-        listOf(
-          EpisodeItem(title = "one"),
-          EpisodeItem(
-            data = Data(
-              id = "5",
-              type = "contents",
-              attributes = Attributes(name = "five"),
-              relationships = Relationships(
-                progression = Content(
-                  datum = Data(
-                    id = "9",
-                    type = "progressions",
-                    attributes = Attributes(percentComplete = 10.0)
-                  )
-                )
-              )
-            )
-          ),
-          EpisodeItem(
-            data = Data(
-              id = "6", type = "contents",
-              attributes = Attributes(name = "six"),
-              relationships = Relationships()
-            )
-          ),
-          EpisodeItem(title = "two"),
-          EpisodeItem(
-            data = Data(
-              id = "7", type = "contents",
-              attributes = Attributes(name = "seven"),
-              relationships = Relationships()
-            )
-          ),
-          EpisodeItem(
-            data = Data(
-              id = "8", type = "contents",
-              attributes = Attributes(name = "eight"),
-              relationships = Relationships()
-            )
-          )
-        )
+      val expectedEpisodes = expectedEpisodeList()
       whenever(contentRepository.getContentFromDb("1")).doReturn(content)
 
       val data = Data(
@@ -210,13 +127,12 @@ class CollectionViewModelTest {
       )
 
       viewModel.collection.observeForTestingResultNullable()
-      viewModel.collectionEpisodes.observeForTestingResultNullable()
       val uiStateObserver = viewModel.uiState.observeForTestingObserver()
 
       viewModel.loadCollection(data)
 
       assertThat(viewModel.collection.value).isEqualTo(contentData)
-      assertThat(viewModel.collectionEpisodes.value).isEqualTo(expectedEpisodes)
+      assertThat(viewModel.getCollectionEpisodes()).isEqualTo(expectedEpisodes)
 
       verify(contentRepository).getContentFromDb("1")
       verify(uiStateObserver).onChanged(UiStateManager.UiState.LOADING)
@@ -240,17 +156,14 @@ class CollectionViewModelTest {
       val data = Data(id = "1", attributes = Attributes(contentType = "screencast"))
 
       viewModel.collection.observeForTestingResultNullable()
-      viewModel.collectionEpisodes.observeForTestingResultNullable()
       val uiStateObserver = viewModel.uiState.observeForTestingObserver()
-      val collectionEpisodeObserver = viewModel.collectionEpisodes.observeForTestingObserver()
 
       viewModel.loadCollection(data)
 
       assertThat(viewModel.collection.value).isEqualTo(contentData)
-      assertThat(viewModel.collectionEpisodes.value).isEqualTo(null)
+      assertThat(viewModel.getCollectionEpisodes()).isEqualTo(emptyList<CollectionEpisode>())
 
 
-      verifyZeroInteractions(collectionEpisodeObserver)
       verify(uiStateObserver).onChanged(UiStateManager.UiState.LOADING)
       verify(uiStateObserver).onChanged(UiStateManager.UiState.LOADED)
       verifyNoMoreInteractions(uiStateObserver)
@@ -270,19 +183,16 @@ class CollectionViewModelTest {
       val data = Data(id = "1", attributes = Attributes(contentType = "screencast"))
 
       viewModel.collection.observeForTestingResultNullable()
-      viewModel.collectionEpisodes.observeForTestingResultNullable()
       val uiStateObserver = viewModel.uiState.observeForTestingObserver()
-      val collectionEpisodeObserver = viewModel.collectionEpisodes.observeForTestingObserver()
       val collectionObserver = viewModel.collection.observeForTestingObserver()
       // When
       viewModel.loadCollection(data)
 
       // Then
       assertThat(viewModel.collection.value).isEqualTo(data)
-      assertThat(viewModel.collectionEpisodes.value).isEqualTo(null)
+      assertThat(viewModel.getCollectionEpisodes()).isEqualTo(emptyList<CollectionEpisode>())
       verify(collectionObserver).onChanged(data)
       verifyNoMoreInteractions(collectionObserver)
-      verifyZeroInteractions(collectionEpisodeObserver)
       verify(uiStateObserver).onChanged(UiStateManager.UiState.LOADING)
       verify(uiStateObserver).onChanged(UiStateManager.UiState.LOADED)
       verifyNoMoreInteractions(uiStateObserver)
@@ -845,7 +755,7 @@ class CollectionViewModelTest {
     createViewModel()
     testCoroutineRule.runBlockingTest {
       // Given
-      val contentData = com.razeware.emitron.data.createContent()
+      val contentData = createContent()
       whenever(contentRepository.getContent("1")).doReturn(contentData)
       viewModel.loadCollection(Data(id = "1"))
 
@@ -873,7 +783,7 @@ class CollectionViewModelTest {
   fun updateCollectionDownloadState() {
     createViewModel()
     testCoroutineRule.runBlockingTest {
-      val contentData = com.razeware.emitron.data.createContent()
+      val contentData = createContent()
       whenever(contentRepository.getContent("1")).doReturn(contentData)
       viewModel.loadCollection(Data(id = "1"))
 
@@ -900,7 +810,6 @@ class CollectionViewModelTest {
       val content = createContent(data = contentData)
       whenever(contentRepository.getContent("1")).doReturn(content)
       viewModel.loadCollection(Data(id = "1"))
-      whenever(permissionActionDelegate.isProfessionalVideoPlaybackAllowed()).doReturn(true)
       whenever(permissionActionDelegate.isProfessionalVideoPlaybackAllowed()).doReturn(true)
 
       // When
@@ -1015,16 +924,177 @@ class CollectionViewModelTest {
     createViewModel()
     testCoroutineRule.runBlockingTest {
       val content =
-        createContent(data = createContentData(), included = getIncludedDataForCollection())
+        createContent(
+          data = createContentData(),
+          included = getIncludedDataForCollection()
+        )
       // Given
       whenever(contentRepository.getContent("1")).doReturn(content)
 
       viewModel.loadCollection(Data(id = "1"))
 
       viewModel.completionActionResult.observeForTestingResultNullable()
-      viewModel.updateCollectionProgressionState(true)
+      viewModel.updateCollectionProgressionState()
 
-      viewModel.collection.value?.isProgressionFinished() isEqualTo true
+      viewModel.collection.value?.isProgressionFinished() isEqualTo false
     }
   }
+
+  @Test
+  fun removeEpisodeDownload() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      val content =
+        createContent(
+          data = createContentData(),
+          included = getIncludedDataForCollection()
+        )
+      // Given
+      whenever(contentRepository.getContent("1")).doReturn(content)
+
+      viewModel.loadCollection(Data(id = "1"))
+
+      viewModel.removeEpisodeDownload("5")
+
+      viewModel.getCollectionEpisodes()[1].data?.isDownloaded() isEqualTo false
+    }
+  }
+
+  @Test
+  fun updateEpisodeProgression() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      val content =
+        createContent(
+          data = createContentData(),
+          included = getIncludedDataForCollection()
+        )
+      // Given
+      whenever(contentRepository.getContent("1")).doReturn(content)
+
+      viewModel.loadCollection(Data(id = "1"))
+      viewModel.episodeAdapterUpdatePositions.observeForTestingResultNullable()
+
+      viewModel.updateEpisodeProgression(true, 1)
+      viewModel.getCollectionEpisodes()[1].data?.isProgressionFinished() isEqualTo true
+      viewModel.episodeAdapterUpdatePositions.value?.peekContent() isEqualTo listOf(1)
+    }
+  }
+
+  @Test
+  fun toggleEpisodeCompletion() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      val content =
+        createContent(
+          data = createContentData(),
+          included = getIncludedDataForCollection()
+        )
+      // Given
+      whenever(contentRepository.getContent("1")).doReturn(content)
+
+      viewModel.loadCollection(Data(id = "1"))
+
+      viewModel.toggleEpisodeCompletion(1)
+      viewModel.getCollectionEpisodes()[1].data?.isProgressionFinished() isEqualTo true
+      viewModel.toggleEpisodeCompletion(1)
+      viewModel.getCollectionEpisodes()[1].data?.isProgressionFinished() isEqualTo false
+    }
+  }
+
+  @Test
+  fun updateEpisodeDownloadProgress() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      val content =
+        createContent(
+          data = createContentData(),
+          included = getIncludedDataForCollection()
+        )
+      // Given
+      whenever(contentRepository.getContent("1")).doReturn(content)
+
+      viewModel.loadCollection(Data(id = "1"))
+
+      viewModel.updateEpisodeDownloadProgress(
+        listOf(
+          com.razeware.emitron.model.entity.Download(
+            downloadId = "5",
+            progress = 50,
+            state = 2
+          )
+        )
+      )
+
+      viewModel.getCollectionEpisodes()[1].data?.isDownloading() isEqualTo true
+      viewModel.getCollectionEpisodes()[1].data?.getDownloadProgress() isEqualTo 50
+    }
+  }
+
+  @Test
+  fun getCollectionEpisodes() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      val content =
+        createContent(
+          data = createContentData(),
+          included = getIncludedDataForCollection()
+        )
+      // Given
+      whenever(contentRepository.getContent("1")).doReturn(content)
+
+      viewModel.loadCollection(Data(id = "1"))
+
+      viewModel.getCollectionEpisodes() isEqualTo expectedEpisodeList()
+    }
+  }
+
+  private fun expectedEpisodeList() = listOf(
+    CollectionEpisode(title = "one"),
+    CollectionEpisode(
+      data = Data(
+        id = "5",
+        type = "contents",
+        attributes = Attributes(name = "five"),
+        relationships = Relationships(
+          progression = Content(
+            datum = Data(
+              id = "9",
+              type = "progressions",
+              attributes = Attributes(percentComplete = 10.0)
+            )
+          )
+        )
+      ),
+      position = 1
+    ),
+    CollectionEpisode(
+      data = Data(
+        id = "6", type = "contents",
+        attributes = Attributes(name = "six"),
+        relationships = Relationships()
+      ),
+      position = 2
+    ),
+    CollectionEpisode(
+      title = "two",
+      position = 2
+    ),
+    CollectionEpisode(
+      data = Data(
+        id = "7", type = "contents",
+        attributes = Attributes(name = "seven"),
+        relationships = Relationships()
+      ),
+      position = 3
+    ),
+    CollectionEpisode(
+      data = Data(
+        id = "8", type = "contents",
+        attributes = Attributes(name = "eight"),
+        relationships = Relationships()
+      ),
+      position = 4
+    )
+  )
 }

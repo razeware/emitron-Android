@@ -220,8 +220,8 @@ fun withGroups(contents: Contents? = null): Contents = Contents(
   datum = listOf(createGroup(contents))
 )
 
-fun withGroupContents(): Contents = Contents(
-  datum = listOf(buildContentGroupData())
+fun withGroupContents(datum: List<Data> = listOf(buildContentGroupData())): Contents = Contents(
+  datum = datum
 )
 
 fun buildContentGroupData(): Data = Data(

@@ -19,7 +19,8 @@ class CollectionEpisodeHeaderItemViewHolder(
   /**
    * @param header Episode collection header
    */
-  fun bindTo(header: String) {
+  fun bindTo(header: String?) {
+    header ?: return
     binding.title = header
     binding.executePendingBindings()
   }

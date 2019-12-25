@@ -4,6 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.razeware.emitron.R
 import com.razeware.emitron.model.Data
+import com.razeware.emitron.utils.extensions.isNetConnected
 
 /**
  * Adapter for collection episodes
@@ -14,20 +15,9 @@ class CollectionEpisodeAdapter(
    * Handle to mark episode complete/in-progress
    */
   private val onEpisodeCompleted: (Data?, Int) -> Unit,
-  private val onEpisodeDownload: (Data?, Int) -> Unit
-) :
-  RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-  private val items: MutableList<EpisodeItem> = mutableListOf()
-
-  private var bindHeaderCount = -1
-
-  /**
-   * Property to check If the collection playback is allowed,
-   * If playback is not allowed a lock icon will be shown and collection won't be playable.
-   *
-   */
-  private var isContentPlaybackAllowed: Boolean = false
+  private val onEpisodeDownload: (Data?, Int) -> Unit,
+  private val viewModel: CollectionViewModel
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   /**
    * [RecyclerView.Adapter.getItemViewType]
@@ -43,7 +33,7 @@ class CollectionEpisodeAdapter(
   }
 
   private fun isHeaderPosition(position: Int): Boolean {
-    return !items[position].title.isNullOrBlank()
+    return !viewModel.getCollectionEpisodes()[position].title.isNullOrBlank()
   }
 
   /**
@@ -61,7 +51,10 @@ class CollectionEpisodeAdapter(
   /**
    * See [RecyclerView.Adapter.getItemCount]
    */
-  override fun getItemCount(): Int = if (items.isNotEmpty()) items.size else 0
+  override fun getItemCount(): Int =
+    if (viewModel.getCollectionEpisodes().isNotEmpty())
+      viewModel.getCollectionEpisodes().size
+    else 0
 
   /**
    * See [RecyclerView.Adapter.onBindViewHolder]
@@ -81,182 +74,45 @@ class CollectionEpisodeAdapter(
   }
 
   private fun bindHeaderItem(viewHolder: CollectionEpisodeHeaderItemViewHolder, position: Int) {
-    val contentEpisode = items[position]
-    contentEpisode.title?.let {
-      viewHolder.bindTo(it)
-    }
-    bindHeaderCount += 1
+    val contentEpisode = viewModel.getCollectionEpisodes()[position]
+    viewHolder.bindTo(contentEpisode.title)
   }
 
   private fun bindItem(viewHolder: CollectionEpisodeItemViewHolder, position: Int) {
 
-    val (_, data, cachedEpisodePosition) = items[position]
+    val episodes = viewModel.getCollectionEpisodes()
+    val (_, data, episodePosition) = episodes[position]
 
-    val episodePosition = if (cachedEpisodePosition == 0) {
-      val newCachedPosition = position - bindHeaderCount
-      items[position] = EpisodeItem(data = data, position = newCachedPosition)
-      newCachedPosition
-    } else {
-      cachedEpisodePosition
-    }
-
-    viewHolder.bindTo(data, episodePosition, isContentPlaybackAllowed, { selectedPosition ->
-      val contentEpisode = items[selectedPosition]
-      val nextContentEpisode = if (selectedPosition < items.size - 1) {
-        items[selectedPosition + 1]
-      } else {
-        EpisodeItem()
-      }
-      onEpisodeSelected(contentEpisode.data, nextContentEpisode.data)
-    }, { selectedPosition ->
-      val episode = items[selectedPosition]
-      episode.data?.let { (episodeId) ->
-        episodeId?.let { id ->
-          val episodeIsCompleted = episode.data.isProgressionFinished()
-          val updatedEpisode = episode.data.updateProgressionFinished(
-            id,
-            !episodeIsCompleted
-          )
-          items[selectedPosition] = episode.copy(data = updatedEpisode)
-          onEpisodeCompleted(episode.data, selectedPosition)
-          notifyItemChanged(selectedPosition)
+    val hasConnection = viewHolder.itemView.context.isNetConnected()
+    viewHolder.bindTo(data,
+      episodePosition,
+      viewModel.isContentPlaybackAllowed(hasConnection),
+      { selectedPosition ->
+        val contentEpisode = episodes[selectedPosition]
+        val nextContentEpisode = if (selectedPosition < episodes.size - 1) {
+          episodes[selectedPosition + 1]
+        } else {
+          CollectionEpisode()
         }
-      }
-    }, { selectedPosition ->
-      val contentEpisode = items[selectedPosition]
-      onEpisodeDownload(contentEpisode.data, selectedPosition)
-    })
+        onEpisodeSelected(contentEpisode.data, nextContentEpisode.data)
+      }, { selectedPosition ->
+        val episode = viewModel.toggleEpisodeCompletion(selectedPosition)
+        onEpisodeCompleted(episode, selectedPosition)
+        notifyItemChanged(selectedPosition)
+      }, { selectedPosition ->
+        val contentEpisode = episodes[selectedPosition]
+        onEpisodeDownload(contentEpisode.data, selectedPosition)
+      })
   }
 
   /**
-   * Add/Submit episode list
-   */
-  fun submitList(it: List<EpisodeItem>) {
-    this.items.clear()
-    this.items.addAll(it)
-    notifyDataSetChanged()
-  }
-
-  /**
-   * Update the respective episode UI, after episode is marked completed and the API request fails
-   */
-  fun updateEpisodeCompletion(finished: Boolean, position: Int) {
-    val episode = items[position]
-    episode.data?.let { (episodeId) ->
-      episodeId?.let { id ->
-        items[position] = episode.copy(
-          data =
-          episode.data.updateProgressionFinished(id, finished)
-        )
-        notifyItemChanged(position)
-      }
-    }
-  }
-
-  /**
-   * Update episode download progress
+   * Update items at position
    *
-   * @param downloads Downloads in progress
+   * @param positions Download ids to be removed
    */
-  fun updateEpisodeDownloadProgress(
-    downloads:
-    List<com.razeware.emitron.model.entity.Download>
-  ) {
-    downloads.forEach { download ->
-      val position = items.indexOfFirst { it.data?.id == download.downloadId }
-      if (position != -1) {
-        val contentEpisode = items[position]
-        val updateEpisodeData =
-          contentEpisode.data?.updateDownloadProgress(download.toDownloadState())
-        items[position] = contentEpisode.copy(data = updateEpisodeData)
-        notifyItemChanged(position)
-      }
+  fun updateItemsAtPositions(positions: List<Int>) {
+    positions.map {
+      notifyItemChanged(it)
     }
-  }
-
-  /**
-   * Remove episode download
-   *
-   * @param downloads Download ids to be removed
-   */
-  fun removeEpisodeDownload(
-    downloads: List<String>
-  ) {
-    downloads.forEach { downloadId ->
-      val position = items.indexOfFirst { it.data?.id == downloadId }
-      if (position != -1) {
-        val contentEpisode = items[position]
-        val updateEpisodeData = contentEpisode.data?.removeDownload()
-        items[position] = contentEpisode.copy(data = updateEpisodeData)
-        notifyItemChanged(position)
-      }
-    }
-  }
-
-  /**
-   * Update playback allowed for adapter content
-   */
-  fun updateContentPlaybackAllowed(
-    contentPlaybackAllowed: Boolean,
-    refresh: Boolean = false
-  ) {
-    this.isContentPlaybackAllowed = contentPlaybackAllowed
-    if (refresh) {
-      notifyDataSetChanged()
-    }
-  }
-
-  /**
-   * Are episodes completed
-   */
-  fun areAllEpisodesCompleted(): Boolean =
-    !(items.asSequence().any { it.data?.isProgressionFinished() == false })
-}
-
-/**
- * View object for episode item
- *
- * This may represent an episode or a collection header
- *
- */
-data class EpisodeItem(
-  /**
-   * Episode collection header
-   */
-  val title: String? = "",
-  /**
-   * Episode item data [Data]
-   */
-  val data: Data? = null,
-  /**
-   * Episode position
-   *
-   * You are caching episode position to update the episode UI after an API request.
-   */
-  val position: Int = 0
-) {
-
-  companion object {
-
-    private fun getContentItems(data: Data): List<EpisodeItem> =
-      data.getChildContents().map { childData ->
-        EpisodeItem(data = childData)
-      }
-
-    private fun getTitle(data: Data): EpisodeItem? {
-      val name = data.getName()
-      return if (!name.isNullOrBlank()) {
-        EpisodeItem(data.getName())
-      } else {
-        null
-      }
-    }
-
-    /**
-     * Build episode item from [Data]
-     */
-    fun buildFrom(data: Data): List<EpisodeItem> =
-      listOfNotNull(getTitle(data), *(getContentItems(data).toTypedArray()))
-
   }
 }
