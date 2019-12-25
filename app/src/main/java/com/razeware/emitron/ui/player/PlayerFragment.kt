@@ -11,6 +11,7 @@ import android.widget.ProgressBar
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -309,11 +310,11 @@ class PlayerFragment : DaggerFragment() {
    */
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    requestLandscapeOrientation()
     requireActivity().requestLowProfileUi()
     initUi()
     initObservers()
     startPlayback(args.playlist)
+    requestLandscapeOrientation()
   }
 
   private fun initToolbar() {
@@ -703,6 +704,9 @@ class PlayerFragment : DaggerFragment() {
     pipActionDelegate.clear()
     parentViewModel.updateIsPlaying(false)
     requireActivity().requestGestureUi()
+    if (hasNougat()) {
+      AppCompatDelegate.setDefaultNightMode(parentViewModel.getNightModeSettings())
+    }
   }
 
   private fun dismissBottomSheets() {

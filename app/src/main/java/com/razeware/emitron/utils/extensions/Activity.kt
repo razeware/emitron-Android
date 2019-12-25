@@ -132,6 +132,12 @@ fun hasGestureUiSupport(): Boolean =
   Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 
 /**
+ * Check if device has Nougat
+ */
+fun hasNougat(): Boolean =
+  Build.VERSION.SDK_INT in listOf(Build.VERSION_CODES.N, Build.VERSION_CODES.N_MR1)
+
+/**
  * Open a custom tab
  */
 fun FragmentActivity.launchCustomTab(uri: Uri) {
