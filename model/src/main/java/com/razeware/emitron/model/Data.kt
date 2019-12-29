@@ -453,6 +453,13 @@ data class Data(
   fun getDownloadProgress(): Int = download.getProgress()
 
   /**
+   * Get download state
+   *
+   * @return get download state
+   */
+  fun getDownloadState(): Int = download.getState()
+
+  /**
    * Update content download progress
    *
    * @return Updated [Data]

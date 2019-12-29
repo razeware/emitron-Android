@@ -9,6 +9,15 @@ import org.junit.Test
 class CollectionEpisodeTest {
 
   @Test
+  fun hasTitle() {
+    val collectionEpisode = CollectionEpisode()
+    collectionEpisode.hasTitle() isEqualTo false
+
+    val collectionEpisode2 = CollectionEpisode(title = "SwiftUI")
+    collectionEpisode2.hasTitle() isEqualTo true
+  }
+
+  @Test
   fun buildFromGroups() {
     val data = (1..2).map {
       createGroup(

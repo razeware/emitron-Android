@@ -973,11 +973,11 @@ class CollectionViewModelTest {
       whenever(contentRepository.getContent("1")).doReturn(content)
 
       viewModel.loadCollection(Data(id = "1"))
-      viewModel.episodeAdapterUpdatePositions.observeForTestingResultNullable()
+      viewModel.collectionEpisodes.observeForTestingResultNullable()
 
       viewModel.updateEpisodeProgression(true, 1)
       viewModel.getCollectionEpisodes()[1].data?.isProgressionFinished() isEqualTo true
-      viewModel.episodeAdapterUpdatePositions.value?.peekContent() isEqualTo listOf(1)
+      viewModel.collectionEpisodes.value?.getOrNull(1)?.data?.isProgressionFinished() isEqualTo true
     }
   }
 

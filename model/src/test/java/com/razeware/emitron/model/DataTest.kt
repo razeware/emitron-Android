@@ -803,6 +803,21 @@ class DataTest {
   }
 
   @Test
+  fun getDownloadState() {
+    val data = Data(
+      attributes = Attributes(url = "WubbaLubbaDubDub"),
+      download = Download(
+        progress = 25,
+        state = 2
+      )
+    )
+
+    val result = data.getDownloadState()
+
+    result isEqualTo 2
+  }
+
+  @Test
   fun updateDownloadProgress() {
     val data = Data(
       attributes = Attributes(url = "WubbaLubbaDubDub"),

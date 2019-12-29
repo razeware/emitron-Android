@@ -1,6 +1,8 @@
 package com.razeware.emitron.ui.collection
 
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.razeware.emitron.R
 import com.razeware.emitron.model.Data
@@ -18,6 +20,8 @@ class CollectionEpisodeAdapter(
   private val onEpisodeDownload: (Data?, Int) -> Unit,
   private val viewModel: CollectionViewModel
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+  private val differ by lazy { AsyncListDiffer(this, CollectionEpisodeDiffCallback()) }
 
   /**
    * [RecyclerView.Adapter.getItemViewType]
@@ -109,13 +113,9 @@ class CollectionEpisodeAdapter(
   }
 
   /**
-   * Update items at position
-   *
-   * @param positions Download ids to be removed
+   * Update items using [DiffUtil]
    */
-  fun updateItemsAtPositions(positions: List<Int>) {
-    positions.map {
-      notifyItemChanged(it)
-    }
+  fun update(list: List<CollectionEpisode>?) {
+    differ.submitList(list)
   }
 }

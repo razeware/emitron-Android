@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import androidx.work.WorkManager
 import com.google.android.exoplayer2.offline.DownloadManager
-import com.razeware.emitron.MainViewModel
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.FragmentCollectionBinding
 import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
@@ -52,8 +50,6 @@ class CollectionFragment : DaggerFragment() {
   lateinit var viewModelFactory: ViewModelFactory
 
   private val viewModel: CollectionViewModel by viewModels { viewModelFactory }
-
-  private val parentViewModel: MainViewModel by activityViewModels { viewModelFactory }
 
   private val args by navArgs<CollectionFragmentArgs>()
 
@@ -186,6 +182,10 @@ class CollectionFragment : DaggerFragment() {
   }
 
   private fun initObservers() {
+    viewModel.collectionEpisodes.observe(viewLifecycleOwner) {
+      episodeAdapter.update(it)
+    }
+
     viewModel.loadCollectionEpisodesResult.observe(viewLifecycleOwner) {
       it?.let {
         val isSuccessFul = it.getContentIfNotHandled() ?: false
@@ -303,13 +303,6 @@ class CollectionFragment : DaggerFragment() {
     viewModel.enqueueOfflineProgressUpdate.observe(viewLifecycleOwner) {
       it?.let {
         UpdateOfflineProgressWorker.enqueue(WorkManager.getInstance(requireContext()))
-      }
-    }
-
-    viewModel.episodeAdapterUpdatePositions.observe(viewLifecycleOwner) {
-      it?.let {
-        val updatedPositions = it.getContentIfNotHandled() ?: emptyList()
-        episodeAdapter.updateItemsAtPositions(updatedPositions)
       }
     }
   }

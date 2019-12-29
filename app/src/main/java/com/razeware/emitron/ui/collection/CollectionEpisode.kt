@@ -24,6 +24,8 @@ data class CollectionEpisode(
   val position: Int = 0
 ) {
 
+  fun hasTitle(): Boolean = !title.isNullOrBlank()
+
   companion object {
 
     private fun getEpisodes(data: Data): List<CollectionEpisode> =
