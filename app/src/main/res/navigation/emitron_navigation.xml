@@ -14,7 +14,9 @@
 
     <action
       android:id="@+id/action_navigation_library_to_navigation_filter"
-      app:destination="@id/navigation_filter" />
+      app:destination="@id/navigation_filter"
+      app:enterAnim="@anim/enter_bottom"
+      app:popExitAnim="@anim/exit_bottom" />
 
     <action
       android:id="@+id/action_navigation_library_to_navigation_collection"
