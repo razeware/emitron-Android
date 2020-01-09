@@ -207,7 +207,7 @@
   <string name="download_quality_high">High</string>
   <string name="download_quality_normal">Normal</string>
   <string name="title_downloads_empty">You haven’t downloaded any tutorials yet</string>
-  <string name="body_downloads_empty">Tap the   $   icon to download a video course or episode to watch offline.</string>
+  <string name="body_downloads_empty">Tap the $ icon to download a video course or episode to watch offline.</string>
   <string name="title_download_permission_error">Verify permission</string>
   <string name="message_download_permission_error">Verify permission to watch downloaded content offline.</string>
   <string name="title_download_remove">Remove Download</string>

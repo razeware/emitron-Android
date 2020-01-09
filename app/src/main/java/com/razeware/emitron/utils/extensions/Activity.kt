@@ -86,7 +86,7 @@ fun AppCompatActivity.showSuccessSnackbar(text: String) =
  */
 fun Activity.requestGestureUi() {
   val view = window.decorView
-  if (hasGestureUiSupport()) {
+  if (hasQ()) {
     view.systemUiVisibility =
       View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
     window.navigationBarColor = ContextCompat.getColor(this, R.color.transparent)
@@ -128,8 +128,14 @@ fun hasNotificationChannelSupport(): Boolean =
 /**
  * Check if gesture UI is supported on device
  */
-fun hasGestureUiSupport(): Boolean =
+fun hasQ(): Boolean =
   Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+
+/**
+ * Check if device has Nougat
+ */
+fun hasNougat(): Boolean =
+  Build.VERSION.SDK_INT in listOf(Build.VERSION_CODES.N, Build.VERSION_CODES.N_MR1)
 
 /**
  * Open a custom tab

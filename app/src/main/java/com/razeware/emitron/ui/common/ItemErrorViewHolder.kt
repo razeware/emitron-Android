@@ -16,6 +16,7 @@ import com.razeware.emitron.R
 import com.razeware.emitron.databinding.ItemErrorBinding
 import com.razeware.emitron.ui.content.ContentAdapter
 import com.razeware.emitron.utils.UiStateManager
+import com.razeware.emitron.utils.extensions.hasQ
 import com.razeware.emitron.utils.extensions.isNetNotConnected
 import com.razeware.emitron.utils.extensions.toVisibility
 
@@ -145,7 +146,12 @@ class ItemErrorViewHolder(
           resources.getDimensionPixelSize(R.dimen.icon_height_width_1)
         )
         downloadIcon?.let {
-          val imageSpan = ImageSpan(downloadIcon, ImageSpan.ALIGN_BOTTOM)
+          val verticalAlignment = if (hasQ()) {
+            ImageSpan.ALIGN_CENTER
+          } else {
+            ImageSpan.ALIGN_BASELINE
+          }
+          val imageSpan = ImageSpan(downloadIcon, verticalAlignment)
           spannable.setSpan(
             imageSpan,
             imageSpanIndex,

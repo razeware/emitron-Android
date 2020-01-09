@@ -57,7 +57,7 @@ fun BoundaryCallbackNotifier?.hasRequests(): Boolean {
 
 /**
  *
- * @return True if
+ * @return True if boundary callback should reset it's page number
  */
 @MainThread
 fun BoundaryCallbackNotifier?.shouldReset(): Boolean {

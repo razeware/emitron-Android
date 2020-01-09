@@ -126,3 +126,8 @@ fun Download?.isPaused(): Boolean {
  * @return download progress or 0
  */
 fun Download?.getProgress(): Int = this?.progress ?: 0
+
+/**
+ * @return download state or [DownloadState.PAUSED]
+ */
+fun Download?.getState(): Int = this?.state ?: DownloadState.PAUSED.ordinal

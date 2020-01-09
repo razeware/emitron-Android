@@ -1,25 +1,4 @@
 ## Changes
-
-### UI Fixes
-#78 
-#115
-#118
-# 121
-#129
-#130
-#132
-#133
-#192
-#195
-#198
-#199
-#206 
-#207
-#209
-
-### Bug fixes
-#125 Marking an episode complete sometimes doesn't change the icon
-#191 Sort Order on My Tutorials
-#208 [My Tutorials - In Progress] Double entries
-#211 Offline Mode Prompt for Download Button
-#213 [Downloads] Download over mobile data not working
+- Fix download icon alignment on empty download message
+- Optimized collection episode list by using DiffUtil
+- Fix dark mode related crash on Android 7

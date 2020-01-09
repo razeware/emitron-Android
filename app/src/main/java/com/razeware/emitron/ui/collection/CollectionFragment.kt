@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -114,12 +115,13 @@ class CollectionFragment : DaggerFragment() {
           }
         },
         onEpisodeCompleted = { episode, position ->
-          viewModel.updateCollectionProgressionState(episodeAdapter.areAllEpisodesCompleted())
+          viewModel.updateCollectionProgressionState()
           viewModel.updateContentProgression(isNetConnected(), episode, position)
         },
         onEpisodeDownload = { episode, _ ->
           handleDownload(episode?.id, episode?.isDownloaded() == true)
-        }
+        },
+        viewModel = viewModel
       )
 
       with(recyclerViewCollectionEpisode) {
@@ -171,9 +173,8 @@ class CollectionFragment : DaggerFragment() {
         if (contentIsDownloaded) {
           binding.buttonCollectionDownload.updateDownloadState(null)
           viewModel.removeDownload()
-          episodeAdapter.removeEpisodeDownload(viewModel.getContentIds())
         } else {
-          episodeAdapter.removeEpisodeDownload(listOf(downloadId))
+          viewModel.removeEpisodeDownload(downloadId)
         }
       },
       viewModel.downloadsWifiOnly()
@@ -182,16 +183,23 @@ class CollectionFragment : DaggerFragment() {
 
   private fun initObservers() {
     viewModel.collectionEpisodes.observe(viewLifecycleOwner) {
+      episodeAdapter.update(it)
+    }
+
+    viewModel.loadCollectionEpisodesResult.observe(viewLifecycleOwner) {
       it?.let {
-        episodeAdapter.submitList(it)
-        val playbackAllowed = viewModel.isContentPlaybackAllowed(isNetConnected())
-        with(binding) {
-          groupCollectionContent.toVisibility(true)
-          groupProfessionalContent.toVisibility(!playbackAllowed)
-          buttonCollectionPlay.toVisibility(playbackAllowed && !viewModel.hasProgress())
-          buttonCollectionResume.toVisibility(playbackAllowed && viewModel.hasProgress())
-          progressCompletion.toVisibility(playbackAllowed && viewModel.hasProgress())
-          progressCompletion.progress = viewModel.getProgress()
+        val isSuccessFul = it.getContentIfNotHandled() ?: false
+        if (isSuccessFul) {
+          val playbackAllowed = viewModel.isContentPlaybackAllowed(isNetConnected())
+          val hasProgress = viewModel.hasProgress()
+          with(binding) {
+            groupCollectionContent.toVisibility(true)
+            groupProfessionalContent.toVisibility(!playbackAllowed)
+            buttonCollectionPlay.toVisibility(playbackAllowed && !hasProgress)
+            buttonCollectionResume.toVisibility(playbackAllowed && hasProgress)
+            progressCompletion.toVisibility(playbackAllowed && hasProgress)
+            progressCompletion.progress = viewModel.getProgress()
+          }
         }
       }
     }
@@ -202,10 +210,6 @@ class CollectionFragment : DaggerFragment() {
           requireContext(),
           withDifficulty = true,
           withYear = false
-        )
-
-        episodeAdapter.updateContentPlaybackAllowed(
-          viewModel.isContentPlaybackAllowed(isConnected = true)
         )
 
         val contributors = it.getReadableContributors(requireContext())
@@ -270,11 +274,11 @@ class CollectionFragment : DaggerFragment() {
         ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeMarkedInProgress ->
           showSuccessSnackbar(getString(R.string.message_episode_marked_in_progress))
         ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeFailedToMarkComplete -> {
-          episodeAdapter.updateEpisodeCompletion(false, episodePosition)
+          viewModel.updateEpisodeProgression(false, episodePosition)
           showErrorSnackbar(getString(R.string.message_episode_failed_to_mark_completed))
         }
         ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeFailedToMarkInProgress -> {
-          episodeAdapter.updateEpisodeCompletion(true, episodePosition)
+          viewModel.updateEpisodeProgression(true, episodePosition)
           showErrorSnackbar(
             getString(
               R.string.message_episode_failed_to_mark_in_progress
@@ -286,7 +290,7 @@ class CollectionFragment : DaggerFragment() {
         }
       }
       // Update Collection state as per new episode state
-      viewModel.updateCollectionProgressionState(episodeAdapter.areAllEpisodesCompleted())
+      viewModel.updateCollectionProgressionState()
     }
 
     viewModel.uiState.observe(viewLifecycleOwner) {
@@ -312,7 +316,7 @@ class CollectionFragment : DaggerFragment() {
             val collectionDownload =
               viewModel.updateCollectionDownloadState(downloads, downloadIds)
             binding.buttonCollectionDownload.updateDownloadState(collectionDownload)
-            episodeAdapter.updateEpisodeDownloadProgress(downloads)
+            viewModel.updateEpisodeDownloadProgress(downloads)
           }
         }
       }
@@ -327,6 +331,9 @@ class CollectionFragment : DaggerFragment() {
   private fun openPlayer(currentEpisode: Data? = null) {
     val playList = viewModel.getPlaylist()
     val playlistWithSelectedEpisode = playList.copy(currentEpisode = currentEpisode)
+    if (hasNougat()) {
+      AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+    }
     val action =
       CollectionFragmentDirections.actionNavigationCollectionToNavigationPlayer(
         playlistWithSelectedEpisode
@@ -397,10 +404,7 @@ class CollectionFragment : DaggerFragment() {
     viewModel.permissionActionResult.observe(viewLifecycleOwner) {
       when (it) {
         PermissionActionDelegate.PermissionActionResult.HasDownloadPermission -> {
-          episodeAdapter.updateContentPlaybackAllowed(
-            viewModel.isContentPlaybackAllowed(isConnected = true),
-            refresh = true
-          )
+          episodeAdapter.notifyDataSetChanged()
           openPlayer(currentEpisode)
         }
         PermissionActionDelegate.PermissionActionResult.NoPermission -> {
