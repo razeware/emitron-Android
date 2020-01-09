@@ -145,7 +145,7 @@
 
   <!-- My tutorials -->
   <string name="button_delete">Delete</string>
-  <string name="button_mark_completed">Mark completed</string>
+  <string name="button_mark_completed">Mark complete</string>
   <string name="button_mark_in_progress">Reset progress</string>
   <string name="my_tutorials_tab_completed">Completed</string>
   <string name="my_tutorials_tab_in_progress">In Progress</string>
