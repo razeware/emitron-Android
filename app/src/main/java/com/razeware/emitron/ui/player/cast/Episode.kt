@@ -23,10 +23,18 @@ data class Episode(
   /**
    * Playback progress
    */
-  val progress: Long
+  val progress: Long,
+
+  /**
+   * Is episode completed
+   */
+  val isCompleted: Boolean
 ) {
 
-  fun getProgressInMillis(): Long = progress * MILLIS_IN_A_SECOND
+  /**
+   * Get episode progress
+   */
+  fun getProgressInMillis(): Long = if (isCompleted) 0 else progress * MILLIS_IN_A_SECOND
 
   companion object {
 
@@ -43,6 +51,7 @@ data class Episode(
         name = data.getName() ?: "",
         uri = data.getUrl(),
         progress = data.getProgressionProgress(),
+        isCompleted = data.isProgressionFinished(),
         mimeType = if (data.isDownloaded()) {
           MimeTypes.APPLICATION_MP4
         } else {
