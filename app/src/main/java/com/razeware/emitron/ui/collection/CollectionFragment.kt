@@ -58,6 +58,7 @@ class CollectionFragment : DaggerFragment() {
   private lateinit var binding: FragmentCollectionBinding
 
   private var verifyDownloadDialog: AlertDialog? = null
+  private var downloadMeteredNetworkErrorDialog: AlertDialog? = null
 
   /**
    * Helper to observer download progress from [DownloadManager]
@@ -165,7 +166,7 @@ class CollectionFragment : DaggerFragment() {
         initDownloadProgress()
 
         if (isActiveNetworkMetered() && viewModel.downloadsWifiOnly()) {
-          showSuccessSnackbar(getString(R.string.error_download_wifi_only))
+          showDownloadMeteredNetworkErrorDialog()
         } else {
           showSuccessSnackbar(getString(R.string.message_download_started))
         }
@@ -178,6 +179,29 @@ class CollectionFragment : DaggerFragment() {
         }
       },
       viewModel.downloadsWifiOnly()
+    )
+  }
+
+  private fun showDownloadMeteredNetworkErrorDialog() {
+    downloadMeteredNetworkErrorDialog = createDialog(
+      title = R.string.title_download_wifi_only_error,
+      message = R.string.body_download_wifi_only_error,
+      positiveButton = R.string.button_label_settings,
+      positiveButtonClickListener = {
+        openSettings()
+        downloadMeteredNetworkErrorDialog?.dismiss()
+      },
+      negativeButton = R.string.button_label_dismiss,
+      negativeButtonClickListener = {
+        downloadMeteredNetworkErrorDialog?.dismiss()
+      }
+    )
+    downloadMeteredNetworkErrorDialog?.show()
+  }
+
+  private fun openSettings() {
+    findNavController().navigate(
+      CollectionFragmentDirections.actionNavigationCollectionToNavigationSettings()
     )
   }
 
@@ -371,6 +395,9 @@ class CollectionFragment : DaggerFragment() {
     if (isShowingVerifyDownloadDialog()) {
       verifyDownloadDialog?.dismiss()
     }
+    if (isShowingDownloadMeteredNetworkErrorDialog()) {
+      downloadMeteredNetworkErrorDialog?.dismiss()
+    }
 
     downloadProgressHelper.clear()
   }
@@ -399,6 +426,9 @@ class CollectionFragment : DaggerFragment() {
   }
 
   private fun isShowingVerifyDownloadDialog() = verifyDownloadDialog?.isShowing == true
+
+  private fun isShowingDownloadMeteredNetworkErrorDialog() =
+    downloadMeteredNetworkErrorDialog?.isShowing == true
 
   private fun initPermissionObserver(currentEpisode: Data? = null) {
     viewModel.permissionActionResult.observe(viewLifecycleOwner) {

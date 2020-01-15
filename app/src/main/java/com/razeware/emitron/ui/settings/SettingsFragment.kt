@@ -19,6 +19,7 @@ import com.razeware.emitron.R
 import com.razeware.emitron.databinding.FragmentSettingsBinding
 import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
 import com.razeware.emitron.ui.common.getDefaultAppBarConfiguration
+import com.razeware.emitron.ui.download.workers.PendingDownloadWorker
 import com.razeware.emitron.ui.login.GuardpostDelegate
 import com.razeware.emitron.ui.settings.SettingsBottomSheetDialogFragment.Companion.downloadQualityToResIdMap
 import com.razeware.emitron.ui.settings.SettingsBottomSheetDialogFragment.Companion.playbackQualityToResIdMap
@@ -179,6 +180,12 @@ class SettingsFragment : DaggerFragment() {
       }
       switchDownloadNetwork.setOnCheckedChangeListener { _, checked ->
         viewModel.updateDownloadsWifiOnly(checked)
+        if (!checked) {
+          PendingDownloadWorker.enqueue(
+            WorkManager.getInstance(requireContext()),
+            viewModel.getDownloadsWifiOnly()
+          )
+        }
       }
       settingsDownloadQuality.setOnClickListener {
         showSettingsBottomSheet(R.string.label_download_quality)

@@ -16,6 +16,15 @@
   <string name="error_no_internet">No connection</string>
   <string name="error_no_internet_body">Please check Internet connection and try again.</string>
   <string name="button_explore_tutorials">Explore Tutorials</string>
+  <string name="button_label_cancel">Cancel</string>
+  <string name="button_label_yes">Yes</string>
+  <string name="button_label_no">No</string>
+  <string name="button_label_continue">Continue</string>
+  <string name="button_label_delete">Delete</string>
+  <string name="button_label_dismiss">Close</string>
+  <string name="button_label_settings">Settings</string>
+  <string name="button_label_got_it">Got it!</string>
+  <string name="button_label_verify">Verify</string>
 
   <plurals name="hours">
     <item quantity="one">1 hr, </item>
@@ -87,16 +96,14 @@
   <string name="message_episode_failed_to_mark_completed">Failed to mark episode completed.</string>
   <string name="message_episode_marked_in_progress">Progress removed from episode.</string>
   <string name="message_episode_failed_to_mark_in_progress">Failed to remove progress from episode.</string>
-  <string name="button_label_verify">Verify</string>
-  <string name="button_label_cancel">Cancel</string>
   <string name="button_label_play_online">Play online</string>
   <string name="error_permission">Failed to verify permissions.</string>
-  <string name="button_label_yes">Yes</string>
-  <string name="button_label_no">No</string>
+
   <string name="message_downloads_no_subscription">Upgrade your subscription to download videos.</string>
-  <string name="button_label_continue_playback">Continue</string>
+  <string name="button_label_continue_playback">@string/button_label_continue</string>
   <string name="message_download_started">Download added.</string>
-  <string name="error_download_wifi_only">Download will resume on WiFi connection.</string>
+  <string name="body_download_wifi_only_error">Download will resume on WiFi connection.</string>
+  <string name="title_download_wifi_only_error">""</string>
 
   <!-- Filter screen -->
   <string name="button_filter_clear_all">Clear All</string>
@@ -109,7 +116,6 @@
   <string name="button_show">Show</string>
   <string name="error_load_failed_domains">Failed to fetch domains.</string>
   <string name="error_load_failed_categories">Failed to fetch categories.</string>
-  <string name="button_label_delete">Delete</string>
 
   <string-array name="filter_difficulty">
     <item>@string/difficulty_beginner</item>
@@ -226,7 +232,6 @@
   <string name="on_boarding_download_card_img_url">https://files.betamax.raywenderlich.com/attachments/collections/202/c8cef063-f1ee-41b4-88e5-33698f3a4e2e.png</string>
   <string name="on_boarding_download_title">Swipe left to delete a download</string>
   <string name="on_boarding_download_body">Swipe on your downloads to remove them.</string>
-  <string name="button_label_got_it">Got it!</string>
   <string name="button_label_on_boarding_close">Don’t show me any more tips</string>
   <string name="on_boarding_episode_title_1">Do Competitive Research and Find Inspiration</string>
   <string name="on_boarding_episode_title_2">Wireframe an App with Sketch</string>

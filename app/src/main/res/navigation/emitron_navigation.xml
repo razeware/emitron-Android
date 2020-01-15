@@ -57,6 +57,9 @@
       android:id="@+id/action_navigation_collection_to_navigation_player"
       app:destination="@id/navigation_player" />
     <action
+      android:id="@+id/action_navigation_collection_to_navigation_settings"
+      app:destination="@id/settings_navigation" />
+    <action
       android:id="@+id/action_navigation_collection_to_navigation_onboarding"
       app:destination="@id/navigation_onboarding">
       <argument

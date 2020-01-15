@@ -158,12 +158,12 @@ class SettingsViewModelTest {
 
   @Test
   fun getNightMode() {
+    viewModel.getNightMode()
     verify(settingsRepository).isCrashReportingAllowed()
     verify(settingsRepository).getPlaybackQuality()
     verify(settingsRepository).getSubtitleLanguage()
     verify(settingsRepository).getPlaybackSpeed()
-    verify(settingsRepository).getNightMode()
-    verify(settingsRepository).getNightMode()
+    verify(settingsRepository, times(2)).getNightMode()
     verify(settingsRepository).getDownloadQuality()
     verify(settingsRepository).getDownloadsWifiOnly()
     verifyNoMoreInteractions(settingsRepository)
@@ -171,12 +171,12 @@ class SettingsViewModelTest {
 
   @Test
   fun getPlaybackQuality() {
+    viewModel.getPlaybackQuality()
     verify(settingsRepository).getNightMode()
     verify(settingsRepository).isCrashReportingAllowed()
     verify(settingsRepository).getSubtitleLanguage()
     verify(settingsRepository).getPlaybackSpeed()
-    verify(settingsRepository).getPlaybackQuality()
-    verify(settingsRepository).getPlaybackQuality()
+    verify(settingsRepository, times(2)).getPlaybackQuality()
     verify(settingsRepository).getDownloadQuality()
     verify(settingsRepository).getDownloadsWifiOnly()
     verifyNoMoreInteractions(settingsRepository)
@@ -184,12 +184,12 @@ class SettingsViewModelTest {
 
   @Test
   fun getPlaybackSpeed() {
+    viewModel.getPlaybackSpeed()
     verify(settingsRepository).getNightMode()
     verify(settingsRepository).isCrashReportingAllowed()
     verify(settingsRepository).getPlaybackQuality()
     verify(settingsRepository).getSubtitleLanguage()
-    verify(settingsRepository).getPlaybackSpeed()
-    verify(settingsRepository).getPlaybackSpeed()
+    verify(settingsRepository, times(2)).getPlaybackSpeed()
     verify(settingsRepository).getDownloadQuality()
     verify(settingsRepository).getDownloadsWifiOnly()
     verifyNoMoreInteractions(settingsRepository)
@@ -197,12 +197,12 @@ class SettingsViewModelTest {
 
   @Test
   fun getSubtitleLanguage() {
+    viewModel.getSubtitleLanguage()
     verify(settingsRepository).getNightMode()
     verify(settingsRepository).isCrashReportingAllowed()
     verify(settingsRepository).getPlaybackQuality()
     verify(settingsRepository).getPlaybackSpeed()
-    verify(settingsRepository).getSubtitleLanguage()
-    verify(settingsRepository).getSubtitleLanguage()
+    verify(settingsRepository, times(2)).getSubtitleLanguage()
     verify(settingsRepository).getDownloadQuality()
     verify(settingsRepository).getDownloadsWifiOnly()
     verifyNoMoreInteractions(settingsRepository)
@@ -247,30 +247,27 @@ class SettingsViewModelTest {
 
   @Test
   fun getDownloadQuality() {
-
+    viewModel.getDownloadQuality()
     verify(settingsRepository).getNightMode()
     verify(settingsRepository).isCrashReportingAllowed()
     verify(settingsRepository).getPlaybackQuality()
     verify(settingsRepository).getPlaybackSpeed()
     verify(settingsRepository).getSubtitleLanguage()
-    verify(settingsRepository).getDownloadQuality()
+    verify(settingsRepository, times(2)).getDownloadQuality()
     verify(settingsRepository).getDownloadsWifiOnly()
-
-    verify(settingsRepository).getDownloadQuality()
     verifyNoMoreInteractions(settingsRepository)
   }
 
   @Test
   fun getDownloadsWifiOnly() {
+    viewModel.getDownloadsWifiOnly()
     verify(settingsRepository).getNightMode()
     verify(settingsRepository).isCrashReportingAllowed()
     verify(settingsRepository).getPlaybackQuality()
     verify(settingsRepository).getPlaybackSpeed()
     verify(settingsRepository).getSubtitleLanguage()
     verify(settingsRepository).getDownloadQuality()
-    verify(settingsRepository).getDownloadsWifiOnly()
-
-    verify(settingsRepository).getDownloadsWifiOnly()
+    verify(settingsRepository, times(2)).getDownloadsWifiOnly()
     verifyNoMoreInteractions(settingsRepository)
   }
 }
