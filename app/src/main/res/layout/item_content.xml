@@ -218,7 +218,7 @@
         android:layout_height="@dimen/height_card_progress_height"
         android:layout_marginTop="@dimen/margin_card_progress_top"
         android:indeterminate="false"
-        android:progressDrawable="@drawable/progress_drawable_horizontal"
+        android:progressDrawable="@drawable/progress_drawable_horizontal_4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

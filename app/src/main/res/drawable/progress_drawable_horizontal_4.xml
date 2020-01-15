@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-Drawable with primary color for progress and different color for background
+Drawable with primary color for progress and transparent background
 -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
   <item android:id="@android:id/background">
@@ -8,9 +8,9 @@ Drawable with primary color for progress and different color for background
       <corners
         android:bottomLeftRadius="@dimen/episode_progress_corner_radius"
         android:bottomRightRadius="@dimen/episode_progress_corner_radius"
-        android:topLeftRadius="@dimen/episode_progress_corner_radius"
+        android:topLeftRadius="0dp"
         android:topRightRadius="@dimen/episode_progress_corner_radius" />
-      <solid android:color="@color/colorContentProgressBackground" />
+      <solid android:color="@color/transparent" />
     </shape>
   </item>
   <item
@@ -21,7 +21,7 @@ Drawable with primary color for progress and different color for background
         <corners
           android:bottomLeftRadius="@dimen/episode_progress_corner_radius"
           android:bottomRightRadius="@dimen/episode_progress_corner_radius"
-          android:topLeftRadius="@dimen/episode_progress_corner_radius"
+          android:topLeftRadius="0dp"
           android:topRightRadius="@dimen/episode_progress_corner_radius" />
         <solid android:color="@color/colorContentProgress" />
       </shape>
