@@ -478,6 +478,7 @@ data class Data(
     progressionId = id,
     percentComplete = getPercentComplete(),
     finished = isFinished(),
+    updatedAt = getUpdatedAt(),
     synced = true
   )
 
@@ -491,8 +492,14 @@ data class Data(
     progress = getProgress(),
     percentComplete = getPercentComplete(),
     finished = isFinished(),
+    updatedAt = getUpdatedAt(),
     synced = true
   )
+
+  /**
+   * Get updated at
+   */
+  fun getUpdatedAt(): String = attributes?.updatedAt ?: ""
 
   companion object {
 

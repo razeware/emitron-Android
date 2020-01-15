@@ -166,6 +166,13 @@ data class Content(
   fun getName(): String? = getData()?.getName()
 
   /**
+   * Get updatedAt
+   *
+   * @return updated at of content from [Content.datum]
+   */
+  private fun getUpdatedAt(): String? = getData()?.getUpdatedAt()
+
+  /**
    * Create [Progression] from [Content]
    *
    */
@@ -174,7 +181,8 @@ data class Content(
     progressionId = getChildId(),
     percentComplete = getPercentComplete(),
     finished = isFinished(),
-    synced = true
+    synced = true,
+    updatedAt = getUpdatedAt()
   )
 
   /**
