@@ -16,7 +16,7 @@ import com.razeware.emitron.utils.UiStateManager
  * Paged list Adapter for [Data] items
  */
 class ContentAdapter private constructor(
-  private var adapterContentType: AdapterContentType = AdapterContentType.Content,
+  private var type: Type = Type.Content,
   private val pagedAdapter: PagedAdapter,
   private val onItemClick: (Data?) -> Unit,
   private val onItemRetry: () -> Unit,
@@ -32,7 +32,7 @@ class ContentAdapter private constructor(
      * Factory function for [ContentAdapter]
      */
     fun build(
-      adapterContentType: AdapterContentType = AdapterContentType.Content,
+      type: Type = Type.Content,
       pagedAdapter: PagedAdapter = PagedAdapter(),
       onItemClick: (Data?) -> Unit,
       onItemRetry: () -> Unit,
@@ -41,7 +41,7 @@ class ContentAdapter private constructor(
       bookmarkCallback: ((Data?) -> Unit)? = null,
       downloadCallback: ((Data?, Int) -> Unit)? = null
     ): ContentAdapter = ContentAdapter(
-      adapterContentType = adapterContentType,
+      type = type,
       pagedAdapter = pagedAdapter,
       onItemClick = onItemClick,
       onItemRetry = onItemRetry,
@@ -64,7 +64,7 @@ class ContentAdapter private constructor(
    *
    * This will help in showing error/empty messages respective to a view
    */
-  enum class AdapterContentType {
+  enum class Type {
     /**
      * Adapter is part of library view
      */
@@ -132,6 +132,15 @@ class ContentAdapter private constructor(
      */
     fun isDownloaded(): Boolean =
       this == ContentDownloaded
+
+
+    /**
+     * Adapter is part of in progress content view
+     *
+     * @return True if adapter is part of in progress content view else False
+     */
+    fun isInProgress(): Boolean =
+      this == ContentInProgress
   }
 
   /**
@@ -188,7 +197,7 @@ class ContentAdapter private constructor(
         bindContentItem(holder, position)
       }
       is ItemFooterViewHolder -> holder.bindTo(pagedAdapter.networkState)
-      is ItemErrorViewHolder -> holder.bindTo(pagedAdapter.uiState, adapterContentType)
+      is ItemErrorViewHolder -> holder.bindTo(pagedAdapter.uiState, type)
     }
   }
 
@@ -212,7 +221,7 @@ class ContentAdapter private constructor(
     data?.let {
       (viewHolder).bindTo(
         content = data,
-        adapterContent = adapterContentType,
+        adapterType = type,
         onItemClick = { clickPosition ->
           onItemClick(getItem(clickPosition))
         },
@@ -291,8 +300,8 @@ class ContentAdapter private constructor(
    *
    * @param contentType Current parent view contentType for adapter
    */
-  fun updateContentType(contentType: AdapterContentType = AdapterContentType.Content) {
-    adapterContentType = contentType
+  fun updateContentType(contentType: Type = Type.Content) {
+    type = contentType
   }
 
   /**

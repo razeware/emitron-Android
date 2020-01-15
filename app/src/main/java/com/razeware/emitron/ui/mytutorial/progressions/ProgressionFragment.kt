@@ -62,7 +62,7 @@ class ProgressionFragment : DaggerFragment() {
 
   internal val adapter: ContentAdapter by lazy {
     ContentAdapter.build(
-      adapterContentType = getAdapterContentType(),
+      type = getAdapterContentType(),
       onItemClick = ::openCollection,
       onItemRetry = ::loadProgressions,
       retryCallback = ::loadProgressions,
@@ -148,11 +148,11 @@ class ProgressionFragment : DaggerFragment() {
       R.drawable.bg_swipe_progression
     }
 
-  private fun getAdapterContentType(): ContentAdapter.AdapterContentType =
+  private fun getAdapterContentType(): ContentAdapter.Type =
     if (completionStatus.isCompleted()) {
-      ContentAdapter.AdapterContentType.ContentCompleted
+      ContentAdapter.Type.ContentCompleted
     } else {
-      ContentAdapter.AdapterContentType.ContentInProgress
+      ContentAdapter.Type.ContentInProgress
     }
 
   private fun updateContentProgression(data: Data?) {
@@ -165,20 +165,20 @@ class ProgressionFragment : DaggerFragment() {
         it ?: (null to 0)
       when (event?.getContentIfNotHandled()) {
         ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeMarkedCompleted -> {
-          showSuccessSnackbar(getString(R.string.message_episode_marked_completed))
-        }
+              showSuccessSnackbar(getString(R.string.message_episode_marked_completed))
+            }
         ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeMarkedInProgress ->
-          showSuccessSnackbar(getString(R.string.message_episode_marked_in_progress))
+              showSuccessSnackbar(getString(R.string.message_episode_marked_in_progress))
         ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeFailedToMarkComplete -> {
-          showErrorSnackbar(getString(R.string.message_episode_failed_to_mark_completed))
-        }
+              showErrorSnackbar(getString(R.string.message_episode_failed_to_mark_completed))
+            }
         ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeFailedToMarkInProgress -> {
-          showErrorSnackbar(
-            getString(
-              R.string.message_episode_failed_to_mark_in_progress
-            )
-          )
-        }
+              showErrorSnackbar(
+                getString(
+                  R.string.message_episode_failed_to_mark_in_progress
+                )
+              )
+            }
         null -> {
           // Houston, We Have a Problem!
         }

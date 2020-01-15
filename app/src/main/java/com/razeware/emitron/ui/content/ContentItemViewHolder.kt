@@ -20,7 +20,7 @@ class ContentItemViewHolder(private val binding: ItemContentBinding) :
    */
   fun bindTo(
     content: Data?,
-    adapterContent: ContentAdapter.AdapterContentType,
+    adapterType: ContentAdapter.Type,
     onItemClick: (Int) -> Unit,
     bookmarkCallback: ((Int) -> Unit)? = null,
     downloadCallback: ((Int, Int) -> Unit)? = null

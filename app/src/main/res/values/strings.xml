@@ -156,9 +156,13 @@
   <string name="my_tutorials_tab_completed">Completed</string>
   <string name="my_tutorials_tab_in_progress">In Progress</string>
   <string name="my_tutorials_tab_bookmarks">Bookmarks</string>
-  <string name="body_bookmarks_empty">You haven’t bookmarked any tutorials yet</string>
-  <string name="body_progressions_empty">You haven’t started any tutorials yet</string>
-  <string name="body_progressions_completed_empty">You haven’t completed any tutorials yet</string>
+  <string name="title_bookmarks_empty">You haven’t bookmarked any tutorials yet</string>
+  <string name="title_progressions_empty">You haven’t started any tutorials yet</string>
+  <string name="body_progressions_empty">When you start a video course you can quickly resume it from here.</string>
+  <string name="title_progressions_completed_empty">You haven’t completed any tutorials yet</string>
+  <string name="body_progressions_completed_empty">Watch all the episodes of a video course or screencast to complete it.</string>
+  <string name="body_bookmarks_empty">Tap the $ icon to bookmark a video course or screencast.
+  </string>
 
   <!-- Player screen -->
   <string name="player_rew">Rewind</string>
