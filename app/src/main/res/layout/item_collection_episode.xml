@@ -61,12 +61,12 @@
       android:layout_width="@dimen/button_episode_number_height_width"
       android:layout_height="@dimen/button_episode_number_height_width"
       android:layout_marginEnd="@dimen/button_episode_number_margin_end"
+      android:gravity="center"
       android:insetTop="0dp"
       android:insetBottom="0dp"
       android:minWidth="@dimen/button_episode_number_height_width"
       android:minHeight="@dimen/button_episode_number_height_width"
       android:text="@{episodePosition}"
-      android:gravity="center"
       app:cornerRadius="@dimen/collection_episode_position_corner_radius"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintDimensionRatio="1:1"
@@ -79,6 +79,16 @@
       tools:icon="@drawable/ic_material_icon_padlock"
       tools:iconTint="@color/white"
       tools:text="" />
+
+    <View
+      android:id="@+id/button_collection_episode_click"
+      android:layout_width="@dimen/button_height_default"
+      android:layout_height="@dimen/button_height_default"
+      app:layout_constraintBottom_toBottomOf="@+id/button_collection_episode"
+      app:layout_constraintEnd_toEndOf="@+id/button_collection_episode"
+      app:layout_constraintStart_toStartOf="@+id/button_collection_episode"
+      app:layout_constraintTop_toTopOf="@+id/button_collection_episode" />
+
 
     <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/text_title"
@@ -137,7 +147,7 @@
       app:layout_constraintStart_toStartOf="@+id/text_title"
       app:layout_constraintTop_toBottomOf="@+id/text_duration"
       tools:progress="25"
-      tools:visibility="visible"/>
+      tools:visibility="visible" />
 
     <View
       android:id="@+id/collection_item_divider"
