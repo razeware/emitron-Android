@@ -561,7 +561,8 @@ class ContentDataSourceLocalTest {
             progressionId = "1",
             percentComplete = 99,
             finished = true,
-            synced = true
+            synced = true,
+            updatedAt = ""
           )
         ),
         progressionDao,

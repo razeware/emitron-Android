@@ -91,12 +91,12 @@ class DownloadProgressHelper @Inject constructor(private val downloadManager: Do
     }
 
     downloads.map {
-      val state = when {
-        it.state == Download.STATE_FAILED -> DownloadState.FAILED
-        it.state == Download.STATE_COMPLETED -> DownloadState.COMPLETED
-        it.state == Download.STATE_DOWNLOADING -> DownloadState.IN_PROGRESS
-        it.state == Download.STATE_QUEUED -> DownloadState.PAUSED
-        it.state == Download.STATE_STOPPED -> DownloadState.PAUSED
+      val state = when (it.state) {
+        Download.STATE_FAILED -> DownloadState.FAILED
+        Download.STATE_COMPLETED -> DownloadState.COMPLETED
+        Download.STATE_DOWNLOADING -> DownloadState.IN_PROGRESS
+        Download.STATE_QUEUED -> DownloadState.PAUSED
+        Download.STATE_STOPPED -> DownloadState.PAUSED
         else -> DownloadState.IN_PROGRESS
       }
       onDownloadChange(
