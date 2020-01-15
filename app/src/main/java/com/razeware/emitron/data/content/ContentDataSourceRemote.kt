@@ -78,7 +78,7 @@ class ContentDataSourceRemote(
       loadAfterError()
       return
     }
-    val items = contentBody.datum
+    val items = contentBody.getDatumWithRelationships()
     if (items.isNullOrEmpty()) {
       loadAfterError()
       return
@@ -126,7 +126,7 @@ class ContentDataSourceRemote(
       return
     }
 
-    val items = contentBody.datum
+    val items = contentBody.getDatumWithRelationships()
     if (items.isNullOrEmpty()) {
       loadInitialEmpty()
       return

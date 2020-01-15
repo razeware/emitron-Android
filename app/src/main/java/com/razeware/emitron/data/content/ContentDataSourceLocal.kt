@@ -38,6 +38,11 @@ class ContentDataSourceLocal @Inject constructor(
     val contentDomainList = ContentDomainJoin.listFrom(contents)
 
     val progressionList = when (dataType) {
+      /**
+       * In ideal scenario the bookmark response should also include the progressions data,
+       * but since it doesn't to avoid overwrites of existing progressions we will avoid updates,
+       * so progression list is empty from bookmarks.
+       */
       DataType.Bookmarks -> emptyList()
       else -> {
         Progression.listFrom(contents)
