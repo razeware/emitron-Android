@@ -11,7 +11,7 @@
   <color name="textColorOverline3">@color/light_gray_blue</color>
   <color name="textColorOverlineInverse">@color/bright_grey</color>
   <color name="textColorBody2">@color/white</color>
-  <color name="textColorBody3">@color/raven_grey</color>
+  <color name="textColorBody3">@color/light_gray_blue</color>
   <color name="textColorLabel">@color/white</color>
   <color name="textColorFootnote">@color/light_gray_blue</color>
   <color name="textColorCaption">@color/light_gray_blue</color>
@@ -30,7 +30,7 @@
 
   <color name="colorNavDivider">@color/bright_grey</color>
   <color name="colorBoxStroke">@color/blue_grey</color>
-  <color name="colorContentProgressBackground">@color/blue_grey</color>
+  <color name="colorContentProgressBackground">@color/bright_grey</color>
 
   <color name="colorTabSelected">@color/white</color>
   <color name="colorTabDefault">@color/bright_grey</color>

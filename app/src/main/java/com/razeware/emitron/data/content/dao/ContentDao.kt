@@ -177,6 +177,7 @@ interface ContentDao {
           ON progressions.content_id = contents.content_id
           WHERE progressions.finished = :completed
           AND contents.content_type in(:contentTypes)
+          ORDER BY datetime(progressions.updated_at) ASC
           """
   )
   @Transaction

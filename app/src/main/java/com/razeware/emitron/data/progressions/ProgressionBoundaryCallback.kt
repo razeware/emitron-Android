@@ -99,8 +99,13 @@ class ProgressionBoundaryCallback(
       return Triple(null, 0, false)
     }
 
+
     val items = contentBody.datum.mapNotNull {
       val dataId = it.getContentId()
+      /**
+       * Map each progression object to included content object,
+       * also update the content object relations with progression object
+       */
       val data = contentBody.included?.first { (id) -> id == dataId }
       data?.updateRelationships(listOf(it))
     }

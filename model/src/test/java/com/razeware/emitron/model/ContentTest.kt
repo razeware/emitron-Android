@@ -94,7 +94,8 @@ class ContentTest {
       progressionId = "1",
       percentComplete = 10,
       finished = false,
-      synced = true
+      synced = true,
+      updatedAt = ""
     )
   }
 

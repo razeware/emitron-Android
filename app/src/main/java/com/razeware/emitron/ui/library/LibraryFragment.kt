@@ -221,7 +221,7 @@ class LibraryFragment : DaggerFragment() {
         }
       } else {
         if (!parentViewModel.hasFilters()) {
-          adapter.updateContentType(ContentAdapter.AdapterContentType.ContentWithSearch)
+          adapter.updateContentType(ContentAdapter.Type.ContentWithSearch)
         }
       }
     }
@@ -320,7 +320,7 @@ class LibraryFragment : DaggerFragment() {
     val filterContainer = binding.chipGroupLibraryFilter
     filterContainer.removeAllViews()
     filterContainer.visibility = View.GONE
-    adapter.updateContentType(ContentAdapter.AdapterContentType.Content)
+    adapter.updateContentType(ContentAdapter.Type.Content)
   }
 
   private fun applyDefaultChipStyle(chip: Chip) {
@@ -380,7 +380,7 @@ class LibraryFragment : DaggerFragment() {
         loadCollections()
       }
       filterContainer.addView(chip as View)
-      adapter.updateContentType(ContentAdapter.AdapterContentType.ContentWithFilters)
+      adapter.updateContentType(ContentAdapter.Type.ContentWithFilters)
       filterContainer.visibility = View.VISIBLE
     }
   }

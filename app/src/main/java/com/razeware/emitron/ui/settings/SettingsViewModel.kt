@@ -183,4 +183,9 @@ class SettingsViewModel @Inject constructor(
    * Get download quality from preference
    */
   fun getDownloadQuality(): String = settingsRepository.getDownloadQuality()
+
+  /**
+   * Get download wifi only
+   */
+  fun getDownloadsWifiOnly(): Boolean = settingsRepository.getDownloadsWifiOnly()
 }

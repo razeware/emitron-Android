@@ -45,7 +45,7 @@ class BookmarkFragment : DaggerFragment() {
       retryCallback = ::loadBookmarks,
       emptyCallback = ::handleEmpty,
       onItemRetry = ::loadBookmarks,
-      adapterContentType = ContentAdapter.AdapterContentType.ContentBookmarked,
+      type = ContentAdapter.Type.ContentBookmarked,
       bookmarkCallback = ::updateContentBookmark
     )
   }

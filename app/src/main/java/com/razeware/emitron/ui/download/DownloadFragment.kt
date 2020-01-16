@@ -71,7 +71,7 @@ class DownloadFragment : DaggerFragment() {
       retryCallback = ::loadDownloads,
       emptyCallback = ::handleEmpty,
       onItemRetry = ::loadDownloads,
-      adapterContentType = ContentAdapter.AdapterContentType.ContentDownloaded,
+      type = ContentAdapter.Type.ContentDownloaded,
       downloadCallback = { data, _ -> handleDownload(data) }
     )
   }

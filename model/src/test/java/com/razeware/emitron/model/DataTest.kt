@@ -875,7 +875,8 @@ class DataTest {
       progressionId = "1",
       percentComplete = 10,
       finished = false,
-      synced = true
+      synced = true,
+      updatedAt = ""
     )
   }
 
@@ -895,7 +896,8 @@ class DataTest {
       progressionId = "1",
       percentComplete = 10,
       finished = false,
-      synced = true
+      synced = true,
+      updatedAt = ""
     )
   }
 

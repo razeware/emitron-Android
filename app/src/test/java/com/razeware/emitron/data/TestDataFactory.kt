@@ -156,13 +156,17 @@ fun withRelatedProgression(datum: Data? = withProgression()): com.razeware.emitr
     datum = datum
   )
 
-fun withProgression(percentComplete: Double = 99.0, finished: Boolean = true): Data = Data(
+fun withProgression(
+  percentComplete: Double = 99.0,
+  finished: Boolean = true,
+  progress: Long = 0
+): Data = Data(
   id = "1",
   type = "progressions",
   attributes = Attributes(
     percentComplete = percentComplete,
     finished = finished,
-    progress = 0,
+    progress = progress,
     contentId = "1"
   ),
   relationships = Relationships(

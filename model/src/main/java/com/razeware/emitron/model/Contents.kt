@@ -71,8 +71,18 @@ data class Contents(
     DownloadQuality.fromKind(it.attributes?.kind).isSd()
   }
 
+  /**
+   * Get datum with updated relationships
+   */
+  fun getDatumWithRelationships(): List<Data> = datum.map {
+    it.updateRelationships(included)
+  }
+
   companion object {
 
+    /**
+     * Create contents item from data items
+     */
     fun from(vararg data: Data): Contents = Contents(datum = data.toList())
   }
 }

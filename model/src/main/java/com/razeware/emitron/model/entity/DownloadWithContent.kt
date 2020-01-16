@@ -104,15 +104,21 @@ fun DownloadWithContent?.isPaused(): Boolean =
  * Is download completed
  */
 fun DownloadWithContent?.isCompleted(): Boolean {
+  if (this?.contents.isNullOrEmpty()) return false
   val isScreencastOrEpisode =
     this?.contents?.first()?.content?.isScreencastOrEpisode() ?: false
   return if (isScreencastOrEpisode) {
     this?.download?.state == DownloadState.COMPLETED.ordinal
   } else {
-    this?.contents?.first()?.groups?.any { contentGroupJoinWithGroup ->
-      contentGroupJoinWithGroup.episodes.any { groupEpisodeJoinWithEpisode ->
+    this?.contents?.first()?.groups?.all { contentGroupJoinWithGroup ->
+      contentGroupJoinWithGroup.episodes.all { groupEpisodeJoinWithEpisode ->
         groupEpisodeJoinWithEpisode.episodes.all { contentWithDomainAndProgression ->
-          contentWithDomainAndProgression.downloads.first().isCompleted()
+          val downloads = contentWithDomainAndProgression.downloads
+          if (downloads.isEmpty()) {
+            false
+          } else {
+            downloads.first().isCompleted()
+          }
         }
       }
     } ?: false

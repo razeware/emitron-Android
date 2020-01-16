@@ -36,7 +36,7 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
       root.setOnClickListener {
         onEpisodeSelected(adapterPosition)
       }
-      buttonCollectionEpisode.setOnClickListener {
+      buttonCollectionEpisodeClick.setOnClickListener {
         onEpisodeCompleted(adapterPosition)
       }
       buttonCollectionEpisodeDownload.setOnClickListener {
