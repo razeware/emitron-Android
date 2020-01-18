@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -16,7 +17,6 @@ import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
 import com.razeware.emitron.ui.common.getDefaultAppBarConfiguration
 import com.razeware.emitron.utils.extensions.applyUnderline
 import com.razeware.emitron.utils.extensions.setDataBindingView
-import com.razeware.emitron.utils.extensions.toVisibility
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -77,14 +77,14 @@ class OnboardingFragment : DaggerFragment() {
         with(binding) {
           onBoardingTitle.text = getString(R.string.on_boarding_download_title)
           onBoardingBody.text = getString(R.string.on_boarding_download_body)
-          onboardingStubDownload.viewStub?.toVisibility(true)
+          onboardingStubDownload.viewStub?.isVisible = true
         }
       }
       OnboardingView.Collection -> {
         with(binding) {
           onBoardingTitle.text = getString(R.string.on_boarding_collection_title)
           onBoardingBody.text = getString(R.string.on_boarding_collection_body)
-          onboardingStubCollection.viewStub?.toVisibility(true)
+          onboardingStubCollection.viewStub?.isVisible = true
         }
       }
     }

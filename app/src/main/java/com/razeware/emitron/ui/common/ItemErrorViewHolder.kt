@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +21,6 @@ import com.razeware.emitron.ui.content.ContentAdapter
 import com.razeware.emitron.utils.UiStateManager
 import com.razeware.emitron.utils.extensions.hasQ
 import com.razeware.emitron.utils.extensions.isNetNotConnected
-import com.razeware.emitron.utils.extensions.toVisibility
 
 
 /**
@@ -47,10 +47,10 @@ class ItemErrorViewHolder(
   ) {
 
     with(binding) {
-      progressBar.toVisibility(uiState == UiStateManager.UiState.LOADING)
-      textViewProgress.toVisibility(uiState == UiStateManager.UiState.LOADING)
-      textViewError.toVisibility(uiState?.hasError() == true)
-      buttonRetry.toVisibility(uiState?.hasError() == true)
+      progressBar.isVisible = uiState == UiStateManager.UiState.LOADING
+      textViewProgress.isVisible = uiState == UiStateManager.UiState.LOADING
+      textViewError.isVisible = uiState?.hasError() == true
+      buttonRetry.isVisible = uiState?.hasError() == true
       buttonRetry.setOnClickListener {
         if (uiState?.isEmpty() == true) {
           emptyCallback?.invoke()
@@ -87,10 +87,9 @@ class ItemErrorViewHolder(
         UiStateManager.UiState.ERROR_EMPTY -> {
           textViewError.text = getEmptyErrorForAdapterType(resources, type)
           textViewErrorBody.text = getEmptyErrorBodyForAdapterType(resources, type)
-          textViewErrorBody.toVisibility(
+          textViewErrorBody.isVisible =
             getEmptyErrorBodyForAdapterType(resources, type).isNotEmpty()
-          )
-          buttonRetry.toVisibility(!type.isContentWithFilters())
+          buttonRetry.isVisible = !type.isContentWithFilters()
           buttonRetry.text = getRetryButtonLabelForAdapterType(resources, type)
           val emptyDrawable = getEmptyDrawable(type)
           if (null != emptyDrawable) {
@@ -98,7 +97,7 @@ class ItemErrorViewHolder(
           } else {
             imageError.setImageDrawable(null)
           }
-          imageError.toVisibility(null != emptyDrawable)
+          imageError.isVisible = null != emptyDrawable
         }
         else -> if (root.context.isNetNotConnected()) {
           textViewError.text =

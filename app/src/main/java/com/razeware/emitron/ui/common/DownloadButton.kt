@@ -7,10 +7,10 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.google.android.material.button.MaterialButton
 import com.razeware.emitron.R
 import com.razeware.emitron.model.*
-import com.razeware.emitron.utils.extensions.toVisibility
 
 /**
  * Custom Button to handle download state
@@ -99,10 +99,10 @@ class DownloadButton : FrameLayout {
 
     setupAttributes(attrs)
 
-    downloadButton.toVisibility(true)
-    downloadStopButton.toVisibility(false)
-    progressDownloadingPending.toVisibility(false)
-    progressDownload.toVisibility(false)
+    downloadButton.isVisible = true
+    downloadStopButton.isVisible = false
+    progressDownloadingPending.isVisible = false
+    progressDownload.isVisible = false
   }
 
   /**
@@ -114,38 +114,38 @@ class DownloadButton : FrameLayout {
     downloadButton.iconTint = ContextCompat.getColorStateList(context, R.color.colorIcon)
     when {
       download.isDownloaded() -> {
-        downloadStopButton.toVisibility(false)
-        progressDownloadingPending.toVisibility(false)
-        progressDownload.toVisibility(false)
-        downloadButton.toVisibility(true)
+        downloadStopButton.isVisible = false
+        progressDownloadingPending.isVisible = false
+        progressDownload.isVisible = false
+        downloadButton.isVisible = true
         downloadButton.iconTint = ContextCompat.getColorStateList(context, R.color.colorPrimary)
       }
       download.isDownloading() -> {
-        downloadButton.toVisibility(false)
-        downloadStopButton.toVisibility(true)
-        progressDownloadingPending.toVisibility(false)
-        progressDownload.toVisibility(true)
+        downloadButton.isVisible = false
+        downloadStopButton.isVisible = true
+        progressDownloadingPending.isVisible = false
+        progressDownload.isVisible = true
         progressDownload.progress = download.getProgress()
       }
       download.isPending() -> {
-        downloadButton.toVisibility(false)
-        progressDownloadingPending.toVisibility(true)
-        downloadStopButton.toVisibility(true)
+        downloadButton.isVisible = false
+        progressDownloadingPending.isVisible = true
+        downloadStopButton.isVisible = true
       }
       download.isPaused() -> {
-        downloadButton.toVisibility(true)
-        progressDownloadingPending.toVisibility(false)
-        downloadStopButton.toVisibility(false)
-        progressDownload.toVisibility(false)
+        downloadButton.isVisible = true
+        progressDownloadingPending.isVisible = false
+        downloadStopButton.isVisible = false
+        progressDownload.isVisible = false
       }
       download.isFailed() -> {
-        downloadButton.toVisibility(true)
+        downloadButton.isVisible = true
       }
       else -> {
-        downloadButton.toVisibility(true)
-        progressDownloadingPending.toVisibility(false)
-        downloadStopButton.toVisibility(false)
-        progressDownload.toVisibility(false)
+        downloadButton.isVisible = true
+        progressDownloadingPending.isVisible = false
+        downloadStopButton.isVisible = false
+        progressDownload.isVisible = false
       }
     }
   }
