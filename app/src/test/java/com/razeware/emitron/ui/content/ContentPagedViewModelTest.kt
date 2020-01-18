@@ -10,7 +10,10 @@ import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import com.razeware.emitron.model.Contents
 import com.razeware.emitron.model.Data
-import com.razeware.emitron.utils.*
+import com.razeware.emitron.utils.PagedResponse
+import com.razeware.emitron.utils.UiStateManager
+import com.razeware.emitron.utils.observeForTestingObserver
+import com.razeware.emitron.utils.observeForTestingResult
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -29,15 +32,15 @@ class ContentPagedViewModelTest {
   }
 
   @Test
-  fun getNetworkState() {
+  fun getUiState() {
     val pagedResponse: PagedResponse<Contents, Data> = mock()
-    val networkState =
-      MutableLiveData<NetworkState>().apply {
-        this.value = NetworkState.RUNNING
+    val uiState =
+      MutableLiveData<UiStateManager.UiState>().apply {
+        this.value = UiStateManager.UiState.LOADING
       }
-    whenever(pagedResponse.networkState).doReturn(networkState)
+    whenever(pagedResponse.uiState).doReturn(uiState)
     viewModel.repoResult.postValue(pagedResponse)
-    assertThat(viewModel.networkState.observeForTestingResult()).isEqualTo(NetworkState.RUNNING)
+    assertThat(viewModel.uiState.observeForTestingResult()).isEqualTo(UiStateManager.UiState.LOADING)
   }
 
   @Test

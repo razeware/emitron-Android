@@ -3,7 +3,6 @@ package com.razeware.emitron.ui.common
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
-import com.razeware.emitron.utils.NetworkState
 import com.razeware.emitron.utils.UiStateManager
 import com.razeware.emitron.utils.isEqualTo
 import org.junit.Before
@@ -21,11 +20,66 @@ class PagedAdapterTest {
   }
 
   @Test
-  fun updateNetworkState() {
+  fun updateUiState() {
     // When
-    pagedAdapter.updateNetworkState(
+    pagedAdapter.updateUiState(
       2,
-      NetworkState.INIT_FAILED,
+      UiStateManager.UiState.INIT_FAILED,
+      onChangeItem,
+      onChangeLastItem
+    )
+
+    // Then
+    pagedAdapter.uiState isEqualTo UiStateManager.UiState.INIT_FAILED
+    verify(onChangeLastItem).invoke(false)
+  }
+
+  @Test
+  fun updateUiState_B() {
+    // Given
+    pagedAdapter.uiState = UiStateManager.UiState.ERROR
+
+    // When
+    pagedAdapter.updateUiState(
+      2,
+      UiStateManager.UiState.INIT_EMPTY,
+      onChangeItem,
+      onChangeLastItem
+    )
+
+    // Then
+    pagedAdapter.uiState isEqualTo UiStateManager.UiState.INIT_EMPTY
+    verify(onChangeItem).invoke(1)
+  }
+
+  @Test
+  fun updateUiState_C() {
+    // Given
+    pagedAdapter.uiState = UiStateManager.UiState.ERROR
+
+    // When
+    pagedAdapter.updateUiState(
+      2,
+      UiStateManager.UiState.INIT,
+      onChangeItem,
+      onChangeLastItem
+    )
+
+    // Then
+    pagedAdapter.uiState isEqualTo UiStateManager.UiState.INIT
+    verify(onChangeItem).invoke(1)
+  }
+
+  @Test
+  fun updateUiState_D() {
+
+    // Given
+    pagedAdapter.uiState = null
+
+    // When
+    pagedAdapter.updateUiState(
+      2,
+      UiStateManager.UiState.ERROR,
       onChangeItem,
       onChangeLastItem
     )
@@ -36,97 +90,42 @@ class PagedAdapterTest {
   }
 
   @Test
-  fun updateNetworkState_B() {
-    // Given
-    pagedAdapter.networkState = NetworkState.FAILED
-
-    // When
-    pagedAdapter.updateNetworkState(
-      2,
-      NetworkState.INIT_EMPTY,
-      onChangeItem,
-      onChangeLastItem
-    )
-
-    // Then
-    pagedAdapter.uiState isEqualTo UiStateManager.UiState.ERROR_EMPTY
-    verify(onChangeItem).invoke(1)
-  }
-
-  @Test
-  fun updateNetworkState_C() {
-    // Given
-    pagedAdapter.networkState = NetworkState.FAILED
-
-    // When
-    pagedAdapter.updateNetworkState(
-      2,
-      NetworkState.INIT,
-      onChangeItem,
-      onChangeLastItem
-    )
-
-    // Then
-    pagedAdapter.uiState isEqualTo null
-    verify(onChangeItem).invoke(1)
-  }
-
-  @Test
-  fun updateNetworkState_D() {
+  fun updateUiState_E() {
 
     // Given
-    pagedAdapter.networkState = null
+    pagedAdapter.uiState = UiStateManager.UiState.ERROR
 
     // When
-    pagedAdapter.updateNetworkState(
-      2,
-      NetworkState.FAILED,
-      onChangeItem,
-      onChangeLastItem
-    )
-
-    // Then
-    pagedAdapter.networkState isEqualTo NetworkState.FAILED
-    verify(onChangeLastItem).invoke(false)
-  }
-
-  @Test
-  fun updateNetworkState_E() {
-
-    // Given
-    pagedAdapter.networkState = NetworkState.FAILED
-
-    // When
-    pagedAdapter.updateNetworkState(
-      2, NetworkState.RUNNING,
+    pagedAdapter.updateUiState(
+      2, UiStateManager.UiState.LOADING,
       onChangeItem, onChangeLastItem
     )
 
     // Then
-    pagedAdapter.networkState isEqualTo NetworkState.RUNNING
+    pagedAdapter.uiState isEqualTo UiStateManager.UiState.LOADING
     verify(onChangeItem).invoke(1)
   }
 
   @Test
-  fun updateNetworkState_F() {
+  fun updateUiState_F() {
     // Given
-    pagedAdapter.networkState = null
+    pagedAdapter.uiState = null
 
     // When
-    pagedAdapter.updateNetworkState(
+    pagedAdapter.updateUiState(
       2,
-      NetworkState.RUNNING,
+      UiStateManager.UiState.LOADING,
       onChangeItem,
       onChangeLastItem
     )
 
     // Then
-    pagedAdapter.networkState isEqualTo NetworkState.RUNNING
+    pagedAdapter.uiState isEqualTo UiStateManager.UiState.LOADING
     verify(onChangeLastItem).invoke(false)
   }
 
   @Test
-  fun updateUiState() {
+  fun updateUiState_G() {
 
     // Given
     val pagedAdapter = PagedAdapter()
@@ -180,7 +179,10 @@ class PagedAdapterTest {
     pagedAdapter.uiState = UiStateManager.UiState.ERROR_CONNECTION
     assertThat(pagedAdapter.hasUiStateError()).isTrue()
 
-    pagedAdapter.uiState = UiStateManager.UiState.ERROR_EMPTY
+    pagedAdapter.uiState = UiStateManager.UiState.EMPTY
+    assertThat(pagedAdapter.hasUiStateError()).isTrue()
+
+    pagedAdapter.uiState = UiStateManager.UiState.INIT_EMPTY
     assertThat(pagedAdapter.hasUiStateError()).isTrue()
 
     pagedAdapter.uiState = UiStateManager.UiState.LOADING
@@ -192,23 +194,16 @@ class PagedAdapterTest {
     val pagedAdapter = PagedAdapter()
     assertThat(pagedAdapter.hasExtraRow()).isFalse()
 
-    pagedAdapter.networkState = NetworkState.RUNNING
+    pagedAdapter.uiState = UiStateManager.UiState.LOADING
     assertThat(pagedAdapter.hasExtraRow()).isTrue()
 
-    pagedAdapter.networkState = null
     pagedAdapter.uiState = UiStateManager.UiState.ERROR
     assertThat(pagedAdapter.hasExtraRow()).isTrue()
 
-    pagedAdapter.networkState = null
     pagedAdapter.uiState = UiStateManager.UiState.LOADED
     assertThat(pagedAdapter.hasExtraRow()).isFalse()
 
-    pagedAdapter.networkState = NetworkState.SUCCESS
-    pagedAdapter.uiState = null
-    assertThat(pagedAdapter.hasExtraRow()).isFalse()
-
-    pagedAdapter.networkState = NetworkState.INIT_SUCCESS
-    pagedAdapter.uiState = null
+    pagedAdapter.uiState = UiStateManager.UiState.INIT_LOADED
     assertThat(pagedAdapter.hasExtraRow()).isFalse()
   }
 }

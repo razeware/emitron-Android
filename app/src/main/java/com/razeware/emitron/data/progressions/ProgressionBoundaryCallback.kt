@@ -30,14 +30,24 @@ class ProgressionBoundaryCallback(
    * See [PagedList.BoundaryCallback.onZeroItemsLoaded]
    */
   override fun onZeroItemsLoaded() {
+    /**
+     * The notifier has pending requests, and the boundary callback starts from zero items,
+     * surely we the last item in paging library was updated/edited, let's send empty response,
+     * as once the request finishes, the DB will be updated again.
+     */
     if (boundaryCallbackNotifier.hasRequests()) {
-      updateNetworkState(NetworkState.INIT_EMPTY)
+      updateUiState(UiStateManager.UiState.INIT_EMPTY)
       return
     }
+    /**
+     * The notifier requests callback to start from page 0. This will happen when we have already
+     * assigned a boundary callback and we are requesting a certain page, but then paging list is
+     * updated/changed from db.
+     */
     if (boundaryCallbackNotifier.shouldReset()) {
       updatePageNumber(0)
     }
-    updateNetworkState(NetworkState.INIT)
+    updateUiState(UiStateManager.UiState.INIT)
     updateCallbackType(PagedBoundaryCallback.BoundaryCallbackType.INIT)
     requestAndSaveProgressions()
   }
@@ -47,13 +57,13 @@ class ProgressionBoundaryCallback(
    */
   override fun onItemAtEndLoaded(itemAtEnd: Data) {
     if (boundaryCallbackNotifier.hasRequests()) {
-      updateNetworkState(NetworkState.SUCCESS)
+      updateUiState(UiStateManager.UiState.LOADED)
       return
     }
     if (boundaryCallbackNotifier.shouldReset()) {
       updatePageNumber(0)
     }
-    updateNetworkState(NetworkState.RUNNING)
+    updateUiState(UiStateManager.UiState.LOADING)
     updateCallbackType(PagedBoundaryCallback.BoundaryCallbackType.APPENDING)
     requestAndSaveProgressions()
   }

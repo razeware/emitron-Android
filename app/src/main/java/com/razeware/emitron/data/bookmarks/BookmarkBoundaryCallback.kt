@@ -33,7 +33,7 @@ class BookmarkBoundaryCallback @Inject constructor(
      * If a content update/delete request is in progress, we will skip loading from network
      */
     if (boundaryCallbackNotifier.hasRequests()) {
-      updateNetworkState(NetworkState.INIT_EMPTY)
+      updateUiState(UiStateManager.UiState.INIT_EMPTY)
       return
     }
     /**
@@ -43,7 +43,7 @@ class BookmarkBoundaryCallback @Inject constructor(
     if (boundaryCallbackNotifier.shouldReset()) {
       updatePageNumber(0)
     }
-    updateNetworkState(NetworkState.INIT)
+    updateUiState(UiStateManager.UiState.INIT)
     updateCallbackType(PagedBoundaryCallback.BoundaryCallbackType.INIT)
     requestAndSaveBookmarks()
   }
@@ -56,7 +56,7 @@ class BookmarkBoundaryCallback @Inject constructor(
      * If a content update or delete request is in progress, we will skip loading from network
      */
     if (boundaryCallbackNotifier.hasRequests()) {
-      updateNetworkState(NetworkState.SUCCESS)
+      updateUiState(UiStateManager.UiState.LOADED)
       return
     }
     /**
@@ -66,7 +66,7 @@ class BookmarkBoundaryCallback @Inject constructor(
     if (boundaryCallbackNotifier.shouldReset()) {
       updatePageNumber(0)
     }
-    updateNetworkState(NetworkState.RUNNING)
+    updateUiState(UiStateManager.UiState.LOADING)
     updateCallbackType(PagedBoundaryCallback.BoundaryCallbackType.APPENDING)
     requestAndSaveBookmarks()
   }

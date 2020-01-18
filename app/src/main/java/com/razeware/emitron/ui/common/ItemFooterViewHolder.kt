@@ -28,12 +28,12 @@ class ItemFooterViewHolder(
   }
 
   /**
-   * @param networkState Network status
+   * @param uiState Updated UI state
    */
-  fun bindTo(networkState: NetworkState?) {
-    viewDataBinding.progressBar.isVisible = networkState == NetworkState.RUNNING
-    viewDataBinding.textViewProgress.isVisible = networkState == NetworkState.RUNNING
-    viewDataBinding.buttonRetry.isVisible = networkState == NetworkState.FAILED
+  fun bindTo(uiState: UiStateManager.UiState?) {
+    viewDataBinding.progressBar.isVisible = uiState.isLoading()
+    viewDataBinding.textViewProgress.isVisible = uiState.isLoading()
+    viewDataBinding.buttonRetry.isVisible = uiState.hasFailed()
   }
 
   companion object {

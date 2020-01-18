@@ -9,7 +9,6 @@ import com.razeware.emitron.model.Data
 import com.razeware.emitron.ui.common.ItemErrorViewHolder
 import com.razeware.emitron.ui.common.ItemFooterViewHolder
 import com.razeware.emitron.ui.common.PagedAdapter
-import com.razeware.emitron.utils.NetworkState
 import com.razeware.emitron.utils.UiStateManager
 
 /**
@@ -102,14 +101,6 @@ class ContentAdapter private constructor(
     fun isContentWithFilters(): Boolean = this == ContentWithFilters || this == ContentWithSearch
 
     /**
-     * Adapter is part of library view
-     *
-     * @return True if adapter is part of library view else False
-     */
-    fun isContent(): Boolean =
-      this == Content || this == ContentWithFilters || this == ContentWithSearch
-
-    /**
      * Adapter is part of bookmark view
      *
      * @return True if adapter is part of bookmark view else False
@@ -132,15 +123,6 @@ class ContentAdapter private constructor(
      */
     fun isDownloaded(): Boolean =
       this == ContentDownloaded
-
-
-    /**
-     * Adapter is part of in progress content view
-     *
-     * @return True if adapter is part of in progress content view else False
-     */
-    fun isInProgress(): Boolean =
-      this == ContentInProgress
   }
 
   /**
@@ -196,7 +178,7 @@ class ContentAdapter private constructor(
       is ContentItemViewHolder -> {
         bindContentItem(holder, position)
       }
-      is ItemFooterViewHolder -> holder.bindTo(pagedAdapter.networkState)
+      is ItemFooterViewHolder -> holder.bindTo(pagedAdapter.uiState)
       is ItemErrorViewHolder -> holder.bindTo(pagedAdapter.uiState, type)
     }
   }
@@ -262,18 +244,6 @@ class ContentAdapter private constructor(
   }
 
   /**
-   * Update UI on [NetworkState] change
-   */
-  fun updateNetworkState(newNetworkState: NetworkState?) {
-    pagedAdapter.updateNetworkState(
-      itemCount,
-      newNetworkState,
-      ::notifyItemChanged,
-      ::notifyItemUpdatedAtLastPosition
-    )
-  }
-
-  /**
    * Update UI on [UiStateManager.UiState] change
    */
   fun updateUiState(newUiState: UiStateManager.UiState?) {
@@ -289,10 +259,12 @@ class ContentAdapter private constructor(
    * Update UI [UiStateManager.UiState] for error
    */
   fun updateErrorState(uiState: UiStateManager.UiState?) {
-    if (pagedAdapter.errorState != uiState) {
-      pagedAdapter.errorState = uiState
-      updateUiState(uiState)
-    }
+    pagedAdapter.updateErrorState(
+      itemCount,
+      uiState,
+      ::notifyItemChanged,
+      ::notifyItemUpdatedAtLastPosition
+    )
   }
 
   /**

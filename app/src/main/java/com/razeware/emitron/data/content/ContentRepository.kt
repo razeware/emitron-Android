@@ -57,7 +57,7 @@ class ContentRepository @Inject constructor(
         fetchExecutor = threadManager.networkExecutor
       )
 
-    val networkState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.networkState }
+    val uiState = Transformations.switchMap(sourceFactory.sourceLiveData) { it.uiState }
 
     val contents = Transformations.switchMap(sourceFactory.sourceLiveData) {
       it.contents
@@ -66,7 +66,7 @@ class ContentRepository @Inject constructor(
     return PagedResponse(
       initialData = contents,
       pagedList = livePagedList,
-      networkState = networkState,
+      uiState = uiState,
       retry =
       {
         sourceFactory.sourceLiveData.value?.retryAllFailed()

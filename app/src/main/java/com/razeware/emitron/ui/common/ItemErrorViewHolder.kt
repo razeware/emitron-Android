@@ -21,6 +21,8 @@ import com.razeware.emitron.ui.content.ContentAdapter
 import com.razeware.emitron.utils.UiStateManager
 import com.razeware.emitron.utils.extensions.hasQ
 import com.razeware.emitron.utils.extensions.isNetNotConnected
+import com.razeware.emitron.utils.hasError
+import com.razeware.emitron.utils.isLoading
 
 
 /**
@@ -47,10 +49,10 @@ class ItemErrorViewHolder(
   ) {
 
     with(binding) {
-      progressBar.isVisible = uiState == UiStateManager.UiState.LOADING
-      textViewProgress.isVisible = uiState == UiStateManager.UiState.LOADING
-      textViewError.isVisible = uiState?.hasError() == true
-      buttonRetry.isVisible = uiState?.hasError() == true
+      progressBar.isVisible = uiState.isLoading()
+      textViewProgress.isVisible = uiState.isLoading()
+      textViewError.isVisible = uiState.hasError()
+      buttonRetry.isVisible = uiState.hasError()
       buttonRetry.setOnClickListener {
         if (uiState?.isEmpty() == true) {
           emptyCallback?.invoke()
@@ -84,7 +86,7 @@ class ItemErrorViewHolder(
           buttonRetry.setPadding(0)
           buttonRetry.icon = null
         }
-        UiStateManager.UiState.ERROR_EMPTY -> {
+        UiStateManager.UiState.INIT_EMPTY, UiStateManager.UiState.EMPTY -> {
           textViewError.text = getEmptyErrorForAdapterType(resources, type)
           textViewErrorBody.text = getEmptyErrorBodyForAdapterType(resources, type)
           textViewErrorBody.isVisible =

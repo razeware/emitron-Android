@@ -21,7 +21,7 @@ import com.razeware.emitron.ui.content.ContentAdapter
 import com.razeware.emitron.ui.content.ContentPagedFragment
 import com.razeware.emitron.ui.mytutorial.MyTutorialFragmentDirections
 import com.razeware.emitron.ui.player.workers.UpdateOfflineProgressWorker
-import com.razeware.emitron.utils.NetworkState
+import com.razeware.emitron.utils.UiStateManager
 import com.razeware.emitron.utils.extensions.*
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -119,7 +119,7 @@ class ProgressionFragment : DaggerFragment() {
   private fun initUi() {
     pagedFragment.value.initPaging(
       this, binding.recyclerView,
-      onNetworkStateChange = ::handleInitialProgress
+      onUiStateChange = ::handleInitialProgress
     )
     binding.recyclerView.addItemDecoration(StartEndBottomMarginDecoration())
     progressDelegate = ProgressDelegate(requireView())
@@ -165,20 +165,20 @@ class ProgressionFragment : DaggerFragment() {
         it ?: (null to 0)
       when (event?.getContentIfNotHandled()) {
         ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeMarkedCompleted -> {
-              showSuccessSnackbar(getString(R.string.message_episode_marked_completed))
-            }
+          showSuccessSnackbar(getString(R.string.message_episode_marked_completed))
+        }
         ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeMarkedInProgress ->
-              showSuccessSnackbar(getString(R.string.message_episode_marked_in_progress))
+          showSuccessSnackbar(getString(R.string.message_episode_marked_in_progress))
         ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeFailedToMarkComplete -> {
-              showErrorSnackbar(getString(R.string.message_episode_failed_to_mark_completed))
-            }
+          showErrorSnackbar(getString(R.string.message_episode_failed_to_mark_completed))
+        }
         ProgressionActionDelegate.EpisodeProgressionActionResult.EpisodeFailedToMarkInProgress -> {
-              showErrorSnackbar(
-                getString(
-                  R.string.message_episode_failed_to_mark_in_progress
-                )
-              )
-            }
+          showErrorSnackbar(
+            getString(
+              R.string.message_episode_failed_to_mark_in_progress
+            )
+          )
+        }
         null -> {
           // Houston, We Have a Problem!
         }
@@ -192,22 +192,22 @@ class ProgressionFragment : DaggerFragment() {
     }
   }
 
-  private fun handleInitialProgress(networkState: NetworkState?) {
-    when (networkState) {
-      NetworkState.INIT -> {
+  private fun handleInitialProgress(uiState: UiStateManager.UiState?) {
+    when (uiState) {
+      UiStateManager.UiState.INIT -> {
         progressDelegate.showProgressView()
       }
-      NetworkState.INIT_SUCCESS -> {
+      UiStateManager.UiState.INIT_LOADED -> {
         addSwipeToUpdateProgress()
         progressDelegate.hideProgressView()
       }
-      NetworkState.INIT_EMPTY,
-      NetworkState.INIT_FAILED,
-      NetworkState.FAILED -> {
+      UiStateManager.UiState.INIT_EMPTY,
+      UiStateManager.UiState.INIT_FAILED,
+      UiStateManager.UiState.ERROR -> {
         removeSwipeToUpdateProgress()
         progressDelegate.hideProgressView()
       }
-      NetworkState.SUCCESS -> {
+      UiStateManager.UiState.LOADED -> {
         progressDelegate.hideProgressView()
       }
       else -> {

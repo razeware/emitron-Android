@@ -26,7 +26,7 @@ import com.razeware.emitron.ui.download.helpers.DownloadProgressHelper
 import com.razeware.emitron.ui.download.workers.RemoveDownloadWorker
 import com.razeware.emitron.ui.mytutorial.MyTutorialFragmentDirections
 import com.razeware.emitron.ui.onboarding.OnboardingView
-import com.razeware.emitron.utils.NetworkState
+import com.razeware.emitron.utils.UiStateManager
 import com.razeware.emitron.utils.extensions.launchCustomTab
 import com.razeware.emitron.utils.extensions.setDataBindingView
 import dagger.android.support.DaggerFragment
@@ -129,7 +129,7 @@ class DownloadFragment : DaggerFragment() {
     pagedFragment.value.initPaging(
       this,
       binding.recyclerView,
-      onNetworkStateChange = ::handleInitialProgress
+      onUiStateChange = ::handleInitialProgress
     )
     binding.recyclerView.addItemDecoration(StartEndBottomMarginDecoration())
     binding.buttonManageSubscription.setOnClickListener {
@@ -155,17 +155,17 @@ class DownloadFragment : DaggerFragment() {
     }
   }
 
-  private fun handleInitialProgress(networkState: NetworkState?) {
-    when (networkState) {
-      NetworkState.INIT -> {
+  private fun handleInitialProgress(uiState: UiStateManager.UiState?) {
+    when (uiState) {
+      UiStateManager.UiState.INIT -> {
       }
-      NetworkState.SUCCESS,
-      NetworkState.INIT_SUCCESS -> {
+      UiStateManager.UiState.LOADED,
+      UiStateManager.UiState.INIT_LOADED -> {
         addSwipeToDelete()
       }
-      NetworkState.INIT_EMPTY,
-      NetworkState.INIT_FAILED,
-      NetworkState.FAILED -> {
+      UiStateManager.UiState.INIT_EMPTY,
+      UiStateManager.UiState.INIT_FAILED,
+      UiStateManager.UiState.ERROR -> {
         removeSwipeToDelete()
       }
       else -> {

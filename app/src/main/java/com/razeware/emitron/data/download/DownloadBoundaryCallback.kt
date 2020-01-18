@@ -2,9 +2,9 @@ package com.razeware.emitron.data.download
 
 import androidx.paging.PagedList
 import com.razeware.emitron.model.Data
-import com.razeware.emitron.utils.NetworkState
 import com.razeware.emitron.utils.PagedBoundaryCallback
 import com.razeware.emitron.utils.PagedBoundaryCallbackImpl
+import com.razeware.emitron.utils.UiStateManager
 import javax.inject.Inject
 
 /**
@@ -18,7 +18,7 @@ class DownloadBoundaryCallback @Inject constructor(
    * See [PagedList.BoundaryCallback.onZeroItemsLoaded]
    */
   override fun onZeroItemsLoaded() {
-    updateNetworkState(NetworkState.INIT_EMPTY)
+    updateUiState(UiStateManager.UiState.INIT_EMPTY)
     return
   }
 
@@ -26,7 +26,7 @@ class DownloadBoundaryCallback @Inject constructor(
    * See [PagedList.BoundaryCallback.onItemAtEndLoaded]
    */
   override fun onItemAtEndLoaded(itemAtEnd: Data) {
-    updateNetworkState(NetworkState.SUCCESS)
+    updateUiState(UiStateManager.UiState.LOADED)
     return
   }
 }

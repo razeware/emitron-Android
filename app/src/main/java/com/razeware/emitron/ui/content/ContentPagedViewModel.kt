@@ -9,7 +9,6 @@ import com.razeware.emitron.model.Contents
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.ui.common.UiStateViewModel
 import com.razeware.emitron.utils.LocalPagedResponse
-import com.razeware.emitron.utils.NetworkState
 import com.razeware.emitron.utils.PagedResponse
 import com.razeware.emitron.utils.UiStateManager
 import javax.inject.Inject
@@ -32,12 +31,7 @@ class ContentPagedViewModel @Inject constructor() : UiStateViewModel {
   /**
    * Live data for [UiStateManager.UiState]
    */
-  override val uiState: MutableLiveData<UiStateManager.UiState> = MutableLiveData()
-
-  /**
-   * Live data for [NetworkState]
-   */
-  override val networkState: MediatorLiveData<NetworkState> = MediatorLiveData()
+  override val uiState: MediatorLiveData<UiStateManager.UiState> = MediatorLiveData()
 
   /**
    * Live data for [Contents] meta data for list items
@@ -50,12 +44,12 @@ class ContentPagedViewModel @Inject constructor() : UiStateViewModel {
   val contentPagedList: MediatorLiveData<PagedList<Data>> = MediatorLiveData()
 
   init {
-    networkState.apply {
-      addSource(switchMap(repoResult) { it.networkState }) {
-        networkState.value = it
+    uiState.apply {
+      addSource(switchMap(repoResult) { it.uiState }) {
+        uiState.value = it
       }
-      addSource(switchMap(localRepoResult) { it.networkState }) {
-        networkState.value = it
+      addSource(switchMap(localRepoResult) { it.uiState }) {
+        uiState.value = it
       }
     }
 
