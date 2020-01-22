@@ -7,6 +7,7 @@ import android.net.Uri
 import android.support.v4.media.session.MediaSessionCompat
 import android.view.View
 import androidx.core.app.NotificationCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
@@ -38,7 +39,6 @@ import com.razeware.emitron.R
 import com.razeware.emitron.ui.download.DownloadService.Companion.buildCacheDataSourceFactory
 import com.razeware.emitron.ui.player.PlayerFragment.Companion.defaultPlaybackQuality
 import com.razeware.emitron.ui.player.cast.Episode
-import com.razeware.emitron.utils.extensions.toVisibility
 import java.util.*
 
 /**
@@ -268,13 +268,13 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
 
     // View management.
     if (currentPlayer == mediaPlayer) {
-      localPlayerView.toVisibility(true)
-      castControlGroup.toVisibility(false)
+      localPlayerView.isVisible = true
+      castControlGroup.isVisible = false
       castControlView.hide()
     } else
     /* currentPlayer == castPlayer */ {
-      localPlayerView.toVisibility(false)
-      castControlGroup.toVisibility(true)
+      localPlayerView.isVisible = false
+      castControlGroup.isVisible = true
       castControlView.show()
     }
 

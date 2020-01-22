@@ -1,8 +1,6 @@
 package com.razeware.emitron.ui.common
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.razeware.emitron.utils.NetworkState
 import com.razeware.emitron.utils.UiStateManager
 
 /**
@@ -14,9 +12,4 @@ interface UiStateViewModel {
    * LiveData for [UiStateManager.UiState]
    */
   val uiState: MutableLiveData<UiStateManager.UiState>
-
-  /**
-   * LiveData for [NetworkState]
-   */
-  val networkState: LiveData<NetworkState>
 }

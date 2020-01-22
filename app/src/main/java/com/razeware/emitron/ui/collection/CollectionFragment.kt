@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -217,11 +218,11 @@ class CollectionFragment : DaggerFragment() {
           val playbackAllowed = viewModel.isContentPlaybackAllowed(isNetConnected())
           val hasProgress = viewModel.hasProgress()
           with(binding) {
-            groupCollectionContent.toVisibility(true)
-            groupProfessionalContent.toVisibility(!playbackAllowed)
-            buttonCollectionPlay.toVisibility(playbackAllowed && !hasProgress)
-            buttonCollectionResume.toVisibility(playbackAllowed && hasProgress)
-            progressCompletion.toVisibility(playbackAllowed && hasProgress)
+            groupCollectionContent.isVisible = true
+            groupProfessionalContent.isVisible = !playbackAllowed
+            buttonCollectionPlay.isVisible = playbackAllowed && !hasProgress
+            buttonCollectionResume.isVisible = playbackAllowed && hasProgress
+            progressCompletion.isVisible = playbackAllowed && hasProgress
             progressCompletion.progress = viewModel.getProgress()
           }
         }
@@ -242,7 +243,7 @@ class CollectionFragment : DaggerFragment() {
         if (it.isTypeScreencast()) {
           binding.progressCompletion.progress = viewModel.getProgress()
         }
-        binding.textCollectionCompleted.toVisibility(it.isProgressionFinished())
+        binding.textCollectionCompleted.isVisible = it.isProgressionFinished()
       }
     }
 
@@ -251,9 +252,9 @@ class CollectionFragment : DaggerFragment() {
         if (it.isScreencast()) {
           with(binding) {
             groupCollectionContent.visibility = View.GONE
-            buttonCollectionPlay.toVisibility(!viewModel.hasProgress())
-            buttonCollectionResume.toVisibility(viewModel.hasProgress())
-            progressCompletion.toVisibility(viewModel.hasProgress())
+            buttonCollectionPlay.isVisible = !viewModel.hasProgress()
+            buttonCollectionResume.isVisible = viewModel.hasProgress()
+            progressCompletion.isVisible = viewModel.hasProgress()
             progressCompletion.progress = viewModel.getProgress()
           }
         }
@@ -367,9 +368,9 @@ class CollectionFragment : DaggerFragment() {
 
   private fun handleProgress(showProgress: Boolean = false) {
     with(binding) {
-      groupEpisodeProgress.toVisibility(showProgress)
+      groupEpisodeProgress.isVisible = showProgress
       if (showProgress) {
-        groupCollectionContent.toVisibility(!showProgress)
+        groupCollectionContent.isVisible = !showProgress
       }
     }
   }

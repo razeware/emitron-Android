@@ -5,7 +5,7 @@ import androidx.paging.PageKeyedDataSource
 import com.razeware.emitron.model.ContentType
 import com.razeware.emitron.model.Contents
 import com.razeware.emitron.model.Data
-import com.razeware.emitron.utils.NetworkState
+import com.razeware.emitron.utils.UiStateManager
 import com.razeware.emitron.utils.async.ThreadManager
 import retrofit2.Response
 import java.io.IOException
@@ -23,9 +23,9 @@ class ContentDataSourceRemote(
   private var retry: (() -> Any)? = null
 
   /**
-   * Network state LiveData
+   * UiState state LiveData
    */
-  val networkState: MutableLiveData<NetworkState> = MutableLiveData()
+  val uiState: MutableLiveData<UiStateManager.UiState> = MutableLiveData()
 
   /**
    * Meta data LiveData
@@ -60,10 +60,10 @@ class ContentDataSourceRemote(
    * Load next page
    */
   override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Data>) {
-    networkState.postValue(NetworkState.RUNNING)
+    uiState.postValue(UiStateManager.UiState.LOADING)
     val loadAfterError = {
       retry = { loadAfter(params, callback) }
-      networkState.postValue(NetworkState.FAILED)
+      uiState.postValue(UiStateManager.UiState.ERROR)
     }
 
     val response = getContent(pageNumber = params.key)
@@ -85,7 +85,7 @@ class ContentDataSourceRemote(
     }
 
     retry = null
-    networkState.postValue(NetworkState.SUCCESS)
+    uiState.postValue(UiStateManager.UiState.LOADED)
     callback.onResult(items, (contentBody.getNextPage()))
   }
 
@@ -97,20 +97,20 @@ class ContentDataSourceRemote(
     callback: LoadInitialCallback<Int, Data>
   ) {
 
-    networkState.postValue(NetworkState.INIT)
+    uiState.postValue(UiStateManager.UiState.INIT)
 
     val loadInitialError = {
       retry = {
         loadInitial(params, callback)
       }
-      networkState.postValue(NetworkState.INIT_FAILED)
+      uiState.postValue(UiStateManager.UiState.INIT_FAILED)
     }
 
     val loadInitialEmpty = {
       retry = {
         loadInitial(params, callback)
       }
-      networkState.postValue(NetworkState.INIT_EMPTY)
+      uiState.postValue(UiStateManager.UiState.INIT_EMPTY)
     }
 
     val response = getContent(pageNumber = 1)
@@ -133,7 +133,7 @@ class ContentDataSourceRemote(
     }
 
     retry = null
-    networkState.postValue(NetworkState.INIT_SUCCESS)
+    uiState.postValue(UiStateManager.UiState.INIT_LOADED)
     this.contents.postValue(contentBody.copy(datum = emptyList()))
     callback.onResult(items, null, (contentBody.getNextPage()))
   }

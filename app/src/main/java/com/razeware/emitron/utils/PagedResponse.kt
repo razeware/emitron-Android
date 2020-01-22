@@ -12,7 +12,7 @@ data class PagedResponse<C, T>(
   /** paged list */
   val pagedList: LiveData<PagedList<T>>,
   /** represents the network request status*/
-  val networkState: LiveData<NetworkState>? = null,
+  val uiState: LiveData<UiStateManager.UiState>? = null,
   /** represents the refresh status*/
   val retry: (() -> Unit)? = null
 )
@@ -24,5 +24,5 @@ data class LocalPagedResponse<T>(
   /** paged list */
   val pagedList: LiveData<PagedList<T>>,
   /** represents the network request status of boundary callback*/
-  val networkState: LiveData<NetworkState>? = null
+  val uiState: LiveData<UiStateManager.UiState>? = null
 )

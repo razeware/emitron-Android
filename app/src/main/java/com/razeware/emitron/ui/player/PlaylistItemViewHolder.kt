@@ -3,12 +3,12 @@ package com.razeware.emitron.ui.player
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.ItemPlaylistBinding
 import com.razeware.emitron.model.Data
-import com.razeware.emitron.utils.extensions.toVisibility
 
 /**
  * View holder for playlist item
@@ -36,14 +36,12 @@ class PlaylistItemViewHolder(private val binding: ItemPlaylistBinding) :
 
       progressCompletion.progress = episode?.getProgressionPercentComplete() ?: 0
       checkEpisodeCompleted(episode?.isProgressionFinished() ?: false)
-      progressCompletion.toVisibility(
+      progressCompletion.isVisible =
         episode?.isProgressionFinished() != true
             && episode?.getProgressionPercentComplete() != 0
-      )
-      collectionItemDivider.toVisibility(
+      collectionItemDivider.isVisible =
         episode?.isProgressionFinished() == true ||
             episode?.getProgressionPercentComplete() == 0
-      )
       executePendingBindings()
     }
   }

@@ -3,12 +3,12 @@ package com.razeware.emitron.ui.collection
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.ItemCollectionEpisodeBinding
 import com.razeware.emitron.model.Data
-import com.razeware.emitron.utils.extensions.toVisibility
 
 /**
  * View holder for Episode item in Collection detail view
@@ -53,14 +53,12 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
       }
 
       progressCompletion.progress = episode?.getProgressionPercentComplete() ?: 0
-      progressCompletion.toVisibility(
+      progressCompletion.isVisible =
         episode?.isProgressionFinished() != true
             && episode?.getProgressionPercentComplete() != 0
-      )
-      collectionItemDivider.toVisibility(
+      collectionItemDivider.isVisible =
         episode?.isProgressionFinished() == true ||
             episode?.getProgressionPercentComplete() == 0
-      )
 
       executePendingBindings()
     }

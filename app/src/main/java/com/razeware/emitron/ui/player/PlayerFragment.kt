@@ -364,7 +364,7 @@ class PlayerFragment : DaggerFragment() {
       playerNextButton.setOnClickListener { viewModel.playNextEpisode() }
 
       binding.playerView.setControllerVisibilityListener {
-        binding.toolbar.toVisibility(it == View.VISIBLE)
+        binding.toolbar.isVisible = (it == View.VISIBLE)
         requireActivity().requestLowProfileUi(it != View.VISIBLE)
       }
     }
@@ -535,7 +535,7 @@ class PlayerFragment : DaggerFragment() {
         if (isShowingPlaybackTokenBottomSheet()) {
           playbackTokenErrorBottomSheet.dismiss()
         }
-        playbackBufferingProgress.toVisibility(false)
+        playbackBufferingProgress.isVisible = false
         playerManager.resume()
       }
     }
@@ -544,8 +544,8 @@ class PlayerFragment : DaggerFragment() {
       it?.let {
         val showNextButton = viewModel.hasMoreEpisodes() &&
             !viewModel.isContentTypeScreencast()
-        playerNextButton.toVisibility(showNextButton)
-        playerPlaylistButton.toVisibility(!viewModel.isContentTypeScreencast())
+        playerNextButton.isVisible = showNextButton
+        playerPlaylistButton.isVisible = !viewModel.isContentTypeScreencast()
       }
     }
 
@@ -567,7 +567,7 @@ class PlayerFragment : DaggerFragment() {
     val playButton: View =
       sheetView.findViewById(R.id.button_playback_token_play)
     playButton.setOnClickListener {
-      playbackBufferingProgress.toVisibility(true)
+      playbackBufferingProgress.isVisible = true
       viewModel.resumePlayback()
     }
 
@@ -767,7 +767,7 @@ class PlayerFragment : DaggerFragment() {
     }
     with(binding) {
       playerView.useController = !isInPictureInPictureMode
-      toolbar.toVisibility(!isInPictureInPictureMode)
+      toolbar.isVisible = !isInPictureInPictureMode
     }
   }
 

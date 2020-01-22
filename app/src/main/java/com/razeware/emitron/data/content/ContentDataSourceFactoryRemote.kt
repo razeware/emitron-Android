@@ -3,7 +3,6 @@ package com.razeware.emitron.data.content
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import com.razeware.emitron.model.Data
-import com.razeware.emitron.utils.NetworkState
 import com.razeware.emitron.utils.async.ThreadManager
 
 /**
@@ -17,7 +16,7 @@ class ContentDataSourceFactoryRemote(
 ) : DataSource.Factory<Int, Data>() {
 
   /**
-   * Live data to observe [NetworkState] and Initial meta data from paged data source
+   * Live data to observe [UiStateManager.UiState] and Initial meta data from paged data source
    */
   val sourceLiveData: MutableLiveData<ContentDataSourceRemote> = MutableLiveData()
 

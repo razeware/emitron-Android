@@ -250,7 +250,7 @@ class DownloadRepository @Inject constructor(
 
     return LocalPagedResponse(
       pagedList = livePagedList,
-      networkState = boundaryCallback.networkState()
+      uiState = boundaryCallback.uiState()
     )
   }
 

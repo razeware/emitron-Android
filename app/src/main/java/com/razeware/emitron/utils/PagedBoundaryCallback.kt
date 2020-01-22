@@ -33,7 +33,7 @@ interface PagedBoundaryCallback {
   /**
    * Get current network state observer
    */
-  fun networkState(): LiveData<NetworkState>
+  fun uiState(): LiveData<UiStateManager.UiState>
 
   /**
    * Update current page number
@@ -55,9 +55,9 @@ interface PagedBoundaryCallback {
   /**
    * Update network state
    *
-   * @param networkState Updated [NetworkState]
+   * @param uiState Updated [UiStateManager.UiState]
    */
-  fun updateNetworkState(networkState: NetworkState)
+  fun updateUiState(uiState: UiStateManager.UiState)
 
   /**
    * Update boundary callback type
@@ -86,8 +86,8 @@ interface PagedBoundaryCallback {
 class PagedBoundaryCallbackImpl : PagedBoundaryCallback {
 
 
-  private val _networkState = MutableLiveData<NetworkState>().apply {
-    value = NetworkState.INIT_SUCCESS
+  private val uiState = MutableLiveData<UiStateManager.UiState>().apply {
+    value = UiStateManager.UiState.INIT_LOADED
   }
 
   private var requestInProgress = false
@@ -101,9 +101,9 @@ class PagedBoundaryCallbackImpl : PagedBoundaryCallback {
     if (pageNumber == 0 &&
       boundaryCallbackType == PagedBoundaryCallback.BoundaryCallbackType.INIT
     ) {
-      _networkState.postValue(NetworkState.INIT_FAILED)
+      uiState.postValue(UiStateManager.UiState.INIT_FAILED)
     } else {
-      _networkState.postValue(NetworkState.FAILED)
+      uiState.postValue(UiStateManager.UiState.ERROR)
     }
   }
 
@@ -111,17 +111,17 @@ class PagedBoundaryCallbackImpl : PagedBoundaryCallback {
     if (pageNumber == 0 &&
       boundaryCallbackType == PagedBoundaryCallback.BoundaryCallbackType.INIT
     ) {
-      _networkState.postValue(NetworkState.INIT_EMPTY)
+      uiState.postValue(UiStateManager.UiState.INIT_EMPTY)
     } else {
-      _networkState.postValue(NetworkState.SUCCESS)
+      uiState.postValue(UiStateManager.UiState.LOADED)
     }
   }
 
   override fun handleSuccess() {
     if (pageNumber == 0) {
-      _networkState.postValue(NetworkState.INIT_SUCCESS)
+      uiState.postValue(UiStateManager.UiState.INIT_LOADED)
     } else {
-      _networkState.postValue(NetworkState.SUCCESS)
+      uiState.postValue(UiStateManager.UiState.LOADED)
     }
   }
 
@@ -133,8 +133,8 @@ class PagedBoundaryCallbackImpl : PagedBoundaryCallback {
 
   override fun pageNumber(): Int? = pageNumber
 
-  override fun updateNetworkState(networkState: NetworkState) {
-    _networkState.value = networkState
+  override fun updateUiState(uiState: UiStateManager.UiState) {
+    this.uiState.value = uiState
   }
 
   override fun updateCallbackType(callbackType: PagedBoundaryCallback.BoundaryCallbackType) {
@@ -145,6 +145,6 @@ class PagedBoundaryCallbackImpl : PagedBoundaryCallback {
     this.pageNumber = pageNumber
   }
 
-  override fun networkState(): LiveData<NetworkState> = _networkState
+  override fun uiState(): LiveData<UiStateManager.UiState> = uiState
 }
 

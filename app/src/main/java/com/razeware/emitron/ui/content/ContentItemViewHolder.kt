@@ -2,11 +2,11 @@ package com.razeware.emitron.ui.content
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.razeware.emitron.databinding.ItemContentBinding
 import com.razeware.emitron.model.Data
-import com.razeware.emitron.utils.extensions.toVisibility
 
 /**
  * View holder to represent content item in library, bookmark, downloads and progression UI
@@ -46,7 +46,7 @@ class ContentItemViewHolder(private val binding: ItemContentBinding) :
   private fun handleProLabel(content: Data?) {
     val showProLabel =
       content?.isProgressionFinished() != true && content?.isProfessional() == true
-    binding.textCollectionLabelPro.toVisibility(showProLabel)
+    binding.textCollectionLabelPro.isVisible = showProLabel
   }
 
   private fun handleDownloadButton(
@@ -58,7 +58,7 @@ class ContentItemViewHolder(private val binding: ItemContentBinding) :
       // Hide the download button if the content is downloaded and we are on downloads list
       val showDownloadButton =
         content?.isDownloading() == true && adapterType.isDownloaded()
-      buttonDownload.toVisibility(showDownloadButton)
+      buttonDownload.isVisible = showDownloadButton
       buttonDownload.updateDownloadState(content?.download)
 
       buttonDownload.setOnClickListener {
@@ -72,7 +72,7 @@ class ContentItemViewHolder(private val binding: ItemContentBinding) :
     bookmarkCallback: ((Int) -> Unit)? = null
   ) {
     with(binding) {
-      buttonBookmark.toVisibility(isContentBookmarked)
+      buttonBookmark.isVisible = isContentBookmarked
       buttonBookmark.setOnClickListener {
         if (isContentBookmarked) {
           bookmarkCallback?.invoke(adapterPosition)
@@ -94,9 +94,8 @@ class ContentItemViewHolder(private val binding: ItemContentBinding) :
           progress
         }
 
-      progressContentProgression.toVisibility(
+      progressContentProgression.isVisible =
         content?.isProgressionFinished() != true && !adapterContent.isCompleted()
-      )
       progressContentProgression.progress = updatedProgress
     }
   }

@@ -27,7 +27,7 @@ import com.razeware.emitron.ui.common.ProgressDelegate
 import com.razeware.emitron.ui.content.ContentAdapter
 import com.razeware.emitron.ui.content.ContentPagedFragment
 import com.razeware.emitron.ui.library.search.RecentSearchAdapter
-import com.razeware.emitron.utils.NetworkState
+import com.razeware.emitron.utils.UiStateManager
 import com.razeware.emitron.utils.extensions.*
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -105,7 +105,7 @@ class LibraryFragment : DaggerFragment() {
     binding.textLibraryCount.text = getString(R.string.label_tutorials_count, "⋯")
     pagedFragment.value.initPaging(
       this, binding.recyclerViewLibrary,
-      onNetworkStateChange = ::handleInitialProgress
+      onUiStateChange = ::handleInitialProgress
     ) {
       binding.textLibraryCount.text =
         getString(R.string.label_tutorials_count, it.getTotalCount().toString())
@@ -230,14 +230,14 @@ class LibraryFragment : DaggerFragment() {
     }
   }
 
-  private fun handleInitialProgress(networkState: NetworkState?) {
-    when (networkState) {
-      NetworkState.INIT -> {
+  private fun handleInitialProgress(uiState: UiStateManager.UiState?) {
+    when (uiState) {
+      UiStateManager.UiState.INIT -> {
         progressDelegate.showProgressView()
         toggleControls()
       }
-      NetworkState.INIT_SUCCESS, NetworkState.INIT_EMPTY -> {
-        toggleControls(true, networkState == NetworkState.INIT_EMPTY)
+      UiStateManager.UiState.INIT_LOADED, UiStateManager.UiState.INIT_EMPTY -> {
+        toggleControls(true, uiState == UiStateManager.UiState.INIT_EMPTY)
         hideRecentSearchControls()
         progressDelegate.hideProgressView()
       }

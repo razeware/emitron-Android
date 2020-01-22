@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.work.WorkManager
@@ -112,8 +113,8 @@ class LoginFragment : DaggerFragment() {
 
   private fun handleNoSubscription(show: Boolean = true) {
     with(binding) {
-      layoutLogin.toVisibility(!show)
-      layoutLoginNoSubscription.toVisibility(show)
+      layoutLogin.isVisible = !show
+      layoutLoginNoSubscription.isVisible = show
     }
   }
 

@@ -22,7 +22,6 @@ import com.razeware.emitron.ui.onboarding.OnboardingAction
 import com.razeware.emitron.ui.onboarding.OnboardingActionDelegate
 import com.razeware.emitron.ui.player.Playlist
 import com.razeware.emitron.utils.Event
-import com.razeware.emitron.utils.NetworkState
 import com.razeware.emitron.utils.UiStateManager
 import kotlinx.coroutines.launch
 import org.threeten.bp.Clock
@@ -45,13 +44,11 @@ class CollectionViewModel @Inject constructor(
   DownloadAction by downloadActionDelegate, PermissionsAction by permissionActionDelegate,
   ProgressionAction by progressionActionDelegate {
 
-  private val _networkState = MutableLiveData<NetworkState>()
+  private val _uiState = MutableLiveData<UiStateManager.UiState>()
 
-  override val uiState: MutableLiveData<UiStateManager.UiState> = MutableLiveData()
-
-  override val networkState: LiveData<NetworkState>
+  override val uiState: MutableLiveData<UiStateManager.UiState>
     get() {
-      return _networkState
+      return _uiState
     }
 
   private val _collection = MutableLiveData<Data>()
