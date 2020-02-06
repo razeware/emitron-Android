@@ -104,7 +104,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/downloads_no_subscription_body"
-      style="@style/TextAppearance.Body.2"
+      style="@style/TextAppearance.Body.3"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/login_onboarding_body_margin_top"
