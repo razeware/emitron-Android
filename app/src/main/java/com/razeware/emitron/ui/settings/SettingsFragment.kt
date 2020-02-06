@@ -73,6 +73,7 @@ class SettingsFragment : DaggerFragment() {
     super.onViewCreated(view, savedInstanceState)
     initUi()
     initObservers()
+    viewModel.init()
   }
 
   private fun initObservers() {
