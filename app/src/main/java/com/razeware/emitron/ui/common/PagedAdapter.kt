@@ -32,6 +32,10 @@ class PagedAdapter {
     val hadExtraRow = hasExtraRow()
     this.uiState = newUiState
     val hasExtraRow = hasExtraRow()
+
+    if (newUiState.isLoading()) {
+      uiState = null
+    }
     if (hadExtraRow != hasExtraRow) {
       onChangeLastItem(hadExtraRow)
     } else if (hasExtraRow && previousState != newUiState) {

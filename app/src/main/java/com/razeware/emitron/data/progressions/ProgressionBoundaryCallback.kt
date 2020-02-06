@@ -83,8 +83,13 @@ class ProgressionBoundaryCallback(
     }
   }
 
-  private fun getProgressions(): Triple<List<Data>?, Int?, Boolean> {
-    val pageNumber = pageNumber() ?: return Triple(null, null, true)
+  private fun getProgressions(): Triple<List<Data>, Int?, Boolean> {
+    val pageNumber = pageNumber()
+    if (pageNumber == null) {
+      handleEmpty()
+      return Triple(emptyList(), null, false)
+    }
+
     val progressionsResponse = try {
       progressionApi.getProgressions(
         pageNumber,
@@ -100,13 +105,13 @@ class ProgressionBoundaryCallback(
 
     if (null == progressionsResponse || !progressionsResponse.isSuccessful) {
       handleError()
-      return Triple(null, 0, false)
+      return Triple(emptyList(), 0, false)
     }
 
     val contentBody = progressionsResponse.body()
     if (contentBody == null) {
       handleError()
-      return Triple(null, 0, false)
+      return Triple(emptyList(), 0, false)
     }
 
 
@@ -122,17 +127,13 @@ class ProgressionBoundaryCallback(
 
     if (items.isNullOrEmpty()) {
       handleEmpty()
-      return Triple(null, 0, false)
+      return Triple(emptyList(), 0, false)
     }
 
     return Triple(items, contentBody.getNextPage(), true)
   }
 
-  private fun saveProgressions(progressions: List<Data>?) {
-    if (progressions.isNullOrEmpty()) {
-      handleEmpty()
-      return
-    }
+  private fun saveProgressions(progressions: List<Data>) {
     contentLocalDataSource.insertContents(DataType.Progressions, progressions)
   }
 }
