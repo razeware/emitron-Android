@@ -132,7 +132,6 @@ class MainActivity : DaggerAppCompatActivity() {
 
   @TargetApi(Build.VERSION_CODES.O)
   private fun updatePipParameters() = PictureInPictureParams.Builder()
-    .setAspectRatio(PipActionDelegate.getPipRatio(this))
     .setActions(PipActionDelegate.getPipActions(this, viewModel.isPlaying()))
     .build()
 
