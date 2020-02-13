@@ -32,7 +32,7 @@ class ProgressionBoundaryCallback(
   override fun onZeroItemsLoaded() {
     /**
      * The notifier has pending requests, and the boundary callback starts from zero items,
-     * surely we the last item in paging library was updated/edited, let's send empty response,
+     * surely the last item in paging library was updated/edited, let's send empty response,
      * as once the request finishes, the DB will be updated again.
      */
     if (boundaryCallbackNotifier.hasRequests()) {
