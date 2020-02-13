@@ -58,7 +58,7 @@ interface UiStateManager {
      * @return true if UI is empty, else false
      */
     fun isEmpty(): Boolean {
-      return this == EMPTY
+      return this == EMPTY || this == INIT_EMPTY
     }
   }
 

@@ -698,15 +698,19 @@ class PlayerFragment : DaggerFragment() {
     dismissBottomSheets()
     countDownTimer.cancel()
     requestLandscapeOrientation(false)
-    playerManager.release()
-    progressHandler?.removeCallbacksAndMessages(null)
-    playbackNotificationManager.setPlayer(null)
-    pipActionDelegate.clear()
+    releasePlayer()
     parentViewModel.updateIsPlaying(false)
     requireActivity().requestGestureUi()
     if (hasNougat()) {
       AppCompatDelegate.setDefaultNightMode(parentViewModel.getNightModeSettings())
     }
+  }
+
+  private fun releasePlayer() {
+    playerManager.release()
+    progressHandler?.removeCallbacksAndMessages(null)
+    playbackNotificationManager.setPlayer(null)
+    pipActionDelegate.clear()
   }
 
   private fun dismissBottomSheets() {
@@ -801,5 +805,13 @@ class PlayerFragment : DaggerFragment() {
     playlist ?: return
     startPlayback(playlist.updateCurrentEpisode(position))
     playlistBottomSheet.dismiss()
+  }
+
+  /**
+   * See [Fragment.onStop]
+   */
+  override fun onStop() {
+    super.onStop()
+    playerManager.pause()
   }
 }

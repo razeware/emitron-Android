@@ -122,7 +122,7 @@ class ItemErrorViewHolder(
       ContentAdapter.Type.ContentWithSearch ->
         resources.getString(R.string.error_library_no_content)
       ContentAdapter.Type.ContentBookmarked ->
-        resources.getString(R.string.body_bookmarks_empty)
+        resources.getString(R.string.title_bookmarks_empty)
       ContentAdapter.Type.ContentInProgress ->
         resources.getString(R.string.title_progressions_empty)
       ContentAdapter.Type.ContentCompleted ->

@@ -31,6 +31,13 @@ class SettingsViewModel @Inject constructor(
   private val _downloadsWifiOnly = MutableLiveData<Boolean>()
 
   init {
+    init()
+  }
+
+  /**
+   * Init with default values
+   */
+  fun init() {
     _nightMode.value = settingsRepository.getNightMode()
     _crashReportingAllowed.value = settingsRepository.isCrashReportingAllowed()
     _playbackSpeed.value = settingsRepository.getPlaybackSpeed()
