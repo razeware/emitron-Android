@@ -178,7 +178,7 @@
       android:layout_height="wrap_content"
       android:visibility="gone"
       app:constraint_referenced_ids="text_login_error_title,text_login_error_description,button_sign_out"
-      tools:visibility="gone" />
+      tools:visibility="visible" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
