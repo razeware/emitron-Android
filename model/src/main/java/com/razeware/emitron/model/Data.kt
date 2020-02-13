@@ -540,6 +540,9 @@ data class Data(
      */
     fun getContentTypes(dataList: List<Data>): List<String> {
       return dataList.filter { FilterType.fromType(it.type).isContentType() }
+        .filter {
+          !it.getContentType().isProfessional()
+        }
         .mapNotNull { it.getContentType()?.toString()?.toLowerCase() }
     }
 
@@ -563,6 +566,17 @@ data class Data(
         dataList.firstOrNull { FilterType.fromType(it.type).isSort() }?.getName()
           ?: ""
       return SortOrder.fromValue(sortOrder)?.param ?: SortOrder.Newest.param
+    }
+
+    /**
+     *  @param dataList List of content
+     *
+     *  @return list of category ids from input list
+     */
+    fun getProfessional(dataList: List<Data>): Boolean {
+      return dataList.filter {
+        FilterType.fromType(it.type).isContentType()
+      }.any { it.getContentType().isProfessional() }
     }
 
 

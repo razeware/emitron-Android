@@ -934,4 +934,17 @@ class DataTest {
       )
     )
   }
+
+  @Test
+  fun getProfessional() {
+    val filters = listOf(
+      Data(
+        type = FilterType.ContentType.toRequestFormat(),
+        attributes = Attributes(name = "Video Course", contentType = "professional")
+      )
+    )
+    val professional = Data.getProfessional(filters)
+
+    professional isEqualTo true
+  }
 }

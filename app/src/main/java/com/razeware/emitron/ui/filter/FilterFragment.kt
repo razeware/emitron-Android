@@ -176,6 +176,7 @@ class FilterFragment : DaggerFragment() {
             ContentType.Collection -> getString(R.string.content_type_video_course)
             ContentType.Screencast -> getString(R.string.content_type_screencast)
             ContentType.Episode -> getString(R.string.content_type_episode)
+            ContentType.Professional -> getString(R.string.content_type_video_course_pro)
           }
         })
     val contentTypeList =

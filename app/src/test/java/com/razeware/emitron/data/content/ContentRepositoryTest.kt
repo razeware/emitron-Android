@@ -58,7 +58,8 @@ class ContentRepositoryTest {
         difficulty = anyList(),
         domain = anyList(),
         search = anyString(),
-        sort = anyString()
+        sort = anyString(),
+        professional = anyBoolean()
       )
     ).doReturn(
       Calls.response(
@@ -103,7 +104,8 @@ class ContentRepositoryTest {
         difficulty = anyList(),
         domain = anyList(),
         search = anyString(),
-        sort = anyString()
+        sort = anyString(),
+        professional = anyBoolean()
       )
     ).doReturn(
       Calls.response(
@@ -125,7 +127,8 @@ class ContentRepositoryTest {
       emptyList(),
       emptyList(),
       "",
-      "-released_at"
+      "-released_at",
+      false
     )
     verifyNoMoreInteractions(contentApi)
   }
@@ -147,7 +150,8 @@ class ContentRepositoryTest {
         difficulty = anyList(),
         domain = anyList(),
         search = anyString(),
-        sort = anyString()
+        sort = anyString(),
+        professional = anyBoolean()
       )
     ).doReturn(
       Calls.response(
@@ -177,7 +181,8 @@ class ContentRepositoryTest {
       listOf("2"),
       emptyList(),
       "Emitron",
-      "popularity"
+      "popularity",
+      false
     )
     verifyNoMoreInteractions(contentApi)
   }
@@ -200,7 +205,8 @@ class ContentRepositoryTest {
         difficulty = anyList(),
         domain = anyList(),
         search = anyString(),
-        sort = anyString()
+        sort = anyString(),
+        professional = anyBoolean()
       )
     ).doReturn(
       Calls.response(contents)
@@ -233,7 +239,8 @@ class ContentRepositoryTest {
         difficulty = anyList(),
         domain = anyList(),
         search = anyString(),
-        sort = anyString()
+        sort = anyString(),
+        professional = anyBoolean()
       )
     ).doReturn(
       Calls.response(contents)
@@ -258,7 +265,8 @@ class ContentRepositoryTest {
         category = anyList(),
         domain = anyList(),
         search = anyString(),
-        sort = anyString()
+        sort = anyString(),
+        professional = anyBoolean()
       )
     ).doReturn(
       Calls.response(contents)
@@ -290,7 +298,8 @@ class ContentRepositoryTest {
         difficulty = anyList(),
         domain = anyList(),
         search = anyString(),
-        sort = anyString()
+        sort = anyString(),
+        professional = anyBoolean()
       )
     ).doReturn(response)
 
@@ -321,7 +330,8 @@ class ContentRepositoryTest {
         difficulty = anyList(),
         domain = anyList(),
         search = anyString(),
-        sort = anyString()
+        sort = anyString(),
+        professional = anyBoolean()
       )
     ).doReturn(response)
 
@@ -345,7 +355,8 @@ class ContentRepositoryTest {
         category = anyList(),
         domain = anyList(),
         search = anyString(),
-        sort = anyString()
+        sort = anyString(),
+        professional = anyBoolean()
       )
     ).doReturn(Calls.response(contents))
 
@@ -387,7 +398,8 @@ class ContentRepositoryTest {
         difficulty = anyList(),
         domain = anyList(),
         search = anyString(),
-        sort = anyString()
+        sort = anyString(),
+        professional = anyBoolean()
       )
     ).doReturn(
       Calls.response(
@@ -418,7 +430,8 @@ class ContentRepositoryTest {
         category = anyList(),
         domain = anyList(),
         search = anyString(),
-        sort = anyString()
+        sort = anyString(),
+        professional = anyBoolean()
       )
     ).doReturn(response)
     // When
@@ -439,7 +452,8 @@ class ContentRepositoryTest {
         category = anyList(),
         domain = anyList(),
         search = anyString(),
-        sort = anyString()
+        sort = anyString(),
+        professional = anyBoolean()
       )
     ).doReturn(Calls.response(contents))
 
