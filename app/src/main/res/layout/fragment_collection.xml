@@ -181,7 +181,7 @@
         android:textAppearance="@style/TextAppearance.Body.1.Inverse"
         android:textColorLink="@color/textColorBody1Inverse"
         android:textIsSelectable="true"
-        app:layout_constraintBottom_toBottomOf="@+id/image_collection_banner"
+        app:layout_constraintBottom_toTopOf="@+id/button_manage_subscription"
         app:layout_constraintEnd_toEndOf="@+id/guideline_right"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
@@ -214,7 +214,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:constraint_referenced_ids="image_collection_pro,text_collection_title_pro,text_collection_body_pro,button_manage_subscription"
-        tools:visibility="gone" />
+        tools:visibility="visible" />
 
       <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_collection_language"
