@@ -27,7 +27,8 @@ interface ContentApi {
     @Query("filter[domain_ids][]") domain: List<String> = emptyList(),
     @Query("filter[difficulties][]") difficulty: List<String> = emptyList(),
     @Query("filter[q]") search: String = "",
-    @Query("sort") sort: String = ""
+    @Query("sort") sort: String = "",
+    @Query("professional") professional: Boolean = false
   ): Call<Contents>
 
   /**

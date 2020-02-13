@@ -75,6 +75,7 @@
   <string name="content_type_video_course">Video Course</string>
   <string name="content_type_screencast">Screencast</string>
   <string name="content_type_episode">Episode</string>
+  <string name="content_type_video_course_pro">Pro Video Course</string>
 
   <!-- Readable Date -->
   <string name="today">Today</string>

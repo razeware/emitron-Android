@@ -154,7 +154,8 @@ class ContentDataSourceRemote(
         category = Data.getCategoryIds(filters),
         search = Data.getSearchTerm(filters),
         sort = Data.getSortOrder(filters),
-        difficulty = Data.getDifficulty(filters)
+        difficulty = Data.getDifficulty(filters),
+        professional = Data.getProfessional(filters)
       ).execute()
     } catch (exception: IOException) {
       null

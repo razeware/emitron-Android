@@ -15,7 +15,12 @@ enum class ContentType {
   /**
    * Episode
    */
-  Episode;
+  Episode,
+
+  /**
+   * Profession content
+   */
+  Professional;
 
   companion object {
 
@@ -39,7 +44,7 @@ enum class ContentType {
      * @return List of [ContentType]
      */
     fun getAllowedContentTypes(): Array<String> =
-      values().filter { !it.isEpisode() }.map { it.name.toLowerCase() }.toTypedArray()
+      values().filter { !it.isEpisode() && !it.isProfessional() }.map { it.name.toLowerCase() }.toTypedArray()
 
     /**
      * Allowed downloadable [ContentType]s
@@ -47,7 +52,7 @@ enum class ContentType {
      * @return List of [ContentType]
      */
     fun getAllowedDownloadTypes(): Array<String> =
-      values().filter { !it.isCollection() }.map { it.name.toLowerCase() }.toTypedArray()
+      values().filter { !it.isCollection() && !it.isProfessional() }.map { it.name.toLowerCase() }.toTypedArray()
 
     /**
      * Allowed content filters [ContentType]s
@@ -73,6 +78,11 @@ fun ContentType?.isCollection(): Boolean = this == ContentType.Collection
  * @return True if the current content is episode, otherwise False
  */
 fun ContentType?.isEpisode(): Boolean = this == ContentType.Episode
+
+/**
+ * @return True if the current content is professional, otherwise False
+ */
+fun ContentType?.isProfessional(): Boolean = this == ContentType.Professional
 
 /**
  * Convert the [ContentType] name to lowercase for use in post requests or to save to db

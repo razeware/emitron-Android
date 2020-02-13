@@ -36,6 +36,10 @@ class ContentTypeTest {
   fun getFilterContentTypes() {
     val result = ContentType.getFilterContentTypes()
 
-    result isEqualTo listOf(ContentType.Collection, ContentType.Screencast)
+    result isEqualTo listOf(
+      ContentType.Collection,
+      ContentType.Screencast,
+      ContentType.Professional
+    )
   }
 }
