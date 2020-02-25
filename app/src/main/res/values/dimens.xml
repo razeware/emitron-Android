@@ -202,4 +202,6 @@
 
   <dimen name="error_title_margin_top">20dp</dimen>
 
+  <dimen name="stroke_label_pro">2dp</dimen>
+
 </resources>

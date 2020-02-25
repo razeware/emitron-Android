@@ -134,7 +134,8 @@
 
       <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_collection_label_pro"
-        style="@style/TextAppearance.Overline.Raised.Colored.White"
+        style="@style/TextAppearance.Overline.Raised.Colored"
+        android:background="@drawable/bg_pro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/button_spacing_horizontal"
