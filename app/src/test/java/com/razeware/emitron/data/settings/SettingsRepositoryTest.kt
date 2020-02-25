@@ -3,6 +3,7 @@ package com.razeware.emitron.data.settings
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.*
 import com.razeware.emitron.data.content.ContentDataSourceLocal
+import com.razeware.emitron.data.login.LoginPrefs
 import com.razeware.emitron.data.progressions.ProgressionDataSourceLocal
 import com.razeware.emitron.ui.onboarding.OnboardingView
 import com.razeware.emitron.utils.CurrentThreadExecutor
@@ -19,6 +20,8 @@ class SettingsRepositoryTest {
   private lateinit var settingsRepository: SettingsRepository
 
   private val settingsPrefs: SettingsPrefs = mock()
+
+  private val loginPrefs: LoginPrefs = mock()
 
   private val threadManager: ThreadManager = mock()
 
@@ -39,6 +42,7 @@ class SettingsRepositoryTest {
     whenever(threadManager.networkExecutor).doReturn(CurrentThreadExecutor())
     settingsRepository = SettingsRepository(
       threadManager,
+      loginPrefs,
       settingsPrefs,
       contentDataSourceLocal,
       progressionDataSourceLocal
@@ -216,4 +220,11 @@ class SettingsRepositoryTest {
     verify(settingsPrefs).saveOnboardedView("Download")
     verifyNoMoreInteractions(settingsPrefs)
   }
+
+	@Test
+	fun getLoggedInUser() {
+		settingsRepository.getLoggedInUser()
+		verify(loginPrefs).getLoggedInUser()
+		verifyNoMoreInteractions(loginPrefs)
+	}
 }

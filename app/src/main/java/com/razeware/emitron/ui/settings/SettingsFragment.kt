@@ -164,6 +164,9 @@ class SettingsFragment : DaggerFragment() {
       titleVersionName.text = getString(
         R.string.label_version, BuildConfig.VERSION_NAME
       )
+			titleLoggedInUser.text = getString(
+				R.string.settings_logged_in_user, viewModel.getLoggedInUser()
+			)
       switchCrashReporting.setOnCheckedChangeListener { _, checked ->
         viewModel.updateCrashReportingAllowed(checked)
       }
