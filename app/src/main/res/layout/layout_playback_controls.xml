@@ -74,9 +74,10 @@
 
   <com.google.android.material.textview.MaterialTextView
     android:id="@id/exo_position"
+    style="@style/TextAppearance.Body.2.Inverse"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="4dp"
+    android:layout_marginStart="@dimen/text_drawable_padding_dense"
     android:includeFontPadding="false"
     android:textIsSelectable="false"
     app:layout_constraintBottom_toBottomOf="@id/exo_progress"
@@ -116,6 +117,7 @@
 
   <com.google.android.material.textview.MaterialTextView
     android:id="@id/exo_duration"
+    style="@style/TextAppearance.Body.2.Inverse"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:includeFontPadding="false"
