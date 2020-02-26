@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "api-7738908332336908981-883461",
+  "private_key_id": "8465564f0685b2d3485d190d8c4c0e32cb09c2cc",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCQ7EI3sbrVGe/1\neaZj0cYdjttBhl54PpvOH7y8ob33phqf2YLWA2uE3Af/BC8j3UsfXFQR/krVaAMo\nikUfrmiTX3H+w7MP6/CtstlDDqriBAX9m7HX3kKBBLsIEbTxPT3lMaie/x8UiRLi\n3ShXzrfKbcrVCptE5XnD34pxrRt0kLkj/3SO80a/zyIxEU2xK6k/4FsFsVSSefd6\nJzHXHV9CjmflBf8u2TxBsZvzYM9A54ReqTww0k9y3phyRMjhS1dyKJ2rcrYzk9ot\nh3iOc4STDTO8SvngZ12NUs9ub5tc3CX3FTWG2O4Waehnd7EM5596YSkE9EkKU20x\nY7Jk8tj3AgMBAAECggEAHvsCpNlPsWKcE4Pv+ALOMV9qq7VH2Li5ofTS6hhBfgF6\nS5W6DHoqr/pBk1iXozkZaBjauAX+hWR42F/GqyEjpe2PdwDq9IphpyBGpbkq+qoV\nhcOU3yraWK5kNTNj1PZclvRosaSkRkWPTgQtLag5TgLui2B7FN1hjGfrNqXk6qP7\nM3cIVLufT8+IVBdqUfDpkFJ5a7Cuw07QV3OeKfhIFr7GG6BbN6O+F/xwwcoFZK3d\nwcdVImYmDGXvxkTuIkxfwEr6nPB3X2kdpc3pAaBBwTroSXNFP6Etwgxmlfc453La\nfLBfLRJ11Qcd+y2pDs6BDCbe8xyFW+OqB6emWtEFUQKBgQDDj3qt7kv46KHsifvC\nxx8YRvVPBB5PVT7cITS9cjK5DH/g9xjdHhIB9IxCpi0Wfnuq+bQewJVupt+kI4Kr\nSxSiW4PweOWj4PKlLX6CRSyT+9fEb+5/frmlZB5alUM07JtN0HJX+Hk4gvWsWZOm\nCLGmIu3YEkRRQvoAtNBaYCKeNQKBgQC9tmRTznIX35pniz3Fghd3Qid/YHGuz0YT\nqwdUPeoi9Uhc28E6ChKpg4P81nO6Prm4JQURkOwkLSuSsPquLJajULNQjnq4WbXo\nrTs7zc3NqabqtI9fd76BP1k1nkQQzO/JuVA9KzuouK0nXTy79dtFar9031P5hn/M\nP3Dq/t4v+wKBgQCvUHEqe/afre17oDeS5e96VCKWM5r4g/NWZG5jZ30RZ6M8ikg/\n8jUyi4kyNsc04y76l+BhsURFblQPUcZSyXw2ENS3P6qev4rHiYFgR6MvBxbng3DL\n20+Sda7Ahg854uNXXwci1h3WC5EycRtsPV8FEUsn6ThVoTV+bJpcatKeAQKBgQCH\nwSnf8r4gKUkDSVeFq0cBdxxugOQ41GfwERXoiXmvVFhY4oRN9QFPviXH2unrX5Fk\nnVEYNd1VMeGZUf3Af3W4HjqCrcJRgxiyDKxzah0YS4t/Ln/eMADp2hwLS1qnrw70\nCiDJ9NL3NFfr8ENSuWcUMIQarOkZiM6QqOEzt/fk2wKBgQCdDInfcXeoqDLeYmcY\nUi6J1mpIu/YyCZREueHMfSuvEH57K7k7CqGl8Y9wX49XJ+KQLhMX2TFbsv9NuZro\nYWuE5qz0EWLncKla8LDHGnl6wkcNa466+ZW6gTo7e64ByVvhikbuVNpWmjpUL7yg\n3uGu3fHuvO/lC5q4J4iN552phQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "emitron-ci@api-7738908332336908981-883461.iam.gserviceaccount.com",
+  "client_id": "111185740712863177991",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/emitron-ci%40api-7738908332336908981-883461.iam.gserviceaccount.com"
+}
