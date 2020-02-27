@@ -59,7 +59,7 @@ class ContentRepositoryTest {
         domain = anyList(),
         search = anyString(),
         sort = anyString(),
-        professional = anyBoolean()
+        professional = anyOrNull()
       )
     ).doReturn(
       Calls.response(
@@ -128,7 +128,7 @@ class ContentRepositoryTest {
       emptyList(),
       "",
       "-released_at",
-      false
+      null
     )
     verifyNoMoreInteractions(contentApi)
   }
@@ -182,7 +182,7 @@ class ContentRepositoryTest {
       emptyList(),
       "Emitron",
       "popularity",
-      false
+      null
     )
     verifyNoMoreInteractions(contentApi)
   }
@@ -206,7 +206,7 @@ class ContentRepositoryTest {
         domain = anyList(),
         search = anyString(),
         sort = anyString(),
-        professional = anyBoolean()
+        professional = anyOrNull()
       )
     ).doReturn(
       Calls.response(contents)
@@ -240,7 +240,7 @@ class ContentRepositoryTest {
         domain = anyList(),
         search = anyString(),
         sort = anyString(),
-        professional = anyBoolean()
+        professional = anyOrNull()
       )
     ).doReturn(
       Calls.response(contents)
@@ -266,7 +266,7 @@ class ContentRepositoryTest {
         domain = anyList(),
         search = anyString(),
         sort = anyString(),
-        professional = anyBoolean()
+        professional = anyOrNull()
       )
     ).doReturn(
       Calls.response(contents)
@@ -356,7 +356,7 @@ class ContentRepositoryTest {
         domain = anyList(),
         search = anyString(),
         sort = anyString(),
-        professional = anyBoolean()
+        professional = anyOrNull()
       )
     ).doReturn(Calls.response(contents))
 
@@ -399,7 +399,7 @@ class ContentRepositoryTest {
         domain = anyList(),
         search = anyString(),
         sort = anyString(),
-        professional = anyBoolean()
+        professional = anyOrNull()
       )
     ).doReturn(
       Calls.response(
@@ -453,7 +453,7 @@ class ContentRepositoryTest {
         domain = anyList(),
         search = anyString(),
         sort = anyString(),
-        professional = anyBoolean()
+        professional = anyOrNull()
       )
     ).doReturn(Calls.response(contents))
 
