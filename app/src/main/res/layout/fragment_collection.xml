@@ -233,9 +233,10 @@
 
       <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_collection_label_pro"
-        style="@style/TextAppearance.Overline.Raised.Colored.White"
+        style="@style/TextAppearance.Overline.Raised.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/bg_pro"
         android:text="@string/label_pro"
         app:layout_constraintBottom_toBottomOf="@+id/text_collection_language"
         app:layout_constraintEnd_toEndOf="@+id/guideline_right"

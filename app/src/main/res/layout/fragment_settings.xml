@@ -480,19 +480,41 @@
 
     </ScrollView>
 
-    <com.google.android.material.button.MaterialButton
-      android:id="@+id/button_logout"
-      style="@style/Button.Colored.3.Icon"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_gravity="bottom"
-      android:layout_margin="@dimen/activity_vertical_margin"
-      android:text="@string/button_sign_out"
-      app:icon="@drawable/ic_material_button_icon_arrow_right_red_contained"
-      app:iconGravity="end"
-      app:iconTint="@color/white"
-      app:iconTintMode="multiply"
-      tools:visibility="visible" />
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
 
+			<androidx.appcompat.widget.AppCompatTextView
+				android:id="@+id/title_logged_in_user"
+				style="@style/TextAppearance.Body.1"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="center_vertical"
+				android:layout_marginTop="@dimen/text_spacing_vertical_default"
+				android:layout_marginBottom="@dimen/text_spacing_vertical_default"
+				app:layout_constraintEnd_toStartOf="@id/guideline_right"
+				app:layout_constraintStart_toStartOf="@id/guideline_left"
+				app:layout_constraintTop_toBottomOf="@+id/divider_10"
+				android:layout_gravity="center"
+				tools:text="Logged in as lukusfreebird" />
+
+			<com.google.android.material.button.MaterialButton
+				android:id="@+id/button_logout"
+				style="@style/Button.Colored.3.Icon"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="bottom"
+				android:layout_marginBottom="@dimen/activity_vertical_margin"
+				android:layout_marginStart="@dimen/activity_vertical_margin"
+				android:layout_marginEnd="@dimen/activity_vertical_margin"
+				android:text="@string/button_sign_out"
+				app:icon="@drawable/ic_material_button_icon_arrow_right_red_contained"
+				app:iconGravity="end"
+				app:iconTint="@color/white"
+				app:iconTintMode="multiply"
+				tools:visibility="visible" />
+
+		</LinearLayout>
   </LinearLayout>
 </layout>

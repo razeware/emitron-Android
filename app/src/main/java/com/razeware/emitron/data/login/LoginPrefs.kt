@@ -86,4 +86,12 @@ class LoginPrefs @Inject constructor(private val prefs: PrefUtils) {
    */
   fun getPermissions(): List<String> =
     prefs.get(USER_PERMISSIONS, "").split(",").map { it.trim() }
+
+	/**
+	 * Get logged in user
+	 *
+	 * @return logged in user name
+	 */
+	fun getLoggedInUser(): String =
+		prefs.get(USER_USERNAME, "")
 }

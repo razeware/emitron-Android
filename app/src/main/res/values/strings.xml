@@ -250,5 +250,6 @@
   <string name="on_boarding_episode_number_3">3</string>
   <string name="on_boarding_collection_title">Mark episodes complete</string>
   <string name="on_boarding_collection_body">Tap the number next to an episode to mark it as complete.</string>
+	<string name="settings_logged_in_user">Logged in as %1$s</string>
 
 </resources>

@@ -195,4 +195,9 @@ class SettingsViewModel @Inject constructor(
    * Get download wifi only
    */
   fun getDownloadsWifiOnly(): Boolean = settingsRepository.getDownloadsWifiOnly()
+
+	/**
+	 * Get logged in user
+	 */
+  fun getLoggedInUser(): String = settingsRepository.getLoggedInUser()
 }

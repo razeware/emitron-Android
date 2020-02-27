@@ -37,5 +37,6 @@
   <color name="colorRadioButtonChecked2">@color/white</color>
 
   <color name="colorViewPagerIndicator">@color/colorPrimary</color>
-  <color name="colorBadge">@color/white</color>
+  <color name="colorBadge">@color/nice_blue</color>
+  <color name="colorBadgeStroke">@color/white</color>
 </resources>

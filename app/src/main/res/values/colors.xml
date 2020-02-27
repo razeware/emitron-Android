@@ -20,6 +20,7 @@
   <color name="charcoal_grey">#424750</color>
   <color name="transparent">#00000000</color>
   <color name="slate_grey">#61656c</color>
+  <color name="nice_blue">#157cb8</color>
 
   <color name="colorPrimary">@color/dark_sea_green</color>
   <color name="colorPrimaryDark">@color/charcoal_black</color>
@@ -103,6 +104,7 @@
   <color name="colorRadioButtonDefault">@color/transparent</color>
 
   <color name="colorViewPagerIndicator">@color/pale_blue</color>
-  <color name="colorBadge">@color/charcoal_black</color>
+  <color name="colorBadge">@color/nice_blue</color>
+  <color name="colorBadgeStroke">@color/nice_blue</color>
 
 </resources>
