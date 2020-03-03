@@ -259,164 +259,167 @@
         tools:text="Advanced Swift:
 Values and References" />
 
-      <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_collection_duration"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/collection_detail_item_vertical_spacing"
-        android:textAppearance="@style/TextAppearance.Footnote"
-        app:layout_constraintBottom_toTopOf="@+id/button_collection_bookmark"
-        app:layout_constraintEnd_toEndOf="@+id/guideline_right"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/text_collection_title"
-        tools:text="11 Apr · Beginner · Video Course (56 min)" />
+			<androidx.appcompat.widget.AppCompatTextView
+				android:id="@+id/text_collection_duration"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="@dimen/collection_detail_item_vertical_spacing"
+				android:textAppearance="@style/TextAppearance.Footnote"
+				app:layout_constraintBottom_toTopOf="@+id/button_collection_bookmark"
+				app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+				app:layout_constraintHorizontal_chainStyle="spread_inside"
+				app:layout_constraintStart_toStartOf="@id/guideline_left"
+				app:layout_constraintTop_toBottomOf="@id/text_collection_title"
+				tools:text="11 Apr · Beginner · Video Course (56 min)" />
 
-      <com.razeware.emitron.ui.common.DownloadButton
-        android:id="@+id/button_collection_download"
-        android:layout_width="@dimen/collection_detail_button_download_height_width"
-        android:layout_height="@dimen/collection_detail_button_download_height_width"
-        app:downloadIcon="@drawable/ic_material_icon_download_2"
-        app:downloadIconTint="@color/colorIcon"
-        app:downloadStopIcon="@drawable/ic_material_icon_download_pause"
-        app:downloadStopIconTint="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="@+id/button_collection_bookmark"
-        app:layout_constraintEnd_toEndOf="@+id/guideline_right"
-        app:layout_constraintEnd_toStartOf="@+id/button_collection_bookmark"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="@+id/button_collection_bookmark"
-        app:progressDrawable="@drawable/progress_drawable" />
+			<com.razeware.emitron.ui.common.DownloadButton
+				android:id="@+id/button_collection_download"
+				android:layout_width="@dimen/collection_detail_button_download_height_width"
+				android:layout_height="@dimen/collection_detail_button_download_height_width"
+				app:downloadIcon="@drawable/ic_material_icon_download_2"
+				app:downloadIconTint="@color/colorIcon"
+				app:downloadStopIcon="@drawable/ic_material_icon_download_pause"
+				app:downloadStopIconTint="@color/colorPrimary"
+				app:layout_constraintBottom_toBottomOf="@+id/button_collection_bookmark"
+				app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+				app:layout_constraintEnd_toStartOf="@+id/button_collection_bookmark"
+				app:layout_constraintHorizontal_bias="0"
+				app:layout_constraintHorizontal_chainStyle="packed"
+				app:layout_constraintStart_toStartOf="@+id/guideline_left"
+				app:layout_constraintTop_toTopOf="@+id/button_collection_bookmark"
+				app:progressDrawable="@drawable/progress_drawable" />
 
-      <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_collection_bookmark"
-        style="@style/Button.Icon"
-        android:layout_width="@dimen/button_icon_height_width_2"
-        android:layout_height="@dimen/button_icon_height_width_2"
-        android:layout_marginTop="@dimen/collection_detail_item_vertical_spacing"
-        app:icon="@drawable/ic_material_icon_bookmark"
-        app:iconSize="@dimen/icon_height_width_2"
-        app:iconTint="@{data.isBookmarked()? @color/colorButton1 : @color/colorIcon}"
-        app:layout_constraintBottom_toTopOf="@+id/text_collection_description"
-        app:layout_constraintEnd_toStartOf="@+id/text_collection_completed"
-        app:layout_constraintStart_toEndOf="@+id/button_collection_download"
-        app:layout_constraintTop_toBottomOf="@+id/text_collection_duration" />
+			<com.google.android.material.button.MaterialButton
+				android:id="@+id/button_collection_bookmark"
+				style="@style/Button.Icon"
+				android:layout_width="@dimen/button_icon_height_width_2"
+				android:layout_height="@dimen/button_icon_height_width_2"
+				android:layout_marginTop="@dimen/collection_detail_item_vertical_spacing"
+				app:icon="@drawable/ic_material_icon_bookmark"
+				app:iconSize="@dimen/icon_height_width_2"
+				app:iconTint="@{data.isBookmarked()? @color/colorButton1 : @color/colorIcon}"
+				app:layout_constraintBottom_toTopOf="@+id/text_collection_description"
+				app:layout_constraintEnd_toStartOf="@+id/text_collection_completed"
+				app:layout_constraintStart_toEndOf="@+id/button_collection_download"
+				app:layout_constraintTop_toBottomOf="@+id/text_collection_duration" />
 
-      <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_collection_completed"
-        style="@style/TextAppearance.Overline.Raised.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/collection_completed_margin_start"
-        android:text="@string/label_completed"
-        app:drawableStartCompat="@drawable/ic_material_icon_checkmark_1"
-        app:layout_constraintBottom_toBottomOf="@+id/button_collection_bookmark"
-        app:layout_constraintEnd_toEndOf="@+id/guideline_right"
-        app:layout_constraintStart_toEndOf="@+id/button_collection_bookmark"
-        app:layout_constraintTop_toTopOf="@+id/button_collection_bookmark"
-        tools:text="Completed"
-        tools:visibility="visible" />
+			<androidx.appcompat.widget.AppCompatTextView
+				android:id="@+id/text_collection_completed"
+				style="@style/TextAppearance.Overline.Raised.Colored"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="@dimen/collection_completed_margin_start"
+				android:text="@string/label_completed"
+				app:drawableStartCompat="@drawable/ic_material_icon_checkmark_1"
+				app:layout_constraintBottom_toBottomOf="@+id/button_collection_bookmark"
+				app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+				app:layout_constraintStart_toEndOf="@+id/button_collection_bookmark"
+				app:layout_constraintTop_toTopOf="@+id/button_collection_bookmark"
+				tools:text="Completed"
+				tools:visibility="visible" />
 
-      <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_collection_description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/collection_detail_item_vertical_spacing"
-        android:text="@{data.getDescription()}"
-        android:textAppearance="@style/TextAppearance.Footnote"
-        app:layout_constraintBottom_toTopOf="@+id/text_collection_author"
-        app:layout_constraintEnd_toEndOf="@+id/guideline_right"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/button_collection_bookmark"
-        tools:text="Swift mutation model uses values and references to improve local reasoning and maintain performance. Find out the details in this course." />
+			<androidx.appcompat.widget.AppCompatTextView
+				android:id="@+id/text_collection_description"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="@dimen/collection_detail_item_vertical_spacing"
+				android:text="@{data.getDescription()}"
+				android:textAppearance="@style/TextAppearance.Footnote"
+				app:layout_constraintBottom_toTopOf="@+id/text_collection_author"
+				app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+				app:layout_constraintHorizontal_chainStyle="spread_inside"
+				app:layout_constraintStart_toStartOf="@id/guideline_left"
+				app:layout_constraintTop_toBottomOf="@id/button_collection_bookmark"
+				tools:text="Swift mutation model uses values and references to improve local reasoning and maintain performance. Find out the details in this course." />
 
-      <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_collection_author"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:textAppearance="@style/TextAppearance.Footnote"
-        app:layout_constraintBottom_toTopOf="@+id/text_collection_episode_headline"
-        app:layout_constraintEnd_toEndOf="@+id/guideline_right"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/text_collection_description"
-        tools:text="By Ray Fix, Jorge R. Moukel &amp; Katie Collins" />
+			<androidx.appcompat.widget.AppCompatTextView
+				android:id="@+id/text_collection_author"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="@dimen/activity_vertical_margin"
+				android:textAppearance="@style/TextAppearance.Footnote"
+				app:layout_constraintBottom_toTopOf="@+id/text_collection_episode_headline"
+				app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+				app:layout_constraintHorizontal_chainStyle="spread_inside"
+				app:layout_constraintStart_toStartOf="@id/guideline_left"
+				app:layout_constraintTop_toBottomOf="@id/text_collection_description"
+				tools:text="By Ray Fix, Jorge R. Moukel &amp; Katie Collins" />
 
-      <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_collection_episode_headline"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/collection_episode_headline_margin_top"
-        android:text="@string/course_episodes"
-        android:textAppearance="@style/TextAppearance.Headline.3"
-        app:layout_constraintBottom_toTopOf="@+id/recycler_view_collection_episode"
-        app:layout_constraintEnd_toEndOf="@+id/guideline_right"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/text_collection_author"
-        tools:text="@string/course_episodes" />
+			<androidx.appcompat.widget.AppCompatTextView
+				android:id="@+id/text_collection_episode_headline"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="@dimen/collection_episode_headline_margin_top"
+				android:text="@string/course_episodes"
+				android:textAppearance="@style/TextAppearance.Headline.3"
+				app:layout_constraintBottom_toTopOf="@+id/recycler_view_collection_episode"
+				app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+				app:layout_constraintHorizontal_chainStyle="spread_inside"
+				app:layout_constraintStart_toStartOf="@id/guideline_left"
+				app:layout_constraintTop_toBottomOf="@id/text_collection_author"
+				tools:text="@string/course_episodes" />
 
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_collection_episode"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/collection_detail_item_vertical_spacing"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_collection_episode_headline"
-        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_collection_episode_header" />
+			<androidx.recyclerview.widget.RecyclerView
+				android:id="@+id/recycler_view_collection_episode"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="@dimen/collection_detail_item_vertical_spacing"
+				app:layout_behavior="@string/appbar_scrolling_view_behavior"
+				app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/text_collection_episode_headline"
+				tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+				tools:listitem="@layout/item_collection_episode_header" />
 
-      <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_collection_content"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:constraint_referenced_ids="text_collection_episode_headline,recycler_view_collection_episode"
-        tools:visibility="gone" />
+			<androidx.constraintlayout.widget.Group
+				android:id="@+id/group_collection_content"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:visibility="gone"
+				app:constraint_referenced_ids="text_collection_episode_headline,recycler_view_collection_episode"
+				tools:visibility="gone" />
 
-      <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_collection_episode_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/collection_episode_headline_margin_top"
-        android:text="@string/course_episodes_progress"
-        android:textAppearance="@style/TextAppearance.Headline.3"
-        app:layout_constraintEnd_toStartOf="@+id/progress_episode"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/text_collection_author"
-        tools:text="@string/course_episodes_progress" />
+			<ProgressBar
+				android:id="@+id/progress_episode"
+				style="?android:attr/progressBarStyle"
+				android:layout_width="@dimen/episode_progress_height_width"
+				android:layout_height="@dimen/episode_progress_height_width"
+				android:layout_marginStart="@dimen/button_spacing_horizontal"
+				android:layout_marginTop="@dimen/episode_progress_margin_top"
+				android:indeterminate="true"
+				android:visibility="gone"
+				app:layout_constraintBottom_toTopOf="@+id/text_collection_episode_progress"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/text_collection_author"
+				tools:visibility="visible" />
 
-      <ProgressBar
-        android:id="@+id/progress_episode"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="@dimen/episode_progress_height_width"
-        android:layout_height="@dimen/episode_progress_height_width"
-        android:layout_marginStart="@dimen/button_spacing_horizontal"
-        android:layout_marginTop="@dimen/episode_progress_margin_top"
-        android:indeterminate="true"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/text_collection_episode_progress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/text_collection_episode_progress"
-        app:layout_constraintTop_toTopOf="@+id/text_collection_episode_progress" />
+			<androidx.appcompat.widget.AppCompatTextView
+				android:id="@+id/text_collection_episode_progress"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="@dimen/collection_episode_headline_margin_top"
+				android:gravity="center"
+				android:text="@string/course_episodes_progress"
+				android:textAppearance="@style/TextAppearance.Headline.3"
+				app:layout_constraintBottom_toBottomOf="parent"
+				app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+				app:layout_constraintHorizontal_bias="0"
+				app:layout_constraintHorizontal_chainStyle="packed"
+				app:layout_constraintStart_toStartOf="@id/guideline_left"
+				app:layout_constraintTop_toBottomOf="@id/progress_episode"
+				tools:text="@string/course_episodes_progress" />
 
-      <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_episode_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:constraint_referenced_ids="text_collection_episode_progress,progress_episode"
-        tools:visibility="gone" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+			<androidx.constraintlayout.widget.Group
+				android:id="@+id/group_episode_progress"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:visibility="gone"
+				app:constraint_referenced_ids="text_collection_episode_progress,progress_episode"
+				tools:visibility="visible" />
+		</androidx.constraintlayout.widget.ConstraintLayout>
 
-  </androidx.core.widget.NestedScrollView>
+	</androidx.core.widget.NestedScrollView>
 
 </layout>
