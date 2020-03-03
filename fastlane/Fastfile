@@ -34,3 +34,16 @@ platform :android do
     )
   end
 end
+
+platform :android do
+  desc "Ship to Playstore internal test"
+  lane :deploy do
+    build_android_app(task:'bundle', build_type: 'release')
+
+    upload_to_play_store(
+        track: 'internal',
+        json_key: 'google-play.json',
+        skip_upload_apk: true
+      )
+  end
+end
