@@ -2,8 +2,8 @@
 buildscript {
   ext.versions = [
 		// build
-		'versionCode'                 : 13,
-		'versionName'                 : "0.13",
+		'versionCode'                 : 14,
+		'versionName'                 : "0.14",
 		'minSdk'                      : 21,
 		'targetSdk'                   : 29,
 		'compileSdk'                  : 29,
