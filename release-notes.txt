@@ -1,6 +1,2 @@
 ## Changes
-- Fix sort order on progression screen
-- Fix collection downloads not working
-- Fix content progression bar background
-- Fix library items progressions state
-- Fix empty screen supporting text and color
+- Fix app name and launch icon
