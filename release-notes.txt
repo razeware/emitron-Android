@@ -1,2 +1,3 @@
 ## Changes
-- Fix app name and launch icon
+- Fix chromecast issues
+- Fix sort order issues
