@@ -1,0 +1,49 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+end
+
+platform :android do
+  desc "Upload to Firebase distribution"
+  lane :distribute do
+    build_android_app(task:'assemble', build_type: 'release')
+
+    firebase_app_distribution(
+        app: ENV["FIREBASE_APP_ID"],
+        groups: 'rw-emitron-android',
+        release_notes_file: 'release-notes.txt'
+    )
+  end
+end
+
+platform :android do
+  desc "Ship to Playstore internal test"
+  lane :deploy do
+    build_android_app(task:'bundle', build_type: 'release')
+
+    upload_to_play_store(
+        track: 'internal',
+        json_key: 'google-play.json',
+        skip_upload_apk: true
+      )
+  end
+end

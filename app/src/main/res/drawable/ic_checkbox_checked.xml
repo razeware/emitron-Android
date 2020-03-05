@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <item>
+    <shape android:shape="rectangle">
+      <size
+        android:width="@dimen/filter_checkbox_height_width"
+        android:height="@dimen/filter_checkbox_height_width" />
+      <solid
+        android:width="@dimen/checkbox_icon_stroke_width"
+        android:color="@color/colorPrimary" />
+      <corners android:radius="@dimen/checkbox_corner_radius" />
+    </shape>
+  </item>
+  <item
+    android:drawable="@drawable/ic_material_icon_checkmark_2"
+    android:gravity="center" />
+</layer-list>

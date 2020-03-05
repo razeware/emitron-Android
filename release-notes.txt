@@ -1,0 +1,2 @@
+## Changes
+- Fix app name and launch icon

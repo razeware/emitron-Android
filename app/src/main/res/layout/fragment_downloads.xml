@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data />
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_top"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_begin="@dimen/guideline_top_status_bar_1" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_left"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_begin="@dimen/activity_horizontal_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_right"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_bottom"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?android:actionBarSize"
+      app:layout_constraintBottom_toTopOf="@+id/recycler_view"
+      app:layout_constraintTop_toTopOf="@+id/guideline_top">
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/toolbar_title"
+        style="@style/TextAppearance.Headline.1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/title_downloads" />
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/recycler_view"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_marginTop="@dimen/activity_vertical_margin"
+      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/toolbar"
+      tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      tools:listitem="@layout/item_content" />
+
+    <View
+      android:id="@+id/view_downloads_no_subscription"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:background="@color/colorBackground"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+      android:id="@+id/downloads_no_subscription_image"
+      android:layout_width="@dimen/login_onboarding_image_height_width"
+      android:layout_height="@dimen/login_onboarding_image_height_width"
+      app:layout_constraintBottom_toTopOf="@+id/downloads_no_subscription_title"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/toolbar"
+      app:layout_constraintVertical_chainStyle="packed"
+      app:srcCompat="@drawable/ic_download_offline_switch" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/downloads_no_subscription_title"
+      style="@style/TextAppearance.Headline.2"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/login_onboarding_image_margin_top"
+      android:gravity="center"
+      android:text="@string/title_downloads_no_subscription"
+      app:layout_constraintBottom_toTopOf="@+id/downloads_no_subscription_body"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/downloads_no_subscription_image"
+      app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/downloads_no_subscription_body"
+      style="@style/TextAppearance.Body.3"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/login_onboarding_body_margin_top"
+      android:gravity="center"
+      android:text="@string/body_downloads_no_subscription"
+      app:layout_constraintBottom_toTopOf="@+id/button_manage_subscription"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/downloads_no_subscription_title"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="@string/body_downloads_no_subscription" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_manage_subscription"
+      style="@style/Button.Colored.Icon"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom"
+      android:layout_margin="@dimen/activity_vertical_margin"
+      android:text="@string/button_manage_subscription"
+      app:icon="@drawable/ic_material_button_icon_arrow_right_green_contained"
+      app:iconGravity="end"
+      app:iconTint="@color/white"
+      app:iconTintMode="multiply"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintVertical_bias="1"
+      tools:visibility="visible" />
+
+
+    <androidx.constraintlayout.widget.Group
+      android:id="@+id/group_download_no_subscription"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:visibility="visible"
+      app:constraint_referenced_ids="downloads_no_subscription_body,downloads_no_subscription_title,downloads_no_subscription_image,view_downloads_no_subscription,button_manage_subscription"
+      tools:visibility="visible" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

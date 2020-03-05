@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <data />
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settings_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorSurfaceDark"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_player_settings_close"
+      style="@style/Button.Icon"
+      android:layout_width="@dimen/button_icon_height_width_3"
+      android:layout_height="@dimen/button_icon_height_width_3"
+      android:visibility="gone"
+      app:icon="@drawable/ic_material_icon_chevron"
+      app:iconTint="@color/colorIcon"
+      app:layout_constraintBottom_toTopOf="@+id/text_playback_token_error"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="1"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed" />
+
+    <com.google.android.material.textview.MaterialTextView
+      android:id="@+id/text_playback_token_error"
+      style="@style/TextAppearance.Body.1.Inverse"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/player_playback_token_error_margin_top"
+      android:gravity="center"
+      android:text="@string/player_playback_token_error"
+      android:textIsSelectable="false"
+      app:layout_constraintBottom_toTopOf="@id/button_playback_token_play"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/button_player_settings_close" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_playback_token_play"
+      style="@style/Button.Colored.4.Dense"
+      app:iconSize="@dimen/icon_height_width"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/player_playback_token_error_margin_top"
+      android:text="@string/button_play"
+      app:icon="@drawable/ic_material_icon_play"
+      app:iconTint="@color/colorIconInverse"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/text_playback_token_error" />
+
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

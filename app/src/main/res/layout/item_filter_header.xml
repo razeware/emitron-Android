@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <variable
+      name="title"
+      type="String" />
+
+    <variable
+      name="isSelected"
+      type="Boolean" />
+
+  </data>
+
+  <com.google.android.material.card.MaterialCardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/default_item_spacing_vertical"
+    app:cardCornerRadius="@dimen/card_wide_corner_radius"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="false"
+    tools:layout_margin="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/headline_filter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="@{title}"
+        android:textAppearance="@style/TextAppearance.Button.Regular"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_filter_toggle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Platforms" />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_filter_toggle"
+        style="@style/Button.Text.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_icon_height_width"
+        android:clickable="false"
+        android:enabled="false"
+        android:focusableInTouchMode="false"
+        android:gravity="end|center_vertical"
+        android:paddingStart="@null"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:text="@{isSelected ? @string/button_hide : @string/button_show}"
+        app:iconGravity="textEnd"
+        app:iconSize="@dimen/icon_height_width"
+        app:iconPadding="@dimen/button_padding_internal_dense"
+        app:iconTint="@color/colorIcon2"
+        app:iconTintMode="multiply"
+        app:layout_constraintBottom_toBottomOf="@+id/headline_filter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/headline_filter"
+        app:layout_constraintTop_toTopOf="@+id/headline_filter"
+        tools:icon="@drawable/ic_material_icon_chevron"
+        tools:text="@string/button_hide" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </com.google.android.material.card.MaterialCardView>
+
+</layout>

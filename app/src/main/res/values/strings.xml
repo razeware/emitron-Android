@@ -1,0 +1,255 @@
+<resources>
+  <string name="app_name">raywenderlich</string>
+  <string name="title_home">""</string>
+  <string name="title_library">Library</string>
+  <string name="title_downloads">Downloads</string>
+  <string name="title_my_tutorials">My Tutorials</string>
+  <string name="manage_subscription_url">https://accounts.raywenderlich.com/my-products</string>
+
+  <!-- Generic -->
+  <string name="button_retry">Retry</string>
+  <string name="label_loading">Loading …</string>
+  <string name="label_search">Search …</string>
+  <string name="label_ime_search">Search</string>
+  <string name="label_completed">Completed</string>
+  <string name="label_pro">Pro</string>
+  <string name="error_no_internet">No connection</string>
+  <string name="error_no_internet_body">Please check Internet connection and try again.</string>
+  <string name="button_explore_tutorials">Explore Tutorials</string>
+  <string name="button_label_cancel">Cancel</string>
+  <string name="button_label_yes">Yes</string>
+  <string name="button_label_no">No</string>
+  <string name="button_label_continue">Continue</string>
+  <string name="button_label_delete">Delete</string>
+  <string name="button_label_dismiss">Close</string>
+  <string name="button_label_settings">Settings</string>
+  <string name="button_label_got_it">Got it!</string>
+  <string name="button_label_verify">Verify</string>
+
+  <plurals name="hours">
+    <item quantity="one">1 hr, </item>
+    <item quantity="other">%d hrs, </item>
+  </plurals>
+
+  <plurals name="minutes">
+    <item quantity="one">1 min</item>
+    <item quantity="other">%d mins</item>
+  </plurals>
+
+  <!-- Snackbar -->
+  <string name="snackbar_label_error">Error</string>
+  <string name="snackbar_label_warning">Warning</string>
+  <string name="snackbar_label_success">Success</string>
+  <string name="error_no_connection">No connection found.</string>
+
+  <!-- Login screen -->
+  <string name="button_sign_in">Sign In</string>
+  <string name="title_login_logo">raywenderlich.com</string>
+  <string name="button_sign_out">Sign Out</string>
+  <string name="headline_login_no_subscription">Sorry, subscribers only</string>
+  <string name="body_login_no_subscription">The raywenderlich.com mobile app is only available for subscribers. To learn more, visit raywenderlich.com/subscription.</string>
+  <string name="error_login_subscription">Failed to login.</string>
+  <string name="title_login_onboarding_1">Watch anytime, anywhere</string>
+  <string name="body_login_onboarding_1">Stay committed to continuous learning and becoming a better mobile developer with access to the entire raywenderlich.com tutorial library on your mobile device!</string>
+  <string name="title_login_onboarding_2">Take your videos on the go</string>
+  <string name="body_login_onboarding_2">Did you know that Professional Subscribers can download &amp; watch videos offline on our app? They also get exclusive access to advanced courses!</string>
+
+  <!-- Library -->
+  <string name="button_newest">Newest</string>
+  <string name="button_popularity">Popularity</string>
+  <string name="error_library_no_content">We couldn’t find any results</string>
+  <string name="error_library_no_content_body">Try removing some filters</string>
+  <string name="label_tutorials_count">%1$s Tutorials</string>
+  <string name="label_release_type_duration">%1$s &#8226; %2$s (%3$s%4$s)</string>
+  <string name="label_release_difficulty_type_duration">
+    %1$s &#8226; %2$s &#8226; %3$s (%4$s%5$s)</string>
+  <string name="label_recent_search">Recent Searches</string>
+  <string name="label_multi_platform">Multi-platform</string>
+
+  <!-- Content Difficulty -->
+  <string name="difficulty_beginner">Beginner</string>
+  <string name="difficulty_advanced">Advanced</string>
+  <string name="difficulty_intermediate">Intermediate</string>
+
+  <!-- Content Type -->
+  <string name="content_type_video_course">Video Course</string>
+  <string name="content_type_screencast">Screencast</string>
+  <string name="content_type_episode">Episode</string>
+  <string name="content_type_video_course_pro">Pro Video Course</string>
+
+  <!-- Readable Date -->
+  <string name="today">Today</string>
+  <string name="yesterday">Yesterday</string>
+
+  <!-- Content Detail Screen -->
+  <string name="body_pro_course">To unlock this course, become a Professional subscriber. Professional subscriber benefits include being able to download videos and watch them offline, access to exclusive content like this, and more!</string>
+  <string name="title_pro_course">Pro Course</string>
+  <string name="course_episodes">Course Episodes</string>
+  <string name="course_episodes_progress">Loading Episodes &#8230;</string>
+  <string name="contributors">By %1$s</string>
+  <string name="message_bookmark_created">Bookmark added.</string>
+  <string name="message_collection_episode_load_failed">Failed to fetch episodes.</string>
+  <string name="message_bookmark_failed_to_create">Failed to add bookmark.</string>
+  <string name="message_bookmark_deleted">Bookmark removed.</string>
+  <string name="message_bookmark_failed_to_delete">Failed to remove bookmark.</string>
+
+  <string name="message_episode_marked_completed">Episode marked completed.</string>
+  <string name="message_episode_failed_to_mark_completed">Failed to mark episode completed.</string>
+  <string name="message_episode_marked_in_progress">Progress removed from episode.</string>
+  <string name="message_episode_failed_to_mark_in_progress">Failed to remove progress from episode.</string>
+  <string name="button_label_play_online">Play online</string>
+  <string name="error_permission">Failed to verify permissions.</string>
+
+  <string name="message_downloads_no_subscription">Upgrade your subscription to download videos.</string>
+  <string name="button_label_continue_playback">@string/button_label_continue</string>
+  <string name="message_download_started">Download added.</string>
+  <string name="body_download_wifi_only_error">Download will resume on WiFi connection.</string>
+  <string name="title_download_wifi_only_error">""</string>
+
+  <!-- Filter screen -->
+  <string name="button_filter_clear_all">Clear All</string>
+  <string name="button_filter_apply">Apply</string>
+  <string name="title_filter_platform">Platforms</string>
+  <string name="title_filter_content_type">Content Type</string>
+  <string name="title_filter_difficulty">Difficulty</string>
+  <string name="title_filter_categories">Categories</string>
+  <string name="button_hide">Hide</string>
+  <string name="button_show">Show</string>
+  <string name="error_load_failed_domains">Failed to fetch domains.</string>
+  <string name="error_load_failed_categories">Failed to fetch categories.</string>
+
+  <string-array name="filter_difficulty">
+    <item>@string/difficulty_beginner</item>
+    <item>@string/difficulty_intermediate</item>
+    <item>@string/difficulty_advanced</item>
+  </string-array>
+
+  <string-array name="filter_content_type">
+    <item>@string/content_type_video_course</item>
+    <item>@string/content_type_screencast</item>
+  </string-array>
+
+  <!-- Settings -->
+  <string name="label_video_playback_speed">Video Playback Speed</string>
+  <string name="label_video_playback_quality">Video Playback Quality</string>
+  <string name="label_downloads_wifi_only">Downloads (WiFi only)</string>
+  <string name="label_download_quality">Download Quality</string>
+  <string name="label_subtitles">Subtitles</string>
+  <string name="label_night_mode">Night mode</string>
+  <string name="label_allow_crash_reporting">Allow crash reporting</string>
+  <string name="button_on">On</string>
+  <string name="button_off">Off</string>
+  <string name="label_send_feedback">Send feedback</string>
+  <string name="label_rate_app">Rate us</string>
+  <string name="label_share_app">Share app</string>
+  <string name="button_system_default">System default</string>
+  <string name="title_feedback_email">[Android] raywenderlich.com support requested</string>
+  <string name="share_app_title">Share raywenderlich.com App</string>
+  <string name="share_app_body">High quality programming tutorials: iOS, Android, Swift, Kotlin, Flutter, Server Side Swift, Unity, and more!
+  Download the App at market://com.raywenderlich.com/emitron</string>
+  <string name="label_open_source">Open-source licenses</string>
+  <string name="label_version">Version %1$s</string>
+
+  <!-- My tutorials -->
+  <string name="button_delete">Delete</string>
+  <string name="button_mark_completed">Mark complete</string>
+  <string name="button_mark_in_progress">Reset progress</string>
+  <string name="my_tutorials_tab_completed">Completed</string>
+  <string name="my_tutorials_tab_in_progress">In Progress</string>
+  <string name="my_tutorials_tab_bookmarks">Bookmarks</string>
+  <string name="title_bookmarks_empty">You haven’t bookmarked any tutorials yet</string>
+  <string name="title_progressions_empty">You haven’t started any tutorials yet</string>
+  <string name="body_progressions_empty">When you start a video course you can quickly resume it from here.</string>
+  <string name="title_progressions_completed_empty">You haven’t completed any tutorials yet</string>
+  <string name="body_progressions_completed_empty">Watch all the episodes of a video course or screencast to complete it.</string>
+  <string name="body_bookmarks_empty">Tap the $ icon to bookmark a video course or screencast.
+  </string>
+
+  <!-- Player screen -->
+  <string name="player_rew">Rewind</string>
+  <string name="player_play">Play</string>
+  <string name="player_pause">Pause</string>
+  <string name="player_ffwd">Forward</string>
+  <string name="title_cast">Cast</string>
+  <string name="button_player_quality">Quality</string>
+  <string name="button_player_play_back_speed">Speed</string>
+  <string name="button_player_auto_play">Autoplay</string>
+  <string name="button_player_auto">Auto</string>
+  <!-- We can also have an array of labels and dynamically inflate the buttons,
+  and handle click based on label text -->
+  <string name="playback_quality_240p">240p</string>
+  <string name="playback_quality_auto">Auto</string>
+  <string name="playback_quality_360p">360p</string>
+  <string name="playback_quality_540p">540p</string>
+  <string name="playback_quality_720p">720p</string>
+  <string name="playback_quality_1080p_recommended">1080p (Recommended)</string>
+  <string name="playback_quality_1080p">1080p</string>
+  <string name="playback_speed_normal">Normal</string>
+  <string name="playback_speed_0_5x">0.5x</string>
+  <string name="playback_speed_0_75x">0.75x</string>
+  <string name="playback_speed_1_25x">1.25x</string>
+  <string name="playback_speed_1_5x">1.5x</string>
+  <string name="playback_speed_2x">2x</string>
+  <string name="button_player_label_english">English</string>
+  <string name="subtitles">Subtitles</string>
+  <string name="button_play">Resume playback</string>
+  <string name="episodes">Episodes</string>
+  <string name="next_episode">Next: %1$s</string>
+  <string name="progress_next_episode">Next episode in %1$s…</string>
+  <string name="button_cancel">@string/button_label_cancel</string>
+  <string name="player_volume_low">Please increase media volume.</string>
+  <string name="player_playback_token_error">You are only allowed to play on a single device.</string>
+
+  <!-- Notifications -->
+  <string name="notification_channel_playback">Playback</string>
+  <string name="notification_channel_others">Others</string>
+  <string name="notification_channel_downloads">Downloads</string>
+  <string name="notification_channel_downloads_description">In progress downloads</string>
+
+  <!-- Pip -->
+  <string name="pip_action_next">Next</string>
+  <string name="pip_action_next_description">Play next episode</string>
+  <string name="pip_action_pause">Pause</string>
+  <string name="pip_action_pause_description">Pause playback</string>
+  <string name="pip_action_play">Play</string>
+  <string name="pip_action_play_description">Resume playback</string>
+
+  <!-- Downloads -->
+  <string name="download_quality_high">High</string>
+  <string name="download_quality_normal">Normal</string>
+  <string name="title_downloads_empty">You haven’t downloaded any tutorials yet</string>
+  <string name="body_downloads_empty">Tap the $ icon to download a video course or episode to watch offline.</string>
+  <string name="title_download_permission_error">Verify permission</string>
+  <string name="message_download_permission_error">Verify permission to watch downloaded content offline.</string>
+  <string name="title_download_remove">Remove Download</string>
+  <string name="message_download_remove">Are you sure you want to remove this download?</string>
+  <string name="downloads_no_subscription_title">Are you sure you want to remove this download?</string>
+  <string name="downloads_no_subscription_body">Are you sure you want to remove this download?</string>
+  <string name="title_downloads_no_subscription">Upgrade your subscription to download videos</string>
+  <string name="body_downloads_no_subscription">Professional subscriber benefits include being able to download videos and watch them offline, access to exclusive content, and more!</string>
+  <string name="button_manage_subscription">Manage Subscription</string>
+
+  <!-- On-boarding -->
+  <string name="on_boarding_download_card_title">Mobile UX Design Tips &amp; Tricks</string>
+  <string name="on_boarding_download_card_body">Learn useful UX design practices you can use immediately to improve the design of your mobile apps!</string>
+  <string name="on_boarding_download_card_language">@string/label_multi_platform</string>
+  <string name="on_boarding_download_card_course_type">Video Course (19 mins)</string>
+  <string name="on_boarding_download_card_img_url">https://files.betamax.raywenderlich.com/attachments/collections/202/c8cef063-f1ee-41b4-88e5-33698f3a4e2e.png</string>
+  <string name="on_boarding_download_title">Swipe left to delete a download</string>
+  <string name="on_boarding_download_body">Swipe on your downloads to remove them.</string>
+  <string name="button_label_on_boarding_close">Don’t show me any more tips</string>
+  <string name="on_boarding_episode_title_1">Do Competitive Research and Find Inspiration</string>
+  <string name="on_boarding_episode_title_2">Wireframe an App with Sketch</string>
+  <string name="on_boarding_episode_title_3">Build a Clickable Prototype With Sketch + InVision
+</string>
+  <string name="on_boarding_episode_duration_1">5:34</string>
+  <string name="on_boarding_episode_duration_2">9:08</string>
+  <string name="on_boarding_episode_duration_3">4:16</string>
+  <string name="on_boarding_episode_number_1">1</string>
+  <string name="on_boarding_episode_number_2">2</string>
+  <string name="on_boarding_episode_number_3">3</string>
+  <string name="on_boarding_collection_title">Mark episodes complete</string>
+  <string name="on_boarding_collection_body">Tap the number next to an episode to mark it as complete.</string>
+	<string name="settings_logged_in_user">Logged in as %1$s</string>
+
+</resources>

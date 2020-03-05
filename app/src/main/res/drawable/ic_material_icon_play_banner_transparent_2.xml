@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <item>
+    <shape android:shape="rectangle">
+      <padding
+        android:bottom="@dimen/banner_play_icon_padding"
+        android:left="@dimen/banner_play_icon_padding"
+        android:right="@dimen/banner_play_icon_padding"
+        android:top="@dimen/banner_play_icon_padding" />
+
+      <corners android:radius="@dimen/banner_play_corner_radius" />
+      <stroke
+        android:width="@dimen/banner_play_stroke_width"
+        android:color="@color/colorPrimary" />
+      <size
+        android:width="@dimen/banner_play_icon_width_height"
+        android:height="@dimen/banner_play_icon_width_height" />
+    </shape>
+  </item>
+
+  <item android:drawable="@drawable/ic_material_icon_play_primary" />
+
+</layer-list>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data />
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="true"
+    app:paddingBottomSystemWindowInsets="@{true}">
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_top"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_begin="@dimen/guideline_top_status_bar_1" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_left"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_begin="@dimen/activity_horizontal_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_right"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_bottom"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_end="@dimen/guideline_bottom_gesture" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?android:actionBarSize"
+      app:layout_constraintBottom_toTopOf="@+id/on_boarding_stub_container"
+      app:layout_constraintTop_toTopOf="@+id/guideline_top"
+      app:layout_constraintVertical_bias="0"
+      app:layout_constraintVertical_chainStyle="packed" />
+
+    <FrameLayout
+      android:id="@+id/on_boarding_stub_container"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:layout_constraintBottom_toTopOf="@+id/on_boarding_title"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@id/toolbar"
+      app:layout_constraintVertical_bias="1"
+      app:layout_constraintVertical_chainStyle="packed">
+
+      <ViewStub
+        android:id="@+id/onboarding_stub_download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout="@layout/layout_onboarding_downloads"
+        tools:layout="@layout/layout_onboarding_downloads" />
+    </FrameLayout>
+
+    <FrameLayout
+      android:id="@+id/on_boarding_stub_container_2"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:layout_constraintBottom_toBottomOf="@+id/on_boarding_stub_container"
+      app:layout_constraintEnd_toEndOf="@id/on_boarding_stub_container"
+      app:layout_constraintStart_toStartOf="@id/on_boarding_stub_container"
+      app:layout_constraintTop_toTopOf="@id/on_boarding_stub_container">
+
+      <ViewStub
+        android:id="@+id/onboarding_stub_collection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout="@layout/layout_onboarding_collection"
+        tools:layout="@layout/layout_onboarding_collection" />
+    </FrameLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/on_boarding_title"
+      style="@style/TextAppearance.Headline.1"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/on_boarding_title_margin_top"
+      android:gravity="center"
+      app:layout_constraintBottom_toTopOf="@+id/on_boarding_body"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/on_boarding_stub_container"
+      app:layout_constraintWidth_percent=".8"
+      tools:text="@string/on_boarding_download_title" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/on_boarding_body"
+      style="@style/TextAppearance.Body.2"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/on_boarding_title_margin_top"
+      android:gravity="center"
+      app:layout_constraintBottom_toTopOf="@+id/button_on_boarding_submit"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/on_boarding_title"
+      app:layout_constraintWidth_percent=".8"
+      tools:text="@string/on_boarding_download_body" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_on_boarding_submit"
+      style="@style/Button.Colored.Icon"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/on_boarding_button_submit_margin_top"
+      android:text="@string/button_label_got_it"
+      app:icon="@drawable/ic_material_button_icon_arrow_right_green_contained"
+      app:iconGravity="end"
+      app:iconTint="@color/white"
+      app:iconTintMode="multiply"
+      app:layout_constraintBottom_toTopOf="@+id/button_on_boarding_close"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/on_boarding_body"
+      app:layout_constraintVertical_bias="1" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/button_on_boarding_close"
+      style="@style/Button.Text.Icon"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/on_boarding_button_close_margin_top"
+      android:autoLink="all"
+      android:gravity="center"
+      android:minHeight="0dp"
+      android:text="@string/button_label_on_boarding_close"
+      android:textAppearance="@style/TextAppearance.Body.2"
+      app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/button_on_boarding_submit" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

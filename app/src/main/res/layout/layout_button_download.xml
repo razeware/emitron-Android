@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <variable
+      name="downloadState"
+      type="com.razeware.emitron.model.Download" />
+
+    <import type="android.view.View" />
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_top"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_begin="@dimen/activity_horizontal_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_left"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_begin="@dimen/activity_horizontal_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_right"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_bottom"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
+
+    <ProgressBar
+      android:id="@+id/progress_download"
+      style="?android:attr/progressBarStyleHorizontal"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:indeterminate="false"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHeight_percent="0.7"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintWidth_percent="0.7"
+      tools:progress="80"
+      tools:progressDrawable="@drawable/progress_drawable"
+      tools:visibility="visible" />
+
+    <ProgressBar
+      android:id="@+id/progress_download_pending"
+      style="?android:attr/progressBarStyle"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:indeterminate="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHeight_percent="0.7"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintWidth_percent="0.7"
+      tools:visibility="gone" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_download_stop"
+      style="@style/Button.Icon"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:clickable="false"
+      android:focusableInTouchMode="false"
+      android:gravity="center"
+      android:paddingLeft="@null"
+      android:paddingRight="@null"
+      app:iconTint="@color/colorPrimary"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:icon="@drawable/ic_material_icon_download_pause"
+      tools:visibility="visible" />
+
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_download_start"
+      style="@style/Button.Icon"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:clickable="false"
+      android:focusableInTouchMode="false"
+      android:gravity="center"
+      android:paddingLeft="@null"
+      android:paddingRight="@null"
+      android:textAppearance="@style/TextAppearance.Button.Regular"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:icon="@drawable/ic_material_icon_download_2"
+      tools:iconTint="@color/colorIcon"
+      tools:visibility="gone" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

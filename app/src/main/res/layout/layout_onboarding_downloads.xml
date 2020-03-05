@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data />
+
+  <com.google.android.material.card.MaterialCardView
+    android:id="@+id/item_foreground"
+    style="@style/Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:layout_margin="@dimen/activity_horizontal_margin">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+      <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/activity_vertical_margin" />
+
+      <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/onboarding_download_content_margin_end" />
+
+      <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:text="@string/on_boarding_download_card_title"
+        android:textAppearance="@style/TextAppearance.Headline.4"
+        app:layout_constraintBottom_toTopOf="@+id/text_language"
+        app:layout_constraintEnd_toStartOf="@+id/image_collection"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toTopOf="@id/guideline_top"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_language"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_spacing_vertical_title"
+        android:text="@string/on_boarding_download_card_language"
+        android:textAppearance="@style/TextAppearance.Footnote"
+        app:layout_constraintBottom_toTopOf="@+id/text_description"
+        app:layout_constraintEnd_toEndOf="@+id/text_title"
+        app:layout_constraintStart_toStartOf="@+id/text_title"
+        app:layout_constraintTop_toBottomOf="@+id/text_title" />
+
+      <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/image_collection"
+        android:layout_width="@dimen/card_icon_height_width"
+        android:layout_height="@dimen/card_icon_height_width"
+        android:layout_marginStart="@dimen/card_icon_margin_start"
+        android:background="@drawable/bg_rounded_outline"
+        android:outlineProvider="background"
+        android:scaleType="centerCrop"
+        app:imageUrl="@{@string/on_boarding_download_card_img_url}"
+        app:layout_constraintBottom_toTopOf="@+id/text_description"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@id/guideline_right"
+        app:layout_constraintStart_toEndOf="@+id/text_title"
+        app:layout_constraintTop_toBottomOf="@id/guideline_top"
+        app:layout_constraintVertical_bias="0"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_spacing_vertical_body"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:maxLines="2"
+        android:text="@string/on_boarding_download_card_body"
+        android:textAppearance="@style/TextAppearance.Footnote"
+        app:layout_constraintBottom_toTopOf="@+id/spacer"
+        app:layout_constraintEnd_toEndOf="@+id/image_collection"
+        app:layout_constraintStart_toStartOf="@+id/text_title"
+        app:layout_constraintTop_toBottomOf="@+id/image_collection" />
+
+      <View
+        android:id="@+id/spacer"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_height_spacer"
+        android:layout_marginTop="@dimen/view_height_spacer"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
+        app:layout_constraintEnd_toEndOf="@id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/text_title"
+        app:layout_constraintTop_toBottomOf="@+id/text_description" />
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_duration"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/on_boarding_download_card_course_type"
+        android:textAppearance="@style/TextAppearance.Footnote"
+        app:layout_constraintBottom_toBottomOf="@+id/spacer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toTopOf="@+id/spacer"
+        tools:visibility="visible" />
+
+      <View
+        android:id="@+id/guideline_left"
+        android:layout_width="@dimen/onboarding_download_content_margin_start"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+      <View
+        android:id="@+id/view_background_delete"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/button_spacing_horizontal"
+        android:background="@color/colorError"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/image_collection"
+        app:layout_constraintTop_toTopOf="parent" />
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_delete"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/button_delete"
+        android:textAppearance="@style/TextAppearance.Button.Regular"
+        android:textColor="@color/colorOnError"
+        app:layout_constraintBottom_toBottomOf="@+id/view_background_delete"
+        app:layout_constraintEnd_toEndOf="@+id/view_background_delete"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="@id/view_background_delete"
+        app:layout_constraintTop_toTopOf="@+id/view_background_delete" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </com.google.android.material.card.MaterialCardView>
+
+</layout>

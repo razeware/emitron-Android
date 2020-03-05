@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  package="com.razeware.emitron">
+
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+  <application
+    android:name=".EmitronApplication"
+    android:allowBackup="false"
+    android:icon="@mipmap/ic_launcher"
+    android:label="@string/app_name"
+    android:roundIcon="@mipmap/ic_launcher_round"
+    android:supportsRtl="true"
+    android:theme="@style/AppTheme"
+    tools:ignore="GoogleAppIndexingWarning">
+
+    <meta-data
+      android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
+      android:value="com.google.android.exoplayer2.ext.cast.DefaultCastOptionsProvider" />
+
+    <meta-data
+      android:name="preloaded_fonts"
+      android:resource="@array/preloaded_fonts" />
+
+    <meta-data
+      android:name="firebase_crashlytics_collection_enabled"
+      android:value="false" />
+
+    <activity
+      android:name=".MainActivity"
+      android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+      android:label="@string/app_name"
+      android:launchMode="singleTask"
+      android:parentActivityName=".MainActivity"
+      android:resizeableActivity="true"
+      android:screenOrientation="portrait"
+      android:supportsPictureInPicture="true"
+      android:windowSoftInputMode="adjustNothing" />
+
+    <!-- WorkManager reset -->
+    <provider
+      android:name="androidx.work.impl.WorkManagerInitializer"
+      android:authorities="com.razeware.emitron.workmanager-init"
+      android:exported="false"
+      tools:node="remove" />
+
+    <!-- Download Service -->
+    <service android:name=".ui.download.DownloadService">
+      <intent-filter>
+        <action android:name="com.google.android.exoplayer.downloadService.action.RESTART" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
+    </service>
+
+    <service
+      android:name="com.google.android.exoplayer2.scheduler.PlatformScheduler$PlatformSchedulerService"
+      android:exported="true"
+      android:permission="android.permission.BIND_JOB_SERVICE" />
+
+    <activity-alias
+      android:name=".MainActivity"
+      android:targetActivity=".MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity-alias>
+  </application>
+
+</manifest>

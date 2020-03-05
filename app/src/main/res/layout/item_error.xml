@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data />
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/container_error_text"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_left"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_begin="0dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_right"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_end="0dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_bottom"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_end="@dimen/button_padding_internal_dense" />
+
+    <ProgressBar
+      android:id="@+id/progress_bar"
+      android:layout_width="@dimen/icon_height_width"
+      android:layout_height="@dimen/icon_height_width"
+      app:layout_constraintBottom_toTopOf="@+id/text_view_progress"
+      app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+      app:layout_constraintStart_toStartOf="@+id/guideline_left"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/text_view_progress"
+      style="@style/TextAppearance.Label"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/activity_vertical_margin"
+      android:gravity="center"
+      android:text="@string/label_loading"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+      app:layout_constraintStart_toStartOf="@+id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/progress_bar"
+      app:layout_constraintWidth_percent=".8" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+      android:id="@+id/image_error"
+      android:layout_width="@dimen/error_image_height_width"
+      android:layout_height="@dimen/error_image_height_width"
+      app:layout_constraintBottom_toTopOf="@+id/text_view_error"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:srcCompat="@drawable/ic_login_onboarding_1" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/text_view_error"
+      style="@style/TextAppearance.Headline.3"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/error_title_margin_top"
+      android:gravity="center"
+      app:layout_constraintBottom_toTopOf="@+id/text_view_error_body"
+      app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+      app:layout_constraintStart_toStartOf="@+id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/image_error"
+      app:layout_constraintWidth_percent=".8"
+      tools:text="An error occured!" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/text_view_error_body"
+      style="@style/TextAppearance.Body.3"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_body"
+      android:layout_marginStart="@dimen/error_body_margin_start_end"
+      android:layout_marginEnd="@dimen/error_body_margin_start_end"
+      android:gravity="center"
+      app:layout_constraintBottom_toTopOf="@+id/button_retry"
+      app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+      app:layout_constraintStart_toStartOf="@+id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/text_view_error"
+      app:layout_constraintWidth_percent=".8"
+      tools:text="An error occured!" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_retry"
+      style="@style/Button.Colored.Icon"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/activity_vertical_margin"
+      android:text="@string/button_retry"
+      app:iconGravity="end"
+      app:iconTint="@color/white"
+      app:iconTintMode="multiply"
+      app:layout_constraintBottom_toBottomOf="@+id/guideline_bottom"
+      app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+      app:layout_constraintStart_toStartOf="@+id/guideline_left"
+      app:layout_constraintVertical_bias="1"
+      tools:text="Retry" />
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

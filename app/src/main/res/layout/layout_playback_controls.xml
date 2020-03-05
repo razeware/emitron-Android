@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/controller_layout"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/bg_gradient_collection_banner"
+  android:padding="16dp"
+  tools:orientation="horizontal">
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@id/exo_rew"
+    style="@style/Button.Icon"
+    android:layout_width="@dimen/button_forward_rewind_height_width"
+    android:layout_height="@dimen/button_forward_rewind_height_width"
+    android:layout_marginEnd="@dimen/button_forward_rewind_height_width"
+    android:contentDescription="@string/player_rew"
+    app:icon="@drawable/ic_material_icon_skip_backward"
+    app:iconTint="@color/colorIconInverse"
+    app:layout_constraintBottom_toBottomOf="@id/exo_play"
+    app:layout_constraintEnd_toStartOf="@id/guideline_play_pause"
+    app:layout_constraintHorizontal_chainStyle="packed"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@id/exo_play" />
+
+  <View
+    android:id="@+id/guideline_play_pause"
+    android:layout_width="@dimen/button_play_pause_height_width"
+    android:layout_height="@dimen/button_play_pause_height_width"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/exo_ffwd"
+    app:layout_constraintStart_toEndOf="@id/exo_rew"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <androidx.appcompat.widget.AppCompatImageButton
+    android:id="@id/exo_play"
+    style="@style/Button.Icon"
+    android:layout_width="@dimen/button_play_pause_height_width"
+    android:layout_height="@dimen/button_play_pause_height_width"
+    android:contentDescription="@string/player_play"
+    app:layout_constraintBottom_toBottomOf="@+id/guideline_play_pause"
+    app:layout_constraintEnd_toStartOf="@+id/guideline_play_pause"
+    app:layout_constraintStart_toEndOf="@+id/guideline_play_pause"
+    app:layout_constraintTop_toTopOf="@+id/guideline_play_pause"
+    app:srcCompat="@drawable/ic_material_icon_play_banner_transparent" />
+
+  <androidx.appcompat.widget.AppCompatImageButton
+    android:id="@id/exo_pause"
+    android:layout_width="@dimen/button_play_pause_height_width"
+    android:layout_height="@dimen/button_play_pause_height_width"
+    android:background="@color/transparent"
+    android:contentDescription="@string/player_pause"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@+id/guideline_play_pause"
+    app:layout_constraintEnd_toStartOf="@+id/guideline_play_pause"
+    app:layout_constraintStart_toEndOf="@+id/guideline_play_pause"
+    app:layout_constraintTop_toTopOf="@+id/guideline_play_pause"
+    app:srcCompat="@drawable/ic_material_icon_pause_banner_transparent" />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@id/exo_ffwd"
+    style="@style/Button.Icon"
+    android:layout_width="@dimen/button_forward_rewind_height_width"
+    android:layout_height="@dimen/button_forward_rewind_height_width"
+    android:layout_marginStart="@dimen/button_forward_rewind_height_width"
+    android:contentDescription="@string/player_ffwd"
+    app:icon="@drawable/ic_material_icon_skip_forward"
+    app:iconTint="@color/colorIconInverse"
+    app:layout_constraintBottom_toBottomOf="@id/exo_play"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/guideline_play_pause"
+    app:layout_constraintTop_toTopOf="@id/exo_play" />
+
+  <com.google.android.material.textview.MaterialTextView
+    android:id="@id/exo_position"
+    style="@style/TextAppearance.Body.2.Inverse"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/text_drawable_padding_dense"
+    android:includeFontPadding="false"
+    android:textIsSelectable="false"
+    app:layout_constraintBottom_toBottomOf="@id/exo_progress"
+    app:layout_constraintEnd_toStartOf="@id/exo_progress"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@id/exo_progress"
+    tools:text="00:00" />
+
+  <com.google.android.exoplayer2.ui.DefaultTimeBar
+    android:id="@id/exo_progress"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    app:buffered_color="@color/colorPlayerBuffered"
+    app:layout_constraintBottom_toTopOf="@+id/button_player_settings"
+    app:layout_constraintEnd_toStartOf="@id/exo_duration"
+    app:layout_constraintStart_toEndOf="@id/exo_position"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="1"
+    app:layout_constraintVertical_chainStyle="packed"
+    app:played_color="@color/colorPlayerProgress"
+    app:scrubber_drawable="@drawable/ic_material_icon_play_fiber"
+    app:unplayed_color="@color/colorPlayerBuffered" />
+
+  <ProgressBar
+    android:id="@+id/player_play_back_buffering"
+    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+    android:layout_width="0dp"
+    android:layout_height="@dimen/player_progress_bar_margin_height"
+    android:layout_marginStart="@dimen/player_progress_bar_margin_start_end"
+    android:layout_marginEnd="@dimen/player_progress_bar_margin_start_end"
+    android:indeterminate="true"
+    android:progressDrawable="@drawable/progress_drawable_horizontal"
+    app:layout_constraintBottom_toBottomOf="@id/exo_progress"
+    app:layout_constraintEnd_toEndOf="@id/exo_progress"
+    app:layout_constraintStart_toStartOf="@id/exo_progress"
+    app:layout_constraintTop_toTopOf="@id/exo_progress" />
+
+  <com.google.android.material.textview.MaterialTextView
+    android:id="@id/exo_duration"
+    style="@style/TextAppearance.Body.2.Inverse"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:includeFontPadding="false"
+    android:textIsSelectable="false"
+    app:layout_constraintBottom_toBottomOf="@id/exo_progress"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/exo_progress"
+    app:layout_constraintTop_toTopOf="@id/exo_progress"
+    tools:text="00:00" />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/button_player_settings"
+    style="@style/Button.Icon"
+    android:layout_width="@dimen/button_icon_height_width"
+    android:layout_height="@dimen/button_icon_height_width"
+    android:layout_marginStart="@dimen/button_spacing_horizontal"
+    app:icon="@drawable/ic_material_icon_settings"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/button_player_playlist_layout"
+    app:layout_constraintHorizontal_chainStyle="spread_inside"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/exo_progress" />
+
+  <FrameLayout
+    android:id="@+id/button_player_playlist_layout"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="@+id/button_player_settings"
+    app:layout_constraintEnd_toStartOf="@+id/button_player_subtitles"
+    app:layout_constraintStart_toEndOf="@id/button_player_settings"
+    app:layout_constraintTop_toTopOf="@+id/button_player_settings">
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_player_playlist"
+      style="@style/Button.Text.Icon"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/episodes"
+      app:icon="@drawable/ic_material_icon_episodes" />
+
+  </FrameLayout>
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/button_player_subtitles"
+    style="@style/Button.Text.Icon"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="@string/subtitles"
+    app:icon="@drawable/ic_material_icon_subtitles"
+    app:layout_constraintBottom_toBottomOf="@+id/button_player_settings"
+    app:layout_constraintEnd_toStartOf="@id/player_next_episode_layout"
+    app:layout_constraintStart_toEndOf="@id/button_player_playlist_layout"
+    app:layout_constraintTop_toTopOf="@+id/button_player_settings" />
+
+  <FrameLayout
+    android:id="@+id/player_next_episode_layout"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="@+id/button_player_settings"
+    app:layout_constraintEnd_toStartOf="@+id/button_player_bookmark"
+    app:layout_constraintStart_toEndOf="@+id/button_player_subtitles"
+    app:layout_constraintTop_toTopOf="@+id/button_player_settings">
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/player_next_episode"
+      style="@style/Button.Text.Icon"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:textColor="@color/colorIcon"
+      android:visibility="gone"
+      app:icon="@drawable/ic_material_icon_next_episode"
+      tools:text="What's New in Swift 5: Types"
+      tools:visibility="visible" />
+
+  </FrameLayout>
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/button_player_bookmark"
+    style="@style/Button.Icon"
+    android:layout_width="@dimen/button_icon_height_width"
+    android:layout_height="@dimen/button_icon_height_width"
+    android:visibility="gone"
+    app:icon="@drawable/ic_material_icon_bookmark"
+    app:layout_constraintBottom_toBottomOf="@+id/button_player_settings"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@+id/player_next_episode_layout"
+    app:layout_constraintTop_toTopOf="@+id/button_player_settings" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

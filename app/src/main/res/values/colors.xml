@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="dark_sea_green">#158443</color>
+  <color name="dark_sea_green_2">#16914a</color>
+  <color name="charcoal_black">#333333</color>
+  <color name="charcoal_black_0_05">#0c333333</color>
+  <color name="charcoal_black_0_0">#00333333</color>
+  <color name="bright_grey">#3b4048</color>
+  <color name="raven_grey">#6e7687</color>
+  <color name="blue_grey">#73859f</color>
+  <color name="light_gray_blue">#a7adb4</color>
+  <color name="pale_blue">#dfe7f0</color>
+  <color name="aqua_haze_grey">#6e7687</color>
+  <color name="pale_grey">#f2f6fa</color>
+  <color name="copper">#cf3b2b</color>
+  <color name="pumpkin_orange">#fd7401</color>
+  <color name="white">#ffffff</color>
+  <color name="white_50">#ddffffff</color>
+  <color name="pale_red">#d54434</color>
+  <color name="charcoal_grey">#424750</color>
+  <color name="transparent">#00000000</color>
+  <color name="slate_grey">#61656c</color>
+  <color name="nice_blue">#157cb8</color>
+
+  <color name="colorPrimary">@color/dark_sea_green</color>
+  <color name="colorPrimaryDark">@color/charcoal_black</color>
+
+  <color name="colorBackground">@color/pale_grey</color>
+  <color name="colorBackgroundDark">@color/charcoal_black</color>
+  <color name="colorSurface">@color/white</color>
+  <color name="colorSurfaceDark">@color/bright_grey</color>
+  <color name="colorError">@color/copper</color>
+  <color name="colorWarning">@color/pumpkin_orange</color>
+  <color name="colorOnPrimary">@color/white</color>
+  <color name="colorOnError">@color/white</color>
+  <color name="colorOnSurface">@color/white</color>
+  <color name="colorOnBackground">@color/white</color>
+  <color name="cardShadow">@color/charcoal_black_0_05</color>
+  <color name="colorNavBarBackground">@color/white</color>
+
+  <color name="colorButton1">@color/dark_sea_green</color>
+  <color name="colorButtonDialog">@color/dark_sea_green</color>
+  <color name="colorButton2">@color/bright_grey</color>
+  <color name="colorButtonIconRipple">@color/pale_blue</color>
+  <color name="colorButton3">@color/copper</color>
+  <color name="colorButton4">@color/slate_grey</color>
+
+  <color name="textColorBody1">@color/raven_grey</color>
+  <color name="textColorBody1Inverse">@color/white</color>
+  <color name="textColorButton">@color/raven_grey</color>
+  <color name="textColorButton2">@color/light_gray_blue</color>
+  <color name="textColorButtonInverse">@color/white</color>
+  <color name="textColorButtonOnError">@color/white</color>
+  <color name="textColorOverline">@color/raven_grey</color>
+  <color name="textColorOverline3">@color/raven_grey</color>
+  <color name="textColorOverlineOnSurface">@color/bright_grey</color>
+  <color name="textColorOverlineInverse">@color/white</color>
+  <color name="textColorOverlineInverse2">@color/white</color>
+  <color name="textColorBody2">@color/raven_grey</color>
+  <color name="textColorBody3">@color/raven_grey</color>
+  <color name="textColorBody2Inverse">@color/white</color>
+  <color name="textColorLabel">@color/light_gray_blue</color>
+  <color name="textColorLabel2">@color/light_gray_blue</color>
+  <color name="textColorLabelInverse">@color/white</color>
+  <color name="textColorFootnote">@color/raven_grey</color>
+  <color name="textColorCaption">@color/raven_grey</color>
+  <color name="textColorHeadline">@color/charcoal_black</color>
+  <color name="textColorHeadlineInverse">@color/white</color>
+  <color name="textColorHint">@color/blue_grey</color>
+
+  <color name="colorDivider">@color/pale_blue</color>
+  <color name="colorDividerOnLight">@color/bright_grey</color>
+  <color name="colorDividerInverse">@color/light_gray_blue</color>
+  <color name="colorIcon">@color/light_gray_blue</color>
+  <color name="colorIcon2">@color/light_gray_blue</color>
+  <color name="colorIcon3">@color/light_gray_blue</color>
+  <color name="colorIconOnError">@color/white</color>
+  <color name="colorIconInverse">@color/white</color>
+
+  <color name="colorGradientEnd">@color/charcoal_black_0_0</color>
+  <color name="colorGradientProgress">@color/white_50</color>
+  <color name="colorGradientStart">@color/charcoal_black</color>
+  <color name="colorLauncherBackground">@color/charcoal_black</color>
+  <color name="colorPlayerProgress">@color/colorPrimary</color>
+  <color name="colorPlayerBuffered">@color/bright_grey</color>
+
+
+  <color name="colorProgressItemBackground">#116e7687</color>
+  <color name="colorProgressItemBackground_200">#226e7687</color>
+  <color name="colorProgressItemBackground_100">#a7adb4</color>
+  <color name="colorProgressItemBackgroundGradient1">#3361656c</color>
+  <color name="colorProgressItemBackgroundGradient2">#5561656c</color>
+
+  <color name="colorCheckboxUnchecked">@color/light_gray_blue</color>
+  <color name="colorNavDivider">@color/transparent</color>
+  <color name="colorBoxStroke">@color/white</color>
+  <color name="colorContentProgressBackground">@color/pale_blue</color>
+  <color name="colorContentProgress">@color/colorPrimary</color>
+
+  <color name="colorTabSelected">@color/colorPrimary</color>
+  <color name="colorTabDefault">@color/transparent</color>
+  <color name="colorRadioButtonChecked">@color/blue_grey</color>
+  <color name="colorRadioButtonChecked2">@color/colorPrimary</color>
+  <color name="colorRadioButtonDefault">@color/transparent</color>
+
+  <color name="colorViewPagerIndicator">@color/pale_blue</color>
+  <color name="colorBadge">@color/nice_blue</color>
+  <color name="colorBadgeStroke">@color/nice_blue</color>
+
+</resources>

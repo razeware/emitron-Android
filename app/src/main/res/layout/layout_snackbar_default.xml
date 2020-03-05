@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data />
+
+  <com.google.android.material.card.MaterialCardView
+    android:id="@+id/snackbar_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/card_corner_radius_snackbar"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_snackbar_type"
+        style="@style/TextAppearance.Overline.Raised.Colored.White"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:elevation="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/text_snackbar_body"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Error" />
+
+      <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_snackbar_body"
+        style="@style/TextAppearance.Body.2.Inverse"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_snackbar_dismiss"
+        app:layout_constraintStart_toEndOf="@id/text_snackbar_type"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="403 Failed to create bookmark." />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_snackbar_dismiss"
+        style="@style/Button.Icon"
+        android:layout_width="@dimen/button_height_default"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_material_icon_close"
+        app:iconPadding="0dp"
+        app:iconSize="@dimen/icon_height_width_2"
+        app:iconTint="@color/colorIconInverse"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/text_snackbar_body"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+  </com.google.android.material.card.MaterialCardView>
+
+</layout>

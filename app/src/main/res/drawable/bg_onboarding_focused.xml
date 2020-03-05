@@ -1,0 +1,9 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+  android:shape="oval">
+  <stroke
+    android:width="3dp"
+    android:color="@color/colorPrimary" />
+  <size
+    android:width="@dimen/button_height_default"
+    android:height="@dimen/button_height_default" />
+</shape>

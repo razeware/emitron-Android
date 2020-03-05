@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+  android:shape="rectangle">
+  <size
+    android:width="@dimen/icon_height_width"
+    android:height="@dimen/icon_height_width" />
+  <solid
+    android:width="@dimen/checkbox_icon_stroke_width"
+    android:color="@color/colorRadioButtonDefault" />
+  <corners android:radius="@dimen/button_corner_radius" />
+</shape>

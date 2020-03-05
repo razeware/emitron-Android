@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  tools:orientation="horizontal">
+
+  <data />
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settings_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorSurfaceDark"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_player_settings_close"
+      style="@style/Button.Icon"
+      android:layout_width="@dimen/button_icon_height_width_3"
+      android:layout_height="@dimen/button_icon_height_width_3"
+      app:icon="@drawable/ic_material_icon_chevron"
+      app:iconTint="@color/colorIcon"
+      app:layout_constraintBottom_toTopOf="@+id/player_settings_quality"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="1"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+      android:id="@+id/player_settings_quality"
+      style="@style/TextAppearance.Headline.4.Inverse"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/activity_horizontal_margin"
+      android:text="@string/button_player_quality"
+      app:layout_constraintBottom_toTopOf="@+id/player_settings_play_back_speed"
+      app:layout_constraintEnd_toStartOf="@+id/player_playback_quality_radio_group"
+      app:layout_constraintHorizontal_chainStyle="packed"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed" />
+
+    <RadioGroup
+      android:id="@+id/player_playback_quality_radio_group"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintBottom_toBottomOf="@+id/player_settings_quality"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/player_settings_quality"
+      app:layout_constraintTop_toTopOf="@+id/player_settings_quality">
+
+      <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/button_player_settings_quality_auto"
+        style="@style/Button.Radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_player_auto" />
+
+      <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/button_player_settings_quality_240p"
+        style="@style/Button.Radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playback_quality_240p" />
+
+      <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/button_player_settings_quality_360p"
+        style="@style/Button.Radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playback_quality_360p" />
+
+      <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/button_player_settings_quality_540p"
+        style="@style/Button.Radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playback_quality_540p" />
+
+      <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/button_player_settings_quality_720p"
+        style="@style/Button.Radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playback_quality_720p" />
+
+      <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/button_player_settings_quality_1080p"
+        style="@style/Button.Radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playback_quality_1080p" />
+    </RadioGroup>
+
+    <com.google.android.material.textview.MaterialTextView
+      android:id="@+id/player_settings_play_back_speed"
+      style="@style/TextAppearance.Headline.4.Inverse"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/player_settings_button_row_margin_top"
+      android:layout_marginEnd="@dimen/button_padding_internal"
+      android:text="@string/button_player_play_back_speed"
+      app:layout_constraintBottom_toTopOf="@+id/player_settings_auto_play"
+      app:layout_constraintEnd_toEndOf="@id/player_settings_quality"
+      app:layout_constraintTop_toBottomOf="@+id/player_settings_quality" />
+
+    <RadioGroup
+      android:id="@+id/player_playback_speed_radio_group"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintBottom_toBottomOf="@+id/player_settings_play_back_speed"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintHorizontal_chainStyle="packed"
+      app:layout_constraintStart_toStartOf="@id/player_playback_quality_radio_group"
+      app:layout_constraintTop_toTopOf="@+id/player_settings_play_back_speed">
+
+      <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/button_player_settings_speed_0_5x"
+        style="@style/Button.Radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playback_speed_0_5x" />
+
+      <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/button_player_settings_speed_0_75x"
+        style="@style/Button.Radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playback_speed_0_75x" />
+
+      <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/button_player_settings_speed_normal"
+        style="@style/Button.Radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playback_speed_normal" />
+
+      <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/button_player_settings_speed_1_25x"
+        style="@style/Button.Radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playback_speed_1_25x" />
+
+      <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/button_player_settings_speed_1_5x"
+        style="@style/Button.Radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playback_speed_1_5x" />
+
+      <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/button_player_settings_speed_2x"
+        style="@style/Button.Radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playback_speed_2x" />
+
+    </RadioGroup>
+
+
+    <com.google.android.material.textview.MaterialTextView
+      android:id="@+id/player_settings_auto_play"
+      style="@style/TextAppearance.Headline.4.Inverse"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/player_settings_button_row_margin_top"
+      android:layout_marginEnd="@dimen/button_padding_internal"
+      android:text="@string/button_player_auto_play"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@+id/player_settings_quality"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintHorizontal_chainStyle="packed"
+      app:layout_constraintTop_toBottomOf="@+id/player_settings_play_back_speed" />
+
+    <RadioGroup
+      android:id="@+id/player_auto_playback_radio_group"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintBottom_toBottomOf="@+id/player_settings_auto_play"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintHorizontal_chainStyle="packed"
+      app:layout_constraintStart_toStartOf="@id/player_playback_quality_radio_group"
+      app:layout_constraintTop_toTopOf="@+id/player_settings_auto_play">
+
+      <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/button_player_settings_auto_play_on"
+        style="@style/Button.Radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_on" />
+
+      <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/button_player_settings_auto_play_off"
+        style="@style/Button.Radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_off" />
+    </RadioGroup>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

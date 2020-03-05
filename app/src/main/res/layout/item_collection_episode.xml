@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <variable
+      name="data"
+      type="com.razeware.emitron.model.Data" />
+
+    <variable
+      name="episodePosition"
+      type="String" />
+
+    <variable
+      name="downloadState"
+      type="com.razeware.emitron.model.Download" />
+
+    <import type="android.text.TextUtils" />
+
+    <import type="android.view.View" />
+  </data>
+
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_top"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_begin="@dimen/activity_horizontal_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_left"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_begin="@dimen/activity_horizontal_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_right"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_bottom"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_collection_episode"
+      style="@style/Button.Icon"
+      android:layout_width="@dimen/button_episode_number_height_width"
+      android:layout_height="@dimen/button_episode_number_height_width"
+      android:layout_marginEnd="@dimen/button_episode_number_margin_end"
+      android:gravity="center"
+      android:insetTop="0dp"
+      android:insetBottom="0dp"
+      android:minWidth="@dimen/button_episode_number_height_width"
+      android:minHeight="@dimen/button_episode_number_height_width"
+      android:text="@{episodePosition}"
+      app:cornerRadius="@dimen/collection_episode_position_corner_radius"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toStartOf="@+id/text_title"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toTopOf="@id/text_title"
+      app:layout_constraintVertical_bias="0"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:backgroundTint="@color/colorPrimary"
+      tools:icon="@drawable/ic_material_icon_padlock"
+      tools:iconTint="@color/white"
+      tools:text="" />
+
+    <View
+      android:id="@+id/button_collection_episode_click"
+      android:layout_width="@dimen/button_height_default"
+      android:layout_height="@dimen/button_height_default"
+      app:layout_constraintBottom_toBottomOf="@+id/button_collection_episode"
+      app:layout_constraintEnd_toEndOf="@+id/button_collection_episode"
+      app:layout_constraintStart_toStartOf="@+id/button_collection_episode"
+      app:layout_constraintTop_toTopOf="@+id/button_collection_episode" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/text_title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:text="@{data.getName()}"
+      android:textAppearance="@style/TextAppearance.Headline.5.Normal"
+      app:layout_constraintBottom_toTopOf="@+id/text_duration"
+      app:layout_constraintEnd_toStartOf="@+id/button_collection_episode_download"
+      app:layout_constraintHorizontal_chainStyle="spread_inside"
+      app:layout_constraintStart_toEndOf="@id/button_collection_episode"
+      app:layout_constraintTop_toTopOf="@id/guideline_top"
+      app:layout_constraintVertical_bias="0"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="What's New in Swift 5: Types" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/text_duration"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_title"
+      android:text="@{data.getEpisodeDuration()}"
+      android:textAppearance="@style/TextAppearance.Footnote"
+      app:layout_constraintBottom_toTopOf="@+id/progress_completion"
+      app:layout_constraintEnd_toEndOf="@+id/text_title"
+      app:layout_constraintStart_toStartOf="@+id/text_title"
+      app:layout_constraintTop_toBottomOf="@+id/text_title"
+      tools:text="1:31" />
+
+    <com.razeware.emitron.ui.common.DownloadButton
+      android:id="@+id/button_collection_episode_download"
+      android:layout_width="@dimen/button_icon_height_width"
+      android:layout_height="@dimen/button_icon_height_width"
+      app:downloadIcon="@drawable/ic_material_icon_download_2"
+      app:downloadIconTint="@color/colorIcon"
+      app:downloadStopIcon="@drawable/ic_material_icon_download_pause_2"
+      app:downloadStopIconTint="@color/colorPrimary"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+      app:layout_constraintHorizontal_bias="1"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:progressDrawable="@drawable/progress_drawable" />
+
+    <ProgressBar
+      android:id="@+id/progress_completion"
+      style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+      android:layout_width="0dp"
+      android:layout_height="@dimen/height_card_progress_height"
+      android:layout_marginTop="@dimen/margin_card_progress_top"
+      android:indeterminate="false"
+      android:max="100"
+      android:progressDrawable="@drawable/progress_drawable_horizontal_2"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+      app:layout_constraintStart_toStartOf="@+id/text_title"
+      app:layout_constraintTop_toBottomOf="@+id/text_duration"
+      tools:progress="25"
+      tools:visibility="visible" />
+
+    <View
+      android:id="@+id/collection_item_divider"
+      android:layout_width="0dp"
+      android:layout_height="@dimen/height_card_divider"
+      android:layout_marginTop="@dimen/activity_vertical_margin"
+      android:background="@color/colorDivider"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/text_title"
+      app:layout_constraintTop_toBottomOf="@+id/progress_completion" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

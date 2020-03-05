@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data />
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="true">
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_top"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_begin="@dimen/guideline_top_status_bar_2" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_left"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_begin="@dimen/activity_horizontal_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_right"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_bottom"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_end="@dimen/guideline_bottom_gesture" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+      android:id="@+id/login_onboarding_image"
+      android:layout_width="@dimen/login_onboarding_image_height_width"
+      android:layout_height="@dimen/login_onboarding_image_height_width"
+      app:layout_constraintBottom_toTopOf="@+id/login_onboarding_title"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@id/guideline_top"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:srcCompat="@drawable/ic_login_onboarding_1" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/login_onboarding_title"
+      style="@style/TextAppearance.Headline.1_1"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/login_onboarding_image_margin_top"
+      android:gravity="center"
+      app:layout_constraintBottom_toTopOf="@+id/login_onboarding_body"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/login_onboarding_image"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="@string/title_downloads_no_subscription" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/login_onboarding_body"
+      style="@style/TextAppearance.Body.3"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/login_onboarding_body_margin_top"
+      android:gravity="center"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/login_onboarding_title"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="@string/body_downloads_no_subscription" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

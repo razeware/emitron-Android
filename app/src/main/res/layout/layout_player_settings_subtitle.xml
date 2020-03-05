@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <data />
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settings_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorSurfaceDark"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_player_settings_close"
+      style="@style/Button.Icon"
+      android:layout_width="@dimen/button_icon_height_width_3"
+      android:layout_height="@dimen/button_icon_height_width_3"
+      app:icon="@drawable/ic_material_icon_chevron"
+      app:iconTint="@color/colorIcon"
+      app:layout_constraintBottom_toTopOf="@+id/player_auto_playback_radio_group"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="1"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed" />
+
+    <RadioGroup
+      android:id="@+id/player_auto_playback_radio_group"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/button_icon_height_width_3"
+      android:orientation="horizontal"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_chainStyle="packed"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/button_player_settings_close">
+
+      <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/button_player_settings_auto_play_on"
+        style="@style/Button.Radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/button_off" />
+
+      <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/button_player_settings_auto_play_off"
+        style="@style/Button.Radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_player_label_english" />
+    </RadioGroup>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

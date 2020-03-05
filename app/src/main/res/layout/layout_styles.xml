@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/controller_layout"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_vertical_margin">
+
+    <com.google.android.material.textview.MaterialTextView
+      style="@style/TextAppearance.Headline.1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="H1, Bitter, 30pt, 41, -.5" />
+
+    <com.google.android.material.textview.MaterialTextView
+      style="@style/TextAppearance.Headline.2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_default"
+
+      android:text="H2, Bitter, 24pt, 34, -0.5" />
+
+    <com.google.android.material.textview.MaterialTextView
+      style="@style/TextAppearance.Headline.3"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_default"
+      android:text="H3, Bitter, 20pt, 28, -0.5" />
+
+    <com.google.android.material.textview.MaterialTextView
+      style="@style/TextAppearance.Headline.4"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_default"
+      android:text="H4, Bitter, 18pt, 25, -0.5" />
+
+    <com.google.android.material.textview.MaterialTextView
+      style="@style/TextAppearance.Headline.5"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_default"
+      android:text="H5, Bitter, 16pt, 22, -0.5" />
+
+    <com.google.android.material.textview.MaterialTextView
+      style="@style/TextAppearance.Subtitle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_default"
+      android:text="Subtitle, Bitter, 16pt, 22, 0.15" />
+
+    <com.google.android.material.textview.MaterialTextView
+      style="@style/TextAppearance.Label"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_default"
+      android:text="Label, Roboto, 14pt, 14, 0.5" />
+
+    <com.google.android.material.textview.MaterialTextView
+      style="@style/TextAppearance.Body.1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_default"
+      android:text="Body 1, Roboto, 16pt, 22, 0.5" />
+
+    <com.google.android.material.textview.MaterialTextView
+      style="@style/TextAppearance.Body.2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_default"
+      android:text="Body 2, Roboto, 14pt, 20, 0.5" />
+
+    <com.google.android.material.textview.MaterialTextView
+      style="@style/TextAppearance.Footnote"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_default"
+      android:text="Footnote, Roboto, 13pt, 18, 0.25" />
+
+    <com.google.android.material.textview.MaterialTextView
+      style="@style/TextAppearance.Caption"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_default"
+      android:text="Caption, Roboto, 12pt, 16" />
+
+    <com.google.android.material.textview.MaterialTextView
+      style="@style/TextAppearance.Overline"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_default"
+      android:text="OVERLINE, Roboto, 10pt, 1.5" />
+
+    <com.google.android.material.textview.MaterialTextView
+      style="@style/TextAppearance.Overline.Raised.Colored.White"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_default"
+      android:text="OVERLINE, Roboto, 10pt, 1.5, On white" />
+
+    <com.google.android.material.textview.MaterialTextView
+      style="@style/TextAppearance.Overline.Raised.Colored"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_default"
+      android:drawableStart="@drawable/ic_material_icon_checkmark_1"
+      android:drawablePadding="@dimen/text_drawable_padding_dense"
+      android:text="OVERLINE, Roboto, 10pt, 1.5 On Primary" />
+
+    <com.google.android.material.button.MaterialButton
+      style="@style/Button.Colored"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_default"
+      android:text="Button.Colored" />
+
+    <com.google.android.material.button.MaterialButton
+      style="@style/Button.Colored.2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_default"
+      android:text="Button.Colored.2" />
+
+    <com.google.android.material.button.MaterialButton
+      style="@style/Button.Colored.3"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_default"
+      android:text="Button.Colored.3" />
+
+    <com.google.android.material.button.MaterialButton
+      style="@style/Button.Colored.4"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_default"
+      android:text="Button.Colored.4" />
+
+    <com.google.android.material.textfield.TextInputLayout
+      style="@style/SearchTextInputLayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_default">
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.card.MaterialCardView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/text_spacing_vertical_default">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <com.google.android.material.textview.MaterialTextView
+          style="@style/TextAppearance.Headline.2.Inverse"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/text_spacing_vertical_default"
+          android:text="H2, Bitter, 24pt, 34, -0.5" />
+
+        <com.google.android.material.textview.MaterialTextView
+          style="@style/TextAppearance.Headline.4.Inverse"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/text_spacing_vertical_default"
+          android:text="H4, Bitter, 18pt, 25, -0.5" />
+
+        <com.google.android.material.textview.MaterialTextView
+          style="@style/TextAppearance.Body.1.Inverse"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/text_spacing_vertical_default"
+          android:text="Body 1, Roboto, 16pt, 22, 0.5" />
+
+        <com.google.android.material.textview.MaterialTextView
+          style="@style/TextAppearance.Body.2.Inverse"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/text_spacing_vertical_default"
+          android:text="Body 2, Roboto, 14pt, 20, 0.5" />
+
+        <com.google.android.material.button.MaterialButton
+          style="@style/Button.Text.Inverse"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/text_spacing_vertical_default"
+          android:text="Button.Text.Inverse" />
+
+      </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+  </LinearLayout>
+</ScrollView>

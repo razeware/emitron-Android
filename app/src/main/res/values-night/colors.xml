@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="colorBackground">@color/charcoal_black</color>
+  <color name="colorSurface">@color/bright_grey</color>
+  <color name="colorOnBackground">@color/white</color>
+  <color name="colorNavBarBackground">@color/charcoal_black</color>
+
+  <color name="textColorBody1">@color/white</color>
+  <color name="textColorButton">@color/white</color>
+  <color name="textColorOverline">@color/white</color>
+  <color name="textColorOverline3">@color/light_gray_blue</color>
+  <color name="textColorOverlineInverse">@color/bright_grey</color>
+  <color name="textColorBody2">@color/white</color>
+  <color name="textColorBody3">@color/light_gray_blue</color>
+  <color name="textColorLabel">@color/white</color>
+  <color name="textColorFootnote">@color/light_gray_blue</color>
+  <color name="textColorCaption">@color/light_gray_blue</color>
+  <color name="textColorHeadline">@color/white</color>
+  <color name="textColorHint">@color/blue_grey</color>
+
+  <color name="colorButtonIconRipple">@color/colorSurface</color>
+  <color name="colorButtonDialog">@color/white</color>
+  <color name="colorIcon2">@color/white</color>
+  <color name="colorIcon3">@color/blue_grey</color>
+  <color name="colorProgressItemBackground">#1161656c</color>
+  <color name="colorProgressItemBackground_200">#2261656c</color>
+  <color name="colorProgressItemBackground_100">#61656c</color>
+  <color name="colorDivider">@color/bright_grey</color>
+  <color name="colorCheckboxUnchecked">@color/light_gray_blue</color>
+
+  <color name="colorNavDivider">@color/bright_grey</color>
+  <color name="colorBoxStroke">@color/blue_grey</color>
+  <color name="colorContentProgressBackground">@color/bright_grey</color>
+
+  <color name="colorTabSelected">@color/white</color>
+  <color name="colorTabDefault">@color/bright_grey</color>
+  <color name="colorRadioButtonChecked2">@color/white</color>
+
+  <color name="colorViewPagerIndicator">@color/colorPrimary</color>
+  <color name="colorBadge">@color/nice_blue</color>
+  <color name="colorBadgeStroke">@color/white</color>
+</resources>

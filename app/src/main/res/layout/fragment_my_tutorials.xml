@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <data />
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_top"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_begin="@dimen/guideline_top_status_bar_1" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_left"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_begin="@dimen/activity_horizontal_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_right"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_bottom"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?android:actionBarSize"
+      app:layout_constraintBottom_toTopOf="@+id/tab_layout"
+      app:layout_constraintTop_toTopOf="@+id/guideline_top">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+          android:id="@+id/toolbar_title"
+          style="@style/TextAppearance.Headline.1"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="@string/title_my_tutorials" />
+
+        <com.google.android.material.button.MaterialButton
+          android:id="@+id/navigation_action_settings"
+          style="@style/Button.Icon"
+          android:layout_width="@dimen/button_icon_height_width"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/button_spacing_horizontal"
+          app:icon="@drawable/ic_material_icon_settings" />
+      </LinearLayout>
+    </com.google.android.material.appbar.MaterialToolbar>
+
+
+    <com.google.android.material.tabs.TabLayout
+      android:id="@+id/tab_layout"
+      style="@style/Widget.MaterialComponents.TabLayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/activity_horizontal_margin"
+      android:layout_marginEnd="@dimen/activity_horizontal_margin"
+      android:background="@color/transparent"
+      app:layout_constraintBottom_toTopOf="@+id/view_pager"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/toolbar"
+      app:tabBackground="@drawable/selector_tab_indicator"
+      app:tabIndicatorColor="@color/colorTabSelected"
+      app:tabMode="fixed"
+      app:tabSelectedTextColor="@color/colorTabSelected"
+      app:tabTextAppearance="@style/TextAppearance.Body.2.Bold" />
+
+    <androidx.viewpager2.widget.ViewPager2
+      android:id="@+id/view_pager"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/tab_layout">
+
+    </androidx.viewpager2.widget.ViewPager2>
+
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

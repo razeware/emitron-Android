@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data />
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="true"
+    app:paddingBottomSystemWindowInsets="@{true}">
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_top"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_begin="@dimen/guideline_top_status_bar_2" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_left"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_begin="@dimen/activity_horizontal_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_right"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_bottom"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_end="@dimen/guideline_bottom_gesture" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+      android:id="@+id/image_logo"
+      android:layout_width="@dimen/login_logo_height_width"
+      android:layout_height="@dimen/login_logo_height_width"
+      app:layout_constraintEnd_toStartOf="@+id/text_logo"
+      app:layout_constraintHorizontal_chainStyle="packed"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@id/guideline_top"
+      app:layout_constraintVertical_chainStyle="spread_inside"
+      app:srcCompat="@drawable/ic_logo_color_primary" />
+
+    <com.google.android.material.textview.MaterialTextView
+      android:id="@+id/text_logo"
+      style="@style/TextAppearance.Headline.4"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/activity_horizontal_margin"
+      android:text="@string/title_login_logo"
+      app:layout_constraintBottom_toBottomOf="@+id/image_logo"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintHorizontal_chainStyle="spread_inside"
+      app:layout_constraintStart_toEndOf="@+id/image_logo"
+      app:layout_constraintTop_toTopOf="@+id/image_logo" />
+
+    <androidx.constraintlayout.widget.Barrier
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintBottom_toTopOf="@+id/view_pager_login"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/image_logo" />
+
+    <androidx.constraintlayout.widget.Barrier
+      android:id="@+id/barrier_2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:barrierDirection="top"
+      app:layout_constraintBottom_toTopOf="@+id/text_login_error_title"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/image_logo" />
+
+    <androidx.viewpager.widget.ViewPager
+      android:id="@+id/view_pager_login"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:layout_constraintBottom_toTopOf="@+id/view_pager_indicator"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/image_logo" />
+
+    <com.afollestad.viewpagerdots.DotsIndicator
+      android:id="@+id/view_pager_indicator"
+      android:layout_width="wrap_content"
+      android:layout_height="@dimen/activity_horizontal_margin"
+      android:layout_marginBottom="@dimen/activity_vertical_margin"
+      app:dot_height="@dimen/login_view_pager_indicator_height"
+      app:dot_tint="@color/colorViewPagerIndicator"
+      app:dot_width="@dimen/login_view_pager_indicator_height"
+      app:layout_constraintBottom_toTopOf="@+id/button_sign_in"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/view_pager_login" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_sign_in"
+      style="@style/Button.Colored.Icon"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:text="@string/button_sign_in"
+      app:icon="@drawable/ic_material_button_icon_arrow_right_green_contained"
+      app:iconGravity="end"
+      app:iconTint="@color/white"
+      app:iconTintMode="multiply"
+      app:layout_constraintBottom_toBottomOf="@+id/guideline_bottom"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/view_pager_indicator" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/text_login_error_title"
+      style="@style/TextAppearance.Headline.3"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:text="@string/headline_login_no_subscription"
+      app:layout_constraintBottom_toTopOf="@+id/text_login_error_description"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/image_logo"
+      app:layout_constraintVertical_chainStyle="packed" />
+
+
+    <com.google.android.material.textview.MaterialTextView
+      android:id="@+id/text_login_error_description"
+      style="@style/TextAppearance.Body.2"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/activity_horizontal_margin"
+      android:autoLink="web"
+      android:gravity="center"
+      android:linksClickable="true"
+      android:text="@string/body_login_no_subscription"
+      android:textColorLink="@color/textColorBody2"
+      android:textIsSelectable="true"
+      app:layout_constraintBottom_toTopOf="@+id/button_sign_out"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/text_login_error_title"
+      app:layout_constraintVertical_chainStyle="spread_inside" />
+
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_sign_out"
+      style="@style/Button.Colored.3.Icon"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:text="@string/button_sign_out"
+      app:icon="@drawable/ic_material_button_icon_arrow_right_red_contained"
+      app:iconGravity="end"
+      app:iconTint="@color/white"
+      app:iconTintMode="multiply"
+      app:layout_constraintBottom_toBottomOf="@+id/guideline_bottom"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left" />
+
+    <androidx.constraintlayout.widget.Group
+      android:id="@+id/layout_login"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:constraint_referenced_ids="view_pager_login,button_sign_in"
+      tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+      android:id="@+id/layout_login_no_subscription"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:visibility="gone"
+      app:constraint_referenced_ids="text_login_error_title,text_login_error_description,button_sign_out"
+      tools:visibility="visible" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

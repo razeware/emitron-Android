@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/controller_layout"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:padding="16dp"
+  tools:orientation="horizontal">
+
+  <View
+    android:id="@+id/guideline_play_pause"
+    android:layout_width="@dimen/button_height_default"
+    android:layout_height="@dimen/button_height_default"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/player_next_episode"
+    app:layout_constraintHorizontal_chainStyle="packed"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <androidx.appcompat.widget.AppCompatImageButton
+    android:id="@id/exo_play"
+    style="@style/Button.Icon"
+    android:layout_width="@dimen/button_height_default"
+    android:layout_height="@dimen/button_height_default"
+    android:contentDescription="@string/player_play"
+    app:layout_constraintBottom_toBottomOf="@+id/guideline_play_pause"
+    app:layout_constraintEnd_toStartOf="@+id/guideline_play_pause"
+    app:layout_constraintStart_toEndOf="@+id/guideline_play_pause"
+    app:layout_constraintTop_toTopOf="@+id/guideline_play_pause"
+    app:srcCompat="@drawable/ic_material_icon_play" />
+
+  <androidx.appcompat.widget.AppCompatImageButton
+    android:id="@id/exo_pause"
+    android:layout_width="@dimen/button_height_default"
+    android:layout_height="@dimen/button_height_default"
+    android:background="@color/transparent"
+    android:contentDescription="@string/player_pause"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@+id/guideline_play_pause"
+    app:layout_constraintEnd_toStartOf="@+id/guideline_play_pause"
+    app:layout_constraintStart_toEndOf="@+id/guideline_play_pause"
+    app:layout_constraintTop_toTopOf="@+id/guideline_play_pause"
+    app:srcCompat="@drawable/ic_material_icon_pause" />
+
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/player_next_episode"
+    style="@style/Button.Text.Icon"
+    android:layout_width="@dimen/button_height_default"
+    android:layout_height="@dimen/button_height_default"
+    android:layout_marginStart="@dimen/activity_horizontal_margin"
+    app:icon="@drawable/ic_material_icon_next_episode"
+    app:iconTint="@color/colorIconInverse"
+    app:layout_constraintBottom_toBottomOf="@id/exo_play"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/guideline_play_pause"
+    app:layout_constraintTop_toTopOf="@id/exo_play" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

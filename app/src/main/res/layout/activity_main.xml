@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <data />
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment
+      android:id="@+id/nav_host_fragment"
+      android:name="androidx.navigation.fragment.NavHostFragment"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:defaultNavHost="true"
+      app:layout_constraintBottom_toTopOf="@id/nav_view"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintRight_toRightOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:navGraph="@navigation/emitron_navigation" />
+
+    <View
+      android:id="@+id/nav_divider"
+      android:layout_width="0dp"
+      android:layout_height="@dimen/checkbox_icon_stroke_width"
+      android:background="@color/colorNavDivider"
+      app:layout_constraintBottom_toTopOf="@id/nav_view"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintRight_toRightOf="parent" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+      android:id="@+id/nav_view"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="0dp"
+      android:layout_marginEnd="0dp"
+      app:backgroundTint="@color/colorNavBarBackground"
+      app:itemIconSize="@dimen/nav_icon_height_width"
+      app:itemIconTint="@color/selector_bottom_nav_icon"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintRight_toRightOf="parent"
+      app:menu="@menu/bottom_nav_menu" />
+
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

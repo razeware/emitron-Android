@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/mobile_navigation"
+  app:startDestination="@id/navigation_library">
+
+  <include app:graph="@navigation/settings_navigation" />
+
+  <fragment
+    android:id="@+id/navigation_library"
+    android:name="com.razeware.emitron.ui.library.LibraryFragment"
+    tools:layout="@layout/fragment_library">
+
+    <action
+      android:id="@+id/action_navigation_library_to_navigation_filter"
+      app:destination="@id/navigation_filter"
+      app:enterAnim="@anim/enter_bottom"
+      app:popExitAnim="@anim/exit_bottom" />
+
+    <action
+      android:id="@+id/action_navigation_library_to_navigation_collection"
+      app:destination="@id/navigation_collection">
+      <argument
+        android:name="collection"
+        android:defaultValue="@null"
+        app:argType="com.razeware.emitron.model.Data"
+        app:nullable="true" />
+    </action>
+    <action
+      android:id="@+id/action_navigation_library_to_navigation_login"
+      app:destination="@id/navigation_login" />
+  </fragment>
+
+  <fragment
+    android:id="@+id/navigation_login"
+    android:name="com.razeware.emitron.ui.login.LoginFragment"
+    tools:layout="@layout/fragment_login">
+
+    <action
+      android:id="@+id/action_navigation_login_to_navigation_library"
+      app:destination="@id/navigation_library"
+      app:popUpTo="@id/navigation_library"
+      app:popUpToInclusive="false" />
+  </fragment>
+
+  <fragment
+    android:id="@+id/navigation_collection"
+    android:name="com.razeware.emitron.ui.collection.CollectionFragment"
+    tools:layout="@layout/fragment_collection">
+    <argument
+      android:name="collection"
+      android:defaultValue="@null"
+      app:argType="com.razeware.emitron.model.Data"
+      app:nullable="true" />
+    <action
+      android:id="@+id/action_navigation_collection_to_navigation_player"
+      app:destination="@id/navigation_player" />
+    <action
+      android:id="@+id/action_navigation_collection_to_navigation_settings"
+      app:destination="@id/settings_navigation" />
+    <action
+      android:id="@+id/action_navigation_collection_to_navigation_onboarding"
+      app:destination="@id/navigation_onboarding">
+      <argument
+        android:name="onboardingView"
+        app:argType="com.razeware.emitron.ui.onboarding.OnboardingView" />
+    </action>
+  </fragment>
+
+  <fragment
+    android:id="@+id/navigation_onboarding"
+    android:name="com.razeware.emitron.ui.onboarding.OnboardingFragment"
+    tools:layout="@layout/fragment_onboarding">
+    <argument
+      android:name="onboardingView"
+      app:argType="com.razeware.emitron.ui.onboarding.OnboardingView" />
+  </fragment>
+
+  <fragment
+    android:id="@+id/navigation_downloads"
+    android:name="com.razeware.emitron.ui.download.DownloadFragment"
+    tools:layout="@layout/fragment_downloads">
+    <action
+      android:id="@+id/action_navigation_downloads_to_navigation_library"
+      app:destination="@id/navigation_library"
+      app:popUpTo="@id/navigation_library"
+      app:popUpToInclusive="true" />
+    <action
+      android:id="@+id/action_navigation_my_tutorials_to_navigation_collection"
+      app:destination="@id/navigation_collection">
+      <argument
+        android:name="collection"
+        android:defaultValue="@null"
+        app:argType="com.razeware.emitron.model.Data"
+        app:nullable="true" />
+    </action>
+    <action
+      android:id="@+id/action_navigation_downloads_to_navigation_onboarding"
+      app:destination="@id/navigation_onboarding">
+      <argument
+        android:name="onboardingView"
+        app:argType="com.razeware.emitron.ui.onboarding.OnboardingView" />
+    </action>
+  </fragment>
+
+  <fragment
+    android:id="@+id/navigation_my_tutorials"
+    android:name="com.razeware.emitron.ui.mytutorial.MyTutorialFragment"
+    tools:layout="@layout/fragment_bookmarks">
+    <action
+      android:id="@+id/action_navigation_my_tutorials_to_navigation_settings"
+      app:destination="@id/settings_navigation" />
+    <action
+      android:id="@+id/action_navigation_my_tutorials_to_navigation_library"
+      app:destination="@id/navigation_library"
+      app:popUpTo="@id/navigation_library"
+      app:popUpToInclusive="true" />
+    <action
+      android:id="@+id/action_navigation_my_tutorials_to_navigation_collection"
+      app:destination="@id/navigation_collection">
+      <argument
+        android:name="collection"
+        android:defaultValue="@null"
+        app:argType="com.razeware.emitron.model.Data"
+        app:nullable="true" />
+    </action>
+  </fragment>
+
+  <fragment
+    android:id="@+id/navigation_filter"
+    android:name="com.razeware.emitron.ui.filter.FilterFragment"
+    tools:layout="@layout/fragment_filter">
+    <action
+      android:id="@+id/action_navigation_filter_to_navigation_library"
+      app:destination="@id/navigation_library"
+      app:popUpTo="@id/navigation_library"
+      app:popUpToInclusive="true" />
+  </fragment>
+
+  <fragment
+    android:id="@+id/navigation_player"
+    android:name="com.razeware.emitron.ui.player.PlayerFragment"
+    tools:layout="@layout/fragment_player">
+    <argument
+      android:name="playlist"
+      android:defaultValue="@null"
+      app:argType="com.razeware.emitron.ui.player.Playlist"
+      app:nullable="true" />
+  </fragment>
+</navigation>

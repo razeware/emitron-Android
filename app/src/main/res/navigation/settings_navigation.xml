@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/settings_navigation"
+  app:startDestination="@id/navigation_settings">
+
+  <fragment
+    android:id="@+id/navigation_settings"
+    android:name="com.razeware.emitron.ui.settings.SettingsFragment"
+    tools:layout="@layout/fragment_settings">
+
+    <action
+      android:id="@+id/action_navigation_settings_to_navigation_login"
+      app:destination="@id/navigation_login" />
+
+    <action
+      android:id="@+id/action_navigation_settings_bottom_sheet"
+      app:destination="@+id/navigation_settings_bottom_sheet" />
+  </fragment>
+
+  <dialog
+    android:id="@+id/navigation_settings_bottom_sheet"
+    android:name="com.razeware.emitron.ui.settings.SettingsBottomSheetDialogFragment">
+    <argument
+      android:name="header"
+      android:defaultValue="0"
+      app:argType="reference" />
+  </dialog>
+
+</navigation>

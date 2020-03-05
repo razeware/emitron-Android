@@ -1,0 +1,45 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+android {
+  compileSdkVersion versions.compileSdk
+
+  defaultConfig {
+    minSdkVersion versions.minSdk
+    targetSdkVersion versions.targetSdk
+    versionCode 1
+    versionName "1.0"
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    consumerProguardFiles 'consumer-rules.pro'
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+  }
+
+  androidExtensions {
+    experimental = true
+  }
+}
+
+dependencies {
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
+  implementation "androidx.room:room-runtime:${versions.room}"
+  implementation "androidx.core:core-ktx:${versions.coreKtx}"
+  implementation "com.squareup.moshi:moshi:${versions.moshi}"
+  implementation "com.jakewharton.threetenabp:threetenabp:${versions.threetenabp}"
+  kapt "androidx.room:room-compiler:${versions.room}"
+  kapt "com.squareup.moshi:moshi-kotlin-codegen:${versions.moshi}"
+  testImplementation "junit:junit:${versions.junit}"
+  testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${versions.mockitoKotlin}"
+  testImplementation "com.google.truth:truth:${versions.googleTruth}"
+  testImplementation "org.powermock:powermock-api-mockito2:${versions.powerMock}"
+  testImplementation "org.powermock:powermock-module-junit4:${versions.powerMock}"
+
+}

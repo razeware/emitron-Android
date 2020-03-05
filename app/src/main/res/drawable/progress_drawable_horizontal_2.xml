@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Drawable with corner radius for bottom and top right corners.
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:id="@android:id/background">
+    <shape>
+      <corners
+        android:bottomLeftRadius="@dimen/episode_progress_corner_radius"
+        android:bottomRightRadius="@dimen/episode_progress_corner_radius"
+        android:topLeftRadius="@dimen/episode_progress_corner_radius"
+        android:topRightRadius="@dimen/episode_progress_corner_radius" />
+      <solid android:color="@color/colorContentProgressBackground" />
+    </shape>
+  </item>
+  <item
+    android:id="@android:id/progress">
+    <scale android:scaleWidth="100%">
+    <shape>
+      <corners
+        android:bottomLeftRadius="@dimen/episode_progress_corner_radius"
+        android:bottomRightRadius="@dimen/episode_progress_corner_radius"
+        android:topLeftRadius="@dimen/episode_progress_corner_radius"
+        android:topRightRadius="@dimen/episode_progress_corner_radius" />
+      <solid android:color="@color/colorContentProgress" />
+    </shape>
+    </scale>
+  </item>
+</layer-list>

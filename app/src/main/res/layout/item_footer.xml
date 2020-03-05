@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data />
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <ProgressBar
+      android:id="@+id/progress_bar"
+      style="@style/Widget.AppCompat.ProgressBar"
+      android:layout_width="@dimen/progress_bar_small_height_width"
+      android:layout_height="@dimen/progress_bar_small_height_width" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/text_view_progress"
+      style="@style/TextAppearance.Label"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/activity_vertical_margin"
+      android:text="@string/label_loading"
+      tools:text="@string/label_loading" />
+
+    <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/button_retry"
+      style="@style/Button.Wide"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/button_retry"
+      android:textAppearance="@style/TextAppearance.Button.Regular"
+      android:visibility="gone"
+      tools:visibility="visible" />
+  </LinearLayout>
+</layout>

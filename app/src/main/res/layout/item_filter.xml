@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <variable
+      name="title"
+      type="String" />
+
+    <variable
+      name="checked"
+      type="Boolean" />
+
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_top"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_begin="@dimen/filter_option_text_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_left"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_begin="@dimen/activity_horizontal_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_right"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_bottom"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_end="@dimen/filter_option_text_margin" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/title_filter_item"
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_marginEnd="@dimen/activity_horizontal_margin"
+      android:text="@{title}"
+      android:textAppearance="@style/TextAppearance.Body.2"
+      app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
+      app:layout_constraintEnd_toStartOf="@+id/checkbox_filter_item"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toTopOf="@id/guideline_top"
+      tools:text="Platforms" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+      android:id="@+id/checkbox_filter_item"
+      android:layout_width="@dimen/filter_checkbox_height_width"
+      android:layout_height="@dimen/filter_checkbox_height_width"
+      android:button="@drawable/selector_checkbox"
+      android:buttonTint="@color/white"
+      android:buttonTintMode="multiply"
+      android:checked="@{checked}"
+      android:clickable="false"
+      android:focusableInTouchMode="false"
+      app:layout_constraintBottom_toBottomOf="@+id/title_filter_item"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toEndOf="@+id/title_filter_item"
+      app:layout_constraintTop_toTopOf="@+id/title_filter_item"
+      tools:button="@drawable/selector_checkbox"
+      tools:checked="true" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

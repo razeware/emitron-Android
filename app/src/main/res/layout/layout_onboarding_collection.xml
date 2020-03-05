@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_top"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_begin="@dimen/activity_vertical_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_left"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_begin="@dimen/activity_vertical_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_right"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_end="@dimen/activity_vertical_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_bottom"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/text_collection_episode_headline"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/collection_episode_headline_margin_top"
+      android:text="@string/course_episodes"
+      android:textAppearance="@style/TextAppearance.Headline.3"
+      app:layout_constraintBottom_toTopOf="@+id/button_collection_episode"
+      app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+      app:layout_constraintHorizontal_chainStyle="spread_inside"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@id/guideline_top"
+      app:layout_constraintVertical_bias="1"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="@string/course_episodes" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_collection_episode"
+      style="@style/Button.Icon"
+      android:layout_width="@dimen/button_episode_number_height_width"
+      android:layout_height="@dimen/button_episode_number_height_width"
+      android:layout_marginTop="@dimen/on_boarding_episode_item_margin_top"
+      android:layout_marginEnd="@dimen/button_episode_number_margin_end"
+      android:backgroundTint="@color/colorSurface"
+      android:insetTop="0dp"
+      android:insetBottom="0dp"
+      android:minWidth="@dimen/button_episode_number_height_width"
+      android:minHeight="@dimen/button_episode_number_height_width"
+      android:text="@string/on_boarding_episode_number_1"
+      app:cornerRadius="@dimen/checkbox_corner_radius"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toStartOf="@+id/text_title"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@id/text_collection_episode_headline"
+      app:layout_constraintVertical_bias="0"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:backgroundTint="@color/colorSurface"
+      tools:text="" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+      android:layout_width="@dimen/button_height_default"
+      android:layout_height="@dimen/button_height_default"
+      android:src="@drawable/bg_onboarding_focused"
+      app:layout_constraintBottom_toBottomOf="@id/button_collection_episode"
+      app:layout_constraintEnd_toEndOf="@+id/button_collection_episode"
+      app:layout_constraintStart_toStartOf="@id/button_collection_episode"
+      app:layout_constraintTop_toTopOf="@id/button_collection_episode" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/text_title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:text="@string/on_boarding_episode_title_1"
+      android:textAppearance="@style/TextAppearance.Headline.5"
+      app:layout_constraintBottom_toTopOf="@+id/text_duration"
+      app:layout_constraintEnd_toStartOf="@+id/button_collection_episode_download"
+      app:layout_constraintHorizontal_chainStyle="spread_inside"
+      app:layout_constraintStart_toEndOf="@id/button_collection_episode"
+      app:layout_constraintTop_toTopOf="@id/button_collection_episode"
+      app:layout_constraintVertical_bias="0"
+      app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/text_duration"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:text="@string/on_boarding_episode_duration_1"
+      android:textAppearance="@style/TextAppearance.Footnote"
+      app:layout_constraintBottom_toTopOf="@+id/collection_item_divider"
+      app:layout_constraintEnd_toEndOf="@+id/text_title"
+      app:layout_constraintStart_toStartOf="@+id/text_title"
+      app:layout_constraintTop_toBottomOf="@+id/text_title" />
+
+    <com.razeware.emitron.ui.common.DownloadButton
+      android:id="@+id/button_collection_episode_download"
+      android:layout_width="@dimen/button_icon_height_width_4"
+      android:layout_height="@dimen/button_icon_height_width_4"
+      app:downloadIcon="@drawable/ic_material_icon_download_2"
+      app:downloadIconTint="@color/colorIcon"
+      app:downloadStopIcon="@drawable/ic_material_icon_download_pause_2"
+      app:downloadStopIconTint="@color/colorPrimary"
+      app:layout_constraintBottom_toTopOf="@+id/collection_item_divider"
+      app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+      app:layout_constraintHorizontal_bias="1"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@id/button_collection_episode"
+      app:progressDrawable="@drawable/progress_drawable" />
+
+    <View
+      android:id="@+id/collection_item_divider"
+      android:layout_width="0dp"
+      android:layout_height="@dimen/height_card_divider"
+      android:layout_marginTop="@dimen/activity_vertical_margin"
+      android:layout_marginBottom="@dimen/activity_vertical_margin"
+      android:background="@color/colorDivider"
+      app:layout_constraintBottom_toTopOf="@+id/button_collection_episode_2"
+      app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/text_title"
+      app:layout_constraintTop_toBottomOf="@+id/text_duration" />
+
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_collection_episode_2"
+      style="@style/Button.Icon"
+      android:layout_width="@dimen/button_episode_number_height_width"
+      android:layout_height="@dimen/button_episode_number_height_width"
+      android:layout_marginEnd="@dimen/button_episode_number_margin_end"
+      android:backgroundTint="@color/colorSurface"
+      android:insetTop="0dp"
+      android:insetBottom="0dp"
+      android:minWidth="@dimen/button_episode_number_height_width"
+      android:minHeight="@dimen/button_episode_number_height_width"
+      android:text="@string/on_boarding_episode_number_2"
+      app:cornerRadius="@dimen/checkbox_corner_radius"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toStartOf="@+id/text_title_2"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@id/collection_item_divider"
+      app:layout_constraintVertical_bias="0"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:backgroundTint="@color/colorSurface"
+      tools:text="" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/text_title_2"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:text="@string/on_boarding_episode_title_1"
+      android:textAppearance="@style/TextAppearance.Headline.5"
+      app:layout_constraintBottom_toTopOf="@+id/text_duration_2"
+      app:layout_constraintEnd_toStartOf="@+id/button_collection_episode_download_2"
+      app:layout_constraintHorizontal_chainStyle="spread_inside"
+      app:layout_constraintStart_toEndOf="@id/button_collection_episode_2"
+      app:layout_constraintTop_toTopOf="@id/button_collection_episode_2"
+      app:layout_constraintVertical_bias="0"
+      app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/text_duration_2"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:text="@string/on_boarding_episode_duration_2"
+      android:textAppearance="@style/TextAppearance.Footnote"
+      app:layout_constraintBottom_toTopOf="@+id/collection_item_divider_2"
+      app:layout_constraintEnd_toEndOf="@+id/text_title_2"
+      app:layout_constraintStart_toStartOf="@+id/text_title_2"
+      app:layout_constraintTop_toBottomOf="@+id/text_title_2" />
+
+    <com.razeware.emitron.ui.common.DownloadButton
+      android:id="@+id/button_collection_episode_download_2"
+      android:layout_width="@dimen/button_icon_height_width_4"
+      android:layout_height="@dimen/button_icon_height_width_4"
+      app:downloadIcon="@drawable/ic_material_icon_download_2"
+      app:downloadIconTint="@color/colorIcon"
+      app:downloadStopIcon="@drawable/ic_material_icon_download_pause_2"
+      app:downloadStopIconTint="@color/colorPrimary"
+      app:layout_constraintBottom_toTopOf="@+id/collection_item_divider_2"
+      app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+      app:layout_constraintHorizontal_bias="1"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@id/button_collection_episode_2"
+      app:progressDrawable="@drawable/progress_drawable" />
+
+    <View
+      android:id="@+id/collection_item_divider_2"
+      android:layout_width="0dp"
+      android:layout_height="@dimen/height_card_divider"
+      android:layout_marginTop="@dimen/activity_vertical_margin"
+      android:layout_marginBottom="@dimen/activity_vertical_margin"
+      android:background="@color/colorDivider"
+      app:layout_constraintBottom_toTopOf="@+id/button_collection_episode_3"
+      app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/text_title_2"
+      app:layout_constraintTop_toBottomOf="@+id/text_duration_2" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_collection_episode_3"
+      style="@style/Button.Icon"
+      android:layout_width="@dimen/button_episode_number_height_width"
+      android:layout_height="@dimen/button_episode_number_height_width"
+      android:layout_marginEnd="@dimen/button_episode_number_margin_end"
+      android:backgroundTint="@color/colorSurface"
+      android:insetTop="0dp"
+      android:insetBottom="0dp"
+      android:minWidth="@dimen/button_episode_number_height_width"
+      android:minHeight="@dimen/button_episode_number_height_width"
+      android:text="@string/on_boarding_episode_number_3"
+      app:cornerRadius="@dimen/checkbox_corner_radius"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toStartOf="@+id/text_title_3"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@id/collection_item_divider_2"
+      app:layout_constraintVertical_bias="0"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:backgroundTint="@color/colorSurface"
+      tools:text="" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/text_title_3"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:text="@string/on_boarding_episode_title_1"
+      android:textAppearance="@style/TextAppearance.Headline.5"
+      app:layout_constraintBottom_toTopOf="@+id/text_duration_3"
+      app:layout_constraintEnd_toStartOf="@+id/button_collection_episode_download_3"
+      app:layout_constraintHorizontal_chainStyle="spread_inside"
+      app:layout_constraintStart_toEndOf="@id/button_collection_episode_3"
+      app:layout_constraintTop_toTopOf="@id/button_collection_episode_3"
+      app:layout_constraintVertical_bias="0"
+      app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/text_duration_3"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:text="@string/on_boarding_episode_duration_2"
+      android:textAppearance="@style/TextAppearance.Footnote"
+      app:layout_constraintBottom_toTopOf="@+id/collection_item_divider_3"
+      app:layout_constraintEnd_toEndOf="@+id/text_title_3"
+      app:layout_constraintStart_toStartOf="@+id/text_title_3"
+      app:layout_constraintTop_toBottomOf="@+id/text_title_3" />
+
+    <com.razeware.emitron.ui.common.DownloadButton
+      android:id="@+id/button_collection_episode_download_3"
+      android:layout_width="@dimen/button_icon_height_width_4"
+      android:layout_height="@dimen/button_icon_height_width_4"
+      app:downloadIcon="@drawable/ic_material_icon_download_2"
+      app:downloadIconTint="@color/colorIcon"
+      app:downloadStopIcon="@drawable/ic_material_icon_download_pause_2"
+      app:downloadStopIconTint="@color/colorPrimary"
+      app:layout_constraintBottom_toTopOf="@+id/collection_item_divider_3"
+      app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+      app:layout_constraintHorizontal_bias="1"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@id/button_collection_episode_3"
+      app:progressDrawable="@drawable/progress_drawable" />
+
+    <View
+      android:id="@+id/collection_item_divider_3"
+      android:layout_width="0dp"
+      android:layout_height="@dimen/height_card_divider"
+      android:layout_marginTop="@dimen/activity_vertical_margin"
+      android:background="@color/colorDivider"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/text_title_3"
+      app:layout_constraintTop_toBottomOf="@+id/text_duration_3" />
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

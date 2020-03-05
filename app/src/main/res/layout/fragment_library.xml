@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data />
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_top"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_begin="@dimen/guideline_top_status_bar_2" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_left"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_begin="@dimen/activity_horizontal_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_right"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_bottom"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
+
+    <View
+      android:id="@+id/search_view_library_click_blocker"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:elevation="@dimen/card_elevation_default"
+      app:layout_constraintBottom_toBottomOf="@+id/search_view_library"
+      app:layout_constraintEnd_toEndOf="@+id/button_library_filter"
+      app:layout_constraintStart_toStartOf="@+id/search_view_library"
+      app:layout_constraintTop_toTopOf="@+id/search_view_library" />
+
+    <com.google.android.material.card.MaterialCardView
+      android:id="@+id/search_view_library"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:cardBackgroundColor="@color/transparent"
+      app:cardPreventCornerOverlap="true"
+      app:cardUseCompatPadding="false"
+      app:layout_constraintBottom_toTopOf="@+id/recycler_view_library_recent"
+      app:layout_constraintEnd_toStartOf="@+id/button_library_filter"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toTopOf="@id/guideline_top"
+      app:layout_constraintVertical_bias="0"
+      app:layout_constraintVertical_chainStyle="packed"
+      app:layout_goneMarginBottom="0dp">
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_layout_search"
+        style="@style/SearchTextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/search_view_height_default"
+        android:hint="@string/label_search"
+        android:minHeight="@dimen/search_view_height_default"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        app:endIconDrawable="@drawable/ic_material_icon_close"
+        app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/ic_material_icon_search"
+        app:startIconTint="@color/colorIcon3">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/edit_text_library_search"
+          style="@style/SearchEditText"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/label_search"
+          android:imeActionLabel="@string/label_search"
+          android:paddingTop="@null"
+          android:paddingBottom="@null" />
+
+      </com.google.android.material.textfield.TextInputLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_library_filter"
+      style="@style/Button.Icon"
+      android:layout_width="@dimen/button_icon_height_width"
+      android:layout_height="@dimen/button_icon_height_width"
+      android:layout_marginStart="@dimen/button_spacing_horizontal"
+      app:icon="@drawable/ic_material_icon_filter"
+      app:layout_constraintBottom_toBottomOf="@+id/search_view_library"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toEndOf="@+id/search_view_library"
+      app:layout_constraintTop_toTopOf="@+id/search_view_library" />
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/recycler_view_library_recent"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/activity_vertical_margin"
+      android:visibility="gone"
+      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      app:layout_constraintBottom_toTopOf="@+id/scroll_view_library_filter"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/search_view_library"
+      tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      tools:listitem="@layout/item_recent_search" />
+
+    <HorizontalScrollView
+      android:id="@+id/scroll_view_library_filter"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:scrollbars="none"
+      android:visibility="gone"
+      app:layout_constraintBottom_toTopOf="@+id/button_library_sort"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/recycler_view_library_recent">
+
+      <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_library_filter"
+        style="@style/Widget.MaterialComponents.ChipGroup"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/chip_height_default"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:visibility="gone"
+        app:chipSpacing="@dimen/button_spacing_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:singleLine="true" />
+
+    </HorizontalScrollView>
+
+    <com.google.android.material.textview.MaterialTextView
+      android:id="@+id/text_library_count"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:textAppearance="@style/TextAppearance.Button.Regular"
+      app:layout_constraintBottom_toBottomOf="@+id/button_library_sort"
+      app:layout_constraintEnd_toStartOf="@+id/button_library_sort"
+      app:layout_constraintHorizontal_chainStyle="spread_inside"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toTopOf="@+id/button_library_sort"
+      tools:text="404 Tutorials" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_library_sort"
+      style="@style/Button.Text.Icon"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/button_newest"
+      android:textAppearance="@style/TextAppearance.Button.Regular"
+      android:textColor="@color/textColorButton"
+      app:icon="@drawable/ic_material_icon_sort"
+      app:iconPadding="@dimen/button_padding_internal_dense"
+      app:iconTint="@color/colorIcon2"
+      app:layout_constraintBottom_toTopOf="@+id/recycler_view_library"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toEndOf="@+id/text_library_count"
+      app:layout_constraintTop_toBottomOf="@+id/scroll_view_library_filter" />
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/recycler_view_library"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_marginTop="@dimen/activity_vertical_margin"
+      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left"
+      app:layout_constraintTop_toBottomOf="@+id/text_library_count"
+      tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      tools:listitem="@layout/item_content" />
+
+    <FrameLayout
+      android:id="@+id/layout_progress_container"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:background="@color/colorBackground"
+      android:clickable="false"
+      android:elevation="@dimen/card_elevation_default"
+      android:focusableInTouchMode="false"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/search_view_library"
+      tools:visibility="gone">
+
+      <include layout="@layout/layout_progress" />
+    </FrameLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

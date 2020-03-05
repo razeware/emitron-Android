@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <data />
+
+  <com.google.android.material.textview.MaterialTextView
+    android:id="@+id/text_library_recent_search_title"
+    style="@style/TextAppearance.Overline"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/text_spacing_vertical_default"
+    android:layout_marginBottom="@dimen/text_spacing_vertical_default"
+    android:text="@string/label_recent_search"
+    android:textAllCaps="true"
+    app:layout_constraintBottom_toTopOf="@+id/search_view_library"
+    app:layout_constraintEnd_toStartOf="@+id/button_library_sort"
+    app:layout_constraintHorizontal_chainStyle="spread_inside"
+    app:layout_constraintStart_toStartOf="@id/guideline_left"
+    app:layout_constraintTop_toBottomOf="@+id/button_library_sort" />
+</layout>

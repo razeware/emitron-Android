@@ -1,0 +1,608 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "57c260476f350a317de23820806588dd",
+    "entities": [
+      {
+        "tableName": "domains",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`domain_id` TEXT NOT NULL, `name` TEXT, `level` TEXT, PRIMARY KEY(`domain_id`))",
+        "fields": [
+          {
+            "fieldPath": "domainId",
+            "columnName": "domain_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "level",
+            "columnName": "level",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "domain_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "categories",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`category_id` TEXT NOT NULL, `name` TEXT, PRIMARY KEY(`category_id`))",
+        "fields": [
+          {
+            "fieldPath": "categoryId",
+            "columnName": "category_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "category_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "contents",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`content_id` TEXT NOT NULL, `description` TEXT, `contributors` TEXT, `professional` INTEGER NOT NULL, `deleted` INTEGER NOT NULL, `name` TEXT, `content_type` TEXT, `difficulty` TEXT, `released_at` TEXT NOT NULL, `technology` TEXT, `duration` INTEGER NOT NULL, `stream_url` TEXT, `card_artwork_url` TEXT, `video_id` TEXT, `bookmark_id` TEXT, `updated_at` TEXT NOT NULL, PRIMARY KEY(`content_id`))",
+        "fields": [
+          {
+            "fieldPath": "contentId",
+            "columnName": "content_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "contributors",
+            "columnName": "contributors",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "professional",
+            "columnName": "professional",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deleted",
+            "columnName": "deleted",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "contentType",
+            "columnName": "content_type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "difficulty",
+            "columnName": "difficulty",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "releasedAt",
+            "columnName": "released_at",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "technology",
+            "columnName": "technology",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "duration",
+            "columnName": "duration",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "streamUrl",
+            "columnName": "stream_url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cardArtworkUrl",
+            "columnName": "card_artwork_url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "videoId",
+            "columnName": "video_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "bookmarkId",
+            "columnName": "bookmark_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "content_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_contents_content_id",
+            "unique": true,
+            "columnNames": [
+              "content_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_contents_content_id` ON `${TABLE_NAME}` (`content_id`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "progressions",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `content_id` TEXT NOT NULL, `progression_id` TEXT, `percent_complete` INTEGER NOT NULL, `progress` INTEGER NOT NULL, `finished` INTEGER NOT NULL, `updated_at` TEXT, `synced` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "contentId",
+            "columnName": "content_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "progressionId",
+            "columnName": "progression_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "percentComplete",
+            "columnName": "percent_complete",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "progress",
+            "columnName": "progress",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "finished",
+            "columnName": "finished",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "synced",
+            "columnName": "synced",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_progressions_id",
+            "unique": true,
+            "columnNames": [
+              "id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_progressions_id` ON `${TABLE_NAME}` (`id`)"
+          },
+          {
+            "name": "index_progressions_progression_id",
+            "unique": true,
+            "columnNames": [
+              "progression_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_progressions_progression_id` ON `${TABLE_NAME}` (`progression_id`)"
+          },
+          {
+            "name": "index_progressions_content_id",
+            "unique": true,
+            "columnNames": [
+              "content_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_progressions_content_id` ON `${TABLE_NAME}` (`content_id`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "content_domain_join",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`content_id` TEXT NOT NULL, `domain_id` TEXT NOT NULL, PRIMARY KEY(`content_id`, `domain_id`), FOREIGN KEY(`content_id`) REFERENCES `contents`(`content_id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`domain_id`) REFERENCES `domains`(`domain_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "contentId",
+            "columnName": "content_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "domainId",
+            "columnName": "domain_id",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "content_id",
+            "domain_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_content_domain_join_content_id",
+            "unique": false,
+            "columnNames": [
+              "content_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_content_domain_join_content_id` ON `${TABLE_NAME}` (`content_id`)"
+          },
+          {
+            "name": "index_content_domain_join_domain_id",
+            "unique": false,
+            "columnNames": [
+              "domain_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_content_domain_join_domain_id` ON `${TABLE_NAME}` (`domain_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "contents",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "content_id"
+            ],
+            "referencedColumns": [
+              "content_id"
+            ]
+          },
+          {
+            "table": "domains",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "domain_id"
+            ],
+            "referencedColumns": [
+              "domain_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "groups",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`group_id` TEXT NOT NULL, `name` TEXT, `ordinal` INTEGER NOT NULL, PRIMARY KEY(`group_id`))",
+        "fields": [
+          {
+            "fieldPath": "groupId",
+            "columnName": "group_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ordinal",
+            "columnName": "ordinal",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "group_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "content_group_join",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`content_id` TEXT NOT NULL, `group_id` TEXT NOT NULL, PRIMARY KEY(`content_id`, `group_id`), FOREIGN KEY(`content_id`) REFERENCES `contents`(`content_id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`group_id`) REFERENCES `groups`(`group_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "contentId",
+            "columnName": "content_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "groupId",
+            "columnName": "group_id",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "content_id",
+            "group_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_content_group_join_content_id",
+            "unique": false,
+            "columnNames": [
+              "content_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_content_group_join_content_id` ON `${TABLE_NAME}` (`content_id`)"
+          },
+          {
+            "name": "index_content_group_join_group_id",
+            "unique": false,
+            "columnNames": [
+              "group_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_content_group_join_group_id` ON `${TABLE_NAME}` (`group_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "contents",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "content_id"
+            ],
+            "referencedColumns": [
+              "content_id"
+            ]
+          },
+          {
+            "table": "groups",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "group_id"
+            ],
+            "referencedColumns": [
+              "group_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "group_content_join",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`group_id` TEXT NOT NULL, `content_id` TEXT NOT NULL, PRIMARY KEY(`group_id`, `content_id`), FOREIGN KEY(`group_id`) REFERENCES `groups`(`group_id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`content_id`) REFERENCES `contents`(`content_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "groupId",
+            "columnName": "group_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "episodeId",
+            "columnName": "content_id",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "group_id",
+            "content_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_group_content_join_group_id",
+            "unique": false,
+            "columnNames": [
+              "group_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_group_content_join_group_id` ON `${TABLE_NAME}` (`group_id`)"
+          },
+          {
+            "name": "index_group_content_join_content_id",
+            "unique": false,
+            "columnNames": [
+              "content_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_group_content_join_content_id` ON `${TABLE_NAME}` (`content_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "groups",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "group_id"
+            ],
+            "referencedColumns": [
+              "group_id"
+            ]
+          },
+          {
+            "table": "contents",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "content_id"
+            ],
+            "referencedColumns": [
+              "content_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "downloads",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`download_id` TEXT NOT NULL, `url` TEXT, `progress` INTEGER NOT NULL, `state` INTEGER NOT NULL, `failure_reason` INTEGER NOT NULL, `created_at` TEXT, PRIMARY KEY(`download_id`))",
+        "fields": [
+          {
+            "fieldPath": "downloadId",
+            "columnName": "download_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "progress",
+            "columnName": "progress",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "state",
+            "columnName": "state",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "failureReason",
+            "columnName": "failure_reason",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "download_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "watch_stats",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`content_id` TEXT NOT NULL, `duration` INTEGER NOT NULL, `watched_at` TEXT NOT NULL, `updated_at` TEXT NOT NULL, PRIMARY KEY(`watched_at`))",
+        "fields": [
+          {
+            "fieldPath": "contentId",
+            "columnName": "content_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "duration",
+            "columnName": "duration",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "watchedAt",
+            "columnName": "watched_at",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "watched_at"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_watch_stats_watched_at",
+            "unique": true,
+            "columnNames": [
+              "watched_at"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_watch_stats_watched_at` ON `${TABLE_NAME}` (`watched_at`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '57c260476f350a317de23820806588dd')"
+    ]
+  }
+}
