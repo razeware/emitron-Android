@@ -15,7 +15,8 @@
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:paddingBottomSystemWindowInsets="@{true}">
+    app:paddingBottomSystemWindowInsets="@{true}"
+    android:keepScreenOn="true">
 
     <androidx.appcompat.widget.AppCompatImageView
       android:id="@+id/cast_control_cover_art"
