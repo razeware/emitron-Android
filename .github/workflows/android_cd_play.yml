@@ -36,7 +36,7 @@ jobs:
          scripts/download_s3.sh gradle.properties > gradle.properties
          scripts/download_s3.sh google-services.json > app/google-services.json
          scripts/download_s3.sh emitron_keystore.jks > emitron_keystore.jks
-         scripts/download_s3.sh GooglePlayStore/google-play.json > app/google-play.json
+         scripts/download_s3.sh GooglePlayStore/google-play.json > google-play.json
     - name: Upload app to Playstore
       run: bundle exec fastlane deploy
 
