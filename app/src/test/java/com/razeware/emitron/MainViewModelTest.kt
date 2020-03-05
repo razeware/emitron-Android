@@ -114,7 +114,7 @@ class MainViewModelTest {
       Data("1"),
       Data("2"),
       Data(type = FilterType.Search.toRequestFormat(), attributes = Attributes(name = "Emitron")),
-      Data(type = FilterType.Sort.toRequestFormat(), attributes = Attributes(name = "popularity"))
+      Data(type = FilterType.Sort.toRequestFormat(), attributes = Attributes(name = "Newest"))
     )
     viewModel.getSelectedFilters(true, withSort = true) isEqualTo expectedList
   }
@@ -192,7 +192,7 @@ class MainViewModelTest {
     viewModel.setSortOrder("Popularity")
 
     // Then
-    viewModel.sortOrder.observeForTestingResult() isEqualTo "popularity"
+    viewModel.sortOrder.observeForTestingResult() isEqualTo "Newest"
   }
 
   @Test

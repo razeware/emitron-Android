@@ -1,9 +1,7 @@
 package com.razeware.emitron.ui.player
 
-import android.app.Activity
 import android.content.Context
 import android.media.AudioManager
-import android.net.Uri
 import android.support.v4.media.session.MediaSessionCompat
 import android.view.View
 import androidx.core.app.NotificationCompat
@@ -17,27 +15,22 @@ import com.google.android.exoplayer2.ext.cast.CastPlayer
 import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.android.exoplayer2.ui.PlayerView
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.exoplayer2.upstream.cache.Cache
 import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
-import com.google.android.exoplayer2.util.MimeTypes
-import com.google.android.gms.cast.MediaInfo
-import com.google.android.gms.cast.MediaMetadata
-import com.google.android.gms.cast.MediaQueueItem
 import com.google.android.gms.cast.framework.CastContext
 import com.razeware.emitron.R
 import com.razeware.emitron.ui.download.DownloadService.Companion.buildCacheDataSourceFactory
-import com.razeware.emitron.ui.player.PlayerFragment.Companion.defaultPlaybackQuality
+import com.razeware.emitron.ui.player.PlayerManagerFactory.buildDataSourceFactory
+import com.razeware.emitron.ui.player.PlayerManagerFactory.buildMediaQueueItem
+import com.razeware.emitron.ui.player.PlayerManagerFactory.buildMediaSource
+import com.razeware.emitron.ui.player.PlayerManagerFactory.buildTrackSelector
+import com.razeware.emitron.ui.player.PlayerManagerFactory.createCastMediaPlayer
+import com.razeware.emitron.ui.player.PlayerManagerFactory.createMediaPlayer
 import com.razeware.emitron.ui.player.cast.Episode
 import java.util.*
 
@@ -58,6 +51,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
   private lateinit var playerNotificationManager: PlayerNotificationManager
   private lateinit var mediaSessionCompat: MediaSessionCompat
   private lateinit var castControlGroup: View
+  private lateinit var playerConfigManager: PlayerConfigManager
 
   /**
    * Check if playback has started
@@ -112,35 +106,48 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
 
   private fun reinitialize(castContext: CastContext) {
     if (::localPlayerView.isInitialized) {
-      if (mediaPlayer == null) {
-        mediaPlayer = createMediaPlayer(localPlayerView, trackSelector)
-      }
-
-      if (castPlayer == null) {
-        castPlayer = createCastMediaPlayer(castContext, castControlView, this, this)
-      }
-
-      val currentPlayer =
-        if (castPlayer?.isCastSessionAvailable == true) castPlayer else mediaPlayer
-      setCurrentPlayer(currentPlayer)
-
-      val mediaSessionConnector = MediaSessionConnector(mediaSessionCompat)
-      mediaSessionConnector.setPlayer(currentPlayer)
-      with(playerNotificationManager) {
-        setPlayer(currentPlayer)
-        setUseNavigationActions(false)
-        setFastForwardIncrementMs(0)
-        setRewindIncrementMs(0)
-        setUseStopAction(false)
-        setUseChronometer(true)
-        setUsePlayPauseActions(true)
-        setSmallIcon(R.drawable.ic_logo)
-        setBadgeIconType(NotificationCompat.BADGE_ICON_NONE)
-        setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
-        setMediaSessionToken(mediaSessionCompat.sessionToken)
-      }
+      initMediaPlayer()
+      initCastPlayer(castContext)
+      initCurrentPlayer()
+      MediaSessionConnector(mediaSessionCompat).setPlayer(currentPlayer)
+      initPlayerNotificationManager()
     }
 
+    this.playerConfigManager = PlayerConfigManager(trackSelector, mediaPlayer)
+  }
+
+  private fun initMediaPlayer() {
+    if (mediaPlayer == null) {
+      mediaPlayer = createMediaPlayer(localPlayerView, trackSelector)
+    }
+  }
+
+  private fun initCastPlayer(castContext: CastContext) {
+    if (castPlayer == null) {
+      castPlayer = createCastMediaPlayer(castContext, castControlView, this, this)
+    }
+  }
+
+  private fun initCurrentPlayer() {
+    val currentPlayer =
+      if (castPlayer?.isCastSessionAvailable == true) castPlayer else mediaPlayer
+    setCurrentPlayer(currentPlayer)
+  }
+
+  private fun initPlayerNotificationManager() {
+    with(playerNotificationManager) {
+      setPlayer(currentPlayer)
+      setUseNavigationActions(false)
+      setFastForwardIncrementMs(0)
+      setRewindIncrementMs(0)
+      setUseStopAction(false)
+      setUseChronometer(true)
+      setUsePlayPauseActions(true)
+      setSmallIcon(R.drawable.ic_logo)
+      setBadgeIconType(NotificationCompat.BADGE_ICON_NONE)
+      setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
+      setMediaSessionToken(mediaSessionCompat.sessionToken)
+    }
   }
 
   /**
@@ -278,69 +285,99 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
       castControlView.show()
     }
 
-    this.currentPlayer = currentPlayer
-    updateMediaQueue()
+
+    updateMediaQueue {
+      this.currentPlayer = currentPlayer
+    }
   }
 
   private fun updateMediaQueue(
-    overridePlayWhenReady: Boolean = false,
-    duration: Long = 0,
-    reset: Boolean = false
+    playerConfig: PlayerConfig = PlayerConfig(),
+    onMediaQueueUpdate: (() -> Unit)? = null
   ) {
-    // Player state management.
-    var playbackPositionMs = C.TIME_UNSET
-    var windowIndex = C.INDEX_UNSET
-    var playWhenReady = false
-    if (null != this.currentPlayer) {
-      val playbackState = this.currentPlayer?.playbackState
-      if (playbackState != Player.STATE_ENDED) {
-        playbackPositionMs = this.currentPlayer?.currentPosition ?: C.TIME_UNSET
-        playWhenReady = this.currentPlayer?.playWhenReady ?: true
-        windowIndex = this.currentPlayer?.currentWindowIndex ?: C.INDEX_UNSET
-        if (windowIndex != currentItemIndex) {
-          playbackPositionMs = C.TIME_UNSET
-          windowIndex = currentItemIndex
-        }
-      }
-      this.currentPlayer?.stop(true)
+
+    // Get current player state
+    val playerState = getCurrentPlayerState()
+
+    // Change current player
+    onMediaQueueUpdate?.invoke()
+
+    if (playerConfig.reset) {
+      playerState.copy(
+        playbackPositionMs = playerConfig.duration,
+        playWhenReady = playerConfig.overridePlayWhenReady
+      )
     }
 
-    if (reset) {
-      playbackPositionMs = duration
-      playWhenReady = overridePlayWhenReady
-    }
-
+    // Update current player to last player state
     if (currentPlayer == mediaPlayer) {
-      concatenatingMediaSource = ConcatenatingMediaSource()
-      for (i in mediaQueue.indices) {
-        val mediaSource = mediaQueue[i]
-        concatenatingMediaSource?.addMediaSource(
-          buildMediaSource(
-            mediaSource,
-            dataSourceFactory,
-            cacheDataSourceFactory
-          )
-        )
-      }
-      mediaPlayer?.prepare(concatenatingMediaSource)
-      mediaPlayer?.addListener(this@PlayerManager)
-      if (playbackPositionMs != C.TIME_UNSET) {
-        if (!reset) {
-          mediaPlayer?.seekTo(playbackPositionMs)
-          mediaPlayer?.playWhenReady = overridePlayWhenReady || playWhenReady
-        } else {
-          mediaPlayer?.seekTo(duration)
-          mediaPlayer?.playWhenReady = overridePlayWhenReady
-        }
-      }
+      updateMediaPlayer(playerConfig, playerState)
     } else {
-      val items = arrayOfNulls<MediaQueueItem>(mediaQueue.size)
-      for (i in items.indices) {
-        items[i] = buildMediaQueueItem(mediaQueue[i])
+      updateCastPlayer(playerState)
+    }
+  }
+
+  private fun getCurrentPlayerState(): PlayerState {
+    val playerState = PlayerState.from(this.currentPlayer, currentItemIndex)
+    this.currentPlayer?.stop(true)
+    return playerState
+  }
+
+  /**
+   * Update media player state
+   *
+   * @param playerConfig Current player config
+   * @param playerState Current player state
+   */
+  private fun updateMediaPlayer(
+    playerConfig: PlayerConfig,
+    playerState: PlayerState
+  ) {
+    updateMediaSource()
+    mediaPlayer?.prepare(concatenatingMediaSource)
+    mediaPlayer?.addListener(this@PlayerManager)
+    if (playerState.playbackPositionMs != C.TIME_UNSET) {
+      if (!playerConfig.reset) {
+        mediaPlayer?.seekTo(playerState.playbackPositionMs)
+        mediaPlayer?.playWhenReady = playerConfig.overridePlayWhenReady || playerState.playWhenReady
+      } else {
+        mediaPlayer?.seekTo(playerConfig.duration)
+        mediaPlayer?.playWhenReady = playerConfig.overridePlayWhenReady
       }
-      if (items.isNotEmpty() && currentItemIndex != C.INDEX_UNSET) {
-        castPlayer?.loadItems(items, windowIndex, playbackPositionMs, Player.REPEAT_MODE_OFF)
-      }
+    }
+  }
+
+  /**
+   * Update media source
+   */
+  private fun updateMediaSource() {
+    concatenatingMediaSource = ConcatenatingMediaSource()
+    for (episode in mediaQueue) {
+      concatenatingMediaSource?.addMediaSource(
+        buildMediaSource(
+          episode,
+          dataSourceFactory,
+          cacheDataSourceFactory
+        )
+      )
+    }
+  }
+
+  /**
+   * Update current player to cast player
+   *
+   * @param playerState Current player state
+   */
+  private fun updateCastPlayer(playerState: PlayerState) {
+    val items = mediaQueue.map {
+      buildMediaQueueItem(it)
+    }.toTypedArray()
+    if (items.isNotEmpty() && playerState.windowIndex != C.INDEX_UNSET) {
+      castPlayer?.loadItems(
+        items, playerState.windowIndex,
+        playerState.playbackPositionMs, Player.REPEAT_MODE_OFF
+      )
+      castPlayer?.playWhenReady = playerState.playWhenReady
     }
   }
 
@@ -353,7 +390,8 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
       replay()
     }
 
-    updateMediaQueue(shouldAutoPlay, seekTo, true)
+    val playerConfig = PlayerConfig(shouldAutoPlay, seekTo, true)
+    updateMediaQueue(playerConfig)
   }
 
   private fun warnLowVolume() {
@@ -422,241 +460,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
   }
 
   /**
-   * Enable/Disable subtitles
-   *
-   * @param subtitleLanguage true if subtitles enabled, else false
+   * Return player configuration manager
    */
-  fun updateSubtitles(subtitleLanguage: String) {
-    val mappedTrackInfo = trackSelector.currentMappedTrackInfo
-    if (null != mappedTrackInfo) {
-      val builder = trackSelector.buildUponParameters()
-      for (rendererIndex in 0 until mappedTrackInfo.rendererCount) {
-        if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_TEXT) {
-          if (subtitleLanguage.isEmpty()) {
-            builder.clearSelectionOverrides(rendererIndex)
-          } else {
-            val subtitleOverride =
-              getPlaybackSubtitleOverride(rendererIndex, mappedTrackInfo, subtitleLanguage)
-            if (null != subtitleOverride) {
-              builder.setSelectionOverride(
-                rendererIndex,
-                mappedTrackInfo.getTrackGroups(rendererIndex),
-                subtitleOverride
-              )
-            }
-          }
-        }
-      }
-      trackSelector.setParameters(builder)
-    }
-  }
-
-  /**
-   * Update playback quality
-   *
-   * @param quality [PlayerFragment.playerPlaybackQualityOptions]
-   */
-  fun updatePlaybackQuality(quality: Int) {
-    val mappedTrackInfo = trackSelector.currentMappedTrackInfo
-    if (null != mappedTrackInfo) {
-      val builder = trackSelector.buildUponParameters()
-      for (rendererIndex in 0 until mappedTrackInfo.rendererCount) {
-        if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
-          if (quality == defaultPlaybackQuality) {
-            builder.clearSelectionOverrides(rendererIndex)
-          } else {
-            val qualityOverride =
-              getPlaybackQualityOverride(rendererIndex, mappedTrackInfo, quality)
-            if (null != qualityOverride) {
-              builder.setSelectionOverride(
-                rendererIndex,
-                mappedTrackInfo.getTrackGroups(rendererIndex),
-                qualityOverride
-              )
-            }
-          }
-        }
-      }
-      trackSelector.setParameters(builder)
-    }
-  }
-
-  /**
-   * Update default playback settings
-   *
-   * @param activity Context
-   * @param speed [PlayerFragment.playerPlaybackSpeedOptions]
-   * @param quality [PlayerFragment.playerPlaybackQualityOptions]
-   * @param subtitleLanguage [PlayerFragment.playerSubtitleLanguageOptions]
-   */
-  fun setDefaultSettings(
-    activity: Activity,
-    speed: Float,
-    quality: Int,
-    subtitleLanguage: String
-  ) {
-
-    val builder = trackSelector.buildUponParameters()
-    builder.setViewportSizeToPhysicalDisplaySize(activity, false)
-
-    val mappedTrackInfo = trackSelector.currentMappedTrackInfo
-    if (null != mappedTrackInfo) {
-
-      for (rendererIndex in 0 until mappedTrackInfo.rendererCount) {
-        builder.clearSelectionOverrides(rendererIndex)
-        if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
-          val qualityOverride = getPlaybackQualityOverride(rendererIndex, mappedTrackInfo, quality)
-          if (null != qualityOverride) {
-            builder.setSelectionOverride(
-              rendererIndex,
-              mappedTrackInfo.getTrackGroups(rendererIndex),
-              qualityOverride
-            )
-          }
-        }
-        if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_TEXT) {
-          val subtitleOverride =
-            getPlaybackSubtitleOverride(rendererIndex, mappedTrackInfo, subtitleLanguage)
-          if (null != subtitleOverride) {
-            builder.setSelectionOverride(
-              rendererIndex,
-              mappedTrackInfo.getTrackGroups(rendererIndex),
-              subtitleOverride
-            )
-          }
-        }
-      }
-    }
-
-    trackSelector.setParameters(builder)
-
-    val playbackParameters = PlaybackParameters(speed)
-    mediaPlayer?.playbackParameters = playbackParameters
-  }
-
-  private fun getPlaybackQualityOverride(
-    rendererIndex: Int,
-    mappedTrackInfo: MappingTrackSelector.MappedTrackInfo,
-    quality: Int
-  ): DefaultTrackSelector.SelectionOverride? {
-    val trackGroups = mappedTrackInfo.getTrackGroups(rendererIndex)
-    for (groupIndex in 0 until trackGroups.length) {
-      val group = trackGroups.get(groupIndex)
-      for (trackIndex in 0 until group.length) {
-        if (group.getFormat(trackIndex).height == quality) {
-          if (mappedTrackInfo.getTrackSupport(
-              rendererIndex,
-              groupIndex,
-              trackIndex
-            ) == RendererCapabilities.FORMAT_HANDLED
-          ) {
-            return DefaultTrackSelector.SelectionOverride(groupIndex, trackIndex)
-          }
-        }
-      }
-    }
-    return null
-  }
-
-  private fun getPlaybackSubtitleOverride(
-    rendererIndex: Int,
-    mappedTrackInfo: MappingTrackSelector.MappedTrackInfo,
-    language: String
-  ): DefaultTrackSelector.SelectionOverride? {
-    val trackGroups = mappedTrackInfo.getTrackGroups(rendererIndex)
-    for (groupIndex in 0 until trackGroups.length) {
-      val group = trackGroups.get(groupIndex)
-      for (trackIndex in 0 until group.length) {
-        if (group.getFormat(trackIndex).language.equals(language, true)) {
-          if (mappedTrackInfo.getTrackSupport(
-              rendererIndex,
-              groupIndex,
-              trackIndex
-            ) == RendererCapabilities.FORMAT_HANDLED
-          ) {
-            return DefaultTrackSelector.SelectionOverride(groupIndex, trackIndex)
-          }
-        }
-      }
-    }
-    return null
-  }
-
-  /**
-   * Update playback speed
-   */
-  fun updatePlaybackSpeed(speed: Float) {
-    val playbackParameters = PlaybackParameters(speed)
-    mediaPlayer?.playbackParameters = playbackParameters
-  }
-
-  companion object {
-
-
-    internal fun createMediaPlayer(
-      playerView: PlayerView,
-      trackSelector: DefaultTrackSelector
-    ): SimpleExoPlayer {
-      val mediaPlayer = ExoPlayerFactory.newSimpleInstance(playerView.context, trackSelector)
-      playerView.player = mediaPlayer
-      return mediaPlayer
-    }
-
-    internal fun createCastMediaPlayer(
-      castCtx: CastContext,
-      castControlView: PlayerControlView,
-      castPlayerEventListener: Player.EventListener,
-      sessionListener: SessionAvailabilityListener
-    ): CastPlayer {
-      val castPlayer = CastPlayer(castCtx)
-      castPlayer.addListener(castPlayerEventListener)
-      castPlayer.setSessionAvailabilityListener(sessionListener)
-      castControlView.player = castPlayer
-      return castPlayer
-    }
-
-    internal fun buildMediaSource(
-      episode: Episode,
-      dataSourceFactory: DefaultHttpDataSourceFactory,
-      cacheDataSourceFactory: CacheDataSourceFactory
-    ): MediaSource {
-      val uri = Uri.parse(episode.uri)
-      return when (episode.mimeType) {
-        MimeTypes.APPLICATION_M3U8 -> HlsMediaSource.Factory(dataSourceFactory)
-          .setAllowChunklessPreparation(true)
-          .createMediaSource(uri)
-        MimeTypes.APPLICATION_MP4 -> ProgressiveMediaSource
-          .Factory(cacheDataSourceFactory)
-          .createMediaSource(uri)
-        else -> {
-          throw IllegalStateException("Unsupported type: " + episode.mimeType)
-        }
-      }
-    }
-
-    internal fun buildMediaQueueItem(episode: Episode): MediaQueueItem {
-      val movieMetadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE)
-      movieMetadata.putString(MediaMetadata.KEY_TITLE, episode.name)
-      val mediaInfo = MediaInfo.Builder(episode.uri)
-        .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED).setContentType(episode.mimeType)
-        .setMetadata(movieMetadata).build()
-      return MediaQueueItem.Builder(mediaInfo).build()
-    }
-
-    internal fun buildTrackSelector(): DefaultTrackSelector {
-      val trackSelectionFactory = AdaptiveTrackSelection.Factory()
-      return DefaultTrackSelector(trackSelectionFactory).apply {
-        parameters = DefaultTrackSelector.ParametersBuilder().build()
-      }
-    }
-
-    internal fun buildDataSourceFactory(
-      context: Context,
-      userAgent: String
-    ): DefaultHttpDataSourceFactory {
-      val bandWidthMeter =
-        DefaultBandwidthMeter.Builder(context).build()
-      return DefaultHttpDataSourceFactory(userAgent, bandWidthMeter)
-    }
-  }
+  fun getPlayerConfigManager(): PlayerConfigManager = playerConfigManager
 }

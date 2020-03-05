@@ -181,7 +181,7 @@ class ContentRepositoryTest {
       listOf("2"),
       emptyList(),
       "Emitron",
-      "popularity",
+      "-popularity",
       null
     )
     verifyNoMoreInteractions(contentApi)

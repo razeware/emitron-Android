@@ -272,7 +272,7 @@
   </style>
 
   <style name="TextAppearance.Overline.Raised.Colored" parent="TextAppearance.Overline.Raised">
-    <item name="android:background">@drawable/bg_caption_primary</item>
+    <item name="android:background">@drawable/bg_overline_raised</item>
     <item name="android:textColor">@color/textColorOverlineInverse2</item>
   </style>
 
