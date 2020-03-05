@@ -120,7 +120,8 @@ class LibraryFragment : DaggerFragment() {
     )
 
     binding.buttonLibrarySort.setOnClickListener {
-      showSortPopup()
+      parentViewModel.setSortOrder(binding.buttonLibrarySort.text.toString())
+      loadCollections()
     }
 
     progressDelegate = ProgressDelegate(requireView())
@@ -150,23 +151,6 @@ class LibraryFragment : DaggerFragment() {
     binding.textInputLayoutSearch.setEndIconOnClickListener {
       handleQueryCleared()
     }
-  }
-
-  private fun showSortPopup() {
-    val popup = PopupMenu(
-      requireContext(),
-      binding.buttonLibrarySort,
-      Gravity.END,
-      0,
-      R.style.AppTheme_Popup
-    )
-    popup.menuInflater.inflate(R.menu.menu_library_sort, popup.menu)
-    popup.setOnMenuItemClickListener {
-      parentViewModel.setSortOrder(it.title.toString())
-      loadCollections()
-      true
-    }
-    popup.show()
   }
 
   private fun showRecentSearchControls() {
