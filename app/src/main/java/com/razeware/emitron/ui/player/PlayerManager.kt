@@ -297,23 +297,25 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
   ) {
 
     // Get current player state
-    val playerState = getCurrentPlayerState()
+    val lastPlayerState = getCurrentPlayerState()
 
     // Change current player
     onMediaQueueUpdate?.invoke()
 
-    if (playerConfig.reset) {
-      playerState.copy(
+    val updatedPlayerState = if (playerConfig.reset) {
+      lastPlayerState.copy(
         playbackPositionMs = playerConfig.duration,
         playWhenReady = playerConfig.overridePlayWhenReady
       )
+    } else {
+      lastPlayerState
     }
 
     // Update current player to last player state
     if (currentPlayer == mediaPlayer) {
-      updateMediaPlayer(playerConfig, playerState)
+      updateMediaPlayer(playerConfig, updatedPlayerState)
     } else {
-      updateCastPlayer(playerState)
+      updateCastPlayer(updatedPlayerState)
     }
   }
 
