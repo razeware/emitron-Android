@@ -8,7 +8,7 @@ buildscript {
       'targetSdk'                   : 29,
       'compileSdk'                  : 29,
       'gradle'                      : '3.6.1',
-      'kotlin'                      : '1.3.60',
+      'kotlin'                      : '1.3.70',
 
       // core
       'coreKtx'                     : "1.1.0",
