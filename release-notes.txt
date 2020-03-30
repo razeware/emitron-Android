@@ -1,3 +1,2 @@
 ## Changes
-- Fix chromecast issues
-- Fix sort order issues
+- Fix login not working on certain browsers
