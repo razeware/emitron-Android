@@ -1,2 +1,2 @@
 ## Changes
-- Fix app name and launch icon
+- Fix login not working on certain browsers

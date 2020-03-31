@@ -15,7 +15,7 @@ enum class SortOrder(val param: String) {
   /**
    * Most popular content
    */
-  Popularity("popularity");
+  Popularity("-popularity");
 
   companion object {
     /**

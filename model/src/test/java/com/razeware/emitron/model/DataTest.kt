@@ -591,7 +591,7 @@ class DataTest {
     )
     val sortOrder = Data.getSortOrder(filters)
 
-    sortOrder isEqualTo "popularity"
+    sortOrder isEqualTo "-popularity"
 
     val filters2 = listOf(
       Data(

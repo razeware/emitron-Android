@@ -447,7 +447,7 @@ class PlayerFragment : DaggerFragment() {
         updateProgress()
       }
     parentViewModel.updateIsPlaying(true)
-    playerManager.setDefaultSettings(
+    playerManager.getPlayerConfigManager().setDefaultSettings(
       requireActivity(),
       speed = viewModel.getPlaybackSpeed(),
       quality = viewModel.getPlaybackQuality(),
@@ -614,7 +614,7 @@ class PlayerFragment : DaggerFragment() {
     playbackSpeedRadioGroup.setOnCheckedChangeListener { _, checkedId ->
       val checkedPosition = playbackSpeedRadioGroup.getCheckedChildPositionById(checkedId)
       val newSpeed = playerPlaybackSpeedOptions[checkedPosition]
-      playerManager.updatePlaybackSpeed(newSpeed)
+      playerManager.getPlayerConfigManager().updatePlaybackSpeed(newSpeed)
       viewModel.updatePlaybackSpeed(newSpeed)
     }
   }
@@ -629,7 +629,7 @@ class PlayerFragment : DaggerFragment() {
     playbackQualityRadioGroup.setOnCheckedChangeListener { _, checkedId ->
       val checkedPosition = playbackQualityRadioGroup.getCheckedChildPositionById(checkedId)
       val newQuality = playerPlaybackQualityOptions[checkedPosition]
-      playerManager.updatePlaybackQuality(newQuality)
+      playerManager.getPlayerConfigManager().updatePlaybackQuality(newQuality)
       viewModel.updatePlaybackQuality(newQuality)
     }
   }
@@ -682,7 +682,7 @@ class PlayerFragment : DaggerFragment() {
     playbackSubtitleRadioGroup.setOnCheckedChangeListener { _, checkedId ->
       val checkedPosition = playbackSubtitleRadioGroup.getCheckedChildPositionById(checkedId)
       val subtitleLanguage = playerSubtitleLanguageOptions[checkedPosition]
-      playerManager.updateSubtitles(subtitleLanguage)
+      playerManager.getPlayerConfigManager().updateSubtitles(subtitleLanguage)
       viewModel.updateSubtitleLanguage(subtitleLanguage)
       subtitlesBottomSheet.dismiss()
     }

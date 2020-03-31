@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.razeware.emitron.data.login.LoginRepository
 import com.razeware.emitron.data.settings.SettingsRepository
 import com.razeware.emitron.model.Data
+import com.razeware.emitron.model.SortOrder
 import com.razeware.emitron.ui.download.DownloadAction
 import com.razeware.emitron.ui.download.DownloadActionDelegate
 import javax.inject.Inject
@@ -142,7 +143,12 @@ class MainViewModel @Inject constructor(
    * @param sortOrder Sort order
    */
   fun setSortOrder(sortOrder: String?) {
-    _sortOrder.value = sortOrder?.toLowerCase()
+    _sortOrder.value = when (SortOrder.fromValue(sortOrder)) {
+      SortOrder.Newest -> SortOrder.Popularity
+      SortOrder.Oldest -> SortOrder.Popularity
+      SortOrder.Popularity -> SortOrder.Newest
+      else -> SortOrder.Newest
+    }.name
   }
 
   /**
