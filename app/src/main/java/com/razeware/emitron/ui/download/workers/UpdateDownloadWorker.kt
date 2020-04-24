@@ -3,12 +3,11 @@ package com.razeware.emitron.ui.download.workers
 import android.content.Context
 import androidx.work.*
 import com.razeware.emitron.data.download.DownloadRepository
-import com.razeware.emitron.di.modules.worker.ChildWorkerFactory
 import com.razeware.emitron.model.DownloadProgress
 import com.razeware.emitron.model.DownloadState
 import com.razeware.emitron.ui.download.DownloadService
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import com.razeware.emitron.utils.extensions.injectWorker
+import javax.inject.Inject
 
 /**
  *  Worker for updating a download,
@@ -17,11 +16,17 @@ import com.squareup.inject.assisted.AssistedInject
  * It will be followed by [DownloadWorker] which will read from database and forward downloads
  * to [DownloadService]
  */
-class UpdateDownloadWorker @AssistedInject constructor(
-  @Assisted private val appContext: Context,
-  @Assisted private val workerParameters: WorkerParameters,
-  private val downloadRepository: DownloadRepository
+class UpdateDownloadWorker(
+  private val appContext: Context,
+  workerParameters: WorkerParameters
 ) : CoroutineWorker(appContext, workerParameters) {
+
+  @Inject
+  lateinit var downloadRepository: DownloadRepository
+
+  init {
+    appContext.injectWorker(this)
+  }
 
   /**
    * See [Worker.doWork]
@@ -43,12 +48,6 @@ class UpdateDownloadWorker @AssistedInject constructor(
 
     return Result.success()
   }
-
-  /**
-   * [UpdateDownloadWorker.Factory]
-   */
-  @AssistedInject.Factory
-  interface Factory : ChildWorkerFactory
 
   companion object {
 
