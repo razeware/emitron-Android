@@ -40,13 +40,6 @@
       android:supportsPictureInPicture="true"
       android:windowSoftInputMode="adjustNothing" />
 
-    <!-- WorkManager reset -->
-    <provider
-      android:name="androidx.work.impl.WorkManagerInitializer"
-      android:authorities="com.razeware.emitron.workmanager-init"
-      android:exported="false"
-      tools:node="remove" />
-
     <!-- Download Service -->
     <service android:name=".ui.download.DownloadService">
       <intent-filter>

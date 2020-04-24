@@ -3,19 +3,27 @@ package com.razeware.emitron.ui.settings
 import android.content.Context
 import androidx.work.*
 import com.razeware.emitron.data.settings.SettingsRepository
-import com.razeware.emitron.di.modules.worker.ChildWorkerFactory
 import com.razeware.emitron.ui.download.DownloadService
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import com.razeware.emitron.utils.extensions.injectWorker
+import javax.inject.Inject
 
 /**
  * Worker for stopping downloads
  */
-class SignOutWorker @AssistedInject constructor(
-  @Assisted private val appContext: Context,
-  @Assisted private val workerParameters: WorkerParameters,
-  private val settingsRepository: SettingsRepository
+class SignOutWorker(
+  private val appContext: Context,
+  workerParameters: WorkerParameters
 ) : CoroutineWorker(appContext, workerParameters) {
+
+  /**
+   * Settings repository
+   */
+  @Inject
+  lateinit var settingsRepository: SettingsRepository
+
+  init {
+    appContext.injectWorker(this)
+  }
 
   /**
    * See [Worker.doWork]
@@ -26,12 +34,6 @@ class SignOutWorker @AssistedInject constructor(
     DownloadService.removeAllDownloads(appContext)
     return Result.success()
   }
-
-  /**
-   * Factory for [SignOutWorker]
-   */
-  @AssistedInject.Factory
-  interface Factory : ChildWorkerFactory
 
   companion object {
 

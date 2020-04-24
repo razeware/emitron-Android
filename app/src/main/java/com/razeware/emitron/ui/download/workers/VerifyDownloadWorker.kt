@@ -3,14 +3,13 @@ package com.razeware.emitron.ui.download.workers
 import android.content.Context
 import androidx.work.*
 import com.razeware.emitron.data.login.LoginRepository
-import com.razeware.emitron.di.modules.worker.ChildWorkerFactory
 import com.razeware.emitron.model.PermissionTag
 import com.razeware.emitron.model.isDownloadPermissionTag
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import com.razeware.emitron.utils.extensions.injectWorker
 import retrofit2.HttpException
 import java.io.IOException
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 /**
  *  Worker for verifying a downloads every 7th day,
@@ -18,11 +17,15 @@ import java.util.concurrent.TimeUnit
  * It will fetch the permissions, if it fails due to any issue,
  * existing download permissions will be removed.
  */
-class VerifyDownloadWorker @AssistedInject constructor(
-  @Assisted private val appContext: Context,
-  @Assisted private val workerParameters: WorkerParameters,
-  private val loginRepository: LoginRepository
-) : CoroutineWorker(appContext, workerParameters) {
+class VerifyDownloadWorker(appContext: Context, workerParameters: WorkerParameters) :
+  CoroutineWorker(appContext, workerParameters) {
+
+  @Inject
+  lateinit var loginRepository: LoginRepository
+
+  init {
+    appContext.injectWorker(this)
+  }
 
   /**
    * See [Worker.doWork]
@@ -55,12 +58,6 @@ class VerifyDownloadWorker @AssistedInject constructor(
       }
     )
   }
-
-  /**
-   * [VerifyDownloadWorker.Factory]
-   */
-  @AssistedInject.Factory
-  interface Factory : ChildWorkerFactory
 
   companion object {
 

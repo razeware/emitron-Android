@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.work.Configuration
 import androidx.work.WorkManager
 import com.razeware.emitron.di.DaggerAppComponent
-import com.razeware.emitron.di.modules.worker.WorkerFactory
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -28,12 +27,6 @@ class EmitronApplication : Application(), HasAndroidInjector {
   lateinit var appLifeCycleDelegate: AppLifeCycleDelegate
 
   /**
-   * Factory for workers
-   */
-  @Inject
-  lateinit var workerFactory: WorkerFactory
-
-  /**
    * See [Application.onCreate]
    */
   override fun onCreate() {
@@ -41,11 +34,6 @@ class EmitronApplication : Application(), HasAndroidInjector {
     DaggerAppComponent.builder().app(this)
       .build()
       .inject(this)
-
-    WorkManager.initialize(
-      this,
-      Configuration.Builder().setWorkerFactory(workerFactory).build()
-    )
   }
 
   /**

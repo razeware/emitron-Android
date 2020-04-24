@@ -5,7 +5,6 @@ import android.net.Uri
 import androidx.work.*
 import com.razeware.emitron.data.download.DownloadRepository
 import com.razeware.emitron.data.settings.SettingsRepository
-import com.razeware.emitron.di.modules.worker.ChildWorkerFactory
 import com.razeware.emitron.model.ContentType
 import com.razeware.emitron.model.DownloadQuality
 import com.razeware.emitron.model.DownloadState
@@ -13,18 +12,32 @@ import com.razeware.emitron.model.entity.inProgress
 import com.razeware.emitron.model.entity.isPaused
 import com.razeware.emitron.model.isHd
 import com.razeware.emitron.ui.download.DownloadService
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import com.razeware.emitron.utils.extensions.injectWorker
+import javax.inject.Inject
 
 /**
  * Worker for processing queued Downloads
  */
-class DownloadWorker @AssistedInject constructor(
-  @Assisted private val appContext: Context,
-  @Assisted private val workerParameters: WorkerParameters,
-  private val downloadRepository: DownloadRepository,
-  private val settingsRepository: SettingsRepository
+class DownloadWorker(
+  private val appContext: Context,
+  workerParameters: WorkerParameters
 ) : CoroutineWorker(appContext, workerParameters) {
+
+  /**
+   * Download repository
+   */
+  @Inject
+  lateinit var downloadRepository: DownloadRepository
+
+  /**
+   * Settings repository
+   */
+  @Inject
+  lateinit var settingsRepository: SettingsRepository
+
+  init {
+    appContext.injectWorker(this)
+  }
 
   /**
    * Get all queued downloads and add to them to [DownloadService]
@@ -124,12 +137,6 @@ class DownloadWorker @AssistedInject constructor(
   }
 
   internal data class DownloadRequest(val contentId: String, val downloadUrl: String)
-
-  /**
-   * [DownloadWorker.Factory]
-   */
-  @AssistedInject.Factory
-  interface Factory : ChildWorkerFactory
 
   companion object {
     private const val MAX_PARALLEL_DOWNLOADS: Int = 1
