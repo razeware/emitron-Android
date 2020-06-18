@@ -4,7 +4,7 @@
 
 ## Testing
 
-Once you have the project open in Xcode, select the `Emitron` scheme and use `CMD+U` to run the tests.
+Once you have the project open in Android Studio, select the `Emitron` scheme and use `<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>` to run the tests with coverage.
 
 Don't forget to add tests for any new features you add or contribute to.
 

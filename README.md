@@ -1,6 +1,6 @@
 # emitron (Android)
 
-__emitron__ is the code name for the raywenderlich.com app. This repo contains the code for the iOS version of the app.
+__emitron__ is the code name for the raywenderlich.com app. This repo contains the code for the Android version of the app.
 
 ## Contributing
 
@@ -41,5 +41,4 @@ __emitron__ uses GitHub Actions to perform continuous integration and deployment
 
 - Merges to `development` will create a new build of the emitron β app on Firebase.
 - Merges to `production` will create a new build of the emitron production app on Google Play Store.
-
 
