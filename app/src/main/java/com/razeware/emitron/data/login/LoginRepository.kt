@@ -30,7 +30,9 @@ class LoginRepository @Inject constructor(
    *
    * @return True if user has permissions, otherwise False
    */
-  fun hasPermissions(): Boolean = loginPrefs.getPermissions().isNotEmpty()
+  fun hasPermissions(): Boolean {
+    return loginPrefs.getPermissions().isNotEmpty() && (!loginPrefs.getPermissions()[0].isBlank())
+  }
 
   /**
    * Store the user to preferences
