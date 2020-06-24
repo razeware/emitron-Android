@@ -28,11 +28,11 @@ __emitron__ requires 2 secrets:
 - `SSO_SECRET`. This is used to ensure secure communication with `guardpost`, the raywenderlich.com authentication service. Although this is secret, a sample secret is provided inside this repo. This shouldn't be used to create a beta or production build.
 - `APP_TOKEN`. Required in order to enable downloads. This is not provided in the repo, and is not generally available.
 
-TODO
-
 > __NOTE:__ To get the release build secrets, check the emitron S3 bucket, or contact emitron@razeware.com. Developers should never need these, as CI will handle it.
 
 If you are working on the download functionality and are having problems without an `APP_TOKEN`, contact emitron@razeware.com and somebody will assist you with your specific needs.
+
+For further details, check out [CONTRIBUTING](CONTRIBUTING.md).
 
 
 ### Continuous Integration & Deployment
