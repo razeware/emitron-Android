@@ -3,20 +3,28 @@ package com.razeware.emitron.ui.download.workers
 import android.content.Context
 import androidx.work.*
 import com.razeware.emitron.data.download.DownloadRepository
-import com.razeware.emitron.di.modules.worker.ChildWorkerFactory
 import com.razeware.emitron.ui.download.DownloadService
 import com.razeware.emitron.ui.download.workers.StartDownloadWorker.Companion.DOWNLOAD_EPISODE_ID
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import com.razeware.emitron.utils.extensions.injectWorker
+import javax.inject.Inject
 
 /**
  * Worker for stopping downloads
  */
-class RemoveDownloadWorker @AssistedInject constructor(
-  @Assisted private val appContext: Context,
-  @Assisted private val workerParameters: WorkerParameters,
-  private val downloadRepository: DownloadRepository
+class RemoveDownloadWorker(
+  private val appContext: Context,
+  workerParameters: WorkerParameters
 ) : CoroutineWorker(appContext, workerParameters) {
+
+  /**
+   * Download repository
+   */
+  @Inject
+  lateinit var downloadRepository: DownloadRepository
+
+  init {
+    appContext.injectWorker(this)
+  }
 
   /**
    * See [Worker.doWork]
@@ -52,12 +60,6 @@ class RemoveDownloadWorker @AssistedInject constructor(
 
     return Result.success()
   }
-
-  /**
-   * Factory for [RemoveDownloadWorker]
-   */
-  @AssistedInject.Factory
-  interface Factory : ChildWorkerFactory
 
   companion object {
 

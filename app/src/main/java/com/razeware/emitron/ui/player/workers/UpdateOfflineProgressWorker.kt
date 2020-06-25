@@ -3,22 +3,32 @@ package com.razeware.emitron.ui.player.workers
 import android.content.Context
 import androidx.work.*
 import com.razeware.emitron.data.progressions.ProgressionRepository
-import com.razeware.emitron.di.modules.worker.ChildWorkerFactory
 import com.razeware.emitron.model.Contents
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import com.razeware.emitron.utils.extensions.injectWorker
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
 /**
  *  Worker for updating offline progression
  *
  */
-class UpdateOfflineProgressWorker @AssistedInject constructor(
-  @Assisted private val appContext: Context,
-  @Assisted private val workerParameters: WorkerParameters,
-  private val progressionRepository: ProgressionRepository
+class UpdateOfflineProgressWorker(
+  appContext: Context,
+  workerParameters: WorkerParameters
 ) : CoroutineWorker(appContext, workerParameters) {
+
+
+  /**
+   * Progression repository
+   */
+  @Inject
+  lateinit var progressionRepository: ProgressionRepository
+
+  init {
+    appContext.injectWorker(this)
+  }
+
 
   /**
    * See [Worker.doWork]
@@ -80,12 +90,6 @@ class UpdateOfflineProgressWorker @AssistedInject constructor(
       progressionRepository.deleteWatchStats()
     }
   }
-
-  /**
-   * [UpdateOfflineProgressWorker.Factory]
-   */
-  @AssistedInject.Factory
-  interface Factory : ChildWorkerFactory
 
   companion object {
 
