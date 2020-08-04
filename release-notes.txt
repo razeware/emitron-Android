@@ -1,2 +1,2 @@
 ## Changes
-- Fix login not working on certain browsers
+- Fix non-Pro courses labeled as Pro on course detail page.
