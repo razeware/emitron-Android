@@ -101,7 +101,7 @@ data class Data(
   fun getCardArtworkUrl(): String? = attributes?.cardArtworkUrl
 
   /**
-   *  @return true if content doesn't require subscription, else false
+   *  @return true if content requires a professional subscription, else false
    */
   fun isProfessional(): Boolean = attributes?.professional == true
 
