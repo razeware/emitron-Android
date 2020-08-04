@@ -238,6 +238,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_pro"
         android:text="@string/label_pro"
+        android:visibility="@{data.professional ? View.VISIBLE : View.GONE}"
         app:layout_constraintBottom_toBottomOf="@+id/text_collection_language"
         app:layout_constraintEnd_toEndOf="@+id/guideline_right"
         app:layout_constraintStart_toEndOf="@+id/text_collection_language"
