@@ -17,6 +17,10 @@
       name="downloadState"
       type="com.razeware.emitron.model.Download" />
 
+    <variable
+      name="isDownloadAvailable"
+      type="Boolean" />
+
     <import type="android.text.TextUtils" />
 
     <import type="android.view.View" />
@@ -122,6 +126,7 @@
       android:id="@+id/button_collection_episode_download"
       android:layout_width="@dimen/button_icon_height_width"
       android:layout_height="@dimen/button_icon_height_width"
+      android:visibility="@{isDownloadAvailable ? View.VISIBLE : View.GONE}"
       app:downloadIcon="@drawable/ic_material_icon_download_2"
       app:downloadIconTint="@color/colorIcon"
       app:downloadStopIcon="@drawable/ic_material_icon_download_pause_2"
