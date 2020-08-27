@@ -1,2 +1,2 @@
 ## Changes
-- Fix non-Pro courses labeled as Pro on course detail page.
+- Various bug fixes and enhancements.

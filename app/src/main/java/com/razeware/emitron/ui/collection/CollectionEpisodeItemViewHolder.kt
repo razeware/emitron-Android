@@ -25,6 +25,7 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
    */
   fun bindTo(
     episode: Data?,
+    isDownloadAvailable: Boolean,
     position: Int,
     isPlaybackAllowed: Boolean,
     onEpisodeSelected: (Int) -> Unit,
@@ -44,6 +45,7 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
       }
       buttonCollectionEpisodeDownload.updateDownloadState(episode?.download)
       data = episode
+      this.isDownloadAvailable = isDownloadAvailable
       episodePosition = episode?.getEpisodeNumber(position, isPlaybackAllowed)
 
       if (isPlaybackAllowed) {

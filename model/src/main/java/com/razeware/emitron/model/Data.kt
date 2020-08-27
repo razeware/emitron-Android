@@ -574,19 +574,19 @@ data class Data(
      *  @return list of category ids from input list
      */
     fun getProfessional(dataList: List<Data>): Boolean? {
-			if (dataList.isEmpty()) {
-				return null
-			}
+      if (dataList.isEmpty()) {
+        return null
+      }
 
       val hasProfessionalFilter = dataList.filter {
         FilterType.fromType(it.type).isContentType()
       }.any { it.getContentType().isProfessional() }
 
-			return if (hasProfessionalFilter) {
-				hasProfessionalFilter
-			} else {
-				null
-			}
+      return if (hasProfessionalFilter) {
+        hasProfessionalFilter
+      } else {
+        null
+      }
     }
 
 

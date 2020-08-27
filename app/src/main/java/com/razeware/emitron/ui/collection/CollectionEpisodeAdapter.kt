@@ -90,6 +90,7 @@ class CollectionEpisodeAdapter(
     val hasConnection = viewHolder.itemView.context.isNetConnected()
     viewHolder.bindTo(
       episode = data,
+      isDownloadAvailable = viewModel.isDownloadAllowed(),
       position = episodePosition,
       isPlaybackAllowed = viewModel.isContentPlaybackAllowed(hasConnection),
       onEpisodeSelected = { selectedPosition ->
