@@ -81,6 +81,7 @@ class CollectionFragment : DaggerFragment() {
   ): View? {
     binding = setDataBindingView(R.layout.fragment_collection, container)
     binding.data = viewModel.collection
+    binding.isDownloadAvailable = viewModel.isDownloadAllowed()
     return binding.root
   }
 
