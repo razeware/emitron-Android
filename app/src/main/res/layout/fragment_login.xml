@@ -169,7 +169,7 @@
       android:id="@+id/layout_login"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      app:constraint_referenced_ids="view_pager_login,button_sign_in"
+      app:constraint_referenced_ids="view_pager_login,button_sign_in, view_pager_indicator"
       tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Group
