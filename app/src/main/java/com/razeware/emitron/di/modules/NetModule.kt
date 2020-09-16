@@ -55,7 +55,7 @@ class NetModule {
       authInterceptor: AuthInterceptorImpl
     ): OkHttpClient =
       OkHttpClient.Builder()
-        .connectTimeout(10, TimeUnit.SECONDS)
+        .connectTimeout(120, TimeUnit.SECONDS)
         .addNetworkInterceptor(authInterceptor)
         .addInterceptor(loggingInterceptor)
         .build()
