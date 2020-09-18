@@ -12,6 +12,7 @@
     <item name="colorPrimarySurface">@color/colorBackground</item>
     <item name="materialCardViewStyle">@style/Card</item>
     <item name="materialAlertDialogTheme">@style/AlertDialog</item>
+    <item name="android:windowLayoutInDisplayCutoutMode">default</item>
   </style>
 
   <style name="AppTheme.Popup" parent="Widget.AppCompat.PopupMenu">

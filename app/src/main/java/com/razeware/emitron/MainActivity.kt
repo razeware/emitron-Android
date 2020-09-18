@@ -9,6 +9,8 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.doOnLayout
+import androidx.core.view.updatePadding
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -75,6 +77,34 @@ class MainActivity : DaggerAppCompatActivity() {
     initObservers()
     CastContext.getSharedInstance(this)
     initPendingDownloadsWorker()
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+      setupWindowInsets()
+    }
+  }
+
+  /**
+   * Because new devices often use display cutouts (A.K.A. Notches), to save up screen real estate
+   * for front cameras, it's important to add extra padding to the top part of the screen, to avoid
+   * notch overlapping with the UI.
+   *
+   * To do this, we read the Notch size, and reduce the number by the default status bar height,
+   * because this is the margin size that's added to all the screens by default. This provides us
+   * with a stable UI, that doesn't overlap any content with the notch.
+   * */
+  @TargetApi(Build.VERSION_CODES.P)
+  private fun setupWindowInsets() {
+    binding.container.doOnLayout {
+      val inset = binding.container.rootWindowInsets
+
+      val cutoutSize = inset?.stableInsetTop
+
+      if (cutoutSize != null) {
+        val defaultTopMargin = resources.getDimensionPixelSize(R.dimen.guideline_top_status_bar)
+
+        binding.container.updatePadding(top = cutoutSize - defaultTopMargin)
+      }
+    }
   }
 
   private fun createNotificationChannels() {
