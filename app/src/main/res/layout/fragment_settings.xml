@@ -11,6 +11,16 @@
     android:orientation="vertical"
     app:paddingBottomSystemWindowInsets="@{true}">
 
+    <com.google.android.material.appbar.MaterialToolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_marginTop="@dimen/guideline_top_status_bar_1"
+      android:layout_height="?android:actionBarSize"
+      app:layout_constraintBottom_toTopOf="@+id/title_version_name"
+      app:layout_constraintTop_toTopOf="@+id/guideline_top"
+      app:layout_constraintVertical_bias="0"
+      app:layout_constraintVertical_chainStyle="packed" />
+
     <ScrollView
       android:layout_width="match_parent"
       android:layout_height="0dp"
@@ -21,14 +31,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="true">
-
-
-        <androidx.constraintlayout.widget.Guideline
-          android:id="@+id/guideline_top"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal"
-          app:layout_constraintGuide_begin="@dimen/guideline_top_status_bar_1" />
 
         <androidx.constraintlayout.widget.Guideline
           android:id="@+id/guideline_left"
@@ -51,15 +53,6 @@
           android:orientation="horizontal"
           app:layout_constraintGuide_end="@dimen/guideline_bottom_gesture" />
 
-        <com.google.android.material.appbar.MaterialToolbar
-          android:id="@+id/toolbar"
-          android:layout_width="match_parent"
-          android:layout_height="?android:actionBarSize"
-          app:layout_constraintBottom_toTopOf="@+id/title_version_name"
-          app:layout_constraintTop_toTopOf="@+id/guideline_top"
-          app:layout_constraintVertical_bias="0"
-          app:layout_constraintVertical_chainStyle="packed" />
-
         <androidx.appcompat.widget.AppCompatTextView
           android:id="@+id/title_video_quality"
           style="@style/TextAppearance.Body.1"
@@ -70,7 +63,7 @@
           app:layout_constraintBottom_toTopOf="@+id/divider_0"
           app:layout_constraintEnd_toStartOf="@id/settings_selected_video_quality"
           app:layout_constraintStart_toStartOf="@id/guideline_left"
-          app:layout_constraintTop_toBottomOf="@id/toolbar" />
+          app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
           android:id="@+id/settings_selected_video_quality"
@@ -480,41 +473,41 @@
 
     </ScrollView>
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical">
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
 
-			<androidx.appcompat.widget.AppCompatTextView
-				android:id="@+id/title_logged_in_user"
-				style="@style/TextAppearance.Body.1"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:gravity="center_vertical"
-				android:layout_marginTop="@dimen/text_spacing_vertical_default"
-				android:layout_marginBottom="@dimen/text_spacing_vertical_default"
-				app:layout_constraintEnd_toStartOf="@id/guideline_right"
-				app:layout_constraintStart_toStartOf="@id/guideline_left"
-				app:layout_constraintTop_toBottomOf="@+id/divider_10"
-				android:layout_gravity="center"
-				tools:text="Logged in as lukusfreebird" />
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/title_logged_in_user"
+        style="@style/TextAppearance.Body.1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/text_spacing_vertical_default"
+        android:layout_marginBottom="@dimen/text_spacing_vertical_default"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toStartOf="@id/guideline_right"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/divider_10"
+        tools:text="Logged in as lukusfreebird" />
 
-			<com.google.android.material.button.MaterialButton
-				android:id="@+id/button_logout"
-				style="@style/Button.Colored.3.Icon"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_gravity="bottom"
-				android:layout_marginBottom="@dimen/activity_vertical_margin"
-				android:layout_marginStart="@dimen/activity_vertical_margin"
-				android:layout_marginEnd="@dimen/activity_vertical_margin"
-				android:text="@string/button_sign_out"
-				app:icon="@drawable/ic_material_button_icon_arrow_right_red_contained"
-				app:iconGravity="end"
-				app:iconTint="@color/white"
-				app:iconTintMode="multiply"
-				tools:visibility="visible" />
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_logout"
+        style="@style/Button.Colored.3.Icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:text="@string/button_sign_out"
+        app:icon="@drawable/ic_material_button_icon_arrow_right_red_contained"
+        app:iconGravity="end"
+        app:iconTint="@color/white"
+        app:iconTintMode="multiply"
+        tools:visibility="visible" />
 
-		</LinearLayout>
+    </LinearLayout>
   </LinearLayout>
 </layout>
