@@ -163,24 +163,31 @@
       app:icon="@drawable/ic_material_icon_sort"
       app:iconPadding="@dimen/button_padding_internal_dense"
       app:iconTint="@color/colorIcon2"
-      app:layout_constraintBottom_toTopOf="@+id/recycler_view_library"
+      app:layout_constraintBottom_toTopOf="@+id/library_pull_to_refresh"
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintStart_toEndOf="@+id/text_library_count"
       app:layout_constraintTop_toBottomOf="@+id/scroll_view_library_filter" />
 
-    <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/recycler_view_library"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+      android:id="@+id/library_pull_to_refresh"
       android:layout_width="0dp"
       android:layout_height="0dp"
       android:layout_marginTop="@dimen/activity_vertical_margin"
-      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-      app:layout_behavior="@string/appbar_scrolling_view_behavior"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintStart_toStartOf="@id/guideline_left"
-      app:layout_constraintTop_toBottomOf="@+id/text_library_count"
-      tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-      tools:listitem="@layout/item_content" />
+      app:layout_constraintTop_toBottomOf="@+id/text_library_count">
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_library"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_content" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <FrameLayout
       android:id="@+id/layout_progress_container"

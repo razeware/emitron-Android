@@ -2,12 +2,10 @@ package com.razeware.emitron.ui.library
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo.*
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.fragment.app.activityViewModels
@@ -151,6 +149,10 @@ class LibraryFragment : DaggerFragment() {
     binding.textInputLayoutSearch.setEndIconOnClickListener {
       handleQueryCleared()
     }
+
+    binding.libraryPullToRefresh.setOnRefreshListener {
+      loadCollections()
+    }
   }
 
   private fun showRecentSearchControls() {
@@ -224,6 +226,10 @@ class LibraryFragment : DaggerFragment() {
         toggleControls(true, uiState == UiStateManager.UiState.INIT_EMPTY)
         hideRecentSearchControls()
         progressDelegate.hideProgressView()
+        binding.libraryPullToRefresh.isRefreshing = false
+      }
+      UiStateManager.UiState.INIT_FAILED -> {
+        loadCollections() // retry
       }
       else -> {
         // Handled by the adapter
