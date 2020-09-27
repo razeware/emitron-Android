@@ -5,50 +5,50 @@ buildscript {
       'versionCode'                 : 21,
       'versionName'                 : "1.0.6",
       'minSdk'                      : 21,
-      'targetSdk'                   : 29,
-      'compileSdk'                  : 29,
-      'gradle'                      : '3.6.1',
-      'kotlin'                      : '1.3.70',
+      'targetSdk'                   : 30,
+      'compileSdk'                  : 30,
+      'gradle'                      : '4.0.1',
+      'kotlin'                      : '1.4.0',
 
       // core
-      'coreKtx'                     : "1.1.0",
-      'fragmentKtx'                 : "1.1.0",
-      'preferenceKtx'               : "1.1.0",
-      'architectureComponents'      : "2.1.0",
-      'architectureComponentsPaging': "2.1.0",
-      'workManager'                 : '2.2.0',
+      'coreKtx'                     : "1.3.1",
+      'fragmentKtx'                 : "1.2.5",
+      'preferenceKtx'               : "1.1.1",
+      'architectureComponents'      : "2.2.0",
+      'architectureComponentsPaging': "2.1.2",
+      'workManager'                 : '2.4.0',
       'annotations'                 : "1.1.0",
-      'appCompat'                   : "1.1.0",
+      'appCompat'                   : "1.2.0",
       'multidex'                    : "2.0.1",
-      'browser'                     : "1.0.0", // Chrome custom tabs
+      'browser'                     : "1.2.0", // Chrome custom tabs
 
-      'dagger'                      : '2.25.2',
-      'coroutines'                  : "1.3.3",
+      'dagger'                      : '2.27',
+      'coroutines'                  : "1.3.9",
 
       // cast
       'mediarouter'                 : "1.1.0",
       'castFramework'               : '17.1.0', // Google cast
 
       // ui
-      'constraintLayout'            : "1.1.3",
+      'constraintLayout'            : "2.0.1",
       'exoplayer'                   : "2.10.4",
-      'navigation'                  : "2.1.0",
-      'materialDesign'              : '1.1.0-beta02',
+      'navigation'                  : "2.3.0",
+      'materialDesign'              : '1.2.1',
       'vectorDrawable'              : '1.1.0',
       'recyclerView'                : "1.0.0",
       'viewpagerdots'               : "1.0.0",
       'viewpager'                   : "1.0.0",
 
       // db
-      'room'                        : '2.2.1',
+      'room'                        : '2.2.5',
 
       // time
-      'threetenabp'                 : "1.2.1",
+      'threetenabp'                 : "1.2.4",
 
       //network
-      'retrofit'                    : '2.6.2',
+      'retrofit'                    : '2.9.0',
       'moshi'                       : '1.9.2',
-      'okHttp'                      : '4.2.2',
+      'okHttp'                      : '4.8.1',
       'glide'                       : '4.10.0',
 
       //quality
