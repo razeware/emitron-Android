@@ -129,6 +129,7 @@ dependencies {
 
   // RecyclerView
   implementation "androidx.recyclerview:recyclerview:${versions.recyclerView}"
+  implementation "androidx.swiperefreshlayout:swiperefreshlayout:${versions.swiperefreshlayout}"
 
   // ConstraintLayout
   implementation "androidx.constraintlayout:constraintlayout:${versions.constraintLayout}"

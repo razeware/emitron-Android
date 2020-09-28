@@ -38,6 +38,8 @@ buildscript {
       'recyclerView'                : "1.0.0",
       'viewpagerdots'               : "1.0.0",
       'viewpager'                   : "1.0.0",
+      'swiperefreshlayout'          : "1.1.0",
+
 
       // db
       'room'                        : '2.2.5',
