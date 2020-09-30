@@ -1,2 +1,3 @@
 ## Changes
+- Added a swipe to refresh on the Library screen.
 - Various bug fixes and enhancements.
