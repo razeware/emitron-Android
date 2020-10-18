@@ -17,9 +17,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
 import androidx.work.WorkManager
-import com.crashlytics.android.Crashlytics
 import com.google.android.gms.cast.framework.CastButtonFactory
 import com.google.android.gms.cast.framework.CastContext
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.razeware.emitron.databinding.ActivityMainBinding
 import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
 import com.razeware.emitron.notifications.NotificationChannels
@@ -27,7 +27,6 @@ import com.razeware.emitron.ui.download.workers.PendingDownloadWorker
 import com.razeware.emitron.ui.player.PipActionDelegate
 import com.razeware.emitron.utils.extensions.*
 import dagger.android.support.DaggerAppCompatActivity
-import io.fabric.sdk.android.Fabric
 import javax.inject.Inject
 
 
@@ -67,9 +66,9 @@ class MainActivity : DaggerAppCompatActivity() {
     AppCompatDelegate.setDefaultNightMode(viewModel.getNightModeSettings())
 
     // Collect crash reports only if user has allowed
-    if (viewModel.isCrashReportingAllowed()) {
-      Fabric.with(this, Crashlytics())
-    }
+    FirebaseCrashlytics
+      .getInstance()
+      .setCrashlyticsCollectionEnabled(viewModel.isCrashReportingAllowed())
 
     requestGestureUi()
     createNotificationChannels()
