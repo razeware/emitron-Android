@@ -4,7 +4,7 @@ import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
-import com.razeware.emitron.data.content.ContentDataSourceLocal
+import com.razeware.emitron.data.content.local.ContentDataSourceLocal
 import com.razeware.emitron.model.Content
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.utils.BoundaryCallbackNotifier

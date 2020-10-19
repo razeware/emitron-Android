@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.nhaarman.mockitokotlin2.*
 import com.razeware.emitron.data.content.dao.*
+import com.razeware.emitron.data.content.local.ContentDataSourceLocal
 import com.razeware.emitron.data.filter.dao.CategoryDao
 import com.razeware.emitron.data.filter.dao.DomainDao
 import com.razeware.emitron.data.progressions.dao.ProgressionDao
@@ -483,10 +484,10 @@ class ContentDataSourceLocalTest {
     val contents = MutableLiveData<List<com.razeware.emitron.model.entity.Content>>().apply {
       value = listOf(content)
     }
-    whenever(contentDataSourceLocal.getContents()).doReturn(contents)
+    whenever(contentDataSourceLocal.getContentsObserver()).doReturn(contents)
 
     val result =
-      contentDataSourceLocal.getContents().observeForTestingResultNullable()
+      contentDataSourceLocal.getContentsObserver().observeForTestingResultNullable()
     result isEqualTo listOf(content)
   }
 

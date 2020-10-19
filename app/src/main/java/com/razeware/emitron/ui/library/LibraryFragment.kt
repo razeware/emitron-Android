@@ -222,14 +222,16 @@ class LibraryFragment : DaggerFragment() {
         progressDelegate.showProgressView()
         toggleControls()
       }
-      UiStateManager.UiState.INIT_LOADED, UiStateManager.UiState.INIT_EMPTY -> {
+      UiStateManager.UiState.INIT_LOADED,
+      UiStateManager.UiState.INIT_EMPTY,
+      UiStateManager.UiState.INIT_FAILED -> {
         toggleControls(true, uiState == UiStateManager.UiState.INIT_EMPTY)
         hideRecentSearchControls()
         progressDelegate.hideProgressView()
         binding.libraryPullToRefresh.isRefreshing = false
       }
-      UiStateManager.UiState.INIT_FAILED -> {
-        loadCollections() // retry
+      UiStateManager.UiState.ERROR_CONNECTION -> {
+        binding.libraryPullToRefresh.isRefreshing = false
       }
       else -> {
         // Handled by the adapter
@@ -238,7 +240,7 @@ class LibraryFragment : DaggerFragment() {
   }
 
   private fun loadCollections() {
-    if (isNetNotConnected()) {
+    if (isNetNotConnected() && false) {
       pagedFragment.value.onErrorConnection()
       progressDelegate.hideProgressView()
       showNoInternetUI()

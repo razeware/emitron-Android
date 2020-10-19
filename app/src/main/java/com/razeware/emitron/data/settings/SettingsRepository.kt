@@ -1,7 +1,7 @@
 package com.razeware.emitron.data.settings
 
 import androidx.annotation.WorkerThread
-import com.razeware.emitron.data.content.ContentDataSourceLocal
+import com.razeware.emitron.data.content.local.ContentDataSourceLocal
 import com.razeware.emitron.data.login.LoginPrefs
 import com.razeware.emitron.data.progressions.ProgressionDataSourceLocal
 import com.razeware.emitron.ui.onboarding.OnboardingView
@@ -14,7 +14,7 @@ import javax.inject.Inject
  */
 class SettingsRepository @Inject constructor(
   private val threadManager: ThreadManager,
-	private val loginPrefs: LoginPrefs,
+  private val loginPrefs: LoginPrefs,
   private val settingsPrefs: SettingsPrefs,
   private val contentDataSourceLocal: ContentDataSourceLocal,
   private val progressionDataSourceLocal: ProgressionDataSourceLocal

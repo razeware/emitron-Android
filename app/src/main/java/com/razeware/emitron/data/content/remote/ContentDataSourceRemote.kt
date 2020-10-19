@@ -1,10 +1,12 @@
-package com.razeware.emitron.data.content
+package com.razeware.emitron.data.content.remote
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
+import com.razeware.emitron.data.content.local.ContentDataSourceLocal
 import com.razeware.emitron.model.ContentType
 import com.razeware.emitron.model.Contents
 import com.razeware.emitron.model.Data
+import com.razeware.emitron.model.DataType
 import com.razeware.emitron.utils.UiStateManager
 import com.razeware.emitron.utils.async.ThreadManager
 import retrofit2.Response
@@ -16,6 +18,7 @@ import java.io.IOException
 class ContentDataSourceRemote(
   private val pageSize: Int,
   private val contentApi: ContentApi,
+  private val contentDataSourceLocal: ContentDataSourceLocal,
   private val threadManager: ThreadManager,
   private val filters: List<Data>
 ) : PageKeyedDataSource<Int, Data>() {
@@ -66,7 +69,7 @@ class ContentDataSourceRemote(
       uiState.postValue(UiStateManager.UiState.ERROR)
     }
 
-    val response = getContent(pageNumber = params.key)
+    val response = getContent(pageNumber = params.key, shouldCacheAfter = false)
 
     if (response == null || !response.isSuccessful) {
       loadAfterError()
@@ -96,24 +99,35 @@ class ContentDataSourceRemote(
     params: LoadInitialParams<Int>,
     callback: LoadInitialCallback<Int, Data>
   ) {
+    val localData = contentDataSourceLocal.getContentsData(ContentType.getAllowedContentTypes())
 
-    uiState.postValue(UiStateManager.UiState.INIT)
+    if (localData.isEmpty()) {
+      uiState.postValue(UiStateManager.UiState.INIT)
+    }
 
     val loadInitialError = {
       retry = {
         loadInitial(params, callback)
       }
-      uiState.postValue(UiStateManager.UiState.INIT_FAILED)
+      if (localData.isNotEmpty()) {
+        postCachedValues(localData, callback)
+      } else {
+        uiState.postValue(UiStateManager.UiState.INIT_FAILED)
+      }
     }
 
     val loadInitialEmpty = {
       retry = {
         loadInitial(params, callback)
       }
-      uiState.postValue(UiStateManager.UiState.INIT_EMPTY)
+      if (localData.isNotEmpty()) {
+        postCachedValues(localData, callback)
+      } else {
+        uiState.postValue(UiStateManager.UiState.INIT_EMPTY)
+      }
     }
 
-    val response = getContent(pageNumber = 1)
+    val response = getContent(pageNumber = 1, shouldCacheAfter = true)
 
     if (response == null || !response.isSuccessful) {
       loadInitialError()
@@ -138,7 +152,27 @@ class ContentDataSourceRemote(
     callback.onResult(items, null, (contentBody.getNextPage()))
   }
 
-  private fun getContent(pageNumber: Int): Response<Contents>? {
+  private fun postCachedValues(
+    localData: List<Data>,
+    callback: LoadInitialCallback<Int, Data>
+  ) {
+    try {
+      if (localData.isNotEmpty()) {
+        val localContents = Contents(datum = localData)
+
+        uiState.postValue(UiStateManager.UiState.INIT_LOADED)
+        this.contents.postValue(localContents)
+        callback.onResult(localData, null, localContents.getNextPage())
+      }
+    } catch (e: Throwable) {
+      e.printStackTrace()
+    }
+  }
+
+  private fun getContent(
+    pageNumber: Int,
+    shouldCacheAfter: Boolean = false
+  ): Response<Contents>? {
     val contentTypesFromFilter = Data.getContentTypes(filters)
     val contentTypes = if (contentTypesFromFilter.isEmpty()) {
       ContentType.getAllowedContentTypes().toList()
@@ -146,7 +180,7 @@ class ContentDataSourceRemote(
       contentTypesFromFilter
     }
     return try {
-      contentApi.getContents(
+      val contents = contentApi.getContents(
         pageNumber = pageNumber,
         pageSize = pageSize,
         contentType = contentTypes,
@@ -157,6 +191,14 @@ class ContentDataSourceRemote(
         difficulty = Data.getDifficulty(filters),
         professional = Data.getProfessional(filters)
       ).execute()
+
+      val data = contents.body()?.datum
+
+      if (shouldCacheAfter && data != null && data.isNotEmpty()) {
+        contentDataSourceLocal.insertContents(DataType.Contents, data)
+      }
+
+      contents
     } catch (exception: IOException) {
       null
     } catch (exception: RuntimeException) {

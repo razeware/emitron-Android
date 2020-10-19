@@ -1,4 +1,4 @@
-package com.razeware.emitron.data.content
+package com.razeware.emitron.data.content.remote
 
 import com.razeware.emitron.model.Content
 import com.razeware.emitron.model.Contents

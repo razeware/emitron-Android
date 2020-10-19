@@ -1,7 +1,7 @@
 package com.razeware.emitron.data.progressions
 
 import androidx.paging.PagedList
-import com.razeware.emitron.data.content.ContentDataSourceLocal
+import com.razeware.emitron.data.content.local.ContentDataSourceLocal
 import com.razeware.emitron.model.CompletionStatus
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.model.DataType

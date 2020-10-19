@@ -3,6 +3,8 @@ package com.razeware.emitron.data.content
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
+import com.razeware.emitron.data.content.local.ContentDataSourceLocal
+import com.razeware.emitron.data.content.remote.ContentApi
 import com.razeware.emitron.data.settings.SettingsPrefs
 import com.razeware.emitron.model.*
 import com.razeware.emitron.utils.*

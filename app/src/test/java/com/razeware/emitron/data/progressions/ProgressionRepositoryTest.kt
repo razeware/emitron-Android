@@ -3,7 +3,7 @@ package com.razeware.emitron.data.progressions
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
 import com.nhaarman.mockitokotlin2.*
-import com.razeware.emitron.data.content.ContentDataSourceLocal
+import com.razeware.emitron.data.content.local.ContentDataSourceLocal
 import com.razeware.emitron.model.Content
 import com.razeware.emitron.model.Contents
 import com.razeware.emitron.model.Data

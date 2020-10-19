@@ -6,7 +6,7 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
-import com.razeware.emitron.data.content.ContentDataSourceLocal
+import com.razeware.emitron.data.content.local.ContentDataSourceLocal
 import com.razeware.emitron.model.*
 import com.razeware.emitron.model.entity.Download
 import com.razeware.emitron.model.entity.DownloadWithContent

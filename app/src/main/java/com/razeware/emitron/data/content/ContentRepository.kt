@@ -5,6 +5,9 @@ import androidx.annotation.MainThread
 import androidx.lifecycle.Transformations
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
+import com.razeware.emitron.data.content.local.ContentDataSourceLocal
+import com.razeware.emitron.data.content.remote.ContentApi
+import com.razeware.emitron.data.content.remote.ContentDataSourceFactoryRemote
 import com.razeware.emitron.data.settings.SettingsPrefs
 import com.razeware.emitron.model.Content
 import com.razeware.emitron.model.Contents
@@ -43,7 +46,8 @@ class ContentRepository @Inject constructor(
       pageSize,
       api,
       threadManager,
-      filters
+      filters,
+      contentDataSourceLocal
     )
 
     val pagedListConfig = PagedList.Config.Builder()

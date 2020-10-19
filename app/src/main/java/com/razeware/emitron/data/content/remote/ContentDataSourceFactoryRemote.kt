@@ -1,7 +1,8 @@
-package com.razeware.emitron.data.content
+package com.razeware.emitron.data.content.remote
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
+import com.razeware.emitron.data.content.local.ContentDataSourceLocal
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.utils.async.ThreadManager
 
@@ -12,7 +13,8 @@ class ContentDataSourceFactoryRemote(
   private val pageSize: Int,
   private val contentApi: ContentApi,
   private val threadManager: ThreadManager,
-  private val filters: List<Data>
+  private val filters: List<Data>,
+  private val contentDataSourceLocal: ContentDataSourceLocal
 ) : DataSource.Factory<Int, Data>() {
 
   /**
@@ -25,7 +27,7 @@ class ContentDataSourceFactoryRemote(
    */
   override fun create(): DataSource<Int, Data> {
     val source = ContentDataSourceRemote(
-      pageSize, contentApi, threadManager, filters
+      pageSize, contentApi, contentDataSourceLocal, threadManager, filters
     )
     sourceLiveData.postValue(source)
     return source

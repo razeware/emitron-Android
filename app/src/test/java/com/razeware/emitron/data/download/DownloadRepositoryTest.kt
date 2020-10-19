@@ -3,7 +3,7 @@ package com.razeware.emitron.data.download
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.nhaarman.mockitokotlin2.*
-import com.razeware.emitron.data.content.ContentDataSourceLocal
+import com.razeware.emitron.data.content.local.ContentDataSourceLocal
 import com.razeware.emitron.data.createContent
 import com.razeware.emitron.model.*
 import com.razeware.emitron.model.entity.Download

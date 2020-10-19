@@ -1,4 +1,4 @@
-package com.razeware.emitron.data.content
+package com.razeware.emitron.data.content.local
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
@@ -10,6 +10,7 @@ import com.razeware.emitron.model.ContentType
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.model.DataType
 import com.razeware.emitron.model.entity.*
+import org.threeten.bp.OffsetDateTime
 import javax.inject.Inject
 
 /**
@@ -102,9 +103,23 @@ class ContentDataSourceLocal @Inject constructor(
   }
 
   /**
-   * Get observer for contents table
+   * Get observer for contents table.
    */
-  fun getContents(): LiveData<List<Content>> = contentDao.getContents()
+  fun getContentsObserver(): LiveData<List<Content>> = contentDao.getContentsObserver()
+
+  /**
+   * Synchronous way to load data, without using an observer.
+   * */
+  fun getContentsData(allowedContentTypes: Array<String>): List<Data> {
+    val cachedContents = contentDao.getContents(allowedContentTypes)
+
+    return cachedContents.map { it.toData() }.sortedByDescending {
+      val date = OffsetDateTime.parse(it.getReleasedAt())
+
+      date.toEpochSecond()
+    }
+  }
+
 
   /**
    * Get a content (screencast/video-course)

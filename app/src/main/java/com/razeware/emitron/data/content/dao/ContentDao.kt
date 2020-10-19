@@ -21,7 +21,15 @@ interface ContentDao {
    * Get observer for contents
    */
   @Query("SELECT * FROM contents")
-  fun getContents(): LiveData<List<Content>>
+  fun getContentsObserver(): LiveData<List<Content>>
+
+  /**
+   * Get observer for contents
+   */
+  @Query(
+    "SELECT * FROM contents WHERE contents.content_type in(:allowedContentTypes)"
+  )
+  fun getContents(allowedContentTypes: Array<String>): List<Content>
 
   /**
    * Insert contents

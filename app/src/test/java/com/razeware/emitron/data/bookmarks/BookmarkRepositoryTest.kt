@@ -3,7 +3,7 @@ package com.razeware.emitron.data.bookmarks
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
 import com.nhaarman.mockitokotlin2.*
-import com.razeware.emitron.data.content.ContentDataSourceLocal
+import com.razeware.emitron.data.content.local.ContentDataSourceLocal
 import com.razeware.emitron.model.*
 import com.razeware.emitron.utils.TestCoroutineRule
 import com.razeware.emitron.utils.async.ThreadManager

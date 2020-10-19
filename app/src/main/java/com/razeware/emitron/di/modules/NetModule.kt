@@ -2,7 +2,7 @@ package com.razeware.emitron.di.modules
 
 import com.razeware.emitron.BuildConfig
 import com.razeware.emitron.data.bookmarks.BookmarkApi
-import com.razeware.emitron.data.content.ContentApi
+import com.razeware.emitron.data.content.remote.ContentApi
 import com.razeware.emitron.data.download.DownloadApi
 import com.razeware.emitron.data.filter.FilterApi
 import com.razeware.emitron.data.login.LoginApi

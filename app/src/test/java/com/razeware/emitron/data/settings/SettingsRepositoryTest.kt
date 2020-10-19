@@ -2,7 +2,7 @@ package com.razeware.emitron.data.settings
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.*
-import com.razeware.emitron.data.content.ContentDataSourceLocal
+import com.razeware.emitron.data.content.local.ContentDataSourceLocal
 import com.razeware.emitron.data.login.LoginPrefs
 import com.razeware.emitron.data.progressions.ProgressionDataSourceLocal
 import com.razeware.emitron.ui.onboarding.OnboardingView
