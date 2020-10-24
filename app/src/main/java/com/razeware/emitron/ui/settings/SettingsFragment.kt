@@ -12,8 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.navigation.ui.setupWithNavController
 import androidx.work.WorkManager
-import com.crashlytics.android.Crashlytics
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.razeware.emitron.BuildConfig
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.FragmentSettingsBinding
@@ -28,7 +28,6 @@ import com.razeware.emitron.ui.settings.SettingsBottomSheetDialogFragment.Compan
 import com.razeware.emitron.utils.extensions.observe
 import com.razeware.emitron.utils.extensions.setDataBindingView
 import dagger.android.support.DaggerFragment
-import io.fabric.sdk.android.Fabric
 import javax.inject.Inject
 
 /**
@@ -97,11 +96,12 @@ class SettingsFragment : DaggerFragment() {
         }
       }
       crashReportingAllowed.observe(viewLifecycleOwner) {
-        it?.let {
-          binding.switchCrashReporting.isChecked = it
-          if (it) {
-            Fabric.with(requireContext(), Crashlytics())
-          }
+        it?.let { hasUserEnabledCrashReporting ->
+          binding.switchCrashReporting.isChecked = hasUserEnabledCrashReporting
+
+          FirebaseCrashlytics
+            .getInstance()
+            .setCrashlyticsCollectionEnabled(hasUserEnabledCrashReporting)
         }
       }
       playbackQuality.observe(viewLifecycleOwner) {
