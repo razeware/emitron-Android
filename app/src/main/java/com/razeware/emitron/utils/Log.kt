@@ -1,7 +1,7 @@
 package com.razeware.emitron.utils
 
 import android.util.Log
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.razeware.emitron.BuildConfig
 import com.razeware.emitron.data.settings.SettingsRepository
 import javax.inject.Inject
@@ -59,7 +59,7 @@ internal object Log {
     if (BuildConfig.DEBUG) {
       e.printStackTrace()
     } else {
-      Crashlytics.logException(e)
+      FirebaseCrashlytics.getInstance().recordException(e)
     }
   }
 
@@ -70,7 +70,7 @@ internal object Log {
     if (BuildConfig.DEBUG) {
       e.printStackTrace()
     } else {
-      Crashlytics.logException(e)
+      FirebaseCrashlytics.getInstance().recordException(e)
     }
   }
 }
