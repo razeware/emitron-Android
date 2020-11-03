@@ -118,7 +118,7 @@ dependencies {
   implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
 
   // Architecture components
-  implementation "androidx.lifecycle:lifecycle-runtime:${versions.architectureComponents}"
+  implementation "androidx.lifecycle:lifecycle-runtime-ktx:${versions.architectureComponents}"
   implementation "androidx.lifecycle:lifecycle-common-java8:${versions.architectureComponents}"
   implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.architectureComponents}"
 
