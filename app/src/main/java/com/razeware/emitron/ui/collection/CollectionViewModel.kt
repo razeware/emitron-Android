@@ -1,5 +1,6 @@
 package com.razeware.emitron.ui.collection
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -28,12 +29,11 @@ import org.threeten.bp.Clock
 import org.threeten.bp.LocalDateTime
 import retrofit2.HttpException
 import java.io.IOException
-import javax.inject.Inject
 
 /**
  * ViewModel for content detail view
  */
-class CollectionViewModel @Inject constructor(
+class CollectionViewModel @ViewModelInject constructor(
   private val repository: ContentRepository,
   private val bookmarkActionDelegate: BookmarkActionDelegate,
   private val progressionActionDelegate: ProgressionActionDelegate,

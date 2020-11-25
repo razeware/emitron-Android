@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -13,27 +14,18 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.FragmentOnboardingBinding
-import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
 import com.razeware.emitron.ui.common.getDefaultAppBarConfiguration
 import com.razeware.emitron.utils.extensions.applyUnderline
 import com.razeware.emitron.utils.extensions.setDataBindingView
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Onboarding View
  */
-class OnboardingFragment : DaggerFragment() {
+@AndroidEntryPoint
+class OnboardingFragment : Fragment() {
 
-  /**
-   * Custom factory for viewmodel
-   *
-   * Custom factory provides app related dependencies
-   */
-  @Inject
-  lateinit var viewModelFactory: ViewModelFactory
-
-  private val viewModel: OnboardingViewModel by viewModels { viewModelFactory }
+  private val viewModel: OnboardingViewModel by viewModels()
 
   private val args by navArgs<OnboardingFragmentArgs>()
 

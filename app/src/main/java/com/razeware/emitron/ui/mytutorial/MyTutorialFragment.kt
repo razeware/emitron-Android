@@ -10,10 +10,12 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.FragmentMyTutorialsBinding
 import com.razeware.emitron.utils.extensions.setDataBindingView
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * My tutorials view
  */
+@AndroidEntryPoint
 class MyTutorialFragment : Fragment() {
 
   private lateinit var binding: FragmentMyTutorialsBinding

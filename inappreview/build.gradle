@@ -1,6 +1,8 @@
 plugins {
   id 'com.android.library'
   id 'kotlin-android'
+  id 'kotlin-kapt'
+  id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -48,11 +50,10 @@ dependencies {
   implementation 'com.google.android.play:core:1.8.3'
   implementation 'com.google.android.play:core-ktx:1.8.1'
 
-  // Dagger
-  // https://github.com/google/dagger
-  implementation "com.google.dagger:dagger:${versions.dagger}"
-  implementation "com.google.dagger:dagger-android:${versions.dagger}"
-  implementation "com.google.dagger:dagger-android-support:${versions.dagger}"
+  // Hilt (Dagger)
+  // https://developer.android.com/training/dependency-injection/hilt-android
+  implementation "com.google.dagger:hilt-android:${versions.hilt}"
+  kapt "com.google.dagger:hilt-android-compiler:${versions.hilt}"
 
   testImplementation 'junit:junit:4.13.1'
   androidTestImplementation 'androidx.test.ext:junit:1.1.2'

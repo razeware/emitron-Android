@@ -3,8 +3,6 @@ package com.razeware.emitron.utils.extensions
 import android.content.Context
 import android.net.ConnectivityManager
 import androidx.fragment.app.Fragment
-import androidx.work.ListenableWorker
-import dagger.android.HasAndroidInjector
 
 /**
  * File will contain all the extension functions for [Context]s
@@ -40,13 +38,4 @@ fun Context.isActiveNetworkMetered(): Boolean {
   val connectivityManager =
     getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
   return connectivityManager.isActiveNetworkMetered
-}
-
-/**
- * Extension function to inject a worker
- *
- * @param [ListenableWorker] to inject
- */
-fun Context.injectWorker(worker: ListenableWorker) {
-  (this.applicationContext as? HasAndroidInjector)?.androidInjector()?.inject(worker)
 }

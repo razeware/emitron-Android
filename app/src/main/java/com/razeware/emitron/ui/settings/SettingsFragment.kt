@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
@@ -17,7 +18,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.razeware.emitron.BuildConfig
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.FragmentSettingsBinding
-import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
 import com.razeware.emitron.ui.common.getDefaultAppBarConfiguration
 import com.razeware.emitron.ui.download.workers.PendingDownloadWorker
 import com.razeware.emitron.ui.login.GuardpostDelegate
@@ -27,24 +27,17 @@ import com.razeware.emitron.ui.settings.SettingsBottomSheetDialogFragment.Compan
 import com.razeware.emitron.ui.settings.SettingsBottomSheetDialogFragment.Companion.playbackSubtitleLanguageToResIdMap
 import com.razeware.emitron.utils.extensions.observe
 import com.razeware.emitron.utils.extensions.setDataBindingView
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Settings UI
  */
-class SettingsFragment : DaggerFragment() {
+@AndroidEntryPoint
+class SettingsFragment : Fragment() {
 
-  /**
-   * Custom factory for viewmodel
-   *
-   * Custom factory provides app related dependencies
-   */
-  @Inject
-  lateinit var viewModelFactory: ViewModelFactory
-
-  private val viewModel:
-      SettingsViewModel by navGraphViewModels(R.id.settings_navigation) { viewModelFactory }
+  private val viewModel: SettingsViewModel by navGraphViewModels(R.id.settings_navigation) {
+    defaultViewModelProviderFactory
+  }
 
   private lateinit var binding: FragmentSettingsBinding
 

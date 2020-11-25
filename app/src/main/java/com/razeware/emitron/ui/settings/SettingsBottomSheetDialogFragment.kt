@@ -1,6 +1,5 @@
 package com.razeware.emitron.ui.settings
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.FragmentSettingsBottomsheetBinding
-import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
 import com.razeware.emitron.model.DownloadQuality
 import com.razeware.emitron.ui.player.PlayerFragment.Companion.subtitleLanguageEnglish
 import com.razeware.emitron.ui.player.PlayerFragment.Playback.Quality.AUTO
@@ -31,12 +29,12 @@ import com.razeware.emitron.ui.player.PlayerFragment.Playback.Speed.NORMALx1_25
 import com.razeware.emitron.ui.player.PlayerFragment.Playback.Speed.NORMALx1_50
 import com.razeware.emitron.ui.player.PlayerFragment.Playback.Subtitle.ENGLISH
 import com.razeware.emitron.utils.extensions.setDataBindingView
-import dagger.android.support.AndroidSupportInjection
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Settings UI
  */
+@AndroidEntryPoint
 class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
   companion object {
@@ -186,20 +184,14 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
     }
   }
 
-  /**
-   * Custom factory for viewmodel
-   *
-   * Custom factory provides app related dependencies
-   */
-  @Inject
-  lateinit var viewModelFactory: ViewModelFactory
-
   private lateinit var viewBinding: FragmentSettingsBottomsheetBinding
 
   private val args by navArgs<SettingsBottomSheetDialogFragmentArgs>()
 
   private val viewModel:
-      SettingsViewModel by navGraphViewModels(R.id.settings_navigation) { viewModelFactory }
+      SettingsViewModel by navGraphViewModels(R.id.settings_navigation) {
+    defaultViewModelProviderFactory
+  }
 
   /**
    * See [androidx.fragment.app.Fragment.onCreateView]
@@ -230,14 +222,6 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
         onSettingsChange(headerResId, it)
       }
     }
-  }
-
-  /**
-   * See [androidx.fragment.app.Fragment.onAttach]
-   */
-  override fun onAttach(context: Context) {
-    AndroidSupportInjection.inject(this)
-    super.onAttach(context)
   }
 
   private fun getSettingsOptions(@StringRes headerResId: Int): List<Pair<String, Boolean>> {

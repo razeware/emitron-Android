@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -18,7 +19,6 @@ import androidx.work.WorkManager
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.FragmentCollectionBinding
-import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.model.isScreencast
 import com.razeware.emitron.ui.common.getDefaultAppBarConfiguration
@@ -34,23 +34,16 @@ import com.razeware.emitron.ui.onboarding.OnboardingView
 import com.razeware.emitron.ui.player.workers.UpdateOfflineProgressWorker
 import com.razeware.emitron.utils.UiStateManager
 import com.razeware.emitron.utils.extensions.*
-import dagger.android.support.DaggerFragment
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /**
  * Collection detail view
  */
-class CollectionFragment : DaggerFragment() {
+@AndroidEntryPoint
+class CollectionFragment : Fragment() {
 
-  /**
-   * Custom factory for viewmodel
-   *
-   * Custom factory provides app related dependencies
-   */
-  @Inject
-  lateinit var viewModelFactory: ViewModelFactory
-
-  private val viewModel: CollectionViewModel by viewModels { viewModelFactory }
+  private val viewModel: CollectionViewModel by viewModels()
 
   private val args by navArgs<CollectionFragmentArgs>()
 

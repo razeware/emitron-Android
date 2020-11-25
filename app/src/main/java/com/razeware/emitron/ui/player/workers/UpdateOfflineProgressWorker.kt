@@ -1,34 +1,26 @@
 package com.razeware.emitron.ui.player.workers
 
 import android.content.Context
+import androidx.hilt.Assisted
+import androidx.hilt.work.WorkerInject
 import androidx.work.*
 import com.razeware.emitron.data.progressions.ProgressionRepository
 import com.razeware.emitron.model.Contents
-import com.razeware.emitron.utils.extensions.injectWorker
 import retrofit2.HttpException
 import java.io.IOException
-import javax.inject.Inject
 
 /**
  *  Worker for updating offline progression
  *
  */
-class UpdateOfflineProgressWorker(
-  appContext: Context,
-  workerParameters: WorkerParameters
-) : CoroutineWorker(appContext, workerParameters) {
-
-
+class UpdateOfflineProgressWorker @WorkerInject constructor(
+  @Assisted appContext: Context,
+  @Assisted workerParameters: WorkerParameters,
   /**
    * Progression repository
    */
-  @Inject
-  lateinit var progressionRepository: ProgressionRepository
-
-  init {
-    appContext.injectWorker(this)
-  }
-
+  val progressionRepository: ProgressionRepository
+) : CoroutineWorker(appContext, workerParameters) {
 
   /**
    * See [Worker.doWork]

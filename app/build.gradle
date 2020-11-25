@@ -14,6 +14,8 @@ apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
+apply plugin: 'dagger.hilt.android.plugin'
+
 android {
   compileSdkVersion versions.compileSdk
 
@@ -104,10 +106,15 @@ dependencies {
   implementation "androidx.work:work-runtime-ktx:${versions.workManager}"
 
   // Dagger
-  // https://github.com/google/dagger
-  implementation "com.google.dagger:dagger:${versions.dagger}"
-  implementation "com.google.dagger:dagger-android:${versions.dagger}"
-  implementation "com.google.dagger:dagger-android-support:${versions.dagger}"
+  // https://developer.android.com/training/dependency-injection/hilt-android
+  implementation "com.google.dagger:hilt-android:${versions.hilt}"
+  kapt "com.google.dagger:hilt-android-compiler:${versions.hilt}"
+
+  implementation "androidx.hilt:hilt-lifecycle-viewmodel:${versions.hiltViewModel}"
+  kapt "androidx.hilt:hilt-compiler:${versions.hiltViewModel}"
+
+  implementation "androidx.hilt:hilt-work:${versions.hiltWorkManager}"
+  kapt "androidx.hilt:hilt-compiler:${versions.hiltWorkManager}"
 
   // Navigation
   // https://developer.android.com/guide/navigation/
@@ -175,8 +182,6 @@ dependencies {
 
   // Compilers/Annotation processors
 
-  kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
-  kapt "com.google.dagger:dagger-android-processor:${versions.dagger}"
   kapt "androidx.room:room-compiler:${versions.room}"
   kapt "com.github.bumptech.glide:compiler:${versions.glide}"
 
