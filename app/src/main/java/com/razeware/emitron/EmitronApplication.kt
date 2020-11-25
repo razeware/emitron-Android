@@ -1,8 +1,6 @@
 package com.razeware.emitron
 
 import android.app.Application
-import androidx.work.Configuration
-import androidx.work.WorkManager
 import com.razeware.emitron.di.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
