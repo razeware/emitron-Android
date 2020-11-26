@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import androidx.work.WorkManager
 import com.google.android.exoplayer2.offline.DownloadManager
+import com.raywenderlich.android.inappreview.dialog.InAppReviewPromptDialog
+import com.raywenderlich.android.inappreview.manager.InAppReviewManager
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.FragmentCollectionBinding
 import com.razeware.emitron.model.Data
@@ -41,7 +43,7 @@ import javax.inject.Inject
  * Collection detail view
  */
 @AndroidEntryPoint
-class CollectionFragment : Fragment() {
+class CollectionFragment : Fragment(), CollectionView {
 
   private val viewModel: CollectionViewModel by viewModels()
 
@@ -59,6 +61,9 @@ class CollectionFragment : Fragment() {
    */
   @Inject
   lateinit var downloadProgressHelper: DownloadProgressHelper
+
+  @Inject
+  lateinit var reviewManager: InAppReviewManager
 
   private val downloadHelper: DownloadHelper by lazy {
     DownloadHelper(this)
@@ -87,6 +92,7 @@ class CollectionFragment : Fragment() {
     initObservers()
     loadCollection()
     checkAndShowOnboarding()
+    viewModel.checkIfNeedsReviewPrompt()
   }
 
   private fun initUi() {
@@ -379,6 +385,14 @@ class CollectionFragment : Fragment() {
         OnboardingView.Collection
       )
       findNavController().navigate(action)
+    }
+  }
+
+  override fun showReviewFlow() {
+    if (reviewManager.isEligibleForReview()) {
+      val dialog = InAppReviewPromptDialog()
+
+      dialog.show(childFragmentManager, null)
     }
   }
 

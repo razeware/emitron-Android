@@ -117,6 +117,12 @@ class CollectionViewModel @ViewModelInject constructor(
    */
   val collectionEpisodes: LiveData<List<CollectionEpisode>> = _collectionEpisodes
 
+  private lateinit var collectionView: CollectionView
+
+  fun setView(collectionView: CollectionView) {
+    this.collectionView = collectionView
+  }
+
   /**
    * Get collection episodes
    */
@@ -137,6 +143,14 @@ class CollectionViewModel @ViewModelInject constructor(
       }
 
       uiState.value = UiStateManager.UiState.LOADED
+    }
+  }
+
+  fun checkIfNeedsReviewPrompt() {
+    val value = collection.value ?: return
+
+    if (value.isProgressionFinished()) {
+      collectionView.showReviewFlow()
     }
   }
 

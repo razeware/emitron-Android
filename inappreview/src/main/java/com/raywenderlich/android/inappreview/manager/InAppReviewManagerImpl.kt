@@ -46,7 +46,7 @@ class InAppReviewManagerImpl(
    * They are eligible only if they haven't rated before and they haven't chosen the "never" option,
    * or if they asked to rate later and a week has passed.
    * */
-  private fun isEligibleForReview(): Boolean {
+  override fun isEligibleForReview(): Boolean {
     return (!inAppReviewPreferences.hasUserRatedApp()
         && !inAppReviewPreferences.hasUserChosenRateNever())
         || (inAppReviewPreferences.hasUserChosenRateLater() && enoughTimePassed())
