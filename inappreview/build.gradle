@@ -45,10 +45,11 @@ dependencies {
   implementation "androidx.appcompat:appcompat:${versions.appCompat}"
   implementation "androidx.constraintlayout:constraintlayout:${versions.constraintLayout}"
   implementation "androidx.core:core-ktx:${versions.coreKtx}"
+  implementation "androidx.cardview:cardview:${versions.cardView}"
 
   // Play core
-  implementation 'com.google.android.play:core:1.8.3'
-  implementation 'com.google.android.play:core-ktx:1.8.1'
+  api "com.google.android.play:core:${versions.playCore}"
+  api "com.google.android.play:core-ktx:${versions.playCoreKtx}"
 
   // Hilt (Dagger)
   // https://developer.android.com/training/dependency-injection/hilt-android

@@ -146,6 +146,9 @@ class CollectionViewModel @ViewModelInject constructor(
     }
   }
 
+  /**
+   * Checks if the user finished the entire course & if we need to show a review prompt.
+   * */
   fun checkIfNeedsReviewPrompt() {
     val value = collection.value ?: return
 

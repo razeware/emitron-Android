@@ -88,6 +88,7 @@ class CollectionFragment : Fragment(), CollectionView {
    */
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    viewModel.setView(this)
     initUi()
     initObservers()
     loadCollection()
@@ -388,6 +389,9 @@ class CollectionFragment : Fragment(), CollectionView {
     }
   }
 
+  /**
+   * Checks if the user is eligible for a review prompt, and shows a dialog if needed.
+   * */
   override fun showReviewFlow() {
     if (reviewManager.isEligibleForReview()) {
       val dialog = InAppReviewPromptDialog()

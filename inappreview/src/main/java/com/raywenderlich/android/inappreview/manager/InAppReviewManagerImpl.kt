@@ -7,6 +7,8 @@ import com.google.android.play.core.review.ReviewManager
 import com.raywenderlich.android.inappreview.BuildConfig
 import com.raywenderlich.android.inappreview.preferences.InAppReviewPreferences
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+import kotlin.math.abs
 
 /**
  * The review manager implementation wrapper, that starts and handles the In-App Review
@@ -15,7 +17,7 @@ import java.util.concurrent.TimeUnit
  * @param reviewManager - The [ReviewManager] that handles all the internal API calls.
  * @property reviewInfo - The info for the app that enables In-App Review calls.
  * */
-class InAppReviewManagerImpl(
+class InAppReviewManagerImpl @Inject constructor(
   private val reviewManager: ReviewManager,
   private val inAppReviewPreferences: InAppReviewPreferences
 ) : InAppReviewManager {
@@ -48,6 +50,7 @@ class InAppReviewManagerImpl(
    * */
   override fun isEligibleForReview(): Boolean {
     return (!inAppReviewPreferences.hasUserRatedApp()
+        && !inAppReviewPreferences.hasUserChosenRateLater()
         && !inAppReviewPreferences.hasUserChosenRateNever())
         || (inAppReviewPreferences.hasUserChosenRateLater() && enoughTimePassed())
   }
@@ -55,7 +58,7 @@ class InAppReviewManagerImpl(
   private fun enoughTimePassed(): Boolean {
     val rateLaterTimestamp = inAppReviewPreferences.getRateLaterTime()
 
-    return System.currentTimeMillis() - rateLaterTimestamp >= TimeUnit.DAYS.toMillis(7)
+    return abs(rateLaterTimestamp - System.currentTimeMillis()) >= TimeUnit.DAYS.toMillis(7)
   }
 
   /**

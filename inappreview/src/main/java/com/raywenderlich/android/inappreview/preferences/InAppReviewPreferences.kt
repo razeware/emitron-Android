@@ -21,7 +21,7 @@ interface InAppReviewPreferences {
    *
    * @param hasReviewed - If the user chose the "Rate App" option.
    * */
-  fun saveUserRatedApp(hasReviewed: Boolean)
+  fun setUserRatedApp(hasReviewed: Boolean)
 
   /**
    * @return If the user has chosen the "Ask Me Later" option or not.

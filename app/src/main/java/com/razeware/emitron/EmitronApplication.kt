@@ -12,6 +12,9 @@ import javax.inject.Inject
 @HiltAndroidApp
 class EmitronApplication : Application(), Configuration.Provider {
 
+  /**
+   * Used to inject WorkManager workers using Hilt.
+   * */
   @Inject
   lateinit var workerFactory: HiltWorkerFactory
 

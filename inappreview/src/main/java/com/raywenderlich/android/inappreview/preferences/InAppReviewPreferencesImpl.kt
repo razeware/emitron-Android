@@ -1,6 +1,7 @@
 package com.raywenderlich.android.inappreview.preferences
 
 import android.content.SharedPreferences
+import javax.inject.Inject
 
 /**
  * Provides the preferences that store if the user rated the app already, or not.
@@ -11,7 +12,7 @@ import android.content.SharedPreferences
  * If the user chose to rate the app later - we check if enough time has passed (e.g. a week).
  * If the user already chose to rate the app, we shouldn't show the dialog or prompt again.
  * */
-class InAppReviewPreferencesImpl(
+class InAppReviewPreferencesImpl @Inject constructor(
   private val sharedPreferences: SharedPreferences
 ) : InAppReviewPreferences {
 
@@ -33,7 +34,7 @@ class InAppReviewPreferencesImpl(
    *
    * @param hasReviewed - If the user chose the "Rate App" option.
    * */
-  override fun saveUserRatedApp(hasReviewed: Boolean) =
+  override fun setUserRatedApp(hasReviewed: Boolean) =
     sharedPreferences.edit()
       .putBoolean(KEY_HAS_RATED_APP, hasReviewed)
       .apply()

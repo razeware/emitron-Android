@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="defaultMargin">16dp</dimen>
+  <dimen name="smallMargin">6dp</dimen>
+  <dimen name="promptCornerRadius">12dp</dimen>
+  <dimen name="buttonSize">48dp</dimen>
+  <dimen name="reviewPromptImageHeight">150dp</dimen>
+</resources>

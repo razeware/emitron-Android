@@ -41,6 +41,7 @@ buildscript {
       'viewpagerdots'               : "1.0.0",
       'viewpager'                   : "1.0.0",
       'swiperefreshlayout'          : "1.1.0",
+      'cardView'                    : '1.0.0',
 
 
       // db
@@ -75,6 +76,8 @@ buildscript {
 
       // play services
       'playOss'                     : '17.0.0',
+      'playCore'                    : '1.8.3',
+      'playCoreKtx'                 : '1.8.1',
 
       // plugins
       'firebasePerfPlugin'          : "1.2.1",
