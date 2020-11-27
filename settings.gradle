@@ -1,3 +1,4 @@
+include ':styles'
 include ':inappreview'
 include ':app', ':model'
 rootProject.name = 'Emitron'
