@@ -143,6 +143,7 @@ class CollectionViewModel @ViewModelInject constructor(
       }
 
       uiState.value = UiStateManager.UiState.LOADED
+      checkIfNeedsReviewPrompt()
     }
   }
 
