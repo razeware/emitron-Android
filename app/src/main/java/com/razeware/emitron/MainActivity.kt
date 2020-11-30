@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
+import android.view.WindowInsets
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -96,7 +97,11 @@ class MainActivity : DaggerAppCompatActivity() {
     binding.container.doOnLayout {
       val inset = binding.container.rootWindowInsets
 
-      val cutoutSize = inset?.stableInsetTop
+      val cutoutSize = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        inset?.getInsets(WindowInsets.Type.statusBars())?.top
+      } else {
+        inset?.displayCutout?.safeInsetTop
+      }
 
       if (cutoutSize != null) {
         val defaultTopMargin = resources.getDimensionPixelSize(R.dimen.guideline_top_status_bar)

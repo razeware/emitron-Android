@@ -3,14 +3,20 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools">
 
-  <data />
+  <data>
+
+    <variable
+      name="bottomPadding"
+      type="Integer" />
+  </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/filterRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="true"
     android:clipToPadding="true"
-    app:paddingBottomSystemWindowInsets="@{true}">
-
+    android:paddingBottom="@{bottomPadding}">
 
     <androidx.constraintlayout.widget.Guideline
       android:id="@+id/guideline_left"
@@ -26,14 +32,6 @@
       android:orientation="vertical"
       app:layout_constraintGuide_end="@dimen/activity_horizontal_margin" />
 
-
-    <androidx.constraintlayout.widget.Guideline
-      android:id="@+id/guideline_bottom"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:orientation="horizontal"
-      app:layout_constraintGuide_end="@dimen/guideline_bottom_gesture" />
-
     <androidx.constraintlayout.widget.Guideline
       android:id="@+id/guideline_top"
       android:layout_width="wrap_content"
@@ -45,10 +43,10 @@
       android:id="@+id/toolbar"
       android:layout_width="match_parent"
       android:layout_height="?android:actionBarSize"
+      android:layout_marginBottom="@dimen/filter_progress_margin_start_end"
       app:layout_constraintBottom_toTopOf="@+id/recycler_view_filter"
       app:layout_constraintTop_toTopOf="@+id/guideline_top"
       app:layout_constraintVertical_bias="0"
-      android:layout_marginBottom="@dimen/filter_progress_margin_start_end"
       app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -85,9 +83,10 @@
       style="@style/Button.Colored.2"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/activity_vertical_margin"
       android:text="@string/button_filter_clear_all"
       android:textAppearance="@style/TextAppearance.Button.Regular"
-      app:layout_constraintBottom_toBottomOf="@+id/guideline_bottom"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toStartOf="@+id/button_filter_close"
       app:layout_constraintStart_toStartOf="@id/guideline_left"
       app:layout_constraintTop_toBottomOf="@+id/filter_progress" />
@@ -98,9 +97,10 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/button_spacing_horizontal"
+      android:layout_marginBottom="@dimen/activity_vertical_margin"
       android:text="@string/button_filter_apply"
       android:textAppearance="@style/TextAppearance.Button.Regular"
-      app:layout_constraintBottom_toBottomOf="@+id/button_filter_clear"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintStart_toEndOf="@id/button_filter_clear"
       app:layout_constraintTop_toTopOf="@+id/button_filter_clear" />
