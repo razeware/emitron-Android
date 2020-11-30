@@ -67,7 +67,7 @@ class InAppReviewManagerImpl @Inject constructor(
    * @param activity - The Activity to which the lifecycle is attached.
    * */
   override fun startReview(activity: Activity) {
-    if (reviewInfo != null && isEligibleForReview()) {
+    if (reviewInfo != null) {
       reviewManager.launchReviewFlow(activity, reviewInfo).addOnCompleteListener {
         if (BuildConfig.DEBUG && it.isComplete && it.isSuccessful) {
           Log.d(KEY_REVIEW, "Review complete: ${it.isComplete}, successful: ${it.isSuccessful}")

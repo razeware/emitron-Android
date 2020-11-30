@@ -62,6 +62,9 @@ class CollectionFragment : Fragment(), CollectionView {
   @Inject
   lateinit var downloadProgressHelper: DownloadProgressHelper
 
+  /**
+   * Used to launch the In App Review flow if the user should see it.
+   * */
   @Inject
   lateinit var reviewManager: InAppReviewManager
 
@@ -76,7 +79,7 @@ class CollectionFragment : Fragment(), CollectionView {
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
+  ): View {
     binding = setDataBindingView(R.layout.fragment_collection, container)
     binding.data = viewModel.collection
     binding.isDownloadAvailable = viewModel.isDownloadAllowed()
@@ -93,6 +96,13 @@ class CollectionFragment : Fragment(), CollectionView {
     initObservers()
     loadCollection()
     checkAndShowOnboarding()
+  }
+
+  /**
+   * Every time we show the screen we check if we should show the In App Review prompt to the user.
+   * */
+  override fun onStart() {
+    super.onStart()
     viewModel.checkIfNeedsReviewPrompt()
   }
 
