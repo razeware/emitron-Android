@@ -3,23 +3,44 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/inAppReviewPromptRoot"
   android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  android:layout_margin="@dimen/smallMargin"
+  android:layout_height="match_parent"
+  android:layout_gravity="center"
   android:orientation="vertical"
-  app:cardCornerRadius="@dimen/promptCornerRadius">
+  app:cardCornerRadius="@dimen/promptCornerRadius"
+  app:cardElevation="0dp">
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
 
     <ImageView
-      android:id="@+id/reviewPromptImage"
-      android:layout_width="wrap_content"
-      android:layout_height="@dimen/reviewPromptImageHeight"
-      android:layout_margin="@dimen/defaultMargin"
-      android:src="@drawable/android_love"
-      app:layout_constraintEnd_toEndOf="parent"
+      android:id="@+id/sadFace"
+      android:layout_width="@dimen/ratePromptFaceSize"
+      android:layout_height="@dimen/ratePromptFaceSize"
+      android:layout_margin="@dimen/largeMargin"
+      android:src="@drawable/sad_face"
       app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+      android:id="@+id/progressBar"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/promptProgressMargin"
+      android:src="@drawable/progress_black"
+      app:layout_constraintBottom_toBottomOf="@id/sadFace"
+      app:layout_constraintEnd_toStartOf="@id/happyFace"
+      app:layout_constraintStart_toEndOf="@id/sadFace"
+      app:layout_constraintTop_toTopOf="@id/sadFace" />
+
+    <ImageView
+      android:id="@+id/happyFace"
+      android:layout_width="@dimen/ratePromptFaceSize"
+      android:layout_height="@dimen/ratePromptFaceSize"
+      android:layout_margin="@dimen/largeMargin"
+      android:src="@drawable/happy_face"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -31,20 +52,20 @@
       android:gravity="center_horizontal"
       android:text="@string/inAppReviewTitle"
       android:textColor="@color/textColorHeadline"
-      android:textSize="28sp"
+      android:textSize="@dimen/ratePromptTitleTextSize"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/reviewPromptImage" />
+      app:layout_constraintTop_toBottomOf="@id/sadFace" />
 
     <TextView
       android:id="@+id/reviewPromptText"
-      style="@style/Text.Medium"
+      style="@style/Text.Regular"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_margin="@dimen/defaultMargin"
-      android:gravity="center_horizontal"
+      android:gravity="center"
       android:text="@string/inAppReviewMessage"
-      android:textSize="16sp"
+      android:textSize="@dimen/ratePromptMessageTextSize"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/reviewPromptTitle" />
@@ -55,7 +76,7 @@
       android:layout_width="0dp"
       android:layout_height="@dimen/buttonSize"
       android:layout_marginHorizontal="@dimen/defaultMargin"
-      android:layout_marginTop="@dimen/defaultMargin"
+      android:layout_marginTop="@dimen/largeMargin"
       android:layout_marginBottom="@dimen/smallMargin"
       app:cardCornerRadius="@dimen/promptCornerRadius"
       app:layout_constraintEnd_toEndOf="parent"
@@ -69,53 +90,35 @@
         android:layout_height="match_parent"
         android:background="?attr/selectableItemBackground"
         android:gravity="center"
-        android:text="@string/inAppReviewRateNow" />
+        android:text="@string/inAppReviewRateNow"
+        android:textSize="@dimen/promptButtonTextSize" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
       android:id="@+id/reviewLaterCard"
-      style="@style/Button.Colored.2"
       android:layout_width="0dp"
       android:layout_height="@dimen/buttonSize"
       android:layout_marginHorizontal="@dimen/defaultMargin"
-      android:layout_marginVertical="@dimen/smallMargin"
+      android:layout_marginTop="@dimen/buttonMarginTop"
+      android:layout_marginBottom="@dimen/defaultMargin"
+      android:backgroundTint="@color/transparent"
+      android:paddingBottom="@dimen/defaultMargin"
       app:cardCornerRadius="@dimen/promptCornerRadius"
+      app:cardElevation="0dp"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/leaveReviewCard">
 
       <TextView
         android:id="@+id/reviewLater"
-        style="@style/Button.Text.Inverse"
+        style="@style/Button.Text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/selectableItemBackground"
         android:gravity="center"
-        android:text="@string/inAppReviewRateLater" />
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-      android:id="@+id/reviewNeverCard"
-      style="@style/Button.Colored.2"
-      android:layout_width="0dp"
-      android:layout_height="@dimen/buttonSize"
-      android:layout_marginHorizontal="@dimen/defaultMargin"
-      android:layout_marginTop="@dimen/smallMargin"
-      android:layout_marginBottom="@dimen/defaultMargin"
-      app:cardCornerRadius="@dimen/promptCornerRadius"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/reviewLaterCard">
-
-      <TextView
-        android:id="@+id/reviewNever"
-        style="@style/Button.Text.Inverse"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/selectableItemBackground"
-        android:gravity="center"
-        android:text="@string/inAppReviewRateNever" />
+        android:text="@string/inAppReviewRateLater"
+        android:textSize="@dimen/promptButtonTextSize" />
     </androidx.cardview.widget.CardView>
   </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

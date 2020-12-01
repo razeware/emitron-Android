@@ -1,3 +1,4 @@
+include ':preferences'
 include ':styles'
 include ':inappreview'
 include ':app', ':model'

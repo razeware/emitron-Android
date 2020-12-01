@@ -7,9 +7,8 @@ import javax.inject.Inject
 /**
  * Provides the preferences that store if the user rated the app already, or not.
  *
- * It also stores info if the user chose to rate the app later or never.
+ * It also stores info if the user chose to rate the app later.
  *
- * If the user chose to never rate the app - we don't prompt them with the review flow or dialog.
  * If the user chose to rate the app later - we check if enough time has passed (e.g. a week).
  * If the user already chose to rate the app, we shouldn't show the dialog or prompt again.
  * */
@@ -20,7 +19,6 @@ class InAppReviewPreferencesImpl @Inject constructor(
   companion object {
     private const val KEY_HAS_RATED_APP = "hasRatedApp"
     private const val KEY_CHOSEN_RATE_LATER = "rateLater"
-    private const val KEY_CHOSEN_RATE_NEVER = "rateNever"
     private const val KEY_RATE_LATER_TIME = "rateLaterTime"
   }
 
@@ -53,20 +51,6 @@ class InAppReviewPreferencesImpl @Inject constructor(
     sharedPreferences.edit { putBoolean(KEY_CHOSEN_RATE_LATER, hasChosenRateLater) }
 
   /**
-   * @return If the user has chosen the "Don't Ask Me Again" option or not.
-   * */
-  override fun hasUserChosenRateNever(): Boolean =
-    sharedPreferences.getBoolean(KEY_CHOSEN_RATE_NEVER, false)
-
-  /**
-   * Stores if the user doesn't want to rate the app.
-   *
-   * @param hasChosenRateNever - If the user chose the "Don't Ask Me Again" option.
-   * */
-  override fun setUserChosenRateNever(hasChosenRateNever: Boolean) =
-    sharedPreferences.edit { putBoolean(KEY_CHOSEN_RATE_NEVER, hasChosenRateNever) }
-
-  /**
    * @return Timestamp when the user chose the "Ask Me Later" option.
    * */
   override fun getRateLaterTime(): Long =
@@ -87,7 +71,7 @@ class InAppReviewPreferencesImpl @Inject constructor(
    * for an opinion.
    *
    * This should be used only if the user didn't rate the app before. E.g. the user chose to rate
-   * "later" or "never" and we add a new feature where you can preview books in the app.
+   * "later" and we add a new feature where you can preview books in the app.
    *
    * This is a big change and even though the user chose not to give a rating before, they might be
    * convinced to rate the app after they've tried out the new features.
@@ -95,7 +79,6 @@ class InAppReviewPreferencesImpl @Inject constructor(
   override fun clearIfUserDidNotRate() {
     if (!hasUserRatedApp()) {
       sharedPreferences.edit {
-        putBoolean(KEY_CHOSEN_RATE_NEVER, false)
         putBoolean(KEY_CHOSEN_RATE_LATER, false)
         putLong(KEY_RATE_LATER_TIME, 0)
       }

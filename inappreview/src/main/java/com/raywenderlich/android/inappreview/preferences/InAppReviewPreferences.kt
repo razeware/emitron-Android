@@ -36,18 +36,6 @@ interface InAppReviewPreferences {
   fun setUserChosenRateLater(hasChosenRateLater: Boolean)
 
   /**
-   * @return If the user has chosen the "Don't Ask Me Again" option or not.
-   * */
-  fun hasUserChosenRateNever(): Boolean
-
-  /**
-   * Stores if the user doesn't want to rate the app.
-   *
-   * @param hasChosenRateNever - If the user chose the "Don't Ask Me Again" option.
-   * */
-  fun setUserChosenRateNever(hasChosenRateNever: Boolean)
-
-  /**
    * @return Timestamp when the user chose the "Ask Me Later" option.
    * */
   fun getRateLaterTime(): Long

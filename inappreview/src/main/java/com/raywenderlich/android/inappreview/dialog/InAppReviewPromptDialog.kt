@@ -1,18 +1,20 @@
 package com.raywenderlich.android.inappreview.dialog
 
 import android.content.DialogInterface
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.InsetDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.DialogFragment
 import com.raywenderlich.android.inappreview.R
 import com.raywenderlich.android.inappreview.databinding.FragmentInAppReviewPromptBinding
 import com.raywenderlich.android.inappreview.manager.InAppReviewManager
 import com.raywenderlich.android.inappreview.preferences.InAppReviewPreferences
+import com.raywenderlich.android.preferences.GeneralSettingsPrefs
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -32,6 +34,9 @@ class InAppReviewPromptDialog : DialogFragment() {
    * */
   @Inject
   lateinit var preferences: InAppReviewPreferences
+
+  @Inject
+  lateinit var generalSettingsPrefs: GeneralSettingsPrefs
 
   /**
    * Manager used to trigger the In App Review prompt if needed.
@@ -62,7 +67,6 @@ class InAppReviewPromptDialog : DialogFragment() {
 
     binding.leaveReview.setOnClickListener { onLeaveReviewTapped() }
     binding.reviewLater.setOnClickListener { onRateLaterTapped() }
-    binding.reviewNever.setOnClickListener { onRateNeverTapped() }
   }
 
   private fun onLeaveReviewTapped() {
@@ -77,11 +81,6 @@ class InAppReviewPromptDialog : DialogFragment() {
     dismissAllowingStateLoss()
   }
 
-  private fun onRateNeverTapped() {
-    preferences.setUserChosenRateNever(true)
-    dismissAllowingStateLoss()
-  }
-
   /**
    * Styles the dialog to have a transparent background and window insets.
    * */
@@ -92,8 +91,24 @@ class InAppReviewPromptDialog : DialogFragment() {
 
   private fun initStyle() {
     val back = ColorDrawable(Color.TRANSPARENT)
-    val inset = InsetDrawable(back, resources.getDimensionPixelSize(R.dimen.defaultMargin))
-    dialog?.window?.setBackgroundDrawable(inset)
+    dialog?.window?.setBackgroundDrawable(back)
+
+    dialog?.window?.setLayout(
+      resources.getDimensionPixelSize(R.dimen.ratePromptWidth),
+      resources.getDimensionPixelSize(R.dimen.ratePromptHeight)
+    )
+
+    val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+    val modePreferences = generalSettingsPrefs.getNightMode()
+
+    val isInNightMode =
+      (modePreferences == AppCompatDelegate.MODE_NIGHT_YES
+          || (modePreferences == AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+          && currentNightMode == Configuration.UI_MODE_NIGHT_YES))
+
+    binding?.progressBar?.setImageResource(
+      if (isInNightMode) R.drawable.progress_white else R.drawable.progress_black
+    )
   }
 
   /**
@@ -106,6 +121,6 @@ class InAppReviewPromptDialog : DialogFragment() {
   }
 
   private fun getLaterTime(): Long {
-    return System.currentTimeMillis() + TimeUnit.DAYS.toMillis(7)
+    return System.currentTimeMillis() + TimeUnit.DAYS.toMillis(14)
   }
 }

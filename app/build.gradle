@@ -93,12 +93,12 @@ dependencies {
   implementation project(':model')
   implementation project(':inappreview')
   implementation project(':styles')
+  implementation project(':preferences')
 
   implementation "androidx.annotation:annotation:${versions.annotations}"
 
   implementation "androidx.appcompat:appcompat:${versions.appCompat}"
   implementation "androidx.fragment:fragment-ktx:${versions.fragmentKtx}"
-  implementation "androidx.preference:preference-ktx:${versions.preferenceKtx}"
 
   implementation "androidx.core:core-ktx:${versions.coreKtx}"
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"

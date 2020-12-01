@@ -1,6 +1,7 @@
 package com.razeware.emitron.data.settings
 
 import androidx.annotation.WorkerThread
+import com.raywenderlich.android.preferences.GeneralSettingsPrefs
 import com.razeware.emitron.data.content.ContentDataSourceLocal
 import com.razeware.emitron.data.login.LoginPrefs
 import com.razeware.emitron.data.progressions.ProgressionDataSourceLocal
@@ -14,8 +15,8 @@ import javax.inject.Inject
  */
 class SettingsRepository @Inject constructor(
   private val threadManager: ThreadManager,
-	private val loginPrefs: LoginPrefs,
-  private val settingsPrefs: SettingsPrefs,
+  private val loginPrefs: LoginPrefs,
+  private val settingsPrefs: GeneralSettingsPrefs,
   private val contentDataSourceLocal: ContentDataSourceLocal,
   private val progressionDataSourceLocal: ProgressionDataSourceLocal
 ) {
@@ -206,10 +207,10 @@ class SettingsRepository @Inject constructor(
       }
     }
 
-	/**
-	 * Get logged in user
-	 *
-	 * @return String logged in user
-	 */
-	fun getLoggedInUser(): String = loginPrefs.getLoggedInUser()
+  /**
+   * Get logged in user
+   *
+   * @return String logged in user
+   */
+  fun getLoggedInUser(): String = loginPrefs.getLoggedInUser()
 }

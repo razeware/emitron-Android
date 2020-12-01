@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="inAppReviewRateNever">Nope, don\'t ask me again</string>
-  <string name="inAppReviewRateLater">Maybe later</string>
-  <string name="inAppReviewRateNow">Sure, I\'ll leave a review!</string>
-  <string name="inAppReviewMessage">Hey, you completed this course! Way to go!\nWhile you\'re here, we\'d appreciate your review of our small app!</string>
-  <string name="inAppReviewTitle">Well done!</string>
+  <string name="inAppReviewRateLater">Not now</string>
+  <string name="inAppReviewRateNow">Leave a review</string>
+  <string name="inAppReviewMessage">Next, take a moment and rate your experience with the app.</string>
+  <string name="inAppReviewTitle">Congratulations on completing this course!</string>
 </resources>

@@ -1,15 +1,13 @@
-package com.razeware.emitron.data.settings
+package com.raywenderlich.android.preferences
 
 import androidx.appcompat.app.AppCompatDelegate
-import com.razeware.emitron.data.prefs.PrefUtils
-import javax.inject.Inject
 
 /**
  * Prefs helper for user settings
  *
- * Data related to user settings preferences should be stored and accessed using [SettingsPrefs]
+ * Data related to user settings preferences should be stored and accessed using [GeneralSettingsPrefs]
  */
-class SettingsPrefs @Inject constructor(private val prefs: PrefUtils) {
+class GeneralSettingsPrefs(private val prefs: PrefUtils) {
 
   companion object {
     private const val RECENT_SEARCHES = "recent_searches"
@@ -49,7 +47,8 @@ class SettingsPrefs @Inject constructor(private val prefs: PrefUtils) {
     }
     with(prefs) {
       set(
-        RECENT_SEARCHES, lastFiveSearchTerms.toString()
+        com.raywenderlich.android.preferences.GeneralSettingsPrefs.RECENT_SEARCHES,
+        lastFiveSearchTerms.toString()
           .replace("[", "")
           .replace("]", "")
       )

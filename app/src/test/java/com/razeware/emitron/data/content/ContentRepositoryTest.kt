@@ -3,7 +3,7 @@ package com.razeware.emitron.data.content
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
-import com.razeware.emitron.data.settings.SettingsPrefs
+import com.raywenderlich.android.preferences.GeneralSettingsPrefs
 import com.razeware.emitron.model.*
 import com.razeware.emitron.utils.*
 import com.razeware.emitron.utils.async.ThreadManager
@@ -29,7 +29,7 @@ class ContentRepositoryTest {
 
   private val threadManager: ThreadManager = mock()
 
-  private val settingsPref: SettingsPrefs = mock()
+  private val settingsPref: GeneralSettingsPrefs = mock()
 
   @get:Rule
   val testCoroutineRule: TestCoroutineRule = TestCoroutineRule()

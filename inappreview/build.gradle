@@ -41,6 +41,7 @@ dependencies {
 
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
   implementation project(':styles')
+  implementation project(':preferences')
 
   // UI
   implementation "androidx.appcompat:appcompat:${versions.appCompat}"

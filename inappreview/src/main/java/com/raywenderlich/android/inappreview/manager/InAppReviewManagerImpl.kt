@@ -50,15 +50,14 @@ class InAppReviewManagerImpl @Inject constructor(
    * */
   override fun isEligibleForReview(): Boolean {
     return (!inAppReviewPreferences.hasUserRatedApp()
-        && !inAppReviewPreferences.hasUserChosenRateLater()
-        && !inAppReviewPreferences.hasUserChosenRateNever())
+        && !inAppReviewPreferences.hasUserChosenRateLater())
         || (inAppReviewPreferences.hasUserChosenRateLater() && enoughTimePassed())
   }
 
   private fun enoughTimePassed(): Boolean {
     val rateLaterTimestamp = inAppReviewPreferences.getRateLaterTime()
 
-    return abs(rateLaterTimestamp - System.currentTimeMillis()) >= TimeUnit.DAYS.toMillis(7)
+    return abs(rateLaterTimestamp - System.currentTimeMillis()) >= TimeUnit.DAYS.toMillis(14)
   }
 
   /**

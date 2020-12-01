@@ -99,14 +99,6 @@ class CollectionFragment : Fragment(), InAppReviewView {
     checkAndShowOnboarding()
   }
 
-  /**
-   * Every time we show the screen we check if we should show the In App Review prompt to the user.
-   * */
-  override fun onStart() {
-    super.onStart()
-    viewModel.checkIfNeedsReviewPrompt()
-  }
-
   private fun initUi() {
     with(binding) {
       toolbar.setupWithNavController(

@@ -1,15 +1,13 @@
-package com.razeware.emitron.data.prefs
+package com.raywenderlich.android.preferences
 
-import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-import javax.inject.Inject
 
 /**
  * Helper class to manage app preferences
  */
-class PrefUtils @Inject constructor(private val context: Application) {
+class PrefUtils(private val context: Context) {
 
   /**
    * Create and return a custom preferences

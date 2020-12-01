@@ -1,8 +1,8 @@
 package com.razeware.emitron.data.login
 
 import com.nhaarman.mockitokotlin2.*
+import com.raywenderlich.android.preferences.PrefUtils
 import com.raywenderlich.guardpost.data.SSOUser
-import com.razeware.emitron.data.prefs.PrefUtils
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyBoolean
