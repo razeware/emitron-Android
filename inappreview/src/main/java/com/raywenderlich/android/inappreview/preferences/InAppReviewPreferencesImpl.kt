@@ -1,6 +1,7 @@
 package com.raywenderlich.android.inappreview.preferences
 
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import javax.inject.Inject
 
 /**
@@ -32,12 +33,10 @@ class InAppReviewPreferencesImpl @Inject constructor(
   /**
    * Stores if the user chose to rate the app or not.
    *
-   * @param hasReviewed - If the user chose the "Rate App" option.
+   * @param hasRated - If the user chose the "Rate App" option.
    * */
-  override fun setUserRatedApp(hasReviewed: Boolean) =
-    sharedPreferences.edit()
-      .putBoolean(KEY_HAS_RATED_APP, hasReviewed)
-      .apply()
+  override fun setUserRatedApp(hasRated: Boolean) =
+    sharedPreferences.edit { putBoolean(KEY_HAS_RATED_APP, hasRated) }
 
   /**
    * @return If the user has chosen the "Ask Me Later" option or not.
@@ -48,12 +47,10 @@ class InAppReviewPreferencesImpl @Inject constructor(
   /**
    * Stores if the user wants to rate the app later.
    *
-   * @param hasChosenReviewLater - If the user chose the "Ask Me Later" option.
+   * @param hasChosenRateLater - If the user chose the "Ask Me Later" option.
    * */
-  override fun setUserChosenRateLater(hasChosenReviewLater: Boolean) =
-    sharedPreferences.edit()
-      .putBoolean(KEY_CHOSEN_RATE_LATER, hasChosenReviewLater)
-      .apply()
+  override fun setUserChosenRateLater(hasChosenRateLater: Boolean) =
+    sharedPreferences.edit { putBoolean(KEY_CHOSEN_RATE_LATER, hasChosenRateLater) }
 
   /**
    * @return If the user has chosen the "Don't Ask Me Again" option or not.
@@ -64,12 +61,10 @@ class InAppReviewPreferencesImpl @Inject constructor(
   /**
    * Stores if the user doesn't want to rate the app.
    *
-   * @param hasChosenReviewNever - If the user chose the "Don't Ask Me Again" option.
+   * @param hasChosenRateNever - If the user chose the "Don't Ask Me Again" option.
    * */
-  override fun setUserChosenRateNever(hasChosenReviewNever: Boolean) =
-    sharedPreferences.edit()
-      .putBoolean(KEY_CHOSEN_RATE_NEVER, hasChosenReviewNever)
-      .apply()
+  override fun setUserChosenRateNever(hasChosenRateNever: Boolean) =
+    sharedPreferences.edit { putBoolean(KEY_CHOSEN_RATE_NEVER, hasChosenRateNever) }
 
   /**
    * @return Timestamp when the user chose the "Ask Me Later" option.
@@ -83,9 +78,7 @@ class InAppReviewPreferencesImpl @Inject constructor(
    * @param time - The timestamp when the user chose the "Ask Me Later" option.
    * */
   override fun setRateLater(time: Long) =
-    sharedPreferences.edit()
-      .putLong(KEY_RATE_LATER_TIME, time)
-      .apply()
+    sharedPreferences.edit { putLong(KEY_RATE_LATER_TIME, time) }
 
   /**
    * Clears out the preferences.
@@ -101,11 +94,11 @@ class InAppReviewPreferencesImpl @Inject constructor(
    * */
   override fun clearIfUserDidNotRate() {
     if (!hasUserRatedApp()) {
-      sharedPreferences.edit()
-        .putBoolean(KEY_CHOSEN_RATE_NEVER, false)
-        .putBoolean(KEY_CHOSEN_RATE_LATER, false)
-        .putLong(KEY_RATE_LATER_TIME, 0)
-        .apply()
+      sharedPreferences.edit {
+        putBoolean(KEY_CHOSEN_RATE_NEVER, false)
+        putBoolean(KEY_CHOSEN_RATE_LATER, false)
+        putLong(KEY_RATE_LATER_TIME, 0)
+      }
     }
   }
 }

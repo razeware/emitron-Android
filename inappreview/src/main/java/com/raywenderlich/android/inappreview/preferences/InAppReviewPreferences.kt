@@ -19,9 +19,9 @@ interface InAppReviewPreferences {
   /**
    * Stores if the user chose to rate the app or not.
    *
-   * @param hasReviewed - If the user chose the "Rate App" option.
+   * @param hasRated - If the user chose the "Rate App" option.
    * */
-  fun setUserRatedApp(hasReviewed: Boolean)
+  fun setUserRatedApp(hasRated: Boolean)
 
   /**
    * @return If the user has chosen the "Ask Me Later" option or not.
@@ -31,9 +31,9 @@ interface InAppReviewPreferences {
   /**
    * Stores if the user wants to rate the app later.
    *
-   * @param hasChosenReviewLater - If the user chose the "Ask Me Later" option.
+   * @param hasChosenRateLater - If the user chose the "Ask Me Later" option.
    * */
-  fun setUserChosenRateLater(hasChosenReviewLater: Boolean)
+  fun setUserChosenRateLater(hasChosenRateLater: Boolean)
 
   /**
    * @return If the user has chosen the "Don't Ask Me Again" option or not.
@@ -43,9 +43,9 @@ interface InAppReviewPreferences {
   /**
    * Stores if the user doesn't want to rate the app.
    *
-   * @param hasChosenReviewNever - If the user chose the "Don't Ask Me Again" option.
+   * @param hasChosenRateNever - If the user chose the "Don't Ask Me Again" option.
    * */
-  fun setUserChosenRateNever(hasChosenReviewNever: Boolean)
+  fun setUserChosenRateNever(hasChosenRateNever: Boolean)
 
   /**
    * @return Timestamp when the user chose the "Ask Me Later" option.

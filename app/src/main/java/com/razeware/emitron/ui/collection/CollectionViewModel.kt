@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.offline.Download
+import com.raywenderlich.android.inappreview.InAppReviewView
 import com.razeware.emitron.data.content.ContentRepository
 import com.razeware.emitron.model.Content
 import com.razeware.emitron.model.ContentType
@@ -117,10 +118,13 @@ class CollectionViewModel @ViewModelInject constructor(
    */
   val collectionEpisodes: LiveData<List<CollectionEpisode>> = _collectionEpisodes
 
-  private lateinit var collectionView: CollectionView
+  private lateinit var inAppReviewView: InAppReviewView
 
-  fun setView(collectionView: CollectionView) {
-    this.collectionView = collectionView
+  /**
+   * Sets an interface that backs up the In App Review prompts.
+   * */
+  fun setInAppReviewView(inAppReviewView: InAppReviewView) {
+    this.inAppReviewView = inAppReviewView
   }
 
   /**
@@ -154,7 +158,7 @@ class CollectionViewModel @ViewModelInject constructor(
     val value = collection.value ?: return
 
     if (value.isProgressionFinished()) {
-      collectionView.showReviewFlow()
+      inAppReviewView.showReviewFlow()
     }
   }
 

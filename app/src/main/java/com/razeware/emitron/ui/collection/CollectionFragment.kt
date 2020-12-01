@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import androidx.work.WorkManager
 import com.google.android.exoplayer2.offline.DownloadManager
+import com.raywenderlich.android.inappreview.InAppReviewView
 import com.raywenderlich.android.inappreview.dialog.InAppReviewPromptDialog
 import com.raywenderlich.android.inappreview.manager.InAppReviewManager
 import com.razeware.emitron.R
@@ -43,7 +44,7 @@ import javax.inject.Inject
  * Collection detail view
  */
 @AndroidEntryPoint
-class CollectionFragment : Fragment(), CollectionView {
+class CollectionFragment : Fragment(), InAppReviewView {
 
   private val viewModel: CollectionViewModel by viewModels()
 
@@ -91,7 +92,7 @@ class CollectionFragment : Fragment(), CollectionView {
    */
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    viewModel.setView(this)
+    viewModel.setInAppReviewView(this)
     initUi()
     initObservers()
     loadCollection()
