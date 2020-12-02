@@ -3,13 +3,19 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools">
 
-  <data />
+  <data>
+
+    <variable
+      name="bottomPadding"
+      type="Integer" />
+  </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/loginRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="true"
-    app:paddingBottomSystemWindowInsets="@{true}">
+    android:paddingBottom="@{bottomPadding}">
 
     <androidx.constraintlayout.widget.Guideline
       android:id="@+id/guideline_top"
@@ -149,7 +155,6 @@
       app:layout_constraintStart_toStartOf="@id/guideline_left"
       app:layout_constraintTop_toBottomOf="@+id/text_login_error_title"
       app:layout_constraintVertical_chainStyle="spread_inside" />
-
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/button_sign_out"

@@ -1,10 +1,14 @@
 package com.razeware.emitron.ui.filter
 
+import android.annotation.TargetApi
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
 import androidx.core.view.ViewCompat
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -58,6 +62,32 @@ class FilterFragment : Fragment() {
     initToolbar()
     initUi()
     loadFilters()
+  }
+
+  override fun onResume() {
+    super.onResume()
+    setupWindowInsets()
+  }
+
+  /**
+   * Similarly to what we do on the [MainActivity], we add insets to this screen if there's a bottom
+   * navigation bar.
+   * */
+  @TargetApi(Build.VERSION_CODES.P)
+  private fun setupWindowInsets() {
+    binding.filterRoot.doOnLayout {
+      val inset = binding.filterRoot.rootWindowInsets
+
+      val cutoutSize = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        inset?.getInsets(WindowInsets.Type.navigationBars())?.bottom
+      } else {
+        inset?.displayCutout?.safeInsetBottom
+      }
+
+      if (cutoutSize != null) {
+        binding.bottomPadding = cutoutSize
+      }
+    }
   }
 
   private fun initToolbar() {

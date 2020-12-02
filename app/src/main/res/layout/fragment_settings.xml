@@ -3,29 +3,36 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools">
 
-  <data />
+  <data>
 
-  <LinearLayout
+    <variable
+      name="bottomPadding"
+      type="Integer" />
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsRoot"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    app:paddingBottomSystemWindowInsets="@{true}">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.MaterialToolbar
       android:id="@+id/toolbar"
-      android:layout_width="match_parent"
-      android:layout_marginTop="@dimen/guideline_top_status_bar_1"
+      android:layout_width="0dp"
       android:layout_height="?android:actionBarSize"
-      app:layout_constraintBottom_toTopOf="@+id/title_version_name"
-      app:layout_constraintTop_toTopOf="@+id/guideline_top"
-      app:layout_constraintVertical_bias="0"
+      android:layout_marginTop="@dimen/guideline_top_status_bar_1"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_chainStyle="packed" />
 
     <ScrollView
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:layout_weight="1"
-      android:fillViewport="true">
+      app:layout_constraintBottom_toTopOf="@+id/settingsFooter"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/toolbar">
 
       <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -474,9 +481,16 @@
     </ScrollView>
 
     <LinearLayout
-      android:layout_width="match_parent"
+      android:id="@+id/settingsFooter"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:orientation="vertical">
+      android:clipChildren="false"
+      android:clipToPadding="false"
+      android:orientation="vertical"
+      android:paddingBottom="@{bottomPadding}"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent">
 
       <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/title_logged_in_user"
@@ -507,7 +521,6 @@
         app:iconTint="@color/white"
         app:iconTintMode="multiply"
         tools:visibility="visible" />
-
     </LinearLayout>
-  </LinearLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

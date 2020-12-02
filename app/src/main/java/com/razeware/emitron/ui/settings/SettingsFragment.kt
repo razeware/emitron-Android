@@ -1,12 +1,16 @@
 package com.razeware.emitron.ui.settings
 
+import android.annotation.TargetApi
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -57,7 +61,6 @@ class SettingsFragment : Fragment() {
     return binding.root
   }
 
-
   /**
    * See [androidx.fragment.app.Fragment.onViewCreated]
    */
@@ -66,6 +69,32 @@ class SettingsFragment : Fragment() {
     initUi()
     initObservers()
     viewModel.init()
+  }
+
+  override fun onResume() {
+    super.onResume()
+    setupWindowInsets()
+  }
+
+  /**
+   * Similarly to what we do on the [MainActivity], we add insets to this screen if there's a bottom
+   * navigation bar.
+   * */
+  @TargetApi(Build.VERSION_CODES.P)
+  private fun setupWindowInsets() {
+    binding.settingsFooter.doOnLayout {
+      val inset = binding.settingsFooter.rootWindowInsets
+
+      val cutoutSize = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        inset?.getInsets(WindowInsets.Type.navigationBars())?.bottom
+      } else {
+        inset?.displayCutout?.safeInsetBottom
+      }
+
+      if (cutoutSize != null) {
+        binding.bottomPadding = cutoutSize
+      }
+    }
   }
 
   private fun initObservers() {
