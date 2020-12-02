@@ -1,5 +1,6 @@
 package com.razeware.emitron.ui.download
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.razeware.emitron.data.download.DownloadRepository
@@ -10,12 +11,11 @@ import com.razeware.emitron.ui.login.PermissionsAction
 import com.razeware.emitron.ui.onboarding.OnboardingAction
 import com.razeware.emitron.ui.onboarding.OnboardingActionDelegate
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  * ViewModel for downloads
  */
-class DownloadViewModel @Inject constructor(
+class DownloadViewModel @ViewModelInject constructor(
   private val downloadRepository: DownloadRepository,
   private val contentPagedViewModel: ContentPagedViewModel,
   private val onboardingActionDelegate: OnboardingActionDelegate,

@@ -1,7 +1,7 @@
 package com.razeware.emitron.data.login
 
 import com.raywenderlich.guardpost.data.SSOUser
-import com.razeware.emitron.data.prefs.PrefUtils
+import com.raywenderlich.android.preferences.PrefUtils
 import javax.inject.Inject
 
 /**
@@ -9,7 +9,7 @@ import javax.inject.Inject
  *
  * Data related to user account preferences should be stored and accessed using [LoginPrefs]
  */
-class LoginPrefs @Inject constructor(private val prefs: PrefUtils) {
+class LoginPrefs @Inject constructor(private val prefs: com.raywenderlich.android.preferences.PrefUtils) {
 
   companion object {
     private const val IS_LOGGED_IN = "is_logged_in"

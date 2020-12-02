@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -16,9 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import androidx.work.WorkManager
 import com.google.android.exoplayer2.offline.DownloadManager
+import com.raywenderlich.android.inappreview.InAppReviewView
+import com.raywenderlich.android.inappreview.dialog.InAppReviewPromptDialog
+import com.raywenderlich.android.inappreview.manager.InAppReviewManager
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.FragmentCollectionBinding
-import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.model.isScreencast
 import com.razeware.emitron.ui.common.getDefaultAppBarConfiguration
@@ -34,23 +37,16 @@ import com.razeware.emitron.ui.onboarding.OnboardingView
 import com.razeware.emitron.ui.player.workers.UpdateOfflineProgressWorker
 import com.razeware.emitron.utils.UiStateManager
 import com.razeware.emitron.utils.extensions.*
-import dagger.android.support.DaggerFragment
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /**
  * Collection detail view
  */
-class CollectionFragment : DaggerFragment() {
+@AndroidEntryPoint
+class CollectionFragment : Fragment(), InAppReviewView {
 
-  /**
-   * Custom factory for viewmodel
-   *
-   * Custom factory provides app related dependencies
-   */
-  @Inject
-  lateinit var viewModelFactory: ViewModelFactory
-
-  private val viewModel: CollectionViewModel by viewModels { viewModelFactory }
+  private val viewModel: CollectionViewModel by viewModels()
 
   private val args by navArgs<CollectionFragmentArgs>()
 
@@ -67,6 +63,12 @@ class CollectionFragment : DaggerFragment() {
   @Inject
   lateinit var downloadProgressHelper: DownloadProgressHelper
 
+  /**
+   * Used to launch the In App Review flow if the user should see it.
+   * */
+  @Inject
+  lateinit var reviewManager: InAppReviewManager
+
   private val downloadHelper: DownloadHelper by lazy {
     DownloadHelper(this)
   }
@@ -78,7 +80,7 @@ class CollectionFragment : DaggerFragment() {
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
+  ): View {
     binding = setDataBindingView(R.layout.fragment_collection, container)
     binding.data = viewModel.collection
     binding.isDownloadAvailable = viewModel.isDownloadAllowed()
@@ -90,6 +92,7 @@ class CollectionFragment : DaggerFragment() {
    */
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    viewModel.setInAppReviewView(this)
     initUi()
     initObservers()
     loadCollection()
@@ -386,6 +389,17 @@ class CollectionFragment : DaggerFragment() {
         OnboardingView.Collection
       )
       findNavController().navigate(action)
+    }
+  }
+
+  /**
+   * Checks if the user is eligible for a review prompt, and shows a dialog if needed.
+   * */
+  override fun showReviewFlow() {
+    if (reviewManager.isEligibleForReview()) {
+      val dialog = InAppReviewPromptDialog()
+
+      dialog.show(childFragmentManager, null)
     }
   }
 

@@ -21,31 +21,22 @@ import com.google.android.gms.cast.framework.CastButtonFactory
 import com.google.android.gms.cast.framework.CastContext
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.razeware.emitron.databinding.ActivityMainBinding
-import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
 import com.razeware.emitron.notifications.NotificationChannels
 import com.razeware.emitron.ui.download.workers.PendingDownloadWorker
 import com.razeware.emitron.ui.player.PipActionDelegate
 import com.razeware.emitron.utils.extensions.*
-import dagger.android.support.DaggerAppCompatActivity
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 
 /**
  * Parent screen from all fragments
  */
-class MainActivity : DaggerAppCompatActivity() {
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
 
   private lateinit var binding: ActivityMainBinding
 
-  /**
-   * Custom factory for viewmodel
-   *
-   * Custom factory provides app related dependencies
-   */
-  @Inject
-  lateinit var viewModelFactory: ViewModelFactory
-
-  private val viewModel: MainViewModel by viewModels { viewModelFactory }
+  private val viewModel: MainViewModel by viewModels()
 
   /**
    * onCreate()

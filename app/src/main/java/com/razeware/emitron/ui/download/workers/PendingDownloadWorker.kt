@@ -1,37 +1,30 @@
 package com.razeware.emitron.ui.download.workers
 
 import android.content.Context
+import androidx.hilt.Assisted
+import androidx.hilt.work.WorkerInject
 import androidx.work.*
+import com.google.android.exoplayer2.offline.DownloadManager
 import com.razeware.emitron.data.download.DownloadRepository
 import com.razeware.emitron.model.ContentType
 import com.razeware.emitron.model.DownloadState
-import com.razeware.emitron.utils.extensions.injectWorker
-import javax.inject.Inject
 
 /**
  *  Worker for handling failed downloads on app start.
  *
  */
-class PendingDownloadWorker(
-  appContext: Context,
-  workerParameters: WorkerParameters
-) : CoroutineWorker(appContext, workerParameters) {
-
+class PendingDownloadWorker @WorkerInject constructor(
+  @Assisted appContext: Context,
+  @Assisted workerParameters: WorkerParameters,
   /**
    * Download manager
-   */
-  @Inject
-  lateinit var downloadManager: com.google.android.exoplayer2.offline.DownloadManager
-
+   * */
+   val downloadManager: DownloadManager,
   /**
    * Download repository
-   */
-  @Inject
-  lateinit var downloadRepository: DownloadRepository
-
-  init {
-    appContext.injectWorker(this)
-  }
+   * */
+  val downloadRepository: DownloadRepository
+) : CoroutineWorker(appContext, workerParameters) {
 
   /**
    * See [Worker.doWork]

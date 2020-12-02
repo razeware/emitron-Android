@@ -1,13 +1,13 @@
 package com.razeware.emitron.ui.onboarding
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import com.razeware.emitron.data.settings.SettingsRepository
-import javax.inject.Inject
 
 /**
  * ViewModel for Onboarding view
  */
-class OnboardingViewModel @Inject constructor(
+class OnboardingViewModel @ViewModelInject constructor(
   private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 

@@ -1,17 +1,17 @@
 package com.razeware.emitron.ui.settings
 
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.razeware.emitron.data.login.LoginRepository
 import com.razeware.emitron.data.settings.SettingsRepository
-import javax.inject.Inject
 
 /**
  * ViewModel for settings view
  */
-class SettingsViewModel @Inject constructor(
+class SettingsViewModel @ViewModelInject constructor(
   private val loginRepository: LoginRepository,
   private val settingsRepository: SettingsRepository
 ) : ViewModel() {
@@ -196,8 +196,8 @@ class SettingsViewModel @Inject constructor(
    */
   fun getDownloadsWifiOnly(): Boolean = settingsRepository.getDownloadsWifiOnly()
 
-	/**
-	 * Get logged in user
-	 */
+  /**
+   * Get logged in user
+   */
   fun getLoggedInUser(): String = settingsRepository.getLoggedInUser()
 }

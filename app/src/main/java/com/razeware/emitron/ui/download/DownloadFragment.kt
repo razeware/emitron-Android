@@ -14,7 +14,6 @@ import androidx.work.WorkManager
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.FragmentDownloadsBinding
-import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.ui.common.PagedAdapter
 import com.razeware.emitron.ui.common.StartEndBottomMarginDecoration
@@ -29,21 +28,14 @@ import com.razeware.emitron.ui.onboarding.OnboardingView
 import com.razeware.emitron.utils.UiStateManager
 import com.razeware.emitron.utils.extensions.launchCustomTab
 import com.razeware.emitron.utils.extensions.setDataBindingView
-import dagger.android.support.DaggerFragment
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /**
  * Downloads view
  */
-class DownloadFragment : DaggerFragment() {
-
-  /**
-   * Custom factory for viewmodel
-   *
-   * Custom factory provides app related dependencies
-   */
-  @Inject
-  lateinit var viewModelFactory: ViewModelFactory
+@AndroidEntryPoint
+class DownloadFragment : Fragment() {
 
   /**
    * Download manager instance to observe download progress
@@ -51,7 +43,7 @@ class DownloadFragment : DaggerFragment() {
   @Inject
   lateinit var downloadManager: DownloadManager
 
-  private val viewModel: DownloadViewModel by viewModels { viewModelFactory }
+  private val viewModel: DownloadViewModel by viewModels()
 
   private val swipeActionCallback by lazy {
     SwipeActionCallback.build(

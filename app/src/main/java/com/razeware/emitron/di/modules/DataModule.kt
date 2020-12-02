@@ -9,94 +9,83 @@ import com.razeware.emitron.data.progressions.dao.ProgressionDao
 import com.razeware.emitron.data.progressions.dao.WatchStatDao
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 
 /**
  * Data module
  */
 @Module
+@InstallIn(ApplicationComponent::class)
 class DataModule {
 
-  @Module
-  companion object {
+  /**
+   * [DomainDao]
+   */
+  @Provides
+  fun provideDomainDao(application: Application): DomainDao =
+    EmitronDatabase.getInstance(application).domainDao()
 
-    /**
-     * [DomainDao]
-     */
-    @JvmStatic
-    @Provides
-    fun provideDomainDao(application: Application): DomainDao =
-      EmitronDatabase.getInstance(application).domainDao()
+  /**
+   * [CategoryDao]
+   */
+  @Provides
+  fun provideCategoryDao(application: Application): CategoryDao =
+    EmitronDatabase.getInstance(application).categoryDao()
 
-    /**
-     * [CategoryDao]
-     */
-    @JvmStatic
-    @Provides
-    fun provideCategoryDao(application: Application): CategoryDao =
-      EmitronDatabase.getInstance(application).categoryDao()
+  /**
+   * [ContentDao]
+   */
+  @Provides
+  fun provideContentDao(application: Application): ContentDao =
+    EmitronDatabase.getInstance(application).contentDao()
 
-    /**
-     * [ContentDao]
-     */
-    @JvmStatic
-    @Provides
-    fun provideContentDao(application: Application): ContentDao =
-      EmitronDatabase.getInstance(application).contentDao()
+  /**
+   * [ContentDomainJoinDao]
+   */
+  @Provides
+  fun provideContentDomainJoinDao(application: Application): ContentDomainJoinDao =
+    EmitronDatabase.getInstance(application).contentDomainJoinDao()
 
-    /**
-     * [ContentDomainJoinDao]
-     */
-    @JvmStatic
-    @Provides
-    fun provideContentDomainJoinDao(application: Application): ContentDomainJoinDao =
-      EmitronDatabase.getInstance(application).contentDomainJoinDao()
+  /**
+   * [ProgressionDao]
+   */
+  @Provides
+  fun provideProgressionDao(application: Application): ProgressionDao =
+    EmitronDatabase.getInstance(application).progressionDao()
 
-    /**
-     * [ProgressionDao]
-     */
-    @JvmStatic
-    @Provides
-    fun provideProgressionDao(application: Application): ProgressionDao =
-      EmitronDatabase.getInstance(application).progressionDao()
+  /**
+   * [GroupDao]
+   */
+  @Provides
+  fun provideGroupDao(application: Application): GroupDao =
+    EmitronDatabase.getInstance(application).groupDao()
 
-    /**
-     * [GroupDao]
-     */
-    @JvmStatic
-    @Provides
-    fun provideGroupDao(application: Application): GroupDao =
-      EmitronDatabase.getInstance(application).groupDao()
+  /**
+   * [ContentGroupJoinDao]
+   */
+  @Provides
+  fun provideContentGroupJoinDao(application: Application): ContentGroupJoinDao =
+    EmitronDatabase.getInstance(application).contentGroupDao()
 
-    /**
-     * [ContentGroupJoinDao]
-     */
-    @JvmStatic
-    @Provides
-    fun provideContentGroupJoinDao(application: Application): ContentGroupJoinDao =
-      EmitronDatabase.getInstance(application).contentGroupDao()
+  /**
+   * [GroupEpisodeJoinDao]
+   */
+  @Provides
+  fun provideGroupEpisodeJoinDao(application: Application): GroupEpisodeJoinDao =
+    EmitronDatabase.getInstance(application).groupEpisodeDao()
 
-    /**
-     * [GroupEpisodeJoinDao]
-     */
-    @JvmStatic
-    @Provides
-    fun provideGroupEpisodeJoinDao(application: Application): GroupEpisodeJoinDao =
-      EmitronDatabase.getInstance(application).groupEpisodeDao()
+  /**
+   * [DownloadDao]
+   */
+  @Provides
+  fun provideDownloadDao(application: Application): DownloadDao =
+    EmitronDatabase.getInstance(application).downloadDao()
 
-    /**
-     * [DownloadDao]
-     */
-    @JvmStatic
-    @Provides
-    fun provideDownloadDao(application: Application): DownloadDao =
-      EmitronDatabase.getInstance(application).downloadDao()
-
-    /**
-     * [WatchStatDao]
-     */
-    @JvmStatic
-    @Provides
-    fun provideWatchStatDao(application: Application): WatchStatDao =
-      EmitronDatabase.getInstance(application).watchStateDao()
-  }
+  /**
+   * [WatchStatDao]
+   */
+  @Provides
+  fun provideWatchStatDao(application: Application): WatchStatDao =
+    EmitronDatabase.getInstance(application).watchStateDao()
 }

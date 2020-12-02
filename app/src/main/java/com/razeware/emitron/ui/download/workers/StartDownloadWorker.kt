@@ -1,6 +1,8 @@
 package com.razeware.emitron.ui.download.workers
 
 import android.content.Context
+import androidx.hilt.Assisted
+import androidx.hilt.work.WorkerInject
 import androidx.work.*
 import com.razeware.emitron.data.download.DownloadRepository
 import com.razeware.emitron.model.entity.Download
@@ -8,8 +10,6 @@ import com.razeware.emitron.model.entity.inProgress
 import com.razeware.emitron.model.entity.isCompleted
 import com.razeware.emitron.model.entity.isPaused
 import com.razeware.emitron.ui.download.DownloadService
-import com.razeware.emitron.utils.extensions.injectWorker
-import javax.inject.Inject
 
 /**
  *  Worker for starting a download,
@@ -18,20 +18,12 @@ import javax.inject.Inject
  * It will be followed by [DownloadWorker] which will read from database and forward downloads
  * to [DownloadService]
  */
-class StartDownloadWorker(
-  appContext: Context,
-  workerParameters: WorkerParameters
+class StartDownloadWorker @WorkerInject constructor(
+  @Assisted appContext: Context,
+  @Assisted workerParameters: WorkerParameters,
+  /** Settings Repository */
+  val downloadRepository: DownloadRepository
 ) : CoroutineWorker(appContext, workerParameters) {
-
-  /**
-   * Download repository
-   */
-  @Inject
-  lateinit var downloadRepository: DownloadRepository
-
-  init {
-    appContext.injectWorker(this)
-  }
 
   /**
    * See [Worker.doWork]
@@ -112,6 +104,7 @@ class StartDownloadWorker(
      * Content id to be downloaded
      */
     const val DOWNLOAD_CONTENT_ID: String = "download_content_id"
+
     /**
      * Episode id to be downloaded
      */

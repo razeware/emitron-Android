@@ -2,8 +2,8 @@
 buildscript {
   ext.versions = [
       // build
-      'versionCode'                 : 24,
-      'versionName'                 : "1.0.9",
+      'versionCode'                 : 28,
+      'versionName'                 : "1.1.0",
       'minSdk'                      : 21,
       'targetSdk'                   : 30,
       'compileSdk'                  : 30,
@@ -22,7 +22,9 @@ buildscript {
       'multidex'                    : "2.0.1",
       'browser'                     : "1.2.0", // Chrome custom tabs
 
-      'dagger'                      : '2.28.3',
+      'hilt'                        : '2.28.3-alpha',
+      'hiltViewModel'               : '1.0.0-alpha02',
+      'hiltWorkManager'             : '1.0.0-alpha02',
       'coroutines'                  : "1.3.9",
 
       // cast
@@ -39,6 +41,7 @@ buildscript {
       'viewpagerdots'               : "1.0.0",
       'viewpager'                   : "1.0.0",
       'swiperefreshlayout'          : "1.1.0",
+      'cardView'                    : '1.0.0',
 
 
       // db
@@ -73,6 +76,8 @@ buildscript {
 
       // play services
       'playOss'                     : '17.0.0',
+      'playCore'                    : '1.8.3',
+      'playCoreKtx'                 : '1.8.1',
 
       // plugins
       'firebasePerfPlugin'          : "1.2.1",
@@ -95,6 +100,7 @@ buildscript {
     classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.navigation}"
     classpath "com.google.android.gms:oss-licenses-plugin:${versions.ossLicenses}"
     classpath "com.google.firebase:firebase-crashlytics-gradle:${versions.crashlytics}"
+    classpath "com.google.dagger:hilt-android-gradle-plugin:${versions.hilt}"
   }
 }
 
