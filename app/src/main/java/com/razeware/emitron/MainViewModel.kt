@@ -1,6 +1,7 @@
 package com.razeware.emitron
 
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,14 +11,13 @@ import com.razeware.emitron.model.Data
 import com.razeware.emitron.model.SortOrder
 import com.razeware.emitron.ui.download.DownloadAction
 import com.razeware.emitron.ui.download.DownloadActionDelegate
-import javax.inject.Inject
 
 /**
  * Parent Viewmodel for all fragment
  *
  * @param loginRepository [LoginRepository] to verify/get user login details
  */
-class MainViewModel @Inject constructor(
+class MainViewModel @ViewModelInject constructor(
   private val loginRepository: LoginRepository,
   private val settingsRepository: SettingsRepository,
   private val downloadActionDelegate: DownloadActionDelegate

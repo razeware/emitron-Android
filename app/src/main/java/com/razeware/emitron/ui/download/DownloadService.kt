@@ -21,7 +21,7 @@ import com.razeware.emitron.data.settings.SettingsRepository
 import com.razeware.emitron.model.DownloadState
 import com.razeware.emitron.notifications.NotificationChannels
 import com.razeware.emitron.ui.download.workers.UpdateDownloadWorker
-import dagger.android.AndroidInjection
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -34,6 +34,7 @@ typealias ExoDownloadService = com.google.android.exoplayer2.offline.DownloadSer
 /**
  * Content Download Service
  */
+@AndroidEntryPoint
 class DownloadService : ExoDownloadService(
   FOREGROUND_NOTIFICATION_ID,
   DEFAULT_FOREGROUND_NOTIFICATION_UPDATE_INTERVAL,
@@ -66,7 +67,6 @@ class DownloadService : ExoDownloadService(
    * See [DownloadService.onCreate]
    */
   override fun onCreate() {
-    AndroidInjection.inject(this)
     super.onCreate()
     notificationHelper = DownloadNotificationHelper(
       this,

@@ -1,44 +1,28 @@
 package com.razeware.emitron
 
 import android.app.Application
+import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import androidx.work.WorkManager
-import com.razeware.emitron.di.DaggerAppComponent
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
+import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
 /**
  * Application class for Emitron
  */
-class EmitronApplication : Application(), HasAndroidInjector {
+@HiltAndroidApp
+class EmitronApplication : Application(), Configuration.Provider {
 
   /**
-   * Injector for Android components
-   */
+   * Used to inject WorkManager workers using Hilt.
+   * */
   @Inject
-  lateinit var androidInjector: DispatchingAndroidInjector<Any>
+  lateinit var workerFactory: HiltWorkerFactory
 
   /**
-   * Delegate class to handle app lifecycle events
-   */
-  @Inject
-  lateinit var appLifeCycleDelegate: AppLifeCycleDelegate
-
-  /**
-   * See [Application.onCreate]
-   */
-  override fun onCreate() {
-    super.onCreate()
-    DaggerAppComponent.builder().app(this)
+   * Provides a simple configuration to build Workers with Hilt.
+   * */
+  override fun getWorkManagerConfiguration() =
+    Configuration.Builder()
+      .setWorkerFactory(workerFactory)
       .build()
-      .inject(this)
-  }
-
-  /**
-   * @return injector for Android components
-   */
-  override fun androidInjector(): AndroidInjector<Any> = androidInjector
-
 }

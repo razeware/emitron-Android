@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo.*
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -18,7 +19,6 @@ import com.google.android.material.shape.ShapeAppearanceModel
 import com.razeware.emitron.MainViewModel
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.FragmentLibraryBinding
-import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.ui.common.BottomMarginDecoration
 import com.razeware.emitron.ui.common.ProgressDelegate
@@ -27,26 +27,18 @@ import com.razeware.emitron.ui.content.ContentPagedFragment
 import com.razeware.emitron.ui.library.search.RecentSearchAdapter
 import com.razeware.emitron.utils.UiStateManager
 import com.razeware.emitron.utils.extensions.*
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 
 /**
  * Library view
  */
-class LibraryFragment : DaggerFragment() {
+@AndroidEntryPoint
+class LibraryFragment : Fragment() {
 
-  /**
-   * Custom factory for viewmodel
-   *
-   * Custom factory provides app related dependencies
-   */
-  @Inject
-  lateinit var viewModelFactory: ViewModelFactory
+  private val viewModel: LibraryViewModel by viewModels()
 
-  private val viewModel: LibraryViewModel by viewModels { viewModelFactory }
-
-  private val parentViewModel: MainViewModel by activityViewModels { viewModelFactory }
+  private val parentViewModel: MainViewModel by activityViewModels()
 
   private lateinit var binding: FragmentLibraryBinding
 

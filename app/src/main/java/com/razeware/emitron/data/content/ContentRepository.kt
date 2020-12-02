@@ -5,7 +5,6 @@ import androidx.annotation.MainThread
 import androidx.lifecycle.Transformations
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
-import com.razeware.emitron.data.settings.SettingsPrefs
 import com.razeware.emitron.model.Content
 import com.razeware.emitron.model.Contents
 import com.razeware.emitron.model.Data
@@ -20,7 +19,7 @@ import javax.inject.Inject
 class ContentRepository @Inject constructor(
   private val api: ContentApi,
   private val threadManager: ThreadManager,
-  private val settingsPref: SettingsPrefs,
+  private val settingsPref: com.raywenderlich.android.preferences.GeneralSettingsPrefs,
   private val contentDataSourceLocal: ContentDataSourceLocal
 ) {
 

@@ -9,31 +9,23 @@ import android.view.ViewGroup
 import android.view.WindowInsets
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.work.WorkManager
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.FragmentLoginBinding
-import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
 import com.razeware.emitron.ui.download.workers.VerifyDownloadWorker
 import com.razeware.emitron.utils.extensions.*
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Login view
  */
-class LoginFragment : DaggerFragment() {
+@AndroidEntryPoint
+class LoginFragment : Fragment() {
 
-  /**
-   * Custom factory for viewmodel
-   *
-   * Custom factory provides app related dependencies
-   */
-  @Inject
-  lateinit var viewModelFactory: ViewModelFactory
-
-  private val viewModel: LoginViewModel by viewModels { viewModelFactory }
+  private val viewModel: LoginViewModel by viewModels()
 
   private val guardpostDelegate: GuardpostDelegate by lazy {
     GuardpostDelegate(requireContext())

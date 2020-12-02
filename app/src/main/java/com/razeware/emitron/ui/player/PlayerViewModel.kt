@@ -1,5 +1,6 @@
 package com.razeware.emitron.ui.player
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,12 +21,11 @@ import org.threeten.bp.LocalDateTime
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
-import javax.inject.Inject
 
 /**
  * ViewModel for Player view
  */
-class PlayerViewModel @Inject constructor(
+class PlayerViewModel @ViewModelInject constructor(
   private val repository: VideoRepository,
   private val bookmarkActionDelegate: BookmarkActionDelegate,
   private val settingsRepository: SettingsRepository,

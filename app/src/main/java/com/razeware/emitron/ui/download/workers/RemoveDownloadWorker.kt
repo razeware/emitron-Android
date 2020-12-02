@@ -1,30 +1,24 @@
 package com.razeware.emitron.ui.download.workers
 
 import android.content.Context
+import androidx.hilt.Assisted
+import androidx.hilt.work.WorkerInject
 import androidx.work.*
 import com.razeware.emitron.data.download.DownloadRepository
 import com.razeware.emitron.ui.download.DownloadService
 import com.razeware.emitron.ui.download.workers.StartDownloadWorker.Companion.DOWNLOAD_EPISODE_ID
-import com.razeware.emitron.utils.extensions.injectWorker
-import javax.inject.Inject
 
 /**
  * Worker for stopping downloads
  */
-class RemoveDownloadWorker(
-  private val appContext: Context,
-  workerParameters: WorkerParameters
-) : CoroutineWorker(appContext, workerParameters) {
-
+class RemoveDownloadWorker @WorkerInject constructor(
+  @Assisted val appContext: Context,
+  @Assisted workerParameters: WorkerParameters,
   /**
    * Download repository
    */
-  @Inject
-  lateinit var downloadRepository: DownloadRepository
-
-  init {
-    appContext.injectWorker(this)
-  }
+  val downloadRepository: DownloadRepository
+) : CoroutineWorker(appContext, workerParameters) {
 
   /**
    * See [Worker.doWork]

@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.work.WorkManager
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.FragmentBookmarksBinding
-import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
 import com.razeware.emitron.model.CompletionStatus
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.model.isCompleted
@@ -23,13 +23,13 @@ import com.razeware.emitron.ui.mytutorial.MyTutorialFragmentDirections
 import com.razeware.emitron.ui.player.workers.UpdateOfflineProgressWorker
 import com.razeware.emitron.utils.UiStateManager
 import com.razeware.emitron.utils.extensions.*
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * In-Progress/Completed view
  */
-class ProgressionFragment : DaggerFragment() {
+@AndroidEntryPoint
+class ProgressionFragment : Fragment() {
 
   companion object {
 
@@ -48,15 +48,7 @@ class ProgressionFragment : DaggerFragment() {
     }
   }
 
-  /**
-   * Custom factory for viewmodel
-   *
-   * Custom factory provides app related dependencies
-   */
-  @Inject
-  lateinit var viewModelFactory: ViewModelFactory
-
-  private val viewModel: ProgressionViewModel by viewModels { viewModelFactory }
+  private val viewModel: ProgressionViewModel by viewModels()
 
   private var completionStatus = CompletionStatus.Completed
 

@@ -1,5 +1,6 @@
 package com.razeware.emitron.ui.mytutorial.progressions
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.razeware.emitron.data.progressions.ProgressionRepository
@@ -10,12 +11,11 @@ import com.razeware.emitron.utils.BoundaryCallbackNotifier
 import kotlinx.coroutines.launch
 import org.threeten.bp.Clock
 import org.threeten.bp.LocalDateTime
-import javax.inject.Inject
 
 /**
  * ViewModel for content in progress/completed
  */
-class ProgressionViewModel @Inject constructor(
+class ProgressionViewModel @ViewModelInject constructor(
   private val repository: ProgressionRepository,
   private val contentPagedViewModel: ContentPagedViewModel,
   private val progressionActionDelegate: ProgressionActionDelegate,
