@@ -4,7 +4,6 @@
   <dimen name="largeMargin">32dp</dimen>
   <dimen name="smallMargin">6dp</dimen>
   <dimen name="ratingPromptMargin">40dp</dimen>
-  <dimen name="promptCornerRadius">12dp</dimen>
   <dimen name="buttonSize">40dp</dimen>
   <dimen name="reviewPromptImageHeight">150dp</dimen>
   <dimen name="ratePromptMessageTextSize">16sp</dimen>
