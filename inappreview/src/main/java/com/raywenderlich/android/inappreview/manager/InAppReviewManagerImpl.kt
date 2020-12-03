@@ -1,11 +1,16 @@
 package com.raywenderlich.android.inappreview.manager
 
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import com.google.android.play.core.review.ReviewInfo
 import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.tasks.Task
 import com.raywenderlich.android.inappreview.BuildConfig
 import com.raywenderlich.android.inappreview.preferences.InAppReviewPreferences
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.abs
@@ -18,6 +23,7 @@ import kotlin.math.abs
  * @property reviewInfo - The info for the app that enables In-App Review calls.
  * */
 class InAppReviewManagerImpl @Inject constructor(
+  @ApplicationContext private val context: Context,
   private val reviewManager: ReviewManager,
   private val inAppReviewPreferences: InAppReviewPreferences
 ) : InAppReviewManager {
@@ -67,11 +73,45 @@ class InAppReviewManagerImpl @Inject constructor(
    * */
   override fun startReview(activity: Activity) {
     if (reviewInfo != null) {
-      reviewManager.launchReviewFlow(activity, reviewInfo).addOnCompleteListener {
-        if (BuildConfig.DEBUG && it.isComplete && it.isSuccessful) {
-          Log.d(KEY_REVIEW, "Review complete: ${it.isComplete}, successful: ${it.isSuccessful}")
-        }
+      reviewManager.launchReviewFlow(activity, reviewInfo).addOnCompleteListener { reviewFlow ->
+        onReviewFlowLaunchCompleted(reviewFlow)
       }
+    } else {
+      sendUserToPlayStore()
+    }
+  }
+
+  private fun onReviewFlowLaunchCompleted(reviewFlow: Task<Void>) {
+    if (reviewFlow.isSuccessful) {
+      logSuccess()
+    } else {
+      sendUserToPlayStore()
+    }
+  }
+
+  private fun sendUserToPlayStore() {
+    val appPackageName = context.packageName
+
+    try {
+      context.startActivity(
+        Intent(
+          Intent.ACTION_VIEW,
+          Uri.parse("market://details?id=$appPackageName")
+        )
+      )
+    } catch (error: Error) {
+      context.startActivity(
+        Intent(
+          Intent.ACTION_VIEW,
+          Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")
+        )
+      )
+    }
+  }
+
+  private fun logSuccess() {
+    if (BuildConfig.DEBUG) {
+      Log.d(KEY_REVIEW, "Review complete!")
     }
   }
 }

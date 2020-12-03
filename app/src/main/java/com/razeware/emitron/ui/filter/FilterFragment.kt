@@ -64,9 +64,16 @@ class FilterFragment : Fragment() {
     loadFilters()
   }
 
+  /**
+   * Any time the screen loads, we check if the device supports cutouts and try to adjust our
+   * padding accordingly.
+   * */
   override fun onResume() {
     super.onResume()
-    setupWindowInsets()
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+      setupWindowInsets()
+    }
   }
 
   /**
