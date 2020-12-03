@@ -1,0 +1,36 @@
+plugins {
+  id 'com.android.library'
+}
+
+android {
+  compileSdkVersion versions.compileSdk
+
+  defaultConfig {
+    minSdkVersion versions.minSdk
+    targetSdkVersion versions.targetSdk
+    versionCode 1
+    versionName "1.0"
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    consumerProguardFiles "consumer-rules.pro"
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+  }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+}
+
+dependencies {
+  implementation "androidx.appcompat:appcompat:${versions.appCompat}"
+  implementation "androidx.constraintlayout:constraintlayout:${versions.constraintLayout}"
+  implementation "androidx.core:core-ktx:${versions.coreKtx}"
+  implementation "androidx.cardview:cardview:${versions.cardView}"
+  implementation "com.google.android.material:material:${versions.materialDesign}"
+}

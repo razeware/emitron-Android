@@ -6,22 +6,20 @@ import com.razeware.emitron.data.login.LoginPrefs
 import com.razeware.emitron.network.RequestHelper
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 
 @Module
-abstract class SessionModule {
+@InstallIn(ApplicationComponent::class)
+class SessionModule {
 
-  @Module
-  companion object {
-
-    @JvmStatic
-    @Provides
-    fun provideRequestHelper(
-      application: Application,
-      loginPrefs: LoginPrefs
-    ): RequestHelper =
-      RequestHelper(
-        appToken = application.getString(R.string.app_token),
-        apiAuthToken = loginPrefs.authToken()
-      )
-  }
+  @Provides
+  fun provideRequestHelper(
+    application: Application,
+    loginPrefs: LoginPrefs
+  ): RequestHelper =
+    RequestHelper(
+      appToken = application.getString(R.string.app_token),
+      apiAuthToken = loginPrefs.authToken()
+    )
 }

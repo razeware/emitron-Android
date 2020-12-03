@@ -1,10 +1,12 @@
 package com.razeware.emitron.ui.collection
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.offline.Download
+import com.raywenderlich.android.inappreview.InAppReviewView
 import com.razeware.emitron.data.content.ContentRepository
 import com.razeware.emitron.model.Content
 import com.razeware.emitron.model.ContentType
@@ -28,12 +30,11 @@ import org.threeten.bp.Clock
 import org.threeten.bp.LocalDateTime
 import retrofit2.HttpException
 import java.io.IOException
-import javax.inject.Inject
 
 /**
  * ViewModel for content detail view
  */
-class CollectionViewModel @Inject constructor(
+class CollectionViewModel @ViewModelInject constructor(
   private val repository: ContentRepository,
   private val bookmarkActionDelegate: BookmarkActionDelegate,
   private val progressionActionDelegate: ProgressionActionDelegate,
@@ -117,6 +118,15 @@ class CollectionViewModel @Inject constructor(
    */
   val collectionEpisodes: LiveData<List<CollectionEpisode>> = _collectionEpisodes
 
+  private lateinit var inAppReviewView: InAppReviewView
+
+  /**
+   * Sets an interface that backs up the In App Review prompts.
+   * */
+  fun setInAppReviewView(inAppReviewView: InAppReviewView) {
+    this.inAppReviewView = inAppReviewView
+  }
+
   /**
    * Get collection episodes
    */
@@ -137,6 +147,18 @@ class CollectionViewModel @Inject constructor(
       }
 
       uiState.value = UiStateManager.UiState.LOADED
+      checkIfNeedsReviewPrompt()
+    }
+  }
+
+  /**
+   * Checks if the user finished the entire course & if we need to show a review prompt.
+   * */
+  fun checkIfNeedsReviewPrompt() {
+    val value = collection.value ?: return
+
+    if (value.isProgressionFinished()) {
+      inAppReviewView.showReviewFlow()
     }
   }
 

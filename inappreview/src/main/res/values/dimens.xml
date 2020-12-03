@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="defaultMargin">16dp</dimen>
+  <dimen name="largeMargin">32dp</dimen>
+  <dimen name="smallMargin">6dp</dimen>
+  <dimen name="ratingPromptMargin">40dp</dimen>
+  <dimen name="buttonSize">40dp</dimen>
+  <dimen name="reviewPromptImageHeight">150dp</dimen>
+  <dimen name="ratePromptMessageTextSize">16sp</dimen>
+  <dimen name="ratePromptTitleTextSize">20sp</dimen>
+  <dimen name="ratePromptFaceSize">50dp</dimen>
+  <dimen name="promptProgressMargin">12dp</dimen>
+  <dimen name="promptButtonTextSize">14sp</dimen>
+  <dimen name="ratePromptWidth">300dp</dimen>
+  <dimen name="ratePromptHeight">350dp</dimen>
+  <dimen name="buttonMarginTop">12dp</dimen>
+</resources>

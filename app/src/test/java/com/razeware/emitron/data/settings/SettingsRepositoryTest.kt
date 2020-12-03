@@ -2,6 +2,7 @@ package com.razeware.emitron.data.settings
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.*
+import com.raywenderlich.android.preferences.GeneralSettingsPrefs
 import com.razeware.emitron.data.content.ContentDataSourceLocal
 import com.razeware.emitron.data.login.LoginPrefs
 import com.razeware.emitron.data.progressions.ProgressionDataSourceLocal
@@ -19,7 +20,7 @@ class SettingsRepositoryTest {
 
   private lateinit var settingsRepository: SettingsRepository
 
-  private val settingsPrefs: SettingsPrefs = mock()
+  private val settingsPrefs: GeneralSettingsPrefs = mock()
 
   private val loginPrefs: LoginPrefs = mock()
 
@@ -221,10 +222,10 @@ class SettingsRepositoryTest {
     verifyNoMoreInteractions(settingsPrefs)
   }
 
-	@Test
-	fun getLoggedInUser() {
-		settingsRepository.getLoggedInUser()
-		verify(loginPrefs).getLoggedInUser()
-		verifyNoMoreInteractions(loginPrefs)
-	}
+  @Test
+  fun getLoggedInUser() {
+    settingsRepository.getLoggedInUser()
+    verify(loginPrefs).getLoggedInUser()
+    verifyNoMoreInteractions(loginPrefs)
+  }
 }

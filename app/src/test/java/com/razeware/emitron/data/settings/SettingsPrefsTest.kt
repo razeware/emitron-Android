@@ -1,7 +1,8 @@
 package com.razeware.emitron.data.settings
 
 import com.nhaarman.mockitokotlin2.*
-import com.razeware.emitron.data.prefs.PrefUtils
+import com.raywenderlich.android.preferences.GeneralSettingsPrefs
+import com.raywenderlich.android.preferences.PrefUtils
 import com.razeware.emitron.utils.isEqualTo
 import org.junit.Before
 import org.junit.Test
@@ -9,7 +10,7 @@ import org.mockito.ArgumentMatchers
 
 class SettingsPrefsTest {
 
-  private lateinit var settingsPref: SettingsPrefs
+  private lateinit var settingsPref: GeneralSettingsPrefs
 
   private val prefUtils: PrefUtils = mock()
 
@@ -20,7 +21,7 @@ class SettingsPrefsTest {
     whenever(prefUtils.set(any(), ArgumentMatchers.anyInt())).doReturn(prefUtils)
     whenever(prefUtils.set(any(), ArgumentMatchers.anyFloat())).doReturn(prefUtils)
     whenever(prefUtils.commit()).doReturn(t = true)
-    settingsPref = SettingsPrefs(prefUtils)
+    settingsPref = GeneralSettingsPrefs(prefUtils)
   }
 
   @Test

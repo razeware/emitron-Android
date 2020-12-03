@@ -1,10 +1,15 @@
 package com.razeware.emitron.ui.filter
 
+import android.annotation.TargetApi
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
 import androidx.core.view.ViewCompat
+import androidx.core.view.doOnLayout
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -15,31 +20,22 @@ import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.razeware.emitron.MainViewModel
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.FragmentFilterBinding
-import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
 import com.razeware.emitron.model.ContentType
 import com.razeware.emitron.ui.common.getDefaultAppBarConfiguration
 import com.razeware.emitron.utils.extensions.observe
 import com.razeware.emitron.utils.extensions.setDataBindingView
 import com.razeware.emitron.utils.extensions.showErrorSnackbar
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Filter view
  */
-class FilterFragment : DaggerFragment() {
+@AndroidEntryPoint
+class FilterFragment : Fragment() {
 
-  /**
-   * Custom factory for viewmodel
-   *
-   * Custom factory provides app related dependencies
-   */
-  @Inject
-  lateinit var viewModelFactory: ViewModelFactory
+  private val viewModel: FilterViewModel by viewModels()
 
-  private val viewModel: FilterViewModel by viewModels { viewModelFactory }
-
-  private val parentViewModel: MainViewModel by activityViewModels { viewModelFactory }
+  private val parentViewModel: MainViewModel by activityViewModels()
 
   private val filterAdapter by lazy(LazyThreadSafetyMode.NONE) { createFilterAdapter() }
 
@@ -66,6 +62,39 @@ class FilterFragment : DaggerFragment() {
     initToolbar()
     initUi()
     loadFilters()
+  }
+
+  /**
+   * Any time the screen loads, we check if the device supports cutouts and try to adjust our
+   * padding accordingly.
+   * */
+  override fun onResume() {
+    super.onResume()
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+      setupWindowInsets()
+    }
+  }
+
+  /**
+   * Similarly to what we do on the [MainActivity], we add insets to this screen if there's a bottom
+   * navigation bar.
+   * */
+  @TargetApi(Build.VERSION_CODES.P)
+  private fun setupWindowInsets() {
+    binding.filterRoot.doOnLayout {
+      val inset = binding.filterRoot.rootWindowInsets
+
+      val cutoutSize = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        inset?.getInsets(WindowInsets.Type.navigationBars())?.bottom
+      } else {
+        inset?.displayCutout?.safeInsetBottom
+      }
+
+      if (cutoutSize != null) {
+        binding.bottomPadding = cutoutSize
+      }
+    }
   }
 
   private fun initToolbar() {

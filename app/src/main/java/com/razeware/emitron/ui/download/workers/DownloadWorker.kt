@@ -2,6 +2,8 @@ package com.razeware.emitron.ui.download.workers
 
 import android.content.Context
 import android.net.Uri
+import androidx.hilt.Assisted
+import androidx.hilt.work.WorkerInject
 import androidx.work.*
 import com.razeware.emitron.data.download.DownloadRepository
 import com.razeware.emitron.data.settings.SettingsRepository
@@ -12,32 +14,22 @@ import com.razeware.emitron.model.entity.inProgress
 import com.razeware.emitron.model.entity.isPaused
 import com.razeware.emitron.model.isHd
 import com.razeware.emitron.ui.download.DownloadService
-import com.razeware.emitron.utils.extensions.injectWorker
-import javax.inject.Inject
 
 /**
  * Worker for processing queued Downloads
  */
-class DownloadWorker(
-  private val appContext: Context,
-  workerParameters: WorkerParameters
-) : CoroutineWorker(appContext, workerParameters) {
-
+class DownloadWorker @WorkerInject constructor(
+  @Assisted val appContext: Context,
+  @Assisted workerParameters: WorkerParameters,
   /**
    * Download repository
    */
-  @Inject
-  lateinit var downloadRepository: DownloadRepository
-
+  val downloadRepository: DownloadRepository,
   /**
    * Settings repository
    */
-  @Inject
-  lateinit var settingsRepository: SettingsRepository
-
-  init {
-    appContext.injectWorker(this)
-  }
+  val settingsRepository: SettingsRepository
+) : CoroutineWorker(appContext, workerParameters) {
 
   /**
    * Get all queued downloads and add to them to [DownloadService]

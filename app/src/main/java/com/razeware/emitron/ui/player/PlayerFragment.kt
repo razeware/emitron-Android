@@ -35,7 +35,6 @@ import com.razeware.emitron.BuildConfig
 import com.razeware.emitron.MainViewModel
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.FragmentPlayerBinding
-import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.notifications.NotificationChannels
 import com.razeware.emitron.ui.common.getDefaultAppBarConfiguration
@@ -46,14 +45,15 @@ import com.razeware.emitron.utils.Logger
 import com.razeware.emitron.utils.createCountDownTimer
 import com.razeware.emitron.utils.createMainThreadScheduledHandler
 import com.razeware.emitron.utils.extensions.*
-import dagger.android.support.DaggerFragment
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 
 /**
  * Player view
  */
-class PlayerFragment : DaggerFragment() {
+@AndroidEntryPoint
+class PlayerFragment : Fragment() {
 
   /**
    * Playback constants
@@ -68,22 +68,27 @@ class PlayerFragment : DaggerFragment() {
        * 0.5 times of normal speed
        */
       const val HALF: Float = 0.5f
+
       /**
        * 0.75 times of normal speed
        */
       const val NORMALx0_75: Float = 0.5f
+
       /**
        * Normal playback speed
        */
       const val NORMAL: Float = 1.0f
+
       /**
        * 1.25 times of normal speed
        */
       const val NORMALx1_25: Float = 1.25f
+
       /**
        * 1.5 times of normal speed
        */
       const val NORMALx1_50: Float = 1.75f
+
       /**
        * Double of normal speed
        */
@@ -98,6 +103,7 @@ class PlayerFragment : DaggerFragment() {
        * Full HD
        */
       const val FHD: Int = 1080
+
       /**
        * HD
        */
@@ -107,14 +113,17 @@ class PlayerFragment : DaggerFragment() {
        * quarter of a Full HD
        */
       const val QHD: Int = 540
+
       /**
        * one ninth of a Full HD
        */
       const val NHD: Int = 360
+
       /**
        * quarter of VGA
        */
       const val QVGA: Int = 240
+
       /**
        * AUTO
        */
@@ -198,15 +207,6 @@ class PlayerFragment : DaggerFragment() {
     const val PLAYBACK_NOTIFICATION_ID: Int = 8287
   }
 
-
-  /**
-   * Custom factory for viewmodel
-   *
-   * Custom factory provides app related dependencies
-   */
-  @Inject
-  lateinit var viewModelFactory: ViewModelFactory
-
   /**
    * Cache for offline playback
    */
@@ -219,9 +219,9 @@ class PlayerFragment : DaggerFragment() {
   @Inject
   lateinit var logger: Logger
 
-  private val viewModel: PlayerViewModel by viewModels { viewModelFactory }
+  private val viewModel: PlayerViewModel by viewModels()
 
-  private val parentViewModel: MainViewModel by activityViewModels { viewModelFactory }
+  private val parentViewModel: MainViewModel by activityViewModels()
 
   private val args by navArgs<PlayerFragmentArgs>()
 

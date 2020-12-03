@@ -6,6 +6,7 @@ import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import com.razeware.emitron.data.content.ContentDataSourceLocal
 import com.razeware.emitron.model.*
+import com.razeware.emitron.model.entity.ContentDetail
 import com.razeware.emitron.model.entity.Progression
 import com.razeware.emitron.model.entity.WatchStat
 import com.razeware.emitron.utils.BoundaryCallbackNotifier
@@ -255,5 +256,12 @@ class ProgressionRepository @Inject constructor(
     return withContext(threadManager.db) {
       progressionDataSource.deleteWatchStats()
     }
+  }
+
+  /**
+   * Fetches the contents by an id.
+   * */
+  suspend fun getContent(contentId: String): ContentDetail? {
+    return contentDataSourceLocal.getContent(contentId)
   }
 }

@@ -1,29 +1,22 @@
 package com.razeware.emitron.ui.settings
 
 import android.content.Context
+import androidx.hilt.Assisted
+import androidx.hilt.work.WorkerInject
 import androidx.work.*
 import com.razeware.emitron.data.settings.SettingsRepository
 import com.razeware.emitron.ui.download.DownloadService
-import com.razeware.emitron.utils.extensions.injectWorker
-import javax.inject.Inject
 
 /**
  * Worker for stopping downloads
  */
-class SignOutWorker(
-  private val appContext: Context,
-  workerParameters: WorkerParameters
+class SignOutWorker @WorkerInject constructor(
+  /** Context */
+  @Assisted val appContext: Context,
+  @Assisted workerParameters: WorkerParameters,
+  /** Settings Repository */
+  val settingsRepository: SettingsRepository
 ) : CoroutineWorker(appContext, workerParameters) {
-
-  /**
-   * Settings repository
-   */
-  @Inject
-  lateinit var settingsRepository: SettingsRepository
-
-  init {
-    appContext.injectWorker(this)
-  }
 
   /**
    * See [Worker.doWork]

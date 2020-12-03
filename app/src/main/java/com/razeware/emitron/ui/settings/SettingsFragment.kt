@@ -1,12 +1,17 @@
 package com.razeware.emitron.ui.settings
 
+import android.annotation.TargetApi
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.doOnLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
@@ -17,7 +22,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.razeware.emitron.BuildConfig
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.FragmentSettingsBinding
-import com.razeware.emitron.di.modules.viewmodel.ViewModelFactory
 import com.razeware.emitron.ui.common.getDefaultAppBarConfiguration
 import com.razeware.emitron.ui.download.workers.PendingDownloadWorker
 import com.razeware.emitron.ui.login.GuardpostDelegate
@@ -27,24 +31,17 @@ import com.razeware.emitron.ui.settings.SettingsBottomSheetDialogFragment.Compan
 import com.razeware.emitron.ui.settings.SettingsBottomSheetDialogFragment.Companion.playbackSubtitleLanguageToResIdMap
 import com.razeware.emitron.utils.extensions.observe
 import com.razeware.emitron.utils.extensions.setDataBindingView
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Settings UI
  */
-class SettingsFragment : DaggerFragment() {
+@AndroidEntryPoint
+class SettingsFragment : Fragment() {
 
-  /**
-   * Custom factory for viewmodel
-   *
-   * Custom factory provides app related dependencies
-   */
-  @Inject
-  lateinit var viewModelFactory: ViewModelFactory
-
-  private val viewModel:
-      SettingsViewModel by navGraphViewModels(R.id.settings_navigation) { viewModelFactory }
+  private val viewModel: SettingsViewModel by navGraphViewModels(R.id.settings_navigation) {
+    defaultViewModelProviderFactory
+  }
 
   private lateinit var binding: FragmentSettingsBinding
 
@@ -64,7 +61,6 @@ class SettingsFragment : DaggerFragment() {
     return binding.root
   }
 
-
   /**
    * See [androidx.fragment.app.Fragment.onViewCreated]
    */
@@ -73,6 +69,39 @@ class SettingsFragment : DaggerFragment() {
     initUi()
     initObservers()
     viewModel.init()
+  }
+
+  /**
+   * Any time the screen loads, we check if the device supports cutouts and try to adjust our
+   * padding accordingly.
+   * */
+  override fun onResume() {
+    super.onResume()
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+      setupWindowInsets()
+    }
+  }
+
+  /**
+   * Similarly to what we do on the [MainActivity], we add insets to this screen if there's a bottom
+   * navigation bar.
+   * */
+  @TargetApi(Build.VERSION_CODES.P)
+  private fun setupWindowInsets() {
+    binding.settingsFooter.doOnLayout {
+      val inset = binding.settingsFooter.rootWindowInsets
+
+      val cutoutSize = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        inset?.getInsets(WindowInsets.Type.navigationBars())?.bottom
+      } else {
+        inset?.displayCutout?.safeInsetBottom
+      }
+
+      if (cutoutSize != null) {
+        binding.bottomPadding = cutoutSize
+      }
+    }
   }
 
   private fun initObservers() {

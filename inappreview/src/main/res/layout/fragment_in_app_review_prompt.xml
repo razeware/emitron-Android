@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/inAppReviewPromptRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:layout_gravity="center"
+  android:orientation="vertical"
+  app:cardElevation="0dp">
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+
+    <ImageView
+      android:id="@+id/sadFace"
+      android:layout_width="@dimen/ratePromptFaceSize"
+      android:layout_height="@dimen/ratePromptFaceSize"
+      android:layout_margin="@dimen/largeMargin"
+      android:src="@drawable/sad_face"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+      android:id="@+id/progressBar"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/promptProgressMargin"
+      android:src="@drawable/progress_black"
+      app:layout_constraintBottom_toBottomOf="@id/sadFace"
+      app:layout_constraintEnd_toStartOf="@id/happyFace"
+      app:layout_constraintStart_toEndOf="@id/sadFace"
+      app:layout_constraintTop_toTopOf="@id/sadFace" />
+
+    <ImageView
+      android:id="@+id/happyFace"
+      android:layout_width="@dimen/ratePromptFaceSize"
+      android:layout_height="@dimen/ratePromptFaceSize"
+      android:layout_margin="@dimen/largeMargin"
+      android:src="@drawable/happy_face"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+      android:id="@+id/reviewPromptTitle"
+      style="@style/Text.Headline"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/defaultMargin"
+      android:gravity="center_horizontal"
+      android:text="@string/inAppReviewTitle"
+      android:textColor="@color/textColorHeadline"
+      android:textSize="@dimen/ratePromptTitleTextSize"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/sadFace" />
+
+    <TextView
+      android:id="@+id/reviewPromptText"
+      style="@style/Text.Regular"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/defaultMargin"
+      android:gravity="center"
+      android:text="@string/inAppReviewMessage"
+      android:textSize="@dimen/ratePromptMessageTextSize"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/reviewPromptTitle" />
+
+    <androidx.cardview.widget.CardView
+      android:id="@+id/leaveReviewCard"
+      style="@style/Button.Colored"
+      android:layout_width="0dp"
+      android:layout_height="@dimen/buttonSize"
+      android:layout_marginHorizontal="@dimen/defaultMargin"
+      android:layout_marginTop="@dimen/largeMargin"
+      android:layout_marginBottom="@dimen/smallMargin"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/reviewPromptText">
+
+      <TextView
+        android:id="@+id/leaveReview"
+        style="@style/Button.Text.Inverse"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:text="@string/inAppReviewRateNow"
+        android:textSize="@dimen/promptButtonTextSize" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+      android:id="@+id/reviewLaterCard"
+      android:layout_width="0dp"
+      android:layout_height="@dimen/buttonSize"
+      android:layout_marginHorizontal="@dimen/defaultMargin"
+      android:layout_marginTop="@dimen/buttonMarginTop"
+      android:layout_marginBottom="@dimen/defaultMargin"
+      android:backgroundTint="@color/transparent"
+      android:paddingBottom="@dimen/defaultMargin"
+      app:cardElevation="0dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/leaveReviewCard">
+
+      <TextView
+        android:id="@+id/reviewLater"
+        style="@style/Button.Text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:text="@string/inAppReviewRateLater"
+        android:textSize="@dimen/promptButtonTextSize" />
+    </androidx.cardview.widget.CardView>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

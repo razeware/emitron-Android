@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
+import com.raywenderlich.android.inappreview.InAppReviewView
 import com.razeware.emitron.data.*
 import com.razeware.emitron.data.content.ContentRepository
 import com.razeware.emitron.data.login.LoginRepository
@@ -39,6 +40,8 @@ class CollectionViewModelTest {
 
   private val loginRepository: LoginRepository = mock()
 
+  private val inAppReviewView: InAppReviewView = mock()
+
   @get:Rule
   val instantTaskExecutorRule: InstantTaskExecutorRule = InstantTaskExecutorRule()
 
@@ -55,6 +58,8 @@ class CollectionViewModelTest {
         onboardingActionDelegate,
         permissionActionDelegate
       )
+
+    viewModel.setInAppReviewView(inAppReviewView)
   }
 
   /**
@@ -237,8 +242,7 @@ class CollectionViewModelTest {
               id = "7", type = "contents",
               attributes = Attributes(name = "seven"),
               relationships = Relationships()
-            )
-            ,
+            ),
             Data(
               id = "8", type = "contents",
               attributes = Attributes(name = "eight"),
