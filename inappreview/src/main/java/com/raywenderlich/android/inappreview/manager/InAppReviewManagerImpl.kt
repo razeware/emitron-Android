@@ -7,6 +7,7 @@ import android.net.Uri
 import android.util.Log
 import com.google.android.play.core.review.ReviewInfo
 import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.tasks.Task
 import com.raywenderlich.android.inappreview.BuildConfig
 import com.raywenderlich.android.inappreview.preferences.InAppReviewPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -72,13 +73,17 @@ class InAppReviewManagerImpl @Inject constructor(
    * */
   override fun startReview(activity: Activity) {
     if (reviewInfo != null) {
-      reviewManager.launchReviewFlow(activity, reviewInfo).addOnCompleteListener {
-        if (it.isComplete && it.isSuccessful) {
-          logSuccess()
-        } else if (!it.isSuccessful) {
-          sendUserToPlayStore()
-        }
+      reviewManager.launchReviewFlow(activity, reviewInfo).addOnCompleteListener { reviewFlow ->
+        onReviewFlowLaunchCompleted(reviewFlow)
       }
+    } else {
+      sendUserToPlayStore()
+    }
+  }
+
+  private fun onReviewFlowLaunchCompleted(reviewFlow: Task<Void>) {
+    if (reviewFlow.isSuccessful) {
+      logSuccess()
     } else {
       sendUserToPlayStore()
     }
