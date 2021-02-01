@@ -29,26 +29,26 @@
     <com.google.android.material.textview.MaterialTextView
       android:id="@+id/player_settings_quality"
       style="@style/TextAppearance.Headline.4.Inverse"
-      android:layout_width="0dp"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:gravity="center"
+      android:layout_marginEnd="@dimen/activity_horizontal_margin"
       android:text="@string/button_player_quality"
-      app:layout_constraintEnd_toStartOf="@+id/player_settings_play_back_speed"
-      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintBottom_toTopOf="@+id/player_settings_play_back_speed"
+      app:layout_constraintEnd_toStartOf="@+id/player_playback_quality_radio_group"
+      app:layout_constraintHorizontal_chainStyle="packed"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/button_player_settings_close" />
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed" />
 
     <RadioGroup
       android:id="@+id/player_playback_quality_radio_group"
-      android:layout_width="0dp"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_margin="@dimen/defaultMargin"
-      android:gravity="center_horizontal|top"
-      android:orientation="vertical"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="@id/player_settings_quality"
-      app:layout_constraintStart_toStartOf="@id/player_settings_quality"
-      app:layout_constraintTop_toBottomOf="@+id/player_settings_quality">
+      android:orientation="horizontal"
+      app:layout_constraintBottom_toBottomOf="@+id/player_settings_quality"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/player_settings_quality"
+      app:layout_constraintTop_toTopOf="@+id/player_settings_quality">
 
       <com.google.android.material.radiobutton.MaterialRadioButton
         android:id="@+id/button_player_settings_quality_auto"
@@ -96,28 +96,26 @@
     <com.google.android.material.textview.MaterialTextView
       android:id="@+id/player_settings_play_back_speed"
       style="@style/TextAppearance.Headline.4.Inverse"
-      android:layout_width="0dp"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:gravity="center"
+      android:layout_marginTop="@dimen/player_settings_button_row_margin_top"
+      android:layout_marginEnd="@dimen/button_padding_internal"
       android:text="@string/button_player_play_back_speed"
-      app:layout_constraintEnd_toStartOf="@+id/player_settings_auto_play"
-      app:layout_constraintHorizontal_bias="0.5"
-      app:layout_constraintStart_toEndOf="@+id/player_settings_quality"
-      app:layout_constraintTop_toBottomOf="@id/button_player_settings_close" />
+      app:layout_constraintBottom_toTopOf="@+id/player_settings_auto_play"
+      app:layout_constraintEnd_toEndOf="@id/player_settings_quality"
+      app:layout_constraintTop_toBottomOf="@+id/player_settings_quality" />
 
     <RadioGroup
       android:id="@+id/player_playback_speed_radio_group"
-      android:layout_width="0dp"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_margin="@dimen/defaultMargin"
-      android:gravity="center_horizontal|top"
-      android:orientation="vertical"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="@id/player_settings_play_back_speed"
+      android:orientation="horizontal"
+      app:layout_constraintBottom_toBottomOf="@+id/player_settings_play_back_speed"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0"
       app:layout_constraintHorizontal_chainStyle="packed"
-      app:layout_constraintStart_toStartOf="@id/player_settings_play_back_speed"
-      app:layout_constraintTop_toBottomOf="@+id/player_settings_play_back_speed">
+      app:layout_constraintStart_toStartOf="@id/player_playback_quality_radio_group"
+      app:layout_constraintTop_toTopOf="@+id/player_settings_play_back_speed">
 
       <com.google.android.material.radiobutton.MaterialRadioButton
         android:id="@+id/button_player_settings_speed_0_5x"
@@ -163,31 +161,32 @@
 
     </RadioGroup>
 
+
     <com.google.android.material.textview.MaterialTextView
       android:id="@+id/player_settings_auto_play"
       style="@style/TextAppearance.Headline.4.Inverse"
-      android:layout_width="0dp"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:gravity="center"
+      android:layout_marginTop="@dimen/player_settings_button_row_margin_top"
+      android:layout_marginEnd="@dimen/button_padding_internal"
       android:text="@string/button_player_auto_play"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.5"
-      app:layout_constraintStart_toEndOf="@id/player_settings_play_back_speed"
-      app:layout_constraintTop_toBottomOf="@id/button_player_settings_close" />
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@+id/player_settings_quality"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintHorizontal_chainStyle="packed"
+      app:layout_constraintTop_toBottomOf="@+id/player_settings_play_back_speed" />
 
     <RadioGroup
       android:id="@+id/player_auto_playback_radio_group"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      android:layout_margin="@dimen/defaultMargin"
-      android:gravity="center_horizontal|top"
-      android:orientation="vertical"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="@id/player_settings_auto_play"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintBottom_toBottomOf="@+id/player_settings_auto_play"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0"
       app:layout_constraintHorizontal_chainStyle="packed"
-      app:layout_constraintStart_toStartOf="@id/player_settings_auto_play"
-      app:layout_constraintTop_toBottomOf="@+id/player_settings_auto_play">
+      app:layout_constraintStart_toStartOf="@id/player_playback_quality_radio_group"
+      app:layout_constraintTop_toTopOf="@+id/player_settings_auto_play">
 
       <com.google.android.material.radiobutton.MaterialRadioButton
         android:id="@+id/button_player_settings_auto_play_on"

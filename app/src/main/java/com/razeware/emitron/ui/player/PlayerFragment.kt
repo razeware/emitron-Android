@@ -258,13 +258,13 @@ class PlayerFragment : Fragment() {
 
   private lateinit var binding: FragmentPlayerBinding
 
-  private lateinit var playerNextButton: MaterialButton
+  private lateinit var playerNextButton: View
 
-  private lateinit var castNextButton: MaterialButton
+  private lateinit var castNextButton: View
 
   private lateinit var playerBookmarkButton: MaterialButton
 
-  private lateinit var playerPlaylistButton: MaterialButton
+  private lateinit var playerPlaylistButton: View
 
   private lateinit var settingsBottomSheet: BottomSheetDialog
 
@@ -314,7 +314,6 @@ class PlayerFragment : Fragment() {
     initUi()
     initObservers()
     startPlayback(args.playlist)
-    requestLandscapeOrientation()
   }
 
   private fun initToolbar() {
@@ -337,8 +336,8 @@ class PlayerFragment : Fragment() {
   private fun initUi() {
     initToolbar()
     with(binding.playerView) {
-      val buttonPlayerSubtitles: MaterialButton =
-        findViewById(R.id.button_player_subtitles)
+      val buttonPlayerSubtitles =
+        findViewById<View>(R.id.button_player_subtitles)
       buttonPlayerSubtitles.setOnClickListener {
         showSubtitleBottomSheet()
       }
@@ -348,9 +347,6 @@ class PlayerFragment : Fragment() {
       playerSettings.setOnClickListener {
         showPlayerSettingsBottomSheet()
       }
-
-      playerBookmarkButton = findViewById(R.id.button_player_bookmark)
-      playerBookmarkButton.setOnClickListener { viewModel.updateContentBookmark() }
 
       playbackBufferingProgress =
         findViewById(R.id.player_play_back_buffering)
@@ -576,16 +572,13 @@ class PlayerFragment : Fragment() {
   }
 
   private fun setNextPlaybackItem(nextEpisode: Data?) {
-    val visibility =
-      if (null != nextEpisode) {
-        playerNextButton.text =
-          getString(
-            R.string.next_episode, nextEpisode.getName()
-          )
-        View.VISIBLE
-      } else {
-        View.GONE
-      }
+    val visibility = if (nextEpisode != null) View.VISIBLE else View.GONE
+
+    if (playerNextButton is MaterialButton && nextEpisode != null) {
+      (playerNextButton as? MaterialButton)?.text =
+        getString(R.string.next_episode, nextEpisode.getName())
+    }
+
     playerNextButton.visibility = visibility
     castNextButton.visibility = visibility
   }
