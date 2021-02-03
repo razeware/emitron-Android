@@ -38,7 +38,6 @@ import com.razeware.emitron.databinding.FragmentPlayerBinding
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.notifications.NotificationChannels
 import com.razeware.emitron.ui.common.getDefaultAppBarConfiguration
-import com.razeware.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.razeware.emitron.ui.player.cast.Episode
 import com.razeware.emitron.ui.player.workers.UpdateOfflineProgressWorker
 import com.razeware.emitron.utils.Logger
@@ -262,8 +261,6 @@ class PlayerFragment : Fragment() {
 
   private lateinit var castNextButton: View
 
-  private lateinit var playerBookmarkButton: MaterialButton
-
   private lateinit var playerPlaylistButton: View
 
   private lateinit var settingsBottomSheet: BottomSheetDialog
@@ -342,7 +339,7 @@ class PlayerFragment : Fragment() {
         showSubtitleBottomSheet()
       }
 
-      val playerSettings: MaterialButton =
+      val playerSettings: View =
         findViewById(R.id.button_player_settings)
       playerSettings.setOnClickListener {
         showPlayerSettingsBottomSheet()
@@ -491,26 +488,6 @@ class PlayerFragment : Fragment() {
       setNextPlaybackItem(it)
     }
 
-    viewModel.bookmarkActionResult.observe(viewLifecycleOwner) {
-      when (it?.getContentIfNotHandled()) {
-        BookmarkActionDelegate.BookmarkActionResult.BookmarkCreated -> {
-          playerBookmarkButton.setIconTintResource(R.color.colorPrimary)
-          showSuccessSnackbar(getString(R.string.message_bookmark_created))
-        }
-        BookmarkActionDelegate.BookmarkActionResult.BookmarkFailedToCreate ->
-          showErrorSnackbar(getString(R.string.message_bookmark_failed_to_create))
-        BookmarkActionDelegate.BookmarkActionResult.BookmarkDeleted -> {
-          playerBookmarkButton.setIconTintResource(R.color.colorIcon)
-          showSuccessSnackbar(getString(R.string.message_bookmark_deleted))
-        }
-        BookmarkActionDelegate.BookmarkActionResult.BookmarkFailedToDelete ->
-          showErrorSnackbar(getString(R.string.message_bookmark_failed_to_delete))
-        null -> {
-          // Houston, We Have a Problem!
-        }
-      }
-    }
-
     viewModel.serverContentProgress.observe(viewLifecycleOwner) {
       it?.let {
         playerManager.seekTo(it)
@@ -572,15 +549,15 @@ class PlayerFragment : Fragment() {
   }
 
   private fun setNextPlaybackItem(nextEpisode: Data?) {
-    val visibility = if (nextEpisode != null) View.VISIBLE else View.GONE
+    val isVisible = nextEpisode != null
 
     if (playerNextButton is MaterialButton && nextEpisode != null) {
       (playerNextButton as? MaterialButton)?.text =
         getString(R.string.next_episode, nextEpisode.getName())
     }
 
-    playerNextButton.visibility = visibility
-    castNextButton.visibility = visibility
+    playerNextButton.isVisible = isVisible
+    castNextButton.isVisible = isVisible
   }
 
   private fun showPlayerSettingsBottomSheet() {

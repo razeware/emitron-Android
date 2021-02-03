@@ -9,7 +9,7 @@
   android:padding="16dp"
   tools:orientation="horizontal">
 
-  <com.google.android.material.button.MaterialButton
+  <Button
     android:id="@id/exo_rew"
     style="@style/Button.Icon"
     android:layout_width="@dimen/button_forward_rewind_height_width"
@@ -33,7 +33,7 @@
     app:layout_constraintStart_toEndOf="@id/exo_rew"
     app:layout_constraintTop_toTopOf="parent" />
 
-  <androidx.appcompat.widget.AppCompatImageButton
+  <ImageButton
     android:id="@id/exo_play"
     style="@style/Button.Icon"
     android:layout_width="@dimen/button_play_pause_height_width"
@@ -45,7 +45,7 @@
     app:layout_constraintTop_toTopOf="@+id/guideline_play_pause"
     app:srcCompat="@drawable/ic_material_icon_play_banner_transparent" />
 
-  <androidx.appcompat.widget.AppCompatImageButton
+  <ImageButton
     android:id="@id/exo_pause"
     android:layout_width="@dimen/button_play_pause_height_width"
     android:layout_height="@dimen/button_play_pause_height_width"
@@ -58,7 +58,7 @@
     app:layout_constraintTop_toTopOf="@+id/guideline_play_pause"
     app:srcCompat="@drawable/ic_material_icon_pause_banner_transparent" />
 
-  <com.google.android.material.button.MaterialButton
+  <Button
     android:id="@id/exo_ffwd"
     style="@style/Button.Icon"
     android:layout_width="@dimen/button_forward_rewind_height_width"
@@ -72,13 +72,13 @@
     app:layout_constraintStart_toEndOf="@id/guideline_play_pause"
     app:layout_constraintTop_toTopOf="@id/exo_play" />
 
-  <com.google.android.material.textview.MaterialTextView
+  <TextView
     android:id="@id/exo_position"
-    style="@style/TextAppearance.Body.2.Inverse"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/text_drawable_padding_dense"
     android:includeFontPadding="false"
+    android:textAppearance="@style/TextAppearance.Body.2.Inverse"
     android:textIsSelectable="false"
     app:layout_constraintBottom_toBottomOf="@id/exo_progress"
     app:layout_constraintEnd_toStartOf="@id/exo_progress"
@@ -115,12 +115,12 @@
     app:layout_constraintStart_toStartOf="@id/exo_progress"
     app:layout_constraintTop_toTopOf="@id/exo_progress" />
 
-  <com.google.android.material.textview.MaterialTextView
+  <TextView
     android:id="@id/exo_duration"
-    style="@style/TextAppearance.Body.2.Inverse"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:includeFontPadding="false"
+    android:textAppearance="@style/TextAppearance.Body.2.Inverse"
     android:textIsSelectable="false"
     app:layout_constraintBottom_toBottomOf="@id/exo_progress"
     app:layout_constraintEnd_toEndOf="parent"
@@ -128,12 +128,13 @@
     app:layout_constraintTop_toTopOf="@id/exo_progress"
     tools:text="00:00" />
 
-  <com.google.android.material.button.MaterialButton
+  <Button
     android:id="@+id/button_player_settings"
     style="@style/Button.Icon"
     android:layout_width="@dimen/button_icon_height_width"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/button_spacing_horizontal"
+    android:contentDescription=""
     app:icon="@drawable/ic_material_icon_settings"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toStartOf="@id/button_player_playlist"
@@ -141,11 +142,12 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/exo_progress" />
 
-  <com.google.android.material.button.MaterialButton
+  <Button
     android:id="@+id/button_player_playlist"
     style="@style/Button.Text.Icon"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
+    android:contentDescription="@string/playlistButtonDescription"
     android:text="@string/episodes"
     app:icon="@drawable/ic_material_icon_episodes"
     app:layout_constraintBottom_toBottomOf="@+id/button_player_settings"
@@ -153,11 +155,12 @@
     app:layout_constraintStart_toEndOf="@id/button_player_settings"
     app:layout_constraintTop_toTopOf="@+id/button_player_settings" />
 
-  <com.google.android.material.button.MaterialButton
+  <Button
     android:id="@+id/button_player_subtitles"
     style="@style/Button.Text.Icon"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
+    android:contentDescription="@string/subtitlesButtonDescription"
     android:text="@string/subtitles"
     app:icon="@drawable/ic_material_icon_subtitles"
     app:layout_constraintBottom_toBottomOf="@+id/button_player_settings"
@@ -165,11 +168,12 @@
     app:layout_constraintStart_toEndOf="@id/button_player_playlist"
     app:layout_constraintTop_toTopOf="@+id/button_player_settings" />
 
-  <com.google.android.material.button.MaterialButton
+  <Button
     android:id="@+id/player_next_episode"
     style="@style/Button.Text.Icon"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
+    android:contentDescription="@string/nextEpisodeButtonDescription"
     android:ellipsize="end"
     android:gravity="center"
     android:maxLines="1"

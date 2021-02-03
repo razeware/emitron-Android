@@ -240,8 +240,7 @@
   <string name="button_label_on_boarding_close">Don’t show me any more tips</string>
   <string name="on_boarding_episode_title_1">Do Competitive Research and Find Inspiration</string>
   <string name="on_boarding_episode_title_2">Wireframe an App with Sketch</string>
-  <string name="on_boarding_episode_title_3">Build a Clickable Prototype With Sketch + InVision
-</string>
+  <string name="on_boarding_episode_title_3">Build a Clickable Prototype With Sketch + InVision</string>
   <string name="on_boarding_episode_duration_1">5:34</string>
   <string name="on_boarding_episode_duration_2">9:08</string>
   <string name="on_boarding_episode_duration_3">4:16</string>
@@ -250,6 +249,12 @@
   <string name="on_boarding_episode_number_3">3</string>
   <string name="on_boarding_collection_title">Mark episodes complete</string>
   <string name="on_boarding_collection_body">Tap the number next to an episode to mark it as complete.</string>
-	<string name="settings_logged_in_user">Logged in as %1$s</string>
+  <string name="settings_logged_in_user">Logged in as %1$s</string>
+
+  <!-- Accessibility -->
+  <string name="nextEpisodeButtonDescription">Next Episode Button</string>
+  <string name="subtitlesButtonDescription">Subtitles Button</string>
+  <string name="playlistButtonDescription">Playlist Button</string>
+  <string name="settingsButtonDescription">Settings Button</string>
 
 </resources>
