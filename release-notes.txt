@@ -1,2 +1,4 @@
 ## Changes
-- Various bug fixes and enhancements.
+- Added support for Portrait mode in Video Player.
+- Removed unused code.
+- Added more accessibility support in Video Player.
