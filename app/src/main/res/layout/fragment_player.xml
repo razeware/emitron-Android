@@ -15,15 +15,15 @@
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:paddingBottomSystemWindowInsets="@{true}"
-    android:keepScreenOn="true">
+    android:keepScreenOn="true"
+    app:paddingBottomSystemWindowInsets="@{true}">
 
     <androidx.appcompat.widget.AppCompatImageView
       android:id="@+id/cast_control_cover_art"
       android:layout_width="0dp"
       android:layout_height="0dp"
-      app:imageUrl="@{data.cardArtworkUrl}"
       android:scaleType="fitCenter"
+      app:imageUrl="@{data.cardArtworkUrl}"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
@@ -145,22 +145,28 @@
 
     <com.google.android.material.appbar.MaterialToolbar
       android:id="@+id/toolbar"
-      android:layout_width="match_parent"
+      android:layout_width="0dp"
       android:layout_height="?android:actionBarSize"
+      android:gravity="center"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0"
-      app:layout_constraintVertical_chainStyle="packed">
+      app:navigationIcon="@drawable/ic_dialog_close_dark" />
 
-      <com.google.android.material.textview.MaterialTextView
-        style="@style/TextAppearance.Body.1.Inverse"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:gravity="center"
-        android:maxLines="1"
-        android:text="@{data.name}"
-        tools:text="Introduction!" />
-    </com.google.android.material.appbar.MaterialToolbar>
+    <com.google.android.material.textview.MaterialTextView
+      style="@style/TextAppearance.Body.1.Inverse"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginStart="@dimen/activity_horizontal_margin"
+      android:layout_marginEnd="@dimen/activity_horizontal_margin"
+      android:gravity="center"
+      android:maxLines="1"
+      android:text="@{data.name}"
+      app:layout_constraintBottom_toBottomOf="@id/toolbar"
+      app:layout_constraintEnd_toEndOf="@id/toolbar"
+      app:layout_constraintStart_toStartOf="@id/toolbar"
+      app:layout_constraintTop_toTopOf="@id/toolbar"
+      tools:text="Introduction!" />
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

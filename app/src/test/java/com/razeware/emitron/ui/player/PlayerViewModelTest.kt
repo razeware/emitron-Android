@@ -1,7 +1,6 @@
 package com.razeware.emitron.ui.player
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
 import com.nhaarman.mockitokotlin2.*
 import com.razeware.emitron.data.createContent
 import com.razeware.emitron.data.createContentData
@@ -11,7 +10,6 @@ import com.razeware.emitron.data.video.VideoRepository
 import com.razeware.emitron.model.Content
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.model.Download
-import com.razeware.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
 import com.razeware.emitron.utils.*
 import okhttp3.ResponseBody
 import org.junit.Rule
@@ -29,8 +27,6 @@ class PlayerViewModelTest {
 
   private val progressionRepository: ProgressionRepository = mock()
 
-  private val bookmarkActionDelegate: BookmarkActionDelegate = mock()
-
   private val loggerImpl: LoggerImpl = mock()
 
   private lateinit var viewModel: PlayerViewModel
@@ -45,7 +41,6 @@ class PlayerViewModelTest {
     viewModel =
       PlayerViewModel(
         videoRepository,
-        bookmarkActionDelegate,
         settingsRepository,
         progressionRepository,
         loggerImpl
@@ -287,167 +282,6 @@ class PlayerViewModelTest {
       currentEpisode.getUrl() isEqualTo "TheSongOfLife2"
       playbackToken isEqualTo "WubbaLubbaDubDub"
       playlist isEqualTo expectedPlaylist
-    }
-  }
-
-  /**
-   * Test content bookmarking success
-   */
-  @Test
-  fun updateContentBookmark_createBookmarkSuccess() {
-    whenever(
-      bookmarkActionDelegate.bookmarkActionResult
-    ).doReturn(
-      MutableLiveData<Event<BookmarkActionDelegate.BookmarkActionResult>>().apply {
-        value = Event(BookmarkActionDelegate.BookmarkActionResult.BookmarkCreated)
-      }
-    )
-    createViewModel()
-    testCoroutineRule.runBlockingTest {
-
-      whenever(videoRepository.getVideoStream("1"))
-        .doReturn(createContent(createContentData()))
-      whenever(videoRepository.getVideoPlaybackToken()).doReturn(
-        createContent(createContentData(playbackToken = "WubbaLubbaDubDub"))
-      )
-      val expectedPlaylist = createPlaylist(createContentData(type = "screencast"))
-      viewModel.startPlayback(expectedPlaylist)
-
-      // When
-      viewModel.bookmarkActionResult.observeForTestingResultNullable()
-      viewModel.updateContentBookmark()
-
-      with(viewModel) {
-        verify(bookmarkActionDelegate).bookmarkActionResult
-        verify(bookmarkActionDelegate).updateContentBookmark(
-          createContentData()
-        )
-        verifyNoMoreInteractions(bookmarkActionDelegate)
-        bookmarkActionResult.value?.peekContent() isEqualTo
-            BookmarkActionDelegate.BookmarkActionResult.BookmarkCreated
-      }
-    }
-  }
-
-  /**
-   * Test content bookmarking failure
-   */
-  @Test
-  fun updateContentBookmark_createBookmarkFailure() {
-    whenever(
-      bookmarkActionDelegate.bookmarkActionResult
-    ).doReturn(
-      MutableLiveData<Event<BookmarkActionDelegate.BookmarkActionResult>>().apply {
-        value = Event(BookmarkActionDelegate.BookmarkActionResult.BookmarkFailedToCreate)
-      }
-    )
-    createViewModel()
-    testCoroutineRule.runBlockingTest {
-      whenever(videoRepository.getVideoStream("1"))
-        .doReturn(createContent(createContentData()))
-      whenever(videoRepository.getVideoPlaybackToken()).doReturn(
-        createContent(createContentData(playbackToken = "WubbaLubbaDubDub"))
-      )
-      val expectedPlaylist = createPlaylist(createContentData(type = "screencast"))
-      viewModel.startPlayback(expectedPlaylist)
-
-      // When
-      viewModel.bookmarkActionResult.observeForTestingResultNullable()
-      viewModel.updateContentBookmark()
-
-      with(viewModel) {
-        verify(bookmarkActionDelegate).bookmarkActionResult
-        verify(bookmarkActionDelegate).updateContentBookmark(
-          createContentData()
-        )
-        verifyNoMoreInteractions(bookmarkActionDelegate)
-        bookmarkActionResult.value?.peekContent() isEqualTo
-            BookmarkActionDelegate.BookmarkActionResult.BookmarkFailedToCreate
-      }
-    }
-  }
-
-
-  /**
-   * Test content bookmark deletion success
-   */
-  @Test
-  fun updateContentBookmark_deleteBookmarkSuccess() {
-    whenever(
-      bookmarkActionDelegate.bookmarkActionResult
-    ).doReturn(
-      MutableLiveData<Event<BookmarkActionDelegate.BookmarkActionResult>>().apply {
-        value = Event(BookmarkActionDelegate.BookmarkActionResult.BookmarkDeleted)
-      }
-    )
-    createViewModel()
-    testCoroutineRule.runBlockingTest {
-
-      // Given
-      whenever(videoRepository.getVideoStream("1"))
-        .doReturn(createContent(createContentData()))
-      whenever(videoRepository.getVideoPlaybackToken()).doReturn(
-        createContent(createContentData(playbackToken = "WubbaLubbaDubDub"))
-      )
-      val expectedPlaylist = createPlaylist(createContentData(type = "screencast"))
-      viewModel.startPlayback(expectedPlaylist)
-
-      // When
-      viewModel.bookmarkActionResult.observeForTestingResultNullable()
-      viewModel.updateContentBookmark()
-
-      // Then
-      with(viewModel) {
-        verify(bookmarkActionDelegate).bookmarkActionResult
-        verify(bookmarkActionDelegate).updateContentBookmark(
-          createContentData()
-        )
-        verifyNoMoreInteractions(bookmarkActionDelegate)
-        bookmarkActionResult.value?.peekContent() isEqualTo
-            BookmarkActionDelegate.BookmarkActionResult.BookmarkDeleted
-      }
-    }
-  }
-
-  /**
-   * Test content bookmark deletion failure
-   */
-  @Test
-  fun updateContentBookmark_deleteBookmarkFailure() {
-    whenever(
-      bookmarkActionDelegate.bookmarkActionResult
-    ).doReturn(
-      MutableLiveData<Event<BookmarkActionDelegate.BookmarkActionResult>>().apply {
-        value = Event(BookmarkActionDelegate.BookmarkActionResult.BookmarkFailedToDelete)
-      }
-    )
-    createViewModel()
-    testCoroutineRule.runBlockingTest {
-
-      // Given
-      // Given
-      whenever(videoRepository.getVideoStream("1"))
-        .doReturn(createContent(createContentData()))
-      whenever(videoRepository.getVideoPlaybackToken()).doReturn(
-        createContent(createContentData(playbackToken = "WubbaLubbaDubDub"))
-      )
-      val expectedPlaylist = createPlaylist(createContentData(type = "screencast"))
-      viewModel.startPlayback(expectedPlaylist)
-
-      // When
-      viewModel.bookmarkActionResult.observeForTestingResultNullable()
-      viewModel.updateContentBookmark()
-
-      // Then
-      with(viewModel) {
-        verify(bookmarkActionDelegate).bookmarkActionResult
-        verify(bookmarkActionDelegate).updateContentBookmark(
-          createContentData()
-        )
-        verifyNoMoreInteractions(bookmarkActionDelegate)
-        bookmarkActionResult.value?.peekContent() isEqualTo
-            BookmarkActionDelegate.BookmarkActionResult.BookmarkFailedToDelete
-      }
     }
   }
 
