@@ -10,8 +10,6 @@ import com.razeware.emitron.data.settings.SettingsRepository
 import com.razeware.emitron.data.video.VideoRepository
 import com.razeware.emitron.model.Content
 import com.razeware.emitron.model.Data
-import com.razeware.emitron.ui.mytutorial.bookmarks.BookmarkActionDelegate
-import com.razeware.emitron.utils.Event
 import com.razeware.emitron.utils.Logger
 import com.razeware.emitron.utils.LoggerImpl
 import com.razeware.emitron.utils.extensions.isBadRequest
@@ -27,7 +25,6 @@ import java.io.IOException
  */
 class PlayerViewModel @ViewModelInject constructor(
   private val repository: VideoRepository,
-  private val bookmarkActionDelegate: BookmarkActionDelegate,
   private val settingsRepository: SettingsRepository,
   private val progressionRepository: ProgressionRepository,
   private val logger: LoggerImpl
@@ -73,13 +70,6 @@ class PlayerViewModel @ViewModelInject constructor(
    */
   val playerToken: LiveData<String>
     get() = _playerToken
-
-  /**
-   * Observer for bookmark action
-   *
-   */
-  val bookmarkActionResult: LiveData<Event<BookmarkActionDelegate.BookmarkActionResult>> =
-    bookmarkActionDelegate.bookmarkActionResult
 
   /**
    * Observer for server content progress
@@ -189,16 +179,6 @@ class PlayerViewModel @ViewModelInject constructor(
       _nextEpisode.value = nextEpisode
     } else {
       _nextEpisode.value = null
-    }
-  }
-
-  /**
-   * Add or remove collection from bookmarks
-   */
-  fun updateContentBookmark() {
-    val playingEpisode = _currentEpisode.value
-    viewModelScope.launch {
-      bookmarkActionDelegate.updateContentBookmark(playingEpisode)
     }
   }
 
