@@ -135,10 +135,10 @@
       <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_collection_label_pro"
         style="@style/TextAppearance.Overline.Raised.Colored"
-        android:background="@drawable/bg_pro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/button_spacing_horizontal"
+        android:background="@drawable/bg_pro"
         android:text="@string/label_pro"
         app:layout_constraintBottom_toBottomOf="@+id/spacer"
         app:layout_constraintEnd_toStartOf="@+id/text_duration"
@@ -196,7 +196,7 @@
 
       <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_label_completed"
-        style="@style/TextAppearance.Overline.Raised.Colored"
+        style="@style/TextAppearance.Overline.Raised.Colored.Success"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/button_spacing_horizontal_2"
@@ -224,7 +224,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spacer"
-        tools:progress="50"/>
+        tools:progress="50" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
   </com.google.android.material.card.MaterialCardView>
