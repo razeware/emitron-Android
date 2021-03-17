@@ -56,14 +56,6 @@
           android:layout_height="wrap_content"
           android:layout_weight="1"
           android:text="@string/title_my_tutorials" />
-
-        <com.google.android.material.button.MaterialButton
-          android:id="@+id/navigation_action_settings"
-          style="@style/Button.Icon"
-          android:layout_width="@dimen/button_icon_height_width"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="@dimen/button_spacing_horizontal"
-          app:icon="@drawable/ic_material_icon_settings" />
       </LinearLayout>
     </com.google.android.material.appbar.MaterialToolbar>
 
