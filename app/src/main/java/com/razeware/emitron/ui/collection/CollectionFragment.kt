@@ -108,8 +108,6 @@ class CollectionFragment : Fragment(), InAppReviewView {
       toolbar.navigationIcon =
         VectorDrawableCompat.create(resources, R.drawable.ic_arrow_back, null)
 
-      textCollectionBodyPro.removeUnderline()
-
       episodeAdapter = CollectionEpisodeAdapter(
         onEpisodeSelected = { currentEpisode, _ ->
           if (viewModel.isContentPlaybackAllowed(isNetConnected())) {
