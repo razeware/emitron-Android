@@ -72,7 +72,7 @@ class InAppReviewManagerImpl @Inject constructor(
    * @param activity - The Activity to which the lifecycle is attached.
    * */
   override fun startReview(activity: Activity) {
-    if (reviewInfo != null) {
+    if (reviewInfo != null && false) {
       reviewManager.launchReviewFlow(activity, reviewInfo).addOnCompleteListener { reviewFlow ->
         onReviewFlowLaunchCompleted(reviewFlow)
       }
@@ -93,19 +93,24 @@ class InAppReviewManagerImpl @Inject constructor(
     val appPackageName = context.packageName
 
     try {
-      context.startActivity(
-        Intent(
-          Intent.ACTION_VIEW,
-          Uri.parse("market://details?id=$appPackageName")
-        )
-      )
+      val sendIntent = Intent(
+        Intent.ACTION_VIEW,
+        Uri.parse("market://details?id=$appPackageName")
+      ).apply { flags = Intent.FLAG_ACTIVITY_NEW_TASK }
+
+      if (sendIntent.resolveActivity(context.packageManager) != null) {
+        context.startActivity(sendIntent)
+      }
+
     } catch (error: Error) {
-      context.startActivity(
-        Intent(
-          Intent.ACTION_VIEW,
-          Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")
-        )
-      )
+      val sendIntent = Intent(
+        Intent.ACTION_VIEW,
+        Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")
+      ).apply { flags = Intent.FLAG_ACTIVITY_NEW_TASK }
+
+      if (sendIntent.resolveActivity(context.packageManager) != null) {
+        context.startActivity(sendIntent)
+      }
     }
   }
 
