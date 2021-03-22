@@ -311,7 +311,7 @@ Values and References" />
 
       <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_collection_completed"
-        style="@style/TextAppearance.Overline.Raised.Colored"
+        style="@style/TextAppearance.Overline.Raised.Colored.Success"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/collection_completed_margin_start"

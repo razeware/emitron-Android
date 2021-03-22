@@ -30,6 +30,7 @@
   <color name="colorSurface">@color/white</color>
   <color name="colorSurfaceDark">@color/bright_grey</color>
   <color name="colorError">@color/copper</color>
+  <color name="colorSuccess">@color/dark_sea_green</color>
   <color name="colorWarning">@color/pumpkin_orange</color>
   <color name="colorOnPrimary">@color/white</color>
   <color name="colorOnError">@color/white</color>
