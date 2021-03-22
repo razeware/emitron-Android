@@ -47,11 +47,6 @@ class MyTutorialFragment : Fragment() {
       tab.text = getTabTextForPosition(position)
     }.attach()
     binding.viewPager.isUserInputEnabled = false
-    binding.navigationActionSettings.setOnClickListener(
-      Navigation.createNavigateOnClickListener(
-        R.id.action_navigation_my_tutorials_to_navigation_settings
-      )
-    )
   }
 
   private fun getTabTextForPosition(position: Int): String {
