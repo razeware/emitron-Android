@@ -72,7 +72,7 @@ class InAppReviewManagerImpl @Inject constructor(
    * @param activity - The Activity to which the lifecycle is attached.
    * */
   override fun startReview(activity: Activity) {
-    if (reviewInfo != null && false) {
+    if (reviewInfo != null) {
       reviewManager.launchReviewFlow(activity, reviewInfo).addOnCompleteListener { reviewFlow ->
         onReviewFlowLaunchCompleted(reviewFlow)
       }
@@ -92,25 +92,26 @@ class InAppReviewManagerImpl @Inject constructor(
   private fun sendUserToPlayStore() {
     val appPackageName = context.packageName
 
-    try {
-      val sendIntent = Intent(
-        Intent.ACTION_VIEW,
-        Uri.parse("market://details?id=$appPackageName")
-      ).apply { flags = Intent.FLAG_ACTIVITY_NEW_TASK }
+    val sendIntent = Intent(
+      Intent.ACTION_VIEW,
+      Uri.parse("market://details?id=$appPackageName")
+    ).apply { flags = Intent.FLAG_ACTIVITY_NEW_TASK }
 
-      if (sendIntent.resolveActivity(context.packageManager) != null) {
-        context.startActivity(sendIntent)
-      }
+    if (sendIntent.resolveActivity(context.packageManager) != null) {
+      context.startActivity(sendIntent)
+    } else {
+      sendUserToWeb(appPackageName)
+    }
+  }
 
-    } catch (error: Error) {
-      val sendIntent = Intent(
-        Intent.ACTION_VIEW,
-        Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")
-      ).apply { flags = Intent.FLAG_ACTIVITY_NEW_TASK }
+  private fun sendUserToWeb(appPackageName: String) {
+    val sendIntent = Intent(
+      Intent.ACTION_VIEW,
+      Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")
+    ).apply { flags = Intent.FLAG_ACTIVITY_NEW_TASK }
 
-      if (sendIntent.resolveActivity(context.packageManager) != null) {
-        context.startActivity(sendIntent)
-      }
+    if (sendIntent.resolveActivity(context.packageManager) != null) {
+      context.startActivity(sendIntent)
     }
   }
 
