@@ -4,7 +4,7 @@ __emitron__ is the code name for the raywenderlich.com app. This repo contains t
 
 ## Contributing
 
-To contribute a __feature__ or __idea__ to emitron, create an issue explaining your idea.
+To contribute a __feature__ or __idea__ to emitron, create an issue explaining your idea in detail.
 
 If you find a __bug__, please create an issue.
 
@@ -12,28 +12,37 @@ If you find a __security vulnerability__, please contact emitron@razeware.com as
 
 There is more info about contributing in [CONTRIBUITNG.md](CONTRIBUTING.md).
 
-## Development
+## Development & Setup
 
-Currently, only people that hold an active raywenderlich.com subscription may use emitron. Non-subscribers will be shown a "no access" page on login. Subscribers have access to streaming videos, and a subset of subscribers (ones with a "Professional" subscription) is allowed to download videos for offline playback.
+Anyone who wants to contribute to emitron can do so by cloning the repo and setting up the project.
 
-### Setup
+However, only subscribers have access to streaming videos and Professional subscribers are allowed to download videos for offline playback.
 
-1. Copy `gradle.properties.dist` to `gradle.properties`
-2. Add `google-services.json` to `app` directory from Firebase console.
+### Setup (client_api_key)
 
-### Secrets Management
+1. Create a new file named `gradle.properties` in the project-level folder.
+2. Copy `gradle.properties.dist` contents to `gradle.properties`.
 
-__emitron__ requires 2 secrets:
+#### Setup (google-services.json)
 
-- `SSO_SECRET`. This is used to ensure secure communication with `guardpost`, the raywenderlich.com authentication service. Although this is secret, a sample secret is provided inside this repo. This shouldn't be used to create a beta or production build.
-- `APP_TOKEN`. Required in order to enable downloads. This is not provided in the repo, and is not generally available.
+1. Open [Google Firebase console](https://firebase.google.com/).
+2. Create a new project with an arbitrary name.
+3. Add an Android app by following the instructions.
+4. For the package name, put in `com.razeware.emitron`. You don't need the SHA-1 signing certificate.
+5. Download the `google-services.json` file from the newly created app.
+6. Add `google-services.json` to the `app` folder within the project.
+
+That's it! You should be able to run the app and make your contributions! :]
+
+### Optional Secrets
+
+The **emitron** download feature requires a special secret key in `gradle.properties`:
+
+- `app_token`. Required in order to enable downloads. This is not provided in the repo, and is not generally available. Additionally, if you don't own a "Professional" subscription, you won't be able to use downloads.
 
 > __NOTE:__ To get the release build secrets, check the emitron S3 bucket, or contact emitron@razeware.com. Developers should never need these, as CI will handle it.
 
-If you are working on the download functionality and are having problems without an `APP_TOKEN`, contact emitron@razeware.com and somebody will assist you with your specific needs.
-
-For further details, check out [CONTRIBUTING](CONTRIBUTING.md).
-
+If you are working on the download functionality and are having problems without an `app_token`, contact emitron@razeware.com and somebody will assist you with your specific needs.
 
 ### Continuous Integration & Deployment
 

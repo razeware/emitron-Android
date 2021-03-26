@@ -34,9 +34,12 @@ class MainViewModel @ViewModelInject constructor(
   private fun hasPermissions(): Boolean = loginRepository.hasPermissions()
 
   /**
+   * We check if the user is in [BuildConfig.DEBUG] mode to allow contributors
+   * to use the app.
+   *
    * @return True if user is allowed to use app, otherwise False
    */
-  fun isAllowed(): Boolean = isLoggedIn() && hasPermissions()
+  fun isAllowed(): Boolean = isLoggedIn() && (hasPermissions() || BuildConfig.DEBUG)
 
   private val _selectedFilters = MutableLiveData<List<Data>>()
 

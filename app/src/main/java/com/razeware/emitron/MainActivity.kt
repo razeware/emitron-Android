@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.doOnLayout
 import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -24,9 +26,11 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.razeware.emitron.databinding.ActivityMainBinding
 import com.razeware.emitron.notifications.NotificationChannels
 import com.razeware.emitron.ui.download.workers.PendingDownloadWorker
+import com.razeware.emitron.ui.login.LoginFragment
 import com.razeware.emitron.ui.player.PipActionDelegate
 import com.razeware.emitron.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 /**
@@ -114,8 +118,6 @@ class MainActivity : AppCompatActivity() {
     binding.navDivider.visibility = View.VISIBLE
 
     when (destination.id) {
-      R.id.navigation_settings,
-      R.id.navigation_settings_bottom_sheet,
       R.id.navigation_filter,
       R.id.navigation_collection,
       R.id.navigation_login,
@@ -152,6 +154,25 @@ class MainActivity : AppCompatActivity() {
     super.onUserLeaveHint()
     if (hasPipSupport() && viewModel.isPlaying()) {
       enterPictureInPictureMode(updatePipParameters())
+    }
+  }
+
+  /**
+   * Currently the LoginFragment has issues completing the Activity and leaving the app.
+   *
+   * That's why we explicitly check if we're in the LoginFragment when pressing back, so we can
+   * close the app.
+   *
+   * Otherwise, we just propagate the call to the default handler.
+   * */
+  override fun onBackPressed() {
+    val navHost: Fragment? = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+    val currentFragment = navHost?.childFragmentManager?.fragments?.get(0)
+
+    if (currentFragment is LoginFragment) {
+      finish()
+    } else {
+      super.onBackPressed()
     }
   }
 

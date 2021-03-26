@@ -82,7 +82,7 @@
   <string name="yesterday">Yesterday</string>
 
   <!-- Content Detail Screen -->
-  <string name="title_pro_course">Pro Course</string>
+  <string name="title_pro_course">Locked Course</string>
   <string name="course_episodes">Course Episodes</string>
   <string name="course_episodes_progress">Loading Episodes &#8230;</string>
   <string name="contributors">By %1$s</string>

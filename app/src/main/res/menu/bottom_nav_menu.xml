@@ -16,4 +16,8 @@
     android:icon="@drawable/ic_material_icon_my_tutorials"
     android:title="@string/title_my_tutorials" />
 
+  <item
+    android:id="@+id/navigation_settings"
+    android:icon="@drawable/ic_material_icon_settings"
+    android:title="@string/button_label_settings" />
 </menu>

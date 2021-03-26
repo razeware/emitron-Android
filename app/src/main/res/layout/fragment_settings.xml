@@ -3,12 +3,7 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools">
 
-  <data>
-
-    <variable
-      name="bottomPadding"
-      type="Integer" />
-  </data>
+  <data />
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/settingsRoot"
@@ -23,7 +18,16 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_chainStyle="packed" />
+      app:layout_constraintVertical_chainStyle="packed">
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/toolbar_title"
+        style="@style/TextAppearance.Headline.1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/button_label_settings" />
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <ScrollView
       android:layout_width="match_parent"
@@ -487,7 +491,6 @@
       android:clipChildren="false"
       android:clipToPadding="false"
       android:orientation="vertical"
-      android:paddingBottom="@{bottomPadding}"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent">

@@ -189,7 +189,7 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
   private val args by navArgs<SettingsBottomSheetDialogFragmentArgs>()
 
   private val viewModel:
-      SettingsViewModel by navGraphViewModels(R.id.settings_navigation) {
+      SettingsViewModel by navGraphViewModels(R.id.mobile_navigation) {
     defaultViewModelProviderFactory
   }
 
@@ -200,7 +200,7 @@ class SettingsBottomSheetDialogFragment : BottomSheetDialogFragment() {
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
+  ): View {
     viewBinding = setDataBindingView(R.layout.fragment_settings_bottomsheet, container)
     return viewBinding.root
   }

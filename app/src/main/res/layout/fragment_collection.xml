@@ -144,19 +144,19 @@
         tools:visibility="visible" />
 
       <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/image_collection_pro"
+        android:id="@+id/image_collection_locked"
         android:layout_width="@dimen/collection_pro_course_icon_height_width"
         android:layout_height="@dimen/collection_pro_course_icon_height_width"
         android:tint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/text_collection_title_pro"
-        app:layout_constraintEnd_toStartOf="@+id/text_collection_title_pro"
+        app:layout_constraintBottom_toBottomOf="@+id/text_collection_title_locked"
+        app:layout_constraintEnd_toStartOf="@+id/text_collection_title_locked"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="@+id/text_collection_title_pro"
+        app:layout_constraintTop_toTopOf="@+id/text_collection_title_locked"
         app:srcCompat="@drawable/ic_material_icon_padlock" />
 
       <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_collection_title_pro"
+        android:id="@+id/text_collection_title_locked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -167,7 +167,7 @@
         app:layout_constraintBottom_toTopOf="@+id/button_manage_subscription"
         app:layout_constraintEnd_toEndOf="@+id/guideline_right"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toEndOf="@id/image_collection_pro"
+        app:layout_constraintStart_toEndOf="@id/image_collection_locked"
         app:layout_constraintTop_toTopOf="@id/image_collection_banner"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="@string/title_pro_course" />
@@ -192,7 +192,7 @@
         tools:visibility="visible" />
 
       <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_professional_content"
+        android:id="@+id/group_locked_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -290,7 +290,7 @@ Values and References" />
 
       <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_collection_completed"
-        style="@style/TextAppearance.Overline.Raised.Colored"
+        style="@style/TextAppearance.Overline.Raised.Colored.Success"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/collection_completed_margin_start"
