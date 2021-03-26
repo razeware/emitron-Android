@@ -97,6 +97,12 @@ class LoginRepository @Inject constructor(
     loginPrefs.getPermissions().contains(PermissionTag.StreamProfessional.param)
 
   /**
+   * Check if user has permission to stream beginner courses
+   */
+  fun isBeginnerVideoPlaybackAllowed(): Boolean =
+    loginPrefs.getPermissions().contains(PermissionTag.StreamBeginner.param)
+
+  /**
    * Get stored permissions
    */
   fun getPermissionsFromPrefs(): List<String> = loginPrefs.getPermissions()

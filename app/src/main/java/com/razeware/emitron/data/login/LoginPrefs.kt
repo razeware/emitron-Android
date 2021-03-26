@@ -9,7 +9,7 @@ import javax.inject.Inject
  *
  * Data related to user account preferences should be stored and accessed using [LoginPrefs]
  */
-class LoginPrefs @Inject constructor(private val prefs: com.raywenderlich.android.preferences.PrefUtils) {
+class LoginPrefs @Inject constructor(private val prefs: PrefUtils) {
 
   companion object {
     private const val IS_LOGGED_IN = "is_logged_in"
@@ -87,11 +87,11 @@ class LoginPrefs @Inject constructor(private val prefs: com.raywenderlich.androi
   fun getPermissions(): List<String> =
     prefs.get(USER_PERMISSIONS, "").split(",").map { it.trim() }
 
-	/**
-	 * Get logged in user
-	 *
-	 * @return logged in user name
-	 */
-	fun getLoggedInUser(): String =
-		prefs.get(USER_USERNAME, "")
+  /**
+   * Get logged in user
+   *
+   * @return logged in user name
+   */
+  fun getLoggedInUser(): String =
+    prefs.get(USER_USERNAME, "")
 }

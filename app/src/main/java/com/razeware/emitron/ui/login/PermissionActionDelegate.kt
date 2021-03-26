@@ -2,6 +2,7 @@ package com.razeware.emitron.ui.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.razeware.emitron.BuildConfig
 import com.razeware.emitron.data.login.LoginRepository
 import com.razeware.emitron.model.PermissionTag
 import java.io.IOException
@@ -26,6 +27,11 @@ interface PermissionsAction {
    * @return true if professional videos can be played, else false
    */
   fun isProfessionalVideoPlaybackAllowed(): Boolean
+
+  /**
+   * @return true if beginner videos can be played, else false
+   */
+  fun isBeginnerVideoPlaybackAllowed(): Boolean
 
   /**
    * LiveData for permission action
@@ -53,10 +59,12 @@ class PermissionActionDelegate @Inject constructor(
      * User has download permission
      */
     HasDownloadPermission,
+
     /**
      * User has no subscription
      */
     NoPermission,
+
     /**
      * API request failed
      */
@@ -69,6 +77,9 @@ class PermissionActionDelegate @Inject constructor(
     get() = _permissionActionResult
 
   /**
+   * We check if the user is in [BuildConfig.DEBUG] mode to allow contributors
+   * to use the app (we give them fake permissions).
+   *
    * Get permissions for the current logged in user
    */
   override suspend fun fetchPermissions() {
@@ -78,7 +89,7 @@ class PermissionActionDelegate @Inject constructor(
         it.getTag()
       }
 
-      if (permissions.isNotEmpty()) {
+      if (permissions.isNotEmpty() || BuildConfig.DEBUG) {
         val userPermissions = PermissionTag.values().map { it.param }.toSet()
           .intersect(permissions).toList()
         loginRepository.updatePermissions(userPermissions)
@@ -106,4 +117,7 @@ class PermissionActionDelegate @Inject constructor(
 
   override fun isProfessionalVideoPlaybackAllowed(): Boolean =
     loginRepository.isProfessionalVideoPlaybackAllowed()
+
+  override fun isBeginnerVideoPlaybackAllowed(): Boolean =
+    loginRepository.isBeginnerVideoPlaybackAllowed()
 }

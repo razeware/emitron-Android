@@ -223,7 +223,7 @@ class CollectionFragment : Fragment(), InAppReviewView {
           val hasProgress = viewModel.hasProgress()
           with(binding) {
             groupCollectionContent.isVisible = true
-            groupProfessionalContent.isVisible = !playbackAllowed
+            groupLockedContent.isVisible = !playbackAllowed
             buttonCollectionPlay.isVisible = playbackAllowed && !hasProgress
             buttonCollectionResume.isVisible = playbackAllowed && hasProgress
             progressCompletion.isVisible = playbackAllowed && hasProgress
