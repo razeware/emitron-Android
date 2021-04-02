@@ -87,12 +87,14 @@ class CollectionEpisodeAdapter(
     val episodes = viewModel.getCollectionEpisodes()
     val (_, data, episodePosition) = episodes[position]
 
+    val isEpisodeFree = data?.attributes?.free ?: false
+
     val hasConnection = viewHolder.itemView.context.isNetConnected()
     viewHolder.bindTo(
       episode = data,
       isDownloadAvailable = viewModel.isDownloadAllowed(),
       position = episodePosition,
-      isPlaybackAllowed = viewModel.isContentPlaybackAllowed(hasConnection),
+      isPlaybackAllowed = viewModel.isContentPlaybackAllowed(hasConnection, true, isEpisodeFree),
       onEpisodeSelected = { selectedPosition ->
         val contentEpisode = episodes[selectedPosition]
         val nextContentEpisode = if (selectedPosition < episodes.size - 1) {

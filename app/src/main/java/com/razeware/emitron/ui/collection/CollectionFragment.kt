@@ -110,7 +110,9 @@ class CollectionFragment : Fragment(), InAppReviewView {
 
       episodeAdapter = CollectionEpisodeAdapter(
         onEpisodeSelected = { currentEpisode, _ ->
-          if (viewModel.isContentPlaybackAllowed(isNetConnected())) {
+          val isEpisodeFree = currentEpisode?.attributes?.free ?: false
+
+          if (viewModel.isContentPlaybackAllowed(isNetConnected(), true, isEpisodeFree)) {
             openPlayer(currentEpisode)
           } else {
             if (viewModel.isDownloaded()) {
@@ -426,7 +428,12 @@ class CollectionFragment : Fragment(), InAppReviewView {
       message = R.string.message_download_permission_error,
       positiveButton = R.string.button_label_play_online,
       positiveButtonClickListener = {
-        if (viewModel.isContentPlaybackAllowed(isNetConnected(), false)) {
+        if (viewModel.isContentPlaybackAllowed(
+            isNetConnected(),
+            checkDownloadPermission = true,
+            isEpisodeFree = false
+          )
+        ) {
           openPlayer(currentEpisode)
         }
       },
