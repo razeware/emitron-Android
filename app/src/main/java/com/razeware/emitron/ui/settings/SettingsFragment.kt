@@ -1,28 +1,22 @@
 package com.razeware.emitron.ui.settings
 
-import android.annotation.TargetApi
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
-import androidx.navigation.ui.setupWithNavController
 import androidx.work.WorkManager
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.razeware.emitron.BuildConfig
 import com.razeware.emitron.R
 import com.razeware.emitron.databinding.FragmentSettingsBinding
-import com.razeware.emitron.ui.common.getDefaultAppBarConfiguration
 import com.razeware.emitron.ui.download.workers.PendingDownloadWorker
 import com.razeware.emitron.ui.login.GuardpostDelegate
 import com.razeware.emitron.ui.settings.SettingsBottomSheetDialogFragment.Companion.downloadQualityToResIdMap
@@ -39,7 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SettingsFragment : Fragment() {
 
-  private val viewModel: SettingsViewModel by navGraphViewModels(R.id.settings_navigation) {
+  private val viewModel: SettingsViewModel by navGraphViewModels(R.id.mobile_navigation) {
     defaultViewModelProviderFactory
   }
 
@@ -71,42 +65,9 @@ class SettingsFragment : Fragment() {
     viewModel.init()
   }
 
-  /**
-   * Any time the screen loads, we check if the device supports cutouts and try to adjust our
-   * padding accordingly.
-   * */
-  override fun onResume() {
-    super.onResume()
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-      setupWindowInsets()
-    }
-  }
-
-  /**
-   * Similarly to what we do on the [MainActivity], we add insets to this screen if there's a bottom
-   * navigation bar.
-   * */
-  @TargetApi(Build.VERSION_CODES.P)
-  private fun setupWindowInsets() {
-    binding.settingsFooter.doOnLayout {
-      val inset = binding.settingsFooter.rootWindowInsets
-
-      val cutoutSize = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        inset?.getInsets(WindowInsets.Type.navigationBars())?.bottom
-      } else {
-        inset?.displayCutout?.safeInsetBottom
-      }
-
-      if (cutoutSize != null) {
-        binding.bottomPadding = cutoutSize
-      }
-    }
-  }
-
   private fun initObservers() {
     val result = guardpostDelegate.registerReceiver()
-    result.logout.observe(this, Observer {
+    result.logout.observe(viewLifecycleOwner, Observer {
       viewModel.logout()
       SignOutWorker.enqueue(WorkManager.getInstance(requireContext()))
       findNavController().navigate(R.id.action_navigation_settings_to_navigation_login)
@@ -185,11 +146,6 @@ class SettingsFragment : Fragment() {
 
   private fun initUi() {
     with(binding) {
-      toolbar.setupWithNavController(
-        findNavController(),
-        getDefaultAppBarConfiguration()
-      )
-
       titleVersionName.text = getString(
         R.string.label_version, BuildConfig.VERSION_NAME
       )

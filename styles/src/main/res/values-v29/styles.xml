@@ -243,6 +243,11 @@
     <item name="android:textColor">@color/textColorOverlineInverse2</item>
   </style>
 
+  <style name="TextAppearance.Overline.Raised.Colored.Success" parent="TextAppearance.Overline.Raised">
+    <item name="android:background">@drawable/bg_overline_raised_success</item>
+    <item name="android:textColor">@color/textColorOverlineInverse2</item>
+  </style>
+
   <style name="TextAppearance.Overline.Raised.Colored.White" parent="TextAppearance.Overline.Raised">
     <item name="android:background">@drawable/bg_caption_white</item>
     <item name="android:textColor">@color/textColorOverlineInverse</item>

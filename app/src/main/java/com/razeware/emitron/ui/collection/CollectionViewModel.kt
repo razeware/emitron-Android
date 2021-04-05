@@ -301,9 +301,11 @@ class CollectionViewModel @ViewModelInject constructor(
    */
   fun isContentPlaybackAllowed(
     isConnected: Boolean,
-    checkDownloadPermission: Boolean = true
+    checkDownloadPermission: Boolean = true,
+    isEpisodeFree: Boolean = false
   ): Boolean {
     val collection = _collection.value
+    val isCollectionFree = collection?.attributes?.free ?: false
     val isProfessionalContent = collection?.isProfessional()
     val isDownloaded = collection?.isDownloaded()
 
@@ -320,7 +322,7 @@ class CollectionViewModel @ViewModelInject constructor(
         if (checkDownloadPermission && isDownloaded == true) {
           permissionActionDelegate.isDownloadAllowed()
         } else {
-          true
+          permissionActionDelegate.isBeginnerVideoPlaybackAllowed() || isCollectionFree || isEpisodeFree
         }
       }
     }

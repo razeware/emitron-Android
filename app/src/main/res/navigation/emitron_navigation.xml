@@ -5,8 +5,6 @@
   android:id="@+id/mobile_navigation"
   app:startDestination="@id/navigation_library">
 
-  <include app:graph="@navigation/settings_navigation" />
-
   <fragment
     android:id="@+id/navigation_library"
     android:name="com.razeware.emitron.ui.library.LibraryFragment"
@@ -30,6 +28,9 @@
     <action
       android:id="@+id/action_navigation_library_to_navigation_login"
       app:destination="@id/navigation_login" />
+    <action
+      android:id="@+id/action_navigation_library_to_navigation_settings"
+      app:destination="@id/navigation_settings"/>
   </fragment>
 
   <fragment
@@ -58,7 +59,7 @@
       app:destination="@id/navigation_player" />
     <action
       android:id="@+id/action_navigation_collection_to_navigation_settings"
-      app:destination="@id/settings_navigation" />
+      app:destination="@id/navigation_settings" />
     <action
       android:id="@+id/action_navigation_collection_to_navigation_onboarding"
       app:destination="@id/navigation_onboarding">
@@ -109,9 +110,6 @@
     android:name="com.razeware.emitron.ui.mytutorial.MyTutorialFragment"
     tools:layout="@layout/fragment_bookmarks">
     <action
-      android:id="@+id/action_navigation_my_tutorials_to_navigation_settings"
-      app:destination="@id/settings_navigation" />
-    <action
       android:id="@+id/action_navigation_my_tutorials_to_navigation_library"
       app:destination="@id/navigation_library"
       app:popUpTo="@id/navigation_library"
@@ -148,4 +146,32 @@
       app:argType="com.razeware.emitron.ui.player.Playlist"
       app:nullable="true" />
   </fragment>
+
+  <fragment
+    android:id="@+id/navigation_settings"
+    android:name="com.razeware.emitron.ui.settings.SettingsFragment"
+    tools:layout="@layout/fragment_settings">
+    <action
+      android:id="@+id/action_navigation_downloads_to_navigation_library"
+      app:destination="@id/navigation_library"
+      app:popUpTo="@id/navigation_library"
+      app:popUpToInclusive="true" />
+
+    <action
+      android:id="@+id/action_navigation_settings_to_navigation_login"
+      app:destination="@id/navigation_login" />
+
+    <action
+      android:id="@+id/action_navigation_settings_bottom_sheet"
+      app:destination="@+id/navigation_settings_bottom_sheet" />
+  </fragment>
+
+  <dialog
+    android:id="@+id/navigation_settings_bottom_sheet"
+    android:name="com.razeware.emitron.ui.settings.SettingsBottomSheetDialogFragment">
+    <argument
+      android:name="header"
+      android:defaultValue="0"
+      app:argType="reference" />
+  </dialog>
 </navigation>

@@ -108,11 +108,11 @@ class CollectionFragment : Fragment(), InAppReviewView {
       toolbar.navigationIcon =
         VectorDrawableCompat.create(resources, R.drawable.ic_arrow_back, null)
 
-      textCollectionBodyPro.removeUnderline()
-
       episodeAdapter = CollectionEpisodeAdapter(
         onEpisodeSelected = { currentEpisode, _ ->
-          if (viewModel.isContentPlaybackAllowed(isNetConnected())) {
+          val isEpisodeFree = currentEpisode?.attributes?.free ?: false
+
+          if (viewModel.isContentPlaybackAllowed(isNetConnected(), true, isEpisodeFree)) {
             openPlayer(currentEpisode)
           } else {
             if (viewModel.isDownloaded()) {
@@ -223,7 +223,7 @@ class CollectionFragment : Fragment(), InAppReviewView {
           val hasProgress = viewModel.hasProgress()
           with(binding) {
             groupCollectionContent.isVisible = true
-            groupProfessionalContent.isVisible = !playbackAllowed
+            groupLockedContent.isVisible = !playbackAllowed
             buttonCollectionPlay.isVisible = playbackAllowed && !hasProgress
             buttonCollectionResume.isVisible = playbackAllowed && hasProgress
             progressCompletion.isVisible = playbackAllowed && hasProgress
@@ -428,7 +428,12 @@ class CollectionFragment : Fragment(), InAppReviewView {
       message = R.string.message_download_permission_error,
       positiveButton = R.string.button_label_play_online,
       positiveButtonClickListener = {
-        if (viewModel.isContentPlaybackAllowed(isNetConnected(), false)) {
+        if (viewModel.isContentPlaybackAllowed(
+            isNetConnected(),
+            checkDownloadPermission = true,
+            isEpisodeFree = false
+          )
+        ) {
           openPlayer(currentEpisode)
         }
       },
