@@ -10,9 +10,10 @@ import com.google.android.exoplayer2.offline.DownloadRequest
 import com.google.android.exoplayer2.scheduler.PlatformScheduler
 import com.google.android.exoplayer2.scheduler.Scheduler
 import com.google.android.exoplayer2.ui.DownloadNotificationHelper
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.HttpDataSource
 import com.google.android.exoplayer2.upstream.cache.Cache
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
 import com.google.android.exoplayer2.util.NotificationUtil
 import com.google.android.exoplayer2.util.Util
@@ -22,7 +23,6 @@ import com.razeware.emitron.model.DownloadState
 import com.razeware.emitron.notifications.NotificationChannels
 import com.razeware.emitron.ui.download.workers.UpdateDownloadWorker
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -45,7 +45,9 @@ class DownloadService : ExoDownloadService(
 
   private var nextNotificationId = FOREGROUND_NOTIFICATION_ID + 1
 
-  private var notificationHelper: DownloadNotificationHelper? = null
+  private val notificationHelper: DownloadNotificationHelper by lazy {
+    DownloadNotificationHelper(this, NotificationChannels.channelIdDownloads)
+  }
 
   /**
    * Download Manager
@@ -64,27 +66,28 @@ class DownloadService : ExoDownloadService(
   }
 
   /**
-   * See [DownloadService.onCreate]
-   */
-  override fun onCreate() {
-    super.onCreate()
-    notificationHelper = DownloadNotificationHelper(
-      this,
-      NotificationChannels.channelIdDownloads
-    )
-  }
-
-  /**
    * See [DownloadService.getDataDir]
    */
   override fun getDownloadManager(): DownloadManager {
     return eDownloadManager
   }
 
+  override fun onCreate() {
+    super.onCreate()
+    eDownloadManager.addListener(object : DownloadManager.Listener {
+      override fun onDownloadChanged(
+        downloadManager: DownloadManager, download: Download, finalException: Exception?
+      ) {
+        super.onDownloadChanged(downloadManager, download, finalException)
+        changeDownloadNotification(download)
+      }
+    })
+  }
+
   /**
    * See [DownloadService.getForegroundNotification]
    */
-  override fun getForegroundNotification(downloads: MutableList<Download>?): Notification {
+  override fun getForegroundNotification(downloads: MutableList<Download>): Notification {
     val message = if (!downloads.isNullOrEmpty()) {
       downloads.firstOrNull {
         it.state == Download.STATE_DOWNLOADING
@@ -92,38 +95,35 @@ class DownloadService : ExoDownloadService(
     } else {
       null
     }
-    return notificationHelper?.buildProgressNotification(
+    return notificationHelper.buildProgressNotification(
+      this,
       R.drawable.ic_logo,
       null,
       message,
       downloads
-    )!!
+    )
   }
 
   /**
    * See [DownloadService.getScheduler]
    */
-  override fun getScheduler(): Scheduler? {
+  override fun getScheduler(): Scheduler {
     return PlatformScheduler(this, JOB_ID)
   }
 
-  /**
-   * See [DownloadService.onDownloadChanged]
-   */
-  override fun onDownloadChanged(download: Download?) {
-    super.onDownloadChanged(download)
-    val notification: Notification? = when {
-      download?.state == Download.STATE_COMPLETED -> {
+  internal fun changeDownloadNotification(download: Download) {
+    val notification: Notification? = when (download.state) {
+      Download.STATE_COMPLETED -> {
         download.run {
           handleDownloadCompleted(download)
           buildDownloadCompletedNotification(download)
         }
       }
-      download?.state == Download.STATE_FAILED -> {
+      Download.STATE_FAILED -> {
         handleDownloadFailed(download)
         buildDownloadFailedNotification(download)
       }
-      download?.state == Download.STATE_REMOVING -> {
+      Download.STATE_REMOVING -> {
         handleDownloadRemoved(download)
         null
       }
@@ -162,22 +162,24 @@ class DownloadService : ExoDownloadService(
     )
   }
 
-  private fun buildDownloadCompletedNotification(download: Download): Notification? {
+  private fun buildDownloadCompletedNotification(download: Download): Notification {
     return download.run {
-      notificationHelper?.buildDownloadCompletedNotification(
+      notificationHelper.buildDownloadCompletedNotification(
+        this@DownloadService,
         R.drawable.ic_file_download,
         null,
-        Util.fromUtf8Bytes(download.request?.data)
+        Util.fromUtf8Bytes(download.request.data)
       )
     }
   }
 
-  private fun buildDownloadFailedNotification(download: Download): Notification? {
+  private fun buildDownloadFailedNotification(download: Download): Notification {
     return download.run {
-      notificationHelper?.buildDownloadFailedNotification(
+      notificationHelper.buildDownloadFailedNotification(
+        this@DownloadService,
         R.drawable.ic_file_download,
         null,
-        Util.fromUtf8Bytes(download.request?.data)
+        Util.fromUtf8Bytes(download.request.data)
       )
     }
   }
@@ -189,14 +191,17 @@ class DownloadService : ExoDownloadService(
     /**
      * Build [CacheDataSourceFactory]
      */
-    fun buildCacheDataSourceFactory(cache: Cache, userAgent: String): CacheDataSourceFactory =
-      CacheDataSourceFactory(cache, buildHttpDataSourceFactory(userAgent))
+    fun buildCacheDataSourceFactory(cache: Cache, userAgent: String): CacheDataSource.Factory =
+      CacheDataSource.Factory().apply {
+        setCache(cache)
+        setUpstreamDataSourceFactory(buildHttpDataSourceFactory(userAgent))
+      }
 
     /**
      * Build [HttpDataSource.Factory]
      */
     fun buildHttpDataSourceFactory(userAgent: String): HttpDataSource.Factory {
-      return DefaultHttpDataSourceFactory(userAgent)
+      return DefaultHttpDataSource.Factory().apply { setUserAgent(userAgent) }
     }
 
     /**
@@ -214,14 +219,10 @@ class DownloadService : ExoDownloadService(
       uri: Uri,
       name: String?
     ): String {
-      val downloadRequest = DownloadRequest(
-        contentId,
-        DownloadRequest.TYPE_PROGRESSIVE,
-        uri,
-        Collections.emptyList(),
-        null,
-        name?.toByteArray()
-      )
+      val downloadRequest = DownloadRequest.Builder(contentId, uri)
+        .setData(name?.toByteArray())
+        .build()
+
       sendAddDownload(
         ctx, DownloadService::class.java, downloadRequest, true
       )

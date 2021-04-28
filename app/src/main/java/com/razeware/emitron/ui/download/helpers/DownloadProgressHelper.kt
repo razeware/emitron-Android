@@ -23,9 +23,14 @@ class DownloadProgressHelper @Inject constructor(private val downloadManager: Do
     /**
      * See [DownloadManager.Listener.onDownloadChanged]
      */
-    override fun onDownloadChanged(downloadManager: DownloadManager?, download: Download?) {
-      if (download?.state == Download.STATE_DOWNLOADING
-        || download?.state == Download.STATE_RESTARTING
+    override fun onDownloadChanged(
+      downloadManager: DownloadManager,
+      download: Download,
+      finalException: Exception?
+    ) {
+      super.onDownloadChanged(downloadManager, download, finalException)
+      if (download.state == Download.STATE_DOWNLOADING
+        || download.state == Download.STATE_RESTARTING
       ) {
         onDownloadStart()
       }
@@ -34,7 +39,7 @@ class DownloadProgressHelper @Inject constructor(private val downloadManager: Do
 
   private var downloadProgressHandler: Handler? = null
 
-  private var downloadStartListener: DownloadStartListener? = null
+  private lateinit var downloadStartListener: DownloadStartListener
 
   /**
    * Start observing download manager changes
@@ -61,7 +66,7 @@ class DownloadProgressHelper @Inject constructor(private val downloadManager: Do
         )
       }
     }
-    if (null == downloadStartListener) {
+    if (!::downloadStartListener.isInitialized) {
       downloadStartListener =
         DownloadStartListener {
           createDownloadProgressHandler(
@@ -135,7 +140,7 @@ class DownloadProgressHelper @Inject constructor(private val downloadManager: Do
    * Clear download progress helper
    */
   fun clear() {
-    downloadStartListener = null
+    downloadManager.removeListener(downloadStartListener)
     downloadProgressHandler?.removeCallbacksAndMessages(null)
   }
 

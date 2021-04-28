@@ -33,7 +33,7 @@ buildscript {
 
       // ui
       'constraintLayout'            : "2.0.2",
-      'exoplayer'                   : "2.10.4",
+      'exoplayer'                   : "2.13.3",
       'navigation'                  : "2.3.1",
       'materialDesign'              : '1.2.1',
       'vectorDrawable'              : '1.1.0',
@@ -88,7 +88,7 @@ buildscript {
 
   repositories {
     google()
-    jcenter()
+    mavenCentral()
   }
 
   dependencies {
@@ -107,8 +107,7 @@ buildscript {
 allprojects {
   repositories {
     google()
-    jcenter()
-
+    mavenCentral()
   }
 }
 

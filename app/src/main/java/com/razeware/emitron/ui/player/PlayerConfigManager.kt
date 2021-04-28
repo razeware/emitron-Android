@@ -126,7 +126,7 @@ class PlayerConfigManager(
     trackSelector.setParameters(builder)
 
     val playbackParameters = PlaybackParameters(speed)
-    mediaPlayer?.playbackParameters = playbackParameters
+    mediaPlayer?.setPlaybackParameters(playbackParameters)
   }
 
   private fun getPlaybackQualityOverride(
@@ -182,6 +182,6 @@ class PlayerConfigManager(
    */
   fun updatePlaybackSpeed(speed: Float) {
     val playbackParameters = PlaybackParameters(speed)
-    mediaPlayer?.playbackParameters = playbackParameters
+    mediaPlayer?.setPlaybackParameters(playbackParameters)
   }
 }

@@ -2,11 +2,12 @@ package com.razeware.emitron.ui.player
 
 import android.content.Context
 import android.net.Uri
-import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ext.cast.CastPlayer
 import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener
+import com.google.android.exoplayer2.extractor.ExtractorsFactory
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
@@ -15,8 +16,8 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
-import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.gms.cast.MediaInfo
 import com.google.android.gms.cast.MediaMetadata
@@ -30,7 +31,9 @@ object PlayerManagerFactory {
     playerView: PlayerView,
     trackSelector: DefaultTrackSelector
   ): SimpleExoPlayer {
-    val mediaPlayer = ExoPlayerFactory.newSimpleInstance(playerView.context, trackSelector)
+    val mediaPlayer = SimpleExoPlayer.Builder(playerView.context, ExtractorsFactory.EMPTY)
+      .setTrackSelector(trackSelector)
+      .build()
     playerView.player = mediaPlayer
     return mediaPlayer
   }
@@ -50,17 +53,17 @@ object PlayerManagerFactory {
 
   internal fun buildMediaSource(
     episode: Episode,
-    dataSourceFactory: DefaultHttpDataSourceFactory,
-    cacheDataSourceFactory: CacheDataSourceFactory
+    dataSourceFactory: DefaultHttpDataSource.Factory,
+    cacheDataSourceFactory: CacheDataSource.Factory
   ): MediaSource {
     val uri = Uri.parse(episode.uri)
     return when (episode.mimeType) {
       MimeTypes.APPLICATION_M3U8 -> HlsMediaSource.Factory(dataSourceFactory)
         .setAllowChunklessPreparation(true)
-        .createMediaSource(uri)
+        .createMediaSource(MediaItem.fromUri(uri))
       MimeTypes.APPLICATION_MP4 -> ProgressiveMediaSource
         .Factory(cacheDataSourceFactory)
-        .createMediaSource(uri)
+        .createMediaSource(MediaItem.fromUri(uri))
       else -> {
         throw IllegalStateException("Unsupported type: " + episode.mimeType)
       }
@@ -76,19 +79,23 @@ object PlayerManagerFactory {
     return MediaQueueItem.Builder(mediaInfo).build()
   }
 
-  internal fun buildTrackSelector(): DefaultTrackSelector {
+  internal fun buildTrackSelector(context: Context): DefaultTrackSelector {
     val trackSelectionFactory = AdaptiveTrackSelection.Factory()
-    return DefaultTrackSelector(trackSelectionFactory).apply {
-      parameters = DefaultTrackSelector.ParametersBuilder().build()
+    return DefaultTrackSelector(context, trackSelectionFactory).apply {
+      parameters = DefaultTrackSelector.ParametersBuilder(context).build()
     }
   }
 
   internal fun buildDataSourceFactory(
     context: Context,
     userAgent: String
-  ): DefaultHttpDataSourceFactory {
+  ): DefaultHttpDataSource.Factory {
     val bandWidthMeter =
       DefaultBandwidthMeter.Builder(context).build()
-    return DefaultHttpDataSourceFactory(userAgent, bandWidthMeter)
+    return DefaultHttpDataSource.Factory().apply {
+      //userAgent, bandWidthMeter TODO figure our the meter
+
+      setUserAgent(userAgent)
+    }
   }
 }

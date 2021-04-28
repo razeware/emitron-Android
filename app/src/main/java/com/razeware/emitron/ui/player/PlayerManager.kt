@@ -15,13 +15,14 @@ import com.google.android.exoplayer2.ext.cast.CastPlayer
 import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource
+import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.android.exoplayer2.ui.PlayerView
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.cache.Cache
-import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.gms.cast.framework.CastContext
 import com.razeware.emitron.R
 import com.razeware.emitron.ui.download.DownloadService.Companion.buildCacheDataSourceFactory
@@ -61,9 +62,9 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
 
   private lateinit var trackSelector: DefaultTrackSelector
 
-  private lateinit var dataSourceFactory: DefaultHttpDataSourceFactory
+  private lateinit var dataSourceFactory: DefaultHttpDataSource.Factory
 
-  private lateinit var cacheDataSourceFactory: CacheDataSourceFactory
+  private lateinit var cacheDataSourceFactory: CacheDataSource.Factory
 
   /**
    * Returns the index of the currently played item.
@@ -97,7 +98,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     this.playerNotificationManager = playerNotificationManager
     this.mediaSessionCompat = MediaSessionCompat(context.applicationContext, context.packageName)
     this.castControlGroup = castControlGroup
-    this.trackSelector = buildTrackSelector()
+    this.trackSelector = buildTrackSelector(context)
     this.dataSourceFactory = buildDataSourceFactory(context, userAgent)
     this.cacheDataSourceFactory = buildCacheDataSourceFactory(cache, userAgent)
     stateObserver.observeForever(eventObserver)
@@ -164,7 +165,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
           buildMediaSource(episode, dataSourceFactory, cacheDataSourceFactory)
         )
       } else {
-        castPlayer?.addItems(buildMediaQueueItem(episode))
+//        castPlayer?.addMediaItem(buildMediaQueueItem(episode)) TODO ???
       }
     }
   }
@@ -220,7 +221,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
   /**
    * See [Player.EventListener.onTimelineChanged]
    */
-  override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
+  override fun onTimelineChanged(timeline: Timeline, manifest: Any?, reason: Int) {
     updateCurrentItemIndex()
   }
 
@@ -244,7 +245,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
   /**
    * See [Player.EventListener.onPlayerError]
    */
-  override fun onPlayerError(error: ExoPlaybackException?) {
+  override fun onPlayerError(error: ExoPlaybackException) {
     stateObserver.value = MediaPlaybackState.ERROR
   }
 
@@ -321,7 +322,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
 
   private fun getCurrentPlayerState(): PlayerState {
     val playerState = PlayerState.from(this.currentPlayer, currentItemIndex)
-    this.currentPlayer?.stop(true)
+    this.currentPlayer?.stop()
     return playerState
   }
 
@@ -335,8 +336,9 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     playerConfig: PlayerConfig,
     playerState: PlayerState
   ) {
-    updateMediaSource()
-    mediaPlayer?.prepare(concatenatingMediaSource)
+    val mediaSources = getMediaSources()
+
+    mediaPlayer?.setMediaSources(mediaSources)
     mediaPlayer?.addListener(this@PlayerManager)
     if (playerState.playbackPositionMs != C.TIME_UNSET) {
       if (!playerConfig.reset) {
@@ -352,16 +354,9 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
   /**
    * Update media source
    */
-  private fun updateMediaSource() {
-    concatenatingMediaSource = ConcatenatingMediaSource()
-    for (episode in mediaQueue) {
-      concatenatingMediaSource?.addMediaSource(
-        buildMediaSource(
-          episode,
-          dataSourceFactory,
-          cacheDataSourceFactory
-        )
-      )
+  private fun getMediaSources(): List<MediaSource> {
+    return mediaQueue.map {
+      buildMediaSource(it, dataSourceFactory, cacheDataSourceFactory)
     }
   }
 
@@ -374,11 +369,13 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     val items = mediaQueue.map {
       buildMediaQueueItem(it)
     }.toTypedArray()
+
     if (items.isNotEmpty() && playerState.windowIndex != C.INDEX_UNSET) {
-      castPlayer?.loadItems(
-        items, playerState.windowIndex,
-        playerState.playbackPositionMs, Player.REPEAT_MODE_OFF
+      castPlayer?.setMediaItems( // TODO figure our the items
+        getMediaSources().map { it.mediaItem }, playerState.windowIndex,
+        playerState.playbackPositionMs
       )
+      castPlayer?.repeatMode = Player.REPEAT_MODE_OFF
       castPlayer?.playWhenReady = playerState.playWhenReady
     }
   }
