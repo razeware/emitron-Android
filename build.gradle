@@ -68,6 +68,7 @@ buildscript {
       'googleTruth'                 : "1.0",
       'mockitoKotlin'               : "2.1.0",
       'testRunner'                  : "1.2.0",
+      'architectureComponentsTest'  : "1.0.0",
 
       // firebase
       'firebaseConfig'              : '18.0.0',

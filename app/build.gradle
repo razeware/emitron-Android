@@ -198,7 +198,7 @@ dependencies {
   testImplementation "org.mockito:mockito-core:${versions.mockito}"
   testImplementation "org.mockito:mockito-inline:${versions.mockito}"
   testImplementation "org.mockito:mockito-android:${versions.mockito}"
-  testImplementation "android.arch.core:core-testing:${versions.architectureComponents}"
+  testImplementation "android.arch.core:core-testing:${versions.architectureComponentsTest}"
   testImplementation "androidx.test:runner:${versions.testRunner}"
   testImplementation "androidx.test:rules:${versions.testRunner}"
   testImplementation "com.squareup.retrofit2:retrofit-mock:${versions.retrofit}"
