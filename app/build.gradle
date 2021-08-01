@@ -19,8 +19,9 @@ apply plugin: 'dagger.hilt.android.plugin'
 android {
   compileSdkVersion versions.compileSdk
 
-  dataBinding {
-    enabled = true
+  buildFeatures {
+    dataBinding true
+    viewBinding true
   }
 
   signingConfigs {
@@ -43,7 +44,6 @@ android {
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary true
     multiDexEnabled true
-    javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
     resValue 'string', "client_api_key", "${client_api_key}"
     resValue 'string', "app_token", "${app_token}"
     buildConfigField 'String', "BASE_API_URL", "\"https://api.raywenderlich.com/api/\""
