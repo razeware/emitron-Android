@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
@@ -82,18 +81,12 @@ class FilterFragment : Fragment() {
    * */
   @TargetApi(Build.VERSION_CODES.P)
   private fun setupWindowInsets() {
-    binding.filterRoot.doOnLayout {
-      val inset = binding.filterRoot.rootWindowInsets
-
-      val cutoutSize = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        inset?.getInsets(WindowInsets.Type.navigationBars())?.bottom
-      } else {
-        inset?.displayCutout?.safeInsetBottom
+    ViewCompat.setOnApplyWindowInsetsListener(binding.filterRoot) { v, insets ->
+      binding.filterRoot.doOnLayout {
+        binding.bottomPadding = insets.systemWindowInsets.bottom
       }
-
-      if (cutoutSize != null) {
-        binding.bottomPadding = cutoutSize
-      }
+      // Always return the insets, so that children can also use them
+      insets
     }
   }
 
