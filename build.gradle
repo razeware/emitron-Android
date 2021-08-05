@@ -7,7 +7,7 @@ buildscript {
       'minSdk'                      : 21,
       'targetSdk'                   : 30,
       'compileSdk'                  : 30,
-      'gradle'                      : '4.0.1',
+      'gradle'                      : '7.0.0',
       'kotlin'                      : '1.4.10',
 
       // core
@@ -68,6 +68,7 @@ buildscript {
       'googleTruth'                 : "1.0",
       'mockitoKotlin'               : "2.1.0",
       'testRunner'                  : "1.2.0",
+      'architectureComponentsTest'  : "1.0.0",
 
       // firebase
       'firebaseConfig'              : '18.0.0',
@@ -82,8 +83,8 @@ buildscript {
       // plugins
       'firebasePerfPlugin'          : "1.2.1",
       'jacocoPlugin'                : "0.8.1",
-      'googleServicesPlugin'        : "4.2.0",
-      'ossLicenses'                 : "0.9.5"
+      'googleServicesPlugin'        : "4.3.8",
+      'ossLicenses'                 : "0.10.4"
   ]
 
   repositories {

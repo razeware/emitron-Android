@@ -19,8 +19,9 @@ apply plugin: 'dagger.hilt.android.plugin'
 android {
   compileSdkVersion versions.compileSdk
 
-  dataBinding {
-    enabled = true
+  buildFeatures {
+    dataBinding true
+    viewBinding true
   }
 
   signingConfigs {
@@ -43,7 +44,6 @@ android {
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary true
     multiDexEnabled true
-    javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
     resValue 'string', "client_api_key", "${client_api_key}"
     resValue 'string', "app_token", "${app_token}"
     buildConfigField 'String', "BASE_API_URL", "\"https://api.raywenderlich.com/api/\""
@@ -198,7 +198,7 @@ dependencies {
   testImplementation "org.mockito:mockito-core:${versions.mockito}"
   testImplementation "org.mockito:mockito-inline:${versions.mockito}"
   testImplementation "org.mockito:mockito-android:${versions.mockito}"
-  testImplementation "android.arch.core:core-testing:${versions.architectureComponents}"
+  testImplementation "android.arch.core:core-testing:${versions.architectureComponentsTest}"
   testImplementation "androidx.test:runner:${versions.testRunner}"
   testImplementation "androidx.test:rules:${versions.testRunner}"
   testImplementation "com.squareup.retrofit2:retrofit-mock:${versions.retrofit}"
