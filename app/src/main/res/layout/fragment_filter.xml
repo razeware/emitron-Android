@@ -39,6 +39,13 @@
       android:orientation="horizontal"
       app:layout_constraintGuide_begin="@dimen/guideline_top_status_bar_1" />
 
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline_bottom"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_end="@dimen/guideline_bottom_gesture" />
+
     <com.google.android.material.appbar.MaterialToolbar
       android:id="@+id/toolbar"
       android:layout_width="match_parent"
@@ -86,7 +93,7 @@
       android:layout_marginBottom="@dimen/activity_vertical_margin"
       android:text="@string/button_filter_clear_all"
       android:textAppearance="@style/TextAppearance.Button.Regular"
-      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
       app:layout_constraintEnd_toStartOf="@+id/button_filter_close"
       app:layout_constraintStart_toStartOf="@id/guideline_left"
       app:layout_constraintTop_toBottomOf="@+id/filter_progress" />
@@ -100,7 +107,7 @@
       android:layout_marginBottom="@dimen/activity_vertical_margin"
       android:text="@string/button_filter_apply"
       android:textAppearance="@style/TextAppearance.Button.Regular"
-      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintStart_toEndOf="@id/button_filter_clear"
       app:layout_constraintTop_toTopOf="@+id/button_filter_clear" />

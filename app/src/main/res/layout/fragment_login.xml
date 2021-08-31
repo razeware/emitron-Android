@@ -114,15 +114,31 @@
       style="@style/Button.Colored.Icon"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/activity_vertical_margin"
       android:text="@string/button_sign_in"
       app:icon="@drawable/ic_material_button_icon_arrow_right_green_contained"
       app:iconGravity="end"
       app:iconTint="@color/white"
       app:iconTintMode="multiply"
-      app:layout_constraintBottom_toBottomOf="@+id/guideline_bottom"
+      app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintStart_toStartOf="@id/guideline_left"
       app:layout_constraintTop_toBottomOf="@+id/view_pager_indicator" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/button_sign_out"
+      style="@style/Button.Colored.3.Icon"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/activity_vertical_margin"
+      android:text="@string/button_sign_out"
+      app:icon="@drawable/ic_material_button_icon_arrow_right_red_contained"
+      app:iconGravity="end"
+      app:iconTint="@color/white"
+      app:iconTintMode="multiply"
+      app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
+      app:layout_constraintEnd_toEndOf="@id/guideline_right"
+      app:layout_constraintStart_toStartOf="@id/guideline_left" />
 
     <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/text_login_error_title"
@@ -136,7 +152,6 @@
       app:layout_constraintStart_toStartOf="@id/guideline_left"
       app:layout_constraintTop_toBottomOf="@+id/image_logo"
       app:layout_constraintVertical_chainStyle="packed" />
-
 
     <com.google.android.material.textview.MaterialTextView
       android:id="@+id/text_login_error_description"
@@ -155,20 +170,6 @@
       app:layout_constraintStart_toStartOf="@id/guideline_left"
       app:layout_constraintTop_toBottomOf="@+id/text_login_error_title"
       app:layout_constraintVertical_chainStyle="spread_inside" />
-
-    <com.google.android.material.button.MaterialButton
-      android:id="@+id/button_sign_out"
-      style="@style/Button.Colored.3.Icon"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:text="@string/button_sign_out"
-      app:icon="@drawable/ic_material_button_icon_arrow_right_red_contained"
-      app:iconGravity="end"
-      app:iconTint="@color/white"
-      app:iconTintMode="multiply"
-      app:layout_constraintBottom_toBottomOf="@+id/guideline_bottom"
-      app:layout_constraintEnd_toEndOf="@id/guideline_right"
-      app:layout_constraintStart_toStartOf="@id/guideline_left" />
 
     <androidx.constraintlayout.widget.Group
       android:id="@+id/layout_login"
