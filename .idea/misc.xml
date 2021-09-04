@@ -1,26 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DesignSurface">
-    <option name="filePathToZoomLevelMap">
-      <map>
-        <entry key="..\:/Users/Dora/open_source_coding/emitron-Android/app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="..\:/Users/Dora/open_source_coding/emitron-Android/app/src/main/res/layout/fragment_collection.xml" value="0.25" />
-        <entry key="..\:/Users/Dora/open_source_coding/emitron-Android/app/src/main/res/layout/fragment_filter.xml" value="0.25" />
-        <entry key="..\:/Users/Dora/open_source_coding/emitron-Android/app/src/main/res/layout/fragment_login.xml" value="0.25" />
-        <entry key="..\:/Users/Dora/open_source_coding/emitron-Android/app/src/main/res/layout/fragment_login_onboarding.xml" value="0.24456521739130435" />
-        <entry key="..\:/Users/Dora/open_source_coding/emitron-Android/app/src/main/res/layout/fragment_settings.xml" value="0.24456521739130435" />
-        <entry key="..\:/Users/Dora/open_source_coding/emitron-Android/app/src/main/res/layout/item_content.xml" value="0.2734375" />
-        <entry key="..\:/Users/Dora/open_source_coding/emitron-Android/app/src/main/res/layout/item_filter.xml" value="0.2734375" />
-        <entry key="..\:/Users/Dora/open_source_coding/emitron-Android/app/src/main/res/layout/item_filter_header.xml" value="0.2734375" />
-      </map>
-    </option>
-  </component>
   <component name="EntryPointsManager">
     <list size="1">
       <item index="0" class="java.lang.String" itemvalue="androidx.annotation.VisibleForTesting" />
     </list>
   </component>
-  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
       <profile-state>
