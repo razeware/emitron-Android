@@ -16,7 +16,8 @@
     android:layout_height="match_parent"
     android:clipChildren="true"
     android:clipToPadding="true"
-    android:paddingBottom="@{bottomPadding}">
+    android:paddingBottom="@{bottomPadding}"
+    android:layout_marginBottom="?actionBarSize">
 
     <androidx.constraintlayout.widget.Guideline
       android:id="@+id/guideline_left"
@@ -90,10 +91,9 @@
       style="@style/Button.Colored.2"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginBottom="@dimen/activity_vertical_margin"
       android:text="@string/button_filter_clear_all"
       android:textAppearance="@style/TextAppearance.Button.Regular"
-      app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
+      app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
       app:layout_constraintEnd_toStartOf="@+id/button_filter_close"
       app:layout_constraintStart_toStartOf="@id/guideline_left"
       app:layout_constraintTop_toBottomOf="@+id/filter_progress" />
@@ -104,14 +104,12 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/button_spacing_horizontal"
-      android:layout_marginBottom="@dimen/activity_vertical_margin"
       android:text="@string/button_filter_apply"
       android:textAppearance="@style/TextAppearance.Button.Regular"
-      app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
+      app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintStart_toEndOf="@id/button_filter_clear"
       app:layout_constraintTop_toTopOf="@+id/button_filter_clear" />
-
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -10,7 +10,7 @@
   <!-- Status bar height (24dp)+ 16dp margin -->
   <dimen name="guideline_top_status_bar_2">40dp</dimen>
 
-  <dimen name="guideline_bottom_gesture">40dp</dimen>
+  <dimen name="guideline_bottom_gesture">16dp</dimen>
 
   <!-- Card View -->
   <dimen name="card_corner_radius">6dp</dimen>
