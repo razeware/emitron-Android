@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
-apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'com.google.firebase.firebase-perf'
 
@@ -15,6 +14,8 @@ apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
 apply plugin: 'dagger.hilt.android.plugin'
+
+apply plugin: 'kotlin-parcelize'
 
 android {
   compileSdkVersion versions.compileSdk
@@ -81,10 +82,6 @@ android {
 
   sourceSets {
     androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
-  }
-
-  androidExtensions {
-    experimental = true
   }
 }
 
