@@ -1,6 +1,5 @@
 package com.razeware.emitron.ui.library
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.razeware.emitron.data.content.ContentRepository
@@ -9,14 +8,17 @@ import com.razeware.emitron.model.Data
 import com.razeware.emitron.ui.content.ContentPagedViewModel
 import com.razeware.emitron.utils.Logger
 import com.razeware.emitron.utils.LoggerImpl
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
 /**
  * ViewModel for library view
  */
-class LibraryViewModel @ViewModelInject constructor(
+@HiltViewModel
+class LibraryViewModel @Inject constructor(
   private val repository: ContentRepository,
   private val contentPagedViewModel: ContentPagedViewModel,
   private val filterRepository: FilterRepository,

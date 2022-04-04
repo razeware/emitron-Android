@@ -1,16 +1,18 @@
 package com.razeware.emitron.ui.settings
 
 import android.content.Context
-import androidx.hilt.Assisted
-import androidx.hilt.work.WorkerInject
+import androidx.hilt.work.HiltWorker
 import androidx.work.*
 import com.razeware.emitron.data.settings.SettingsRepository
 import com.razeware.emitron.ui.download.DownloadService
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 
 /**
  * Worker for stopping downloads
  */
-class SignOutWorker @WorkerInject constructor(
+@HiltWorker
+class SignOutWorker @AssistedInject constructor(
   /** Context */
   @Assisted val appContext: Context,
   @Assisted workerParameters: WorkerParameters,

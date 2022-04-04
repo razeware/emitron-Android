@@ -16,14 +16,14 @@ import com.razeware.emitron.ui.download.DownloadService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 import java.io.File
 import javax.inject.Singleton
 
 private const val DOWNLOAD_CONTENT_DIRECTORY = "downloads"
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 class DownloadModule {
 
   @Provides

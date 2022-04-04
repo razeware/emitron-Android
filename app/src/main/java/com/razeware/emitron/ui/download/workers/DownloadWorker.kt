@@ -2,8 +2,7 @@ package com.razeware.emitron.ui.download.workers
 
 import android.content.Context
 import android.net.Uri
-import androidx.hilt.Assisted
-import androidx.hilt.work.WorkerInject
+import androidx.hilt.work.HiltWorker
 import androidx.work.*
 import com.razeware.emitron.data.download.DownloadRepository
 import com.razeware.emitron.data.settings.SettingsRepository
@@ -14,11 +13,14 @@ import com.razeware.emitron.model.entity.inProgress
 import com.razeware.emitron.model.entity.isPaused
 import com.razeware.emitron.model.isHd
 import com.razeware.emitron.ui.download.DownloadService
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 
 /**
  * Worker for processing queued Downloads
  */
-class DownloadWorker @WorkerInject constructor(
+@HiltWorker
+class DownloadWorker @AssistedInject constructor(
   @Assisted val appContext: Context,
   @Assisted workerParameters: WorkerParameters,
   /**

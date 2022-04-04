@@ -1,11 +1,12 @@
 package com.razeware.emitron.ui.player.workers
 
 import android.content.Context
-import androidx.hilt.Assisted
-import androidx.hilt.work.WorkerInject
+import androidx.hilt.work.HiltWorker
 import androidx.work.*
 import com.razeware.emitron.data.progressions.ProgressionRepository
 import com.razeware.emitron.model.Contents
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -13,7 +14,8 @@ import java.io.IOException
  *  Worker for updating offline progression
  *
  */
-class UpdateOfflineProgressWorker @WorkerInject constructor(
+@HiltWorker
+class UpdateOfflineProgressWorker @AssistedInject constructor(
   @Assisted appContext: Context,
   @Assisted workerParameters: WorkerParameters,
   /**

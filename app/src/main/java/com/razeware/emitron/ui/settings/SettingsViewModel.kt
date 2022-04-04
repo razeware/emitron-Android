@@ -1,17 +1,19 @@
 package com.razeware.emitron.ui.settings
 
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.razeware.emitron.data.login.LoginRepository
 import com.razeware.emitron.data.settings.SettingsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 /**
  * ViewModel for settings view
  */
-class SettingsViewModel @ViewModelInject constructor(
+@HiltViewModel
+class SettingsViewModel @Inject constructor(
   private val loginRepository: LoginRepository,
   private val settingsRepository: SettingsRepository
 ) : ViewModel() {

@@ -5,8 +5,8 @@ buildscript {
       'versionCode'                 : 32,
       'versionName'                 : "1.2.0",
       'minSdk'                      : 21,
-      'targetSdk'                   : 30,
-      'compileSdk'                  : 30,
+      'targetSdk'                   : 31,
+      'compileSdk'                  : 31,
       'gradle'                      : '7.1.2',
       'kotlin'                      : '1.6.10',
 
@@ -22,9 +22,9 @@ buildscript {
       'multidex'                    : "2.0.1",
       'browser'                     : "1.2.0", // Chrome custom tabs
 
-      'hilt'                        : '2.28.3-alpha',
+      'hilt'                        : '2.38.1',
       'hiltViewModel'               : '1.0.0-alpha02',
-      'hiltWorkManager'             : '1.0.0-alpha02',
+      'hiltWorkManager'             : '1.0.0',
       'coroutines'                  : "1.3.9",
 
       // cast
@@ -33,7 +33,7 @@ buildscript {
 
       // ui
       'constraintLayout'            : "2.0.2",
-      'exoplayer'                   : "2.17.1",
+      'exoplayer'                   : "2.10.4",
       'navigation'                  : '2.4.1',
       'materialDesign'              : '1.2.1',
       'vectorDrawable'              : '1.1.0',
@@ -52,7 +52,7 @@ buildscript {
 
       //network
       'retrofit'                    : '2.9.0',
-      'moshi'                       : '1.9.2',
+      'moshi'                       : '1.13.0',
       'okHttp'                      : '4.8.1',
       'glide'                       : '4.10.0',
 
@@ -89,7 +89,7 @@ buildscript {
 
   repositories {
     google()
-    mavenCentral()
+    jcenter()
   }
 
   dependencies {
@@ -108,7 +108,10 @@ buildscript {
 allprojects {
   repositories {
     google()
-    mavenCentral()
+    jcenter()
+
+
+
 
   }
 }

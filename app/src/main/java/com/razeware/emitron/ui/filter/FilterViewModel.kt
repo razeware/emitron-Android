@@ -1,6 +1,5 @@
 package com.razeware.emitron.ui.filter
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,14 +7,17 @@ import androidx.lifecycle.viewModelScope
 import com.razeware.emitron.data.filter.FilterRepository
 import com.razeware.emitron.model.*
 import com.razeware.emitron.utils.Event
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
 /**
  * ViewModel for filter view
  */
-class FilterViewModel @ViewModelInject constructor(private val repository: FilterRepository) :
+@HiltViewModel
+class FilterViewModel @Inject constructor(private val repository: FilterRepository) :
   ViewModel() {
 
   private val _loadFilterOptionsResult = MutableLiveData<Event<LoadFilterOptionResult>>()
