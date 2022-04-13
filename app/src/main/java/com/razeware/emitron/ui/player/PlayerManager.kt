@@ -18,31 +18,30 @@ import com.google.android.exoplayer2.source.ConcatenatingMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
-import com.google.android.exoplayer2.ui.PlayerView
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
+import com.google.android.exoplayer2.ui.StyledPlayerControlView
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.cache.Cache
-import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.gms.cast.framework.CastContext
 import com.razeware.emitron.R
 import com.razeware.emitron.ui.download.DownloadService.Companion.buildCacheDataSourceFactory
 import com.razeware.emitron.ui.player.PlayerManagerFactory.buildDataSourceFactory
-import com.razeware.emitron.ui.player.PlayerManagerFactory.buildMediaQueueItem
+import com.razeware.emitron.ui.player.PlayerManagerFactory.buildMediaItem
 import com.razeware.emitron.ui.player.PlayerManagerFactory.buildMediaSource
 import com.razeware.emitron.ui.player.PlayerManagerFactory.buildTrackSelector
 import com.razeware.emitron.ui.player.PlayerManagerFactory.createCastMediaPlayer
 import com.razeware.emitron.ui.player.PlayerManagerFactory.createMediaPlayer
 import com.razeware.emitron.ui.player.cast.Episode
-import java.util.*
 
 /**
  * Manages media player instance.
  */
 class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecycle) :
-  Player.EventListener, SessionAvailabilityListener, LifecycleObserver {
+  Player.Listener, SessionAvailabilityListener, LifecycleObserver {
 
   private val mediaQueue: ArrayList<Episode>
-  private var mediaPlayer: SimpleExoPlayer? = null
-  private lateinit var localPlayerView: PlayerView
+  private var mediaPlayer: ExoPlayer? = null
+  private lateinit var localPlayerView: StyledPlayerControlView
   private lateinit var castControlView: PlayerControlView
   private val stateObserver = MutableLiveData<MediaPlaybackState>()
   private lateinit var eventObserver: Observer<MediaPlaybackState>
@@ -61,9 +60,9 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
 
   private lateinit var trackSelector: DefaultTrackSelector
 
-  private lateinit var dataSourceFactory: DefaultHttpDataSourceFactory
+  private lateinit var dataSourceFactory: DefaultHttpDataSource.Factory
 
-  private lateinit var cacheDataSourceFactory: CacheDataSourceFactory
+  private lateinit var cacheDataSourceFactory: CacheDataSource.Factory
 
   /**
    * Returns the index of the currently played item.
@@ -85,7 +84,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     context: Context,
     castContext: CastContext,
     playerNotificationManager: PlayerNotificationManager,
-    playbackControlView: PlayerView,
+    playbackControlView: StyledPlayerControlView,
     castControlView: PlayerControlView,
     castControlGroup: View,
     eventObserver: Observer<MediaPlaybackState>,
@@ -97,7 +96,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     this.playerNotificationManager = playerNotificationManager
     this.mediaSessionCompat = MediaSessionCompat(context.applicationContext, context.packageName)
     this.castControlGroup = castControlGroup
-    this.trackSelector = buildTrackSelector()
+    this.trackSelector = buildTrackSelector(context)
     this.dataSourceFactory = buildDataSourceFactory(context, userAgent)
     this.cacheDataSourceFactory = buildCacheDataSourceFactory(cache, userAgent)
     stateObserver.observeForever(eventObserver)
@@ -137,9 +136,8 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
   private fun initPlayerNotificationManager() {
     with(playerNotificationManager) {
       setPlayer(currentPlayer)
-      setUseNavigationActions(false)
-      setFastForwardIncrementMs(0)
-      setRewindIncrementMs(0)
+      setUseNextAction(false)
+      setUsePreviousAction(false)
       setUseStopAction(false)
       setUseChronometer(true)
       setUsePlayPauseActions(true)
@@ -164,7 +162,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
           buildMediaSource(episode, dataSourceFactory, cacheDataSourceFactory)
         )
       } else {
-        castPlayer?.addItems(buildMediaQueueItem(episode))
+        castPlayer?.addMediaItem(buildMediaItem(episode))
       }
     }
   }
@@ -192,10 +190,10 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     removeObserver()
   }
 
-  // Player.EventListener implementation.
+  // Player.Listener implementation.
 
   /**
-   * See [Player.EventListener.onPlayerStateChanged]
+   * See [Player.Listener.onPlayerStateChanged]
    */
   override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
     updateCurrentItemIndex()
@@ -211,16 +209,16 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
   }
 
   /**
-   * See [Player.EventListener.onPositionDiscontinuity]
+   * See [Player.Listener.onPositionDiscontinuity]
    */
   override fun onPositionDiscontinuity(@Player.DiscontinuityReason reason: Int) {
     updateCurrentItemIndex()
   }
 
   /**
-   * See [Player.EventListener.onTimelineChanged]
+   * See [Player.Listener.onTimelineChanged]
    */
-  override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
+  override fun onTimelineChanged(timeline: Timeline, reason: Int) {
     updateCurrentItemIndex()
   }
 
@@ -242,9 +240,9 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
   }
 
   /**
-   * See [Player.EventListener.onPlayerError]
+   * See [Player.Listener.onPlayerError]
    */
-  override fun onPlayerError(error: ExoPlaybackException?) {
+  override fun onPlayerError(error: PlaybackException) {
     stateObserver.value = MediaPlaybackState.ERROR
   }
 
@@ -275,12 +273,12 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
 
     // View management.
     if (currentPlayer == mediaPlayer) {
-      localPlayerView.isVisible = true
+      localPlayerView.visibility = View.VISIBLE
       castControlGroup.isVisible = false
       castControlView.hide()
     } else
     /* currentPlayer == castPlayer */ {
-      localPlayerView.isVisible = false
+      localPlayerView.visibility = View.GONE
       castControlGroup.isVisible = true
       castControlView.show()
     }
@@ -336,7 +334,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     playerState: PlayerState
   ) {
     updateMediaSource()
-    mediaPlayer?.prepare(concatenatingMediaSource)
+    concatenatingMediaSource?.getMediaSource(0)?.let { mediaPlayer?.setMediaSource(it) }
     mediaPlayer?.addListener(this@PlayerManager)
     if (playerState.playbackPositionMs != C.TIME_UNSET) {
       if (!playerConfig.reset) {
@@ -372,12 +370,13 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
    */
   private fun updateCastPlayer(playerState: PlayerState) {
     val items = mediaQueue.map {
-      buildMediaQueueItem(it)
+      buildMediaItem(it)
     }.toTypedArray()
     if (items.isNotEmpty() && playerState.windowIndex != C.INDEX_UNSET) {
-      castPlayer?.loadItems(
-        items, playerState.windowIndex,
-        playerState.playbackPositionMs, Player.REPEAT_MODE_OFF
+      // TODO Check how to set repeat mode off
+      castPlayer?.setMediaItems(
+        items.toMutableList(), playerState.windowIndex,
+        playerState.playbackPositionMs
       )
       castPlayer?.playWhenReady = playerState.playWhenReady
     }

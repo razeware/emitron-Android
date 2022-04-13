@@ -19,7 +19,7 @@ class PlayerNotificationActionAdapter(
   /**
    * See [PlayerNotificationActionAdapter.getCustomActions]
    */
-  override fun getCustomActions(player: Player?): List<String> {
+  override fun getCustomActions(player: Player): List<String> {
     return listOf(ACTION_NEXT)
   }
 
@@ -51,7 +51,7 @@ class PlayerNotificationActionAdapter(
   /**
    * See [PlayerNotificationActionAdapter.onCustomAction]
    */
-  override fun onCustomAction(player: Player?, action: String?, intent: Intent?) {
+  override fun onCustomAction(player: Player, action: String, intent: Intent) {
     when (action) {
       ACTION_NEXT -> viewModel.playNextEpisode()
     }

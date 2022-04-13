@@ -10,10 +10,10 @@ import com.google.android.exoplayer2.offline.DownloadRequest
 import com.google.android.exoplayer2.scheduler.PlatformScheduler
 import com.google.android.exoplayer2.scheduler.Scheduler
 import com.google.android.exoplayer2.ui.DownloadNotificationHelper
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.HttpDataSource
 import com.google.android.exoplayer2.upstream.cache.Cache
-import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.exoplayer2.util.NotificationUtil
 import com.google.android.exoplayer2.util.Util
 import com.razeware.emitron.R
@@ -59,6 +59,12 @@ class DownloadService : ExoDownloadService(
   @Inject
   lateinit var settingsRepository: SettingsRepository
 
+  /**
+   * Context
+   */
+  @Inject
+  lateinit var context: Context
+
   init {
     nextNotificationId = FOREGROUND_NOTIFICATION_ID + 1
   }
@@ -84,7 +90,10 @@ class DownloadService : ExoDownloadService(
   /**
    * See [DownloadService.getForegroundNotification]
    */
-  override fun getForegroundNotification(downloads: MutableList<Download>?): Notification {
+  override fun getForegroundNotification(
+    downloads: MutableList<Download>,
+    notMetRequirements: Int
+  ): Notification {
     val message = if (!downloads.isNullOrEmpty()) {
       downloads.firstOrNull {
         it.state == Download.STATE_DOWNLOADING
@@ -93,6 +102,7 @@ class DownloadService : ExoDownloadService(
       null
     }
     return notificationHelper?.buildProgressNotification(
+      context,
       R.drawable.ic_logo,
       null,
       message,
@@ -110,20 +120,23 @@ class DownloadService : ExoDownloadService(
   /**
    * See [DownloadService.onDownloadChanged]
    */
-  override fun onDownloadChanged(download: Download?) {
-    super.onDownloadChanged(download)
-    val notification: Notification? = when {
-      download?.state == Download.STATE_COMPLETED -> {
+  override fun onDownloadChanged(
+    downloadManager: DownloadManager,
+    download: Download,
+    exception: Exception?
+  ) {
+    val notification: Notification? = when (download.state) {
+      Download.STATE_COMPLETED -> {
         download.run {
           handleDownloadCompleted(download)
           buildDownloadCompletedNotification(download)
         }
       }
-      download?.state == Download.STATE_FAILED -> {
+      Download.STATE_FAILED -> {
         handleDownloadFailed(download)
         buildDownloadFailedNotification(download)
       }
-      download?.state == Download.STATE_REMOVING -> {
+      Download.STATE_REMOVING -> {
         handleDownloadRemoved(download)
         null
       }
@@ -165,9 +178,10 @@ class DownloadService : ExoDownloadService(
   private fun buildDownloadCompletedNotification(download: Download): Notification? {
     return download.run {
       notificationHelper?.buildDownloadCompletedNotification(
+        context,
         R.drawable.ic_file_download,
         null,
-        Util.fromUtf8Bytes(download.request?.data)
+        Util.fromUtf8Bytes(download.request.data)
       )
     }
   }
@@ -175,9 +189,10 @@ class DownloadService : ExoDownloadService(
   private fun buildDownloadFailedNotification(download: Download): Notification? {
     return download.run {
       notificationHelper?.buildDownloadFailedNotification(
+        context,
         R.drawable.ic_file_download,
         null,
-        Util.fromUtf8Bytes(download.request?.data)
+        Util.fromUtf8Bytes(download.request.data)
       )
     }
   }
@@ -189,14 +204,16 @@ class DownloadService : ExoDownloadService(
     /**
      * Build [CacheDataSourceFactory]
      */
-    fun buildCacheDataSourceFactory(cache: Cache, userAgent: String): CacheDataSourceFactory =
-      CacheDataSourceFactory(cache, buildHttpDataSourceFactory(userAgent))
+    fun buildCacheDataSourceFactory(cache: Cache, userAgent: String): CacheDataSource.Factory =
+      CacheDataSource.Factory()
+        .setCache(cache)
+        .setUpstreamDataSourceFactory(buildHttpDataSourceFactory(userAgent))
 
     /**
      * Build [HttpDataSource.Factory]
      */
     fun buildHttpDataSourceFactory(userAgent: String): HttpDataSource.Factory {
-      return DefaultHttpDataSourceFactory(userAgent)
+      return DefaultHttpDataSource.Factory().setUserAgent(userAgent)
     }
 
     /**

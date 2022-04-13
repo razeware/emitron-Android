@@ -23,9 +23,13 @@ class DownloadProgressHelper @Inject constructor(private val downloadManager: Do
     /**
      * See [DownloadManager.Listener.onDownloadChanged]
      */
-    override fun onDownloadChanged(downloadManager: DownloadManager?, download: Download?) {
-      if (download?.state == Download.STATE_DOWNLOADING
-        || download?.state == Download.STATE_RESTARTING
+    override fun onDownloadChanged(
+      downloadManager: DownloadManager,
+      download: Download,
+      finalException: Exception?
+    ) {
+      if (download.state == Download.STATE_DOWNLOADING
+        || download.state == Download.STATE_RESTARTING
       ) {
         onDownloadStart()
       }
@@ -71,7 +75,9 @@ class DownloadProgressHelper @Inject constructor(private val downloadManager: Do
             onDownloadChange
           )
         }
-      downloadManager.addListener(downloadStartListener)
+      downloadStartListener?.let { downloadStartListener ->
+        downloadManager.addListener(downloadStartListener)
+      }
     }
   }
 

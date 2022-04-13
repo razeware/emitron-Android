@@ -3,11 +3,8 @@ package com.razeware.emitron.di.modules
 import android.app.Application
 import android.content.Context
 import com.google.android.exoplayer2.database.DatabaseProvider
-import com.google.android.exoplayer2.database.ExoDatabaseProvider
-import com.google.android.exoplayer2.offline.DefaultDownloadIndex
-import com.google.android.exoplayer2.offline.DefaultDownloaderFactory
+import com.google.android.exoplayer2.database.StandaloneDatabaseProvider
 import com.google.android.exoplayer2.offline.DownloadManager
-import com.google.android.exoplayer2.offline.DownloaderConstructorHelper
 import com.google.android.exoplayer2.upstream.cache.Cache
 import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
@@ -39,7 +36,7 @@ class DownloadModule {
   @Provides
   @Singleton
   fun provideExoDatabaseProvider(application: Application): DatabaseProvider =
-    ExoDatabaseProvider(application)
+    StandaloneDatabaseProvider(application)
 
   @Provides
   @Singleton
@@ -63,15 +60,13 @@ class DownloadModule {
     databaseProvider: DatabaseProvider,
     downloadCache: Cache
   ): DownloadManager {
-    val downloadIndex = DefaultDownloadIndex(databaseProvider)
-    val downloaderConstructorHelper =
-      DownloaderConstructorHelper(
-        downloadCache,
-        DownloadService.buildHttpDataSourceFactory(BuildConfig.APPLICATION_ID)
-      )
 
     return DownloadManager(
-      context, downloadIndex, DefaultDownloaderFactory(downloaderConstructorHelper)
+      context,
+      databaseProvider,
+      downloadCache,
+      DownloadService.buildHttpDataSourceFactory(BuildConfig.APPLICATION_ID),
+      Runnable::run
     )
   }
 }
