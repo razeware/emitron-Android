@@ -14,7 +14,6 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.HttpDataSource
 import com.google.android.exoplayer2.upstream.cache.Cache
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource
-import com.google.android.exoplayer2.util.NotificationUtil
 import com.google.android.exoplayer2.util.Util
 import com.razeware.emitron.R
 import com.razeware.emitron.data.settings.SettingsRepository
@@ -35,13 +34,14 @@ typealias ExoDownloadService = com.google.android.exoplayer2.offline.DownloadSer
  * Content Download Service
  */
 @AndroidEntryPoint
-class DownloadService : ExoDownloadService(
-  FOREGROUND_NOTIFICATION_ID,
-  DEFAULT_FOREGROUND_NOTIFICATION_UPDATE_INTERVAL,
-  NotificationChannels.channelIdDownloads,
-  R.string.notification_channel_downloads,
-  R.string.notification_channel_downloads_description
-) {
+class DownloadService :
+  ExoDownloadService(
+    FOREGROUND_NOTIFICATION_ID,
+    DEFAULT_FOREGROUND_NOTIFICATION_UPDATE_INTERVAL,
+    NotificationChannels.channelIdDownloads,
+    R.string.notification_channel_downloads,
+    R.string.notification_channel_downloads_description
+  ) {
 
   private var nextNotificationId = FOREGROUND_NOTIFICATION_ID + 1
 
@@ -58,12 +58,6 @@ class DownloadService : ExoDownloadService(
    */
   @Inject
   lateinit var settingsRepository: SettingsRepository
-
-  /**
-   * Context
-   */
-  @Inject
-  lateinit var context: Context
 
   init {
     nextNotificationId = FOREGROUND_NOTIFICATION_ID + 1
@@ -102,7 +96,7 @@ class DownloadService : ExoDownloadService(
       null
     }
     return notificationHelper?.buildProgressNotification(
-      context,
+      this,
       R.drawable.ic_logo,
       null,
       message,
@@ -120,30 +114,31 @@ class DownloadService : ExoDownloadService(
   /**
    * See [DownloadService.onDownloadChanged]
    */
-  override fun onDownloadChanged(
-    downloadManager: DownloadManager,
-    download: Download,
-    exception: Exception?
-  ) {
-    val notification: Notification? = when (download.state) {
-      Download.STATE_COMPLETED -> {
-        download.run {
-          handleDownloadCompleted(download)
-          buildDownloadCompletedNotification(download)
-        }
-      }
-      Download.STATE_FAILED -> {
-        handleDownloadFailed(download)
-        buildDownloadFailedNotification(download)
-      }
-      Download.STATE_REMOVING -> {
-        handleDownloadRemoved(download)
-        null
-      }
-      else -> return
-    }
-    NotificationUtil.setNotification(this, nextNotificationId++, notification)
-  }
+//  override fun onDownloadChanged(
+//    downloadManager: DownloadManager,
+//    download: Download,
+//    exception: Exception?
+//  ) {
+////    val notification: Notification? = when (download.state) {
+////      Download.STATE_COMPLETED -> {
+////        download.run {
+////          handleDownloadCompleted(download)
+////          buildDownloadCompletedNotification(download)
+////        }
+////      }
+////      Download.STATE_FAILED -> {
+////        handleDownloadFailed(download)
+////        buildDownloadFailedNotification(download)
+////      }
+////      Download.STATE_REMOVING -> {
+////        handleDownloadRemoved(download)
+////        null
+////      }
+////      else -> return
+////    }
+////    NotificationUtil.setNotification(this, nextNotificationId++, notification)
+//  }notification
+
 
   private fun handleDownloadCompleted(download: Download) {
     UpdateDownloadWorker.updateAndStartNext(
@@ -178,7 +173,7 @@ class DownloadService : ExoDownloadService(
   private fun buildDownloadCompletedNotification(download: Download): Notification? {
     return download.run {
       notificationHelper?.buildDownloadCompletedNotification(
-        context,
+        this@DownloadService,
         R.drawable.ic_file_download,
         null,
         Util.fromUtf8Bytes(download.request.data)
@@ -189,7 +184,7 @@ class DownloadService : ExoDownloadService(
   private fun buildDownloadFailedNotification(download: Download): Notification? {
     return download.run {
       notificationHelper?.buildDownloadFailedNotification(
-        context,
+        this@DownloadService,
         R.drawable.ic_file_download,
         null,
         Util.fromUtf8Bytes(download.request.data)
@@ -231,18 +226,15 @@ class DownloadService : ExoDownloadService(
       uri: Uri,
       name: String?
     ): String {
-      val downloadRequest = DownloadRequest(
+      val downloadRequest = DownloadRequest.Builder(
         contentId,
-        DownloadRequest.TYPE_PROGRESSIVE,
         uri,
-        Collections.emptyList(),
-        null,
-        name?.toByteArray()
       )
+        .setData(name?.toByteArray())
       sendAddDownload(
-        ctx, DownloadService::class.java, downloadRequest, true
+        ctx, DownloadService::class.java, downloadRequest.build(), true
       )
-      return downloadRequest.id
+      return downloadRequest.build().id
     }
 
     /**

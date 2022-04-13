@@ -41,7 +41,8 @@ class PlayerNotificationActionAdapter(
             R.drawable.ic_material_icon_next_episode_2, context.getString(
               R.string.pip_action_next
             ), PendingIntent.getBroadcast(
-              context, instanceId, intent, PendingIntent.FLAG_UPDATE_CURRENT
+              context, instanceId, intent, PendingIntent.FLAG_IMMUTABLE or
+                  PendingIntent.FLAG_UPDATE_CURRENT
             )
           ).build()
 

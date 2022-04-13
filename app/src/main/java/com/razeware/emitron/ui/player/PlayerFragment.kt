@@ -238,14 +238,16 @@ class PlayerFragment : Fragment() {
       })
 
   private val playbackNotificationManager: PlayerNotificationManager by lazy {
-    PlayerNotificationManager(
-      requireActivity(),
-      NotificationChannels.channelIdPlayback,
+    PlayerNotificationManager.Builder(
+      requireContext(),
       PLAYBACK_NOTIFICATION_ID,
-      NotificationDescriptionAdapter(requireActivity(), viewModel),
-      null,
-      PlayerNotificationActionAdapter(viewModel)
+      NotificationChannels.channelIdPlayback,
     )
+      .setCustomActionReceiver(PlayerNotificationActionAdapter(viewModel))
+      .setMediaDescriptionAdapter(NotificationDescriptionAdapter(requireActivity(), viewModel))
+      .build()
+
+
   }
 
   private val playerManager by lazy(LazyThreadSafetyMode.NONE) {
@@ -356,7 +358,7 @@ class PlayerFragment : Fragment() {
       playerNextButton = findViewById(R.id.player_next_episode)
       playerNextButton.setOnClickListener { viewModel.playNextEpisode() }
 
-      binding.playerView.setControllerVisibilityListener {
+      binding.playerView.addVisibilityListener {
         binding.toolbar.isVisible = (it == View.VISIBLE)
         requireActivity().requestLowProfileUi(it != View.VISIBLE)
       }
@@ -740,7 +742,8 @@ class PlayerFragment : Fragment() {
       pipActionDelegate.clear()
     }
     with(binding) {
-      playerView.useController = !isInPictureInPictureMode
+      // Check how to
+      //playerView.useController = !isInPictureInPictureMode
       toolbar.isVisible = !isInPictureInPictureMode
     }
   }

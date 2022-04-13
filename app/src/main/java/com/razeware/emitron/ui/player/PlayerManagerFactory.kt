@@ -28,10 +28,10 @@ object PlayerManagerFactory {
     playerView: StyledPlayerControlView,
     trackSelector: DefaultTrackSelector
   ): ExoPlayer {
-    // TODO add track selector
     val mediaPlayer = ExoPlayer.Builder(playerView.context)
       .setSeekBackIncrementMs(1000)
       .setSeekBackIncrementMs(1000)
+      .setTrackSelector(trackSelector)
       .build()
     playerView.player = mediaPlayer
     return mediaPlayer

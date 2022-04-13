@@ -334,7 +334,17 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     playerState: PlayerState
   ) {
     updateMediaSource()
-    concatenatingMediaSource?.getMediaSource(0)?.let { mediaPlayer?.setMediaSource(it) }
+    // concatenatingMediaSource?.getMediaSource(0)?.let { mediaPlayer?.setMediaSource(it) }
+    for (episode in mediaQueue) {
+      mediaPlayer?.setMediaSource(
+        buildMediaSource(
+          episode,
+          dataSourceFactory,
+          cacheDataSourceFactory
+        )
+      )
+    }
+
     mediaPlayer?.addListener(this@PlayerManager)
     if (playerState.playbackPositionMs != C.TIME_UNSET) {
       if (!playerConfig.reset) {
