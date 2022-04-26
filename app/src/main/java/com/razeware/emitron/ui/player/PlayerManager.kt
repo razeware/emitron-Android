@@ -3,6 +3,7 @@ package com.razeware.emitron.ui.player
 import android.content.Context
 import android.media.AudioManager
 import android.support.v4.media.session.MediaSessionCompat
+import android.util.Log
 import android.view.View
 import androidx.core.app.NotificationCompat
 import androidx.core.view.isVisible
@@ -100,12 +101,12 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     this.dataSourceFactory = buildDataSourceFactory(context, userAgent)
     this.cacheDataSourceFactory = buildCacheDataSourceFactory(cache, userAgent)
     stateObserver.observeForever(eventObserver)
-    reinitialize(castContext)
+    reinitialize(context, castContext)
   }
 
-  private fun reinitialize(castContext: CastContext) {
+  private fun reinitialize(context: Context, castContext: CastContext) {
     if (::localPlayerView.isInitialized) {
-      initMediaPlayer()
+      initMediaPlayer(context)
       initCastPlayer(castContext)
       initCurrentPlayer()
       MediaSessionConnector(mediaSessionCompat).setPlayer(currentPlayer)
@@ -115,9 +116,10 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     this.playerConfigManager = PlayerConfigManager(trackSelector, mediaPlayer)
   }
 
-  private fun initMediaPlayer() {
+  private fun initMediaPlayer(context: Context) {
     if (mediaPlayer == null) {
-      mediaPlayer = createMediaPlayer(localPlayerView, trackSelector)
+      Log.e("emVideo", "Player created")
+      mediaPlayer = createMediaPlayer(context, localPlayerView, trackSelector)
     }
   }
 
@@ -334,8 +336,8 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     playerState: PlayerState
   ) {
     updateMediaSource()
-    // concatenatingMediaSource?.getMediaSource(0)?.let { mediaPlayer?.setMediaSource(it) }
     for (episode in mediaQueue) {
+      Log.e("emVideo", episode.uri)
       mediaPlayer?.setMediaSource(
         buildMediaSource(
           episode,
@@ -396,6 +398,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
    * Start playback
    */
   fun play(shouldAutoPlay: Boolean, seekTo: Long) {
+    Log.e("emVideo", "Play Called")
     warnLowVolume()
     if (hasPlaybackEnded()) {
       replay()

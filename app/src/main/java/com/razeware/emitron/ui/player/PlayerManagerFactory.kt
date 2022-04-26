@@ -25,10 +25,11 @@ import com.razeware.emitron.ui.player.cast.Episode
 object PlayerManagerFactory {
 
   internal fun createMediaPlayer(
+    context: Context,
     playerView: StyledPlayerControlView,
     trackSelector: DefaultTrackSelector
   ): ExoPlayer {
-    val mediaPlayer = ExoPlayer.Builder(playerView.context)
+    val mediaPlayer = ExoPlayer.Builder(context)
       .setSeekBackIncrementMs(1000)
       .setSeekBackIncrementMs(1000)
       .setTrackSelector(trackSelector)
