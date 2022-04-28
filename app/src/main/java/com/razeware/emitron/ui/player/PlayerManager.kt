@@ -118,7 +118,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
 
   private fun initMediaPlayer(context: Context) {
     if (mediaPlayer == null) {
-      Log.e("emVideo", "Player created")
+      Log.e("emVideo init", "Player created")
       mediaPlayer = createMediaPlayer(context, localPlayerView, trackSelector)
     }
   }
@@ -198,6 +198,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
    * See [Player.Listener.onPlayerStateChanged]
    */
   override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+    Log.e("emVideo", playbackState.toString())
     updateCurrentItemIndex()
     when (playbackState) {
       Player.STATE_BUFFERING -> stateObserver.value = MediaPlaybackState.BUFFERING
@@ -245,6 +246,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
    * See [Player.Listener.onPlayerError]
    */
   override fun onPlayerError(error: PlaybackException) {
+    Log.e("emVideo  Error", error.cause?.message.toString())
     stateObserver.value = MediaPlaybackState.ERROR
   }
 
@@ -337,7 +339,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
   ) {
     updateMediaSource()
     for (episode in mediaQueue) {
-      Log.e("emVideo", episode.uri)
+      Log.e("emVideo uri", episode.uri)
       mediaPlayer?.setMediaSource(
         buildMediaSource(
           episode,
@@ -350,9 +352,12 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     mediaPlayer?.addListener(this@PlayerManager)
     if (playerState.playbackPositionMs != C.TIME_UNSET) {
       if (!playerConfig.reset) {
+        Log.e("emVideo uri", "Reset player")
         mediaPlayer?.seekTo(playerState.playbackPositionMs)
         mediaPlayer?.playWhenReady = playerConfig.overridePlayWhenReady || playerState.playWhenReady
       } else {
+        Log.e("emVideo uri", "Player not reset")
+        Log.e("emVideo uri", playerConfig.duration.toString())
         mediaPlayer?.seekTo(playerConfig.duration)
         mediaPlayer?.playWhenReady = playerConfig.overridePlayWhenReady
       }

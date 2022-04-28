@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -394,8 +395,9 @@ class PlayerFragment : Fragment() {
     }
 
     playlist?.let {
+      Log.e("emVideo Playlist", "Play list List is not empty")
       viewModel.startPlayback(playlist)
-    }
+    } ?: Log.e("emVideo Playlist", "Play list List is empty")
   }
 
   private fun updateAutoPlaybackProgress(timeInterval: Long) {
@@ -409,6 +411,7 @@ class PlayerFragment : Fragment() {
 
 
   private fun onPlaybackStateChange(mediaPlayerState: MediaPlaybackState?) {
+    Log.e("emVideo State", mediaPlayerState.toString())
     when (mediaPlayerState) {
       MediaPlaybackState.COMPLETED -> {
         handlePlaybackCompleted()
