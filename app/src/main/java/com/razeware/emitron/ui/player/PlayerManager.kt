@@ -3,7 +3,6 @@ package com.razeware.emitron.ui.player
 import android.content.Context
 import android.media.AudioManager
 import android.support.v4.media.session.MediaSessionCompat
-import android.util.Log
 import android.view.View
 import androidx.core.app.NotificationCompat
 import androidx.core.view.isVisible
@@ -197,7 +196,6 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
    * See [Player.Listener.onPlayerStateChanged]
    */
   override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-    Log.e("emVideo", playbackState.toString())
     updateCurrentItemIndex()
     when (playbackState) {
       Player.STATE_BUFFERING -> stateObserver.value = MediaPlaybackState.BUFFERING
@@ -245,7 +243,6 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
    * See [Player.Listener.onPlayerError]
    */
   override fun onPlayerError(error: PlaybackException) {
-    Log.e("emVideo  Error", error.cause?.message.toString())
     stateObserver.value = MediaPlaybackState.ERROR
   }
 
@@ -339,6 +336,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     if (concatenatingMediaSource != null) {
       concatenatingMediaSource?.getMediaSource(0)?.let {
         mediaPlayer?.setMediaSource(it)
+        mediaPlayer?.prepare()
 
       }
     }
@@ -361,9 +359,6 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
   private fun updateMediaSource() {
     concatenatingMediaSource = ConcatenatingMediaSource()
     for (episode in mediaQueue) {
-      mediaPlayer?.addMediaItem(buildMediaItem(episode))
-      mediaPlayer?.prepare()
-      Log.e("emVideo", episode.uri.toString())
       concatenatingMediaSource?.addMediaSource(
         buildMediaSource(
           episode,

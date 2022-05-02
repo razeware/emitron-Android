@@ -15,7 +15,6 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.StyledPlayerView
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.exoplayer2.util.MimeTypes
@@ -30,8 +29,8 @@ object PlayerManagerFactory {
     trackSelector: DefaultTrackSelector
   ): ExoPlayer {
     val mediaPlayer = ExoPlayer.Builder(context)
-      .setSeekBackIncrementMs(1000)
-      .setSeekBackIncrementMs(1000)
+      .setSeekBackIncrementMs(10000)
+      .setSeekBackIncrementMs(10000)
       .setTrackSelector(trackSelector)
       .build()
     playerView.player = mediaPlayer
@@ -71,7 +70,6 @@ object PlayerManagerFactory {
   }
 
   internal fun buildMediaItem(episode: Episode): MediaItem {
-    // TODO Check how to set Stream Type
     val movieMetaData = MediaMetadata.Builder()
       .setTitle(episode.name)
       .build()
@@ -95,9 +93,6 @@ object PlayerManagerFactory {
     context: Context,
     userAgent: String
   ): DefaultHttpDataSource.Factory {
-    // TODO check how to set Bandwidth Meter
-    val bandWidthMeter =
-      DefaultBandwidthMeter.Builder(context).build()
     return DefaultHttpDataSource.Factory()
       .setUserAgent(userAgent)
 
