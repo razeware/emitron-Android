@@ -59,7 +59,7 @@
       android:layout_height="wrap_content"
       app:constraint_referenced_ids="cast_control_cover_art,cast_control_view" />
 
-    <com.google.android.exoplayer2.ui.StyledPlayerControlView
+    <com.google.android.exoplayer2.ui.StyledPlayerView
       android:id="@+id/player_view"
       android:layout_width="0dp"
       android:layout_height="0dp"

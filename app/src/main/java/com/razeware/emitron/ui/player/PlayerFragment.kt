@@ -358,10 +358,11 @@ class PlayerFragment : Fragment() {
       playerNextButton = findViewById(R.id.player_next_episode)
       playerNextButton.setOnClickListener { viewModel.playNextEpisode() }
 
-      binding.playerView.addVisibilityListener {
+      binding.playerView.setControllerVisibilityListener {
         binding.toolbar.isVisible = (it == View.VISIBLE)
         requireActivity().requestLowProfileUi(it != View.VISIBLE)
       }
+
     }
 
     binding.buttonAutoPlayCancel.setOnClickListener {

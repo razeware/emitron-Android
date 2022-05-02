@@ -19,7 +19,7 @@ import com.google.android.exoplayer2.source.ConcatenatingMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
-import com.google.android.exoplayer2.ui.StyledPlayerControlView
+import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.cache.Cache
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource
@@ -42,7 +42,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
 
   private val mediaQueue: ArrayList<Episode>
   private var mediaPlayer: ExoPlayer? = null
-  private lateinit var localPlayerView: StyledPlayerControlView
+  private lateinit var localPlayerView: StyledPlayerView
   private lateinit var castControlView: PlayerControlView
   private val stateObserver = MutableLiveData<MediaPlaybackState>()
   private lateinit var eventObserver: Observer<MediaPlaybackState>
@@ -85,7 +85,7 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     context: Context,
     castContext: CastContext,
     playerNotificationManager: PlayerNotificationManager,
-    playbackControlView: StyledPlayerControlView,
+    playbackControlView: StyledPlayerView,
     castControlView: PlayerControlView,
     castControlGroup: View,
     eventObserver: Observer<MediaPlaybackState>,
@@ -118,7 +118,6 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
 
   private fun initMediaPlayer(context: Context) {
     if (mediaPlayer == null) {
-      Log.e("emVideo init", "Player created")
       mediaPlayer = createMediaPlayer(context, localPlayerView, trackSelector)
     }
   }
@@ -337,27 +336,19 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
     playerConfig: PlayerConfig,
     playerState: PlayerState
   ) {
-    updateMediaSource()
-    for (episode in mediaQueue) {
-      Log.e("emVideo uri", episode.uri)
-      mediaPlayer?.setMediaSource(
-        buildMediaSource(
-          episode,
-          dataSourceFactory,
-          cacheDataSourceFactory
-        )
-      )
-    }
+    if (concatenatingMediaSource != null) {
+      concatenatingMediaSource?.getMediaSource(0)?.let {
+        mediaPlayer?.setMediaSource(it)
 
+      }
+    }
+    updateMediaSource()
     mediaPlayer?.addListener(this@PlayerManager)
     if (playerState.playbackPositionMs != C.TIME_UNSET) {
       if (!playerConfig.reset) {
-        Log.e("emVideo uri", "Reset player")
         mediaPlayer?.seekTo(playerState.playbackPositionMs)
         mediaPlayer?.playWhenReady = playerConfig.overridePlayWhenReady || playerState.playWhenReady
       } else {
-        Log.e("emVideo uri", "Player not reset")
-        Log.e("emVideo uri", playerConfig.duration.toString())
         mediaPlayer?.seekTo(playerConfig.duration)
         mediaPlayer?.playWhenReady = playerConfig.overridePlayWhenReady
       }
@@ -370,6 +361,9 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
   private fun updateMediaSource() {
     concatenatingMediaSource = ConcatenatingMediaSource()
     for (episode in mediaQueue) {
+      mediaPlayer?.addMediaItem(buildMediaItem(episode))
+      mediaPlayer?.prepare()
+      Log.e("emVideo", episode.uri.toString())
       concatenatingMediaSource?.addMediaSource(
         buildMediaSource(
           episode,
@@ -390,11 +384,11 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
       buildMediaItem(it)
     }.toTypedArray()
     if (items.isNotEmpty() && playerState.windowIndex != C.INDEX_UNSET) {
-      // TODO Check how to set repeat mode off
       castPlayer?.setMediaItems(
         items.toMutableList(), playerState.windowIndex,
         playerState.playbackPositionMs
       )
+      castPlayer?.repeatMode = Player.REPEAT_MODE_OFF
       castPlayer?.playWhenReady = playerState.playWhenReady
     }
   }
@@ -403,7 +397,6 @@ class PlayerManager constructor(private val userAgent: String, lifecycle: Lifecy
    * Start playback
    */
   fun play(shouldAutoPlay: Boolean, seekTo: Long) {
-    Log.e("emVideo", "Play Called")
     warnLowVolume()
     if (hasPlaybackEnded()) {
       replay()

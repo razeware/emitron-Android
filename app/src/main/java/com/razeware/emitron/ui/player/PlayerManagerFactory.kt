@@ -14,7 +14,7 @@ import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerControlView
-import com.google.android.exoplayer2.ui.StyledPlayerControlView
+import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource
@@ -26,7 +26,7 @@ object PlayerManagerFactory {
 
   internal fun createMediaPlayer(
     context: Context,
-    playerView: StyledPlayerControlView,
+    playerView: StyledPlayerView,
     trackSelector: DefaultTrackSelector
   ): ExoPlayer {
     val mediaPlayer = ExoPlayer.Builder(context)
