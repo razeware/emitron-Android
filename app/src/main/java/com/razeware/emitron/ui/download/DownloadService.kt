@@ -14,6 +14,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.HttpDataSource
 import com.google.android.exoplayer2.upstream.cache.Cache
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource
+import com.google.android.exoplayer2.util.NotificationUtil
 import com.google.android.exoplayer2.util.Util
 import com.razeware.emitron.R
 import com.razeware.emitron.data.settings.SettingsRepository
@@ -78,6 +79,32 @@ class DownloadService :
    * See [DownloadService.getDataDir]
    */
   override fun getDownloadManager(): DownloadManager {
+    eDownloadManager.addListener(object : DownloadManager.Listener {
+      override fun onDownloadChanged(
+        downloadManager: DownloadManager,
+        download: Download,
+        finalException: java.lang.Exception?
+      ) {
+        super.onDownloadChanged(downloadManager, download, finalException)
+
+        val notification: Notification? = when (download.state) {
+          Download.STATE_COMPLETED -> {
+            handleDownloadCompleted(download)
+            buildDownloadCompletedNotification(download)
+          }
+          Download.STATE_FAILED -> {
+            handleDownloadFailed(download)
+            buildDownloadFailedNotification(download)
+          }
+          Download.STATE_REMOVING -> {
+            handleDownloadRemoved(download)
+            null
+          }
+          else -> return
+        }
+        NotificationUtil.setNotification(this@DownloadService, nextNotificationId++, notification)
+      }
+    })
     return eDownloadManager
   }
 
@@ -111,36 +138,7 @@ class DownloadService :
     return PlatformScheduler(this, JOB_ID)
   }
 
-  /**
-   * See [DownloadService.onDownloadChanged]
-   */
-//  override fun onDownloadChanged(
-//    downloadManager: DownloadManager,
-//    download: Download,
-//    exception: Exception?
-//  ) {
-////    val notification: Notification? = when (download.state) {
-////      Download.STATE_COMPLETED -> {
-////        download.run {
-////          handleDownloadCompleted(download)
-////          buildDownloadCompletedNotification(download)
-////        }
-////      }
-////      Download.STATE_FAILED -> {
-////        handleDownloadFailed(download)
-////        buildDownloadFailedNotification(download)
-////      }
-////      Download.STATE_REMOVING -> {
-////        handleDownloadRemoved(download)
-////        null
-////      }
-////      else -> return
-////    }
-////    NotificationUtil.setNotification(this, nextNotificationId++, notification)
-//  }notification
-
-
-  private fun handleDownloadCompleted(download: Download) {
+  internal fun handleDownloadCompleted(download: Download) {
     UpdateDownloadWorker.updateAndStartNext(
       WorkManager.getInstance(this),
       downloadId = download.request.id,
@@ -150,7 +148,7 @@ class DownloadService :
     )
   }
 
-  private fun handleDownloadFailed(download: Download) {
+  internal fun handleDownloadFailed(download: Download) {
     UpdateDownloadWorker.updateAndStartNext(
       WorkManager.getInstance(this),
       downloadId = download.request.id,
@@ -160,7 +158,7 @@ class DownloadService :
     )
   }
 
-  private fun handleDownloadRemoved(download: Download) {
+  internal fun handleDownloadRemoved(download: Download) {
     UpdateDownloadWorker.updateAndStartNext(
       WorkManager.getInstance(this),
       downloadId = download.request.id,
@@ -170,7 +168,7 @@ class DownloadService :
     )
   }
 
-  private fun buildDownloadCompletedNotification(download: Download): Notification? {
+  internal fun buildDownloadCompletedNotification(download: Download): Notification? {
     return download.run {
       notificationHelper?.buildDownloadCompletedNotification(
         this@DownloadService,
@@ -181,7 +179,7 @@ class DownloadService :
     }
   }
 
-  private fun buildDownloadFailedNotification(download: Download): Notification? {
+  internal fun buildDownloadFailedNotification(download: Download): Notification? {
     return download.run {
       notificationHelper?.buildDownloadFailedNotification(
         this@DownloadService,

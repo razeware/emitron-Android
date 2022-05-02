@@ -10,9 +10,11 @@
         <entry key="app/src/main/res/layout/fragment_collection.xml" value="0.24791666666666667" />
         <entry key="app/src/main/res/layout/fragment_downloads.xml" value="0.528125" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.528125" />
+        <entry key="app/src/main/res/layout/fragment_my_tutorials.xml" value="0.528125" />
         <entry key="app/src/main/res/layout/fragment_player.xml" value="0.459070796460177" />
         <entry key="app/src/main/res/layout/fragment_settings_bottomsheet.xml" value="0.528125" />
         <entry key="app/src/main/res/layout/item_collection_episode_header.xml" value="0.528125" />
+        <entry key="app/src/main/res/layout/item_content.xml" value="0.528125" />
         <entry key="app/src/main/res/layout/layout_onboarding_downloads.xml" value="0.528125" />
         <entry key="app/src/main/res/layout/layout_playback_controls.xml" value="0.5203125" />
         <entry key="app/src/main/res/layout/layout_playback_controls_cast.xml" value="0.528125" />
