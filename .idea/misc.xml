@@ -7,8 +7,10 @@
         <entry key="app/src/main/res/drawable/ic_material_icon_play_banner_transparent_2.xml" value="0.314" />
         <entry key="app/src/main/res/drawable/play_pause_btn_selector.xml" value="0.314" />
         <entry key="app/src/main/res/layout-land/layout_playback_controls.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_bookmarks.xml" value="0.528125" />
         <entry key="app/src/main/res/layout/fragment_collection.xml" value="0.24791666666666667" />
         <entry key="app/src/main/res/layout/fragment_downloads.xml" value="0.528125" />
+        <entry key="app/src/main/res/layout/fragment_library.xml" value="0.528125" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.528125" />
         <entry key="app/src/main/res/layout/fragment_my_tutorials.xml" value="0.528125" />
         <entry key="app/src/main/res/layout/fragment_player.xml" value="0.459070796460177" />
