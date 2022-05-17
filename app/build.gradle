@@ -83,6 +83,7 @@ android {
   sourceSets {
     androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
   }
+  namespace 'com.razeware.emitron'
 }
 
 dependencies {

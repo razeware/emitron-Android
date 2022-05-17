@@ -32,6 +32,7 @@ android {
       jvmTarget = '1.8'
     }
   }
+  namespace 'com.raywenderlich.android.preferences'
 }
 
 dependencies {
