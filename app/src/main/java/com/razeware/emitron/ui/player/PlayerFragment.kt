@@ -359,7 +359,6 @@ class PlayerFragment : Fragment() {
 
       binding.playerView.setControllerVisibilityListener {
         binding.toolbar.isVisible = (it == View.VISIBLE)
-        requireActivity().requestLowProfileUi(it != View.VISIBLE)
       }
 
     }
