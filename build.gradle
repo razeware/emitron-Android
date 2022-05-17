@@ -16,7 +16,7 @@ buildscript {
       'preferenceKtx'               : "1.1.1",
       'architectureComponents'      : "2.2.0",
       'architectureComponentsPaging': "2.1.2",
-      'workManager'                 : '2.8.0-alpha02',
+      'workManager'                 : '2.7.1',
       'annotations'                 : "1.1.0",
       'appCompat'                   : "1.2.0",
       'multidex'                    : "2.0.1",
@@ -34,7 +34,7 @@ buildscript {
       // ui
       'constraintLayout'            : "2.0.2",
       'exoplayer'                   : "2.17.1",
-      'navigation'                  : '2.4.1',
+      'navigation'                  : '2.5.0-rc01',
       'materialDesign'              : '1.2.1',
       'vectorDrawable'              : '1.1.0',
       'recyclerView'                : "1.0.0",
