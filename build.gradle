@@ -45,7 +45,7 @@ buildscript {
 
 
       // db
-      'room'                        : '2.2.5',
+      'room'                        : '2.4.0-alpha03',
 
       // time
       'threetenabp'                 : "1.2.4",
