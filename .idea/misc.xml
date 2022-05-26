@@ -21,6 +21,7 @@
         <entry key="app/src/main/res/layout/layout_playback_controls.xml" value="0.5203125" />
         <entry key="app/src/main/res/layout/layout_playback_controls_cast.xml" value="0.528125" />
         <entry key="app/src/main/res/layout/layout_playback_controls_pip.xml" value="0.30104166666666665" />
+        <entry key="app/src/main/res/xml/network_config.xml" value="0.23385416666666667" />
         <entry key="app/src/main/res/xml/network_security.xml" value="0.1" />
       </map>
     </option>
