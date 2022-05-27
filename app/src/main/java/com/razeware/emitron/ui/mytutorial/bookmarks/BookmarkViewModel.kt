@@ -1,6 +1,5 @@
 package com.razeware.emitron.ui.mytutorial.bookmarks
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,12 +8,15 @@ import com.razeware.emitron.model.Data
 import com.razeware.emitron.ui.content.ContentPagedViewModel
 import com.razeware.emitron.utils.BoundaryCallbackNotifier
 import com.razeware.emitron.utils.Event
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * ViewModel for bookmarks
  */
-class BookmarkViewModel @ViewModelInject constructor(
+@HiltViewModel
+class BookmarkViewModel @Inject constructor(
   private val bookmarkRepository: BookmarkRepository,
   private val contentPagedViewModel: ContentPagedViewModel,
   private val bookmarkActionDelegate: BookmarkActionDelegate,

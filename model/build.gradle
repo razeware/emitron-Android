@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-parcelize'
 
 android {
   compileSdkVersion versions.compileSdk
@@ -9,8 +9,6 @@ android {
   defaultConfig {
     minSdkVersion versions.minSdk
     targetSdkVersion versions.targetSdk
-    versionCode 1
-    versionName "1.0"
 
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles 'consumer-rules.pro'
@@ -22,10 +20,7 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
   }
-
-  androidExtensions {
-    experimental = true
-  }
+  namespace 'com.razeware.emitron.model'
 }
 
 dependencies {

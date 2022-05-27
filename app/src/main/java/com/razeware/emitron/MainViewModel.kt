@@ -1,7 +1,6 @@
 package com.razeware.emitron
 
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,13 +10,16 @@ import com.razeware.emitron.model.Data
 import com.razeware.emitron.model.SortOrder
 import com.razeware.emitron.ui.download.DownloadAction
 import com.razeware.emitron.ui.download.DownloadActionDelegate
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 /**
  * Parent Viewmodel for all fragment
  *
  * @param loginRepository [LoginRepository] to verify/get user login details
  */
-class MainViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MainViewModel @Inject constructor(
   private val loginRepository: LoginRepository,
   private val settingsRepository: SettingsRepository,
   private val downloadActionDelegate: DownloadActionDelegate
@@ -136,7 +138,9 @@ class MainViewModel @ViewModelInject constructor(
    * @param searchTerm Search keyword
    */
   fun setSearchQuery(searchTerm: String?) {
-    _query.value = searchTerm
+    searchTerm?.let {
+      _query.value = it
+    }
   }
 
 
