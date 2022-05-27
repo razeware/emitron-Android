@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
-apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'com.google.firebase.firebase-perf'
 
@@ -15,6 +14,8 @@ apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
 apply plugin: 'dagger.hilt.android.plugin'
+
+apply plugin: 'kotlin-parcelize'
 
 android {
   compileSdkVersion versions.compileSdk
@@ -82,10 +83,7 @@ android {
   sourceSets {
     androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
   }
-
-  androidExtensions {
-    experimental = true
-  }
+  namespace 'com.razeware.emitron'
 }
 
 dependencies {
@@ -197,7 +195,7 @@ dependencies {
   testImplementation "junit:junit:${versions.junit}"
   testImplementation "org.mockito:mockito-core:${versions.mockito}"
   testImplementation "org.mockito:mockito-inline:${versions.mockito}"
-  testImplementation "org.mockito:mockito-android:${versions.mockito}"
+  androidTestImplementation "org.mockito:mockito-android:${versions.mockito}"
   testImplementation "android.arch.core:core-testing:${versions.architectureComponentsTest}"
   testImplementation "androidx.test:runner:${versions.testRunner}"
   testImplementation "androidx.test:rules:${versions.testRunner}"
@@ -205,7 +203,6 @@ dependencies {
   testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.coroutines}"
   testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${versions.mockitoKotlin}"
   testImplementation "com.google.truth:truth:${versions.googleTruth}"
-
   implementation "androidx.mediarouter:mediarouter:${versions.mediarouter}"
   implementation "com.google.android.gms:play-services-cast-framework:${versions.castFramework}"
 

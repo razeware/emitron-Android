@@ -7,8 +7,8 @@ import com.google.android.play.core.review.ReviewManagerFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 private const val KEY_IN_APP_REVIEW_PREFERENCES = "inAppReviewPreferences"
@@ -17,7 +17,7 @@ private const val KEY_IN_APP_REVIEW_PREFERENCES = "inAppReviewPreferences"
  * Provides In App Review Android-based dependencies.
  * */
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 class InAppReviewProviders {
 
   /**

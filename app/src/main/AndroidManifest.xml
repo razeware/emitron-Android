@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  package="com.razeware.emitron">
+  xmlns:tools="http://schemas.android.com/tools">
 
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -33,7 +32,8 @@
       android:windowSoftInputMode="adjustNothing" />
 
     <!-- Download Service -->
-    <service android:name=".ui.download.DownloadService">
+    <service android:name=".ui.download.DownloadService"
+      android:exported="true">
       <intent-filter>
         <action android:name="com.google.android.exoplayer.downloadService.action.RESTART" />
         <category android:name="android.intent.category.DEFAULT" />
@@ -47,7 +47,8 @@
 
     <activity-alias
       android:name=".MainActivity"
-      android:targetActivity=".MainActivity">
+      android:targetActivity=".MainActivity"
+      android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
@@ -56,9 +57,10 @@
     </activity-alias>
 
     <provider
-      android:name="androidx.work.impl.WorkManagerInitializer"
-      android:authorities="${applicationId}.workmanager-init"
-      tools:node="remove" />
+      android:name="androidx.startup.InitializationProvider"
+      android:authorities="${applicationId}.androidx-startup"
+      tools:node="remove">
+    </provider>
   </application>
 
 </manifest>

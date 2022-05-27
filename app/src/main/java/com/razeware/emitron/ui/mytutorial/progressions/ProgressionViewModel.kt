@@ -1,6 +1,5 @@
 package com.razeware.emitron.ui.mytutorial.progressions
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.razeware.emitron.data.progressions.ProgressionRepository
@@ -8,14 +7,17 @@ import com.razeware.emitron.model.CompletionStatus
 import com.razeware.emitron.model.Data
 import com.razeware.emitron.ui.content.ContentPagedViewModel
 import com.razeware.emitron.utils.BoundaryCallbackNotifier
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.threeten.bp.Clock
 import org.threeten.bp.LocalDateTime
+import javax.inject.Inject
 
 /**
  * ViewModel for content in progress/completed
  */
-class ProgressionViewModel @ViewModelInject constructor(
+@HiltViewModel
+class ProgressionViewModel @Inject constructor(
   private val repository: ProgressionRepository,
   private val contentPagedViewModel: ContentPagedViewModel,
   private val progressionActionDelegate: ProgressionActionDelegate,

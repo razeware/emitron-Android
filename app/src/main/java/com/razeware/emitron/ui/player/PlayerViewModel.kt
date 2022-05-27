@@ -1,6 +1,5 @@
 package com.razeware.emitron.ui.player
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,17 +12,20 @@ import com.razeware.emitron.model.Data
 import com.razeware.emitron.utils.Logger
 import com.razeware.emitron.utils.LoggerImpl
 import com.razeware.emitron.utils.extensions.isBadRequest
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.threeten.bp.Clock
 import org.threeten.bp.LocalDateTime
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
+import javax.inject.Inject
 
 /**
  * ViewModel for Player view
  */
-class PlayerViewModel @ViewModelInject constructor(
+@HiltViewModel
+class PlayerViewModel @Inject constructor(
   private val repository: VideoRepository,
   private val settingsRepository: SettingsRepository,
   private val progressionRepository: ProgressionRepository,
@@ -127,8 +129,9 @@ class PlayerViewModel @ViewModelInject constructor(
       viewModelScope.launch {
         try {
           val videoContent = repository.getVideoStream(videoId)
-          val playerToken = repository.getVideoPlaybackToken()?.getPlayerToken()
-          _playerToken.value = playerToken
+          repository.getVideoPlaybackToken()?.getPlayerToken()?.let { playerToken ->
+            _playerToken.value = playerToken
+          }
           lastUpdatedProgress = 0
           _currentEpisode.value = episode.setVideoUrl(videoContent.datum)
           nowPlayingPosition = position
@@ -178,7 +181,7 @@ class PlayerViewModel @ViewModelInject constructor(
       val nextEpisode = playlist[nextEpisodePosition]
       _nextEpisode.value = nextEpisode
     } else {
-      _nextEpisode.value = null
+      _nextEpisode.value = Data()
     }
   }
 
@@ -309,8 +312,9 @@ class PlayerViewModel @ViewModelInject constructor(
     viewModelScope.launch {
       if (isConnected) {
         if (isDownloaded) {
-          val playerToken = repository.getVideoPlaybackToken()?.getPlayerToken()
-          _playerToken.value = playerToken
+          repository.getVideoPlaybackToken()?.getPlayerToken()?.let { playerToken ->
+            _playerToken.value = playerToken
+          }
         }
         updateOnlineProgress(contentId, progressInMillis)
       } else {

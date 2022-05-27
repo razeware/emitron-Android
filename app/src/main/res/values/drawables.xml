@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <drawable name="exo_styled_controls_play">@drawable/ic_material_icon_play_banner_transparent</drawable>
+  <drawable name="exo_styled_controls_pause">@drawable/ic_material_icon_pause_banner_transparent</drawable>
+</resources>

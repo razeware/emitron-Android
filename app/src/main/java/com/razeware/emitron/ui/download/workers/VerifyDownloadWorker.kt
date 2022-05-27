@@ -1,12 +1,13 @@
 package com.razeware.emitron.ui.download.workers
 
 import android.content.Context
-import androidx.hilt.Assisted
-import androidx.hilt.work.WorkerInject
+import androidx.hilt.work.HiltWorker
 import androidx.work.*
 import com.razeware.emitron.data.login.LoginRepository
 import com.razeware.emitron.model.PermissionTag
 import com.razeware.emitron.model.isDownloadPermissionTag
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import retrofit2.HttpException
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -17,7 +18,8 @@ import java.util.concurrent.TimeUnit
  * It will fetch the permissions, if it fails due to any issue,
  * existing download permissions will be removed.
  */
-class VerifyDownloadWorker @WorkerInject constructor(
+@HiltWorker
+class VerifyDownloadWorker @AssistedInject constructor(
   @Assisted appContext: Context,
   @Assisted workerParameters: WorkerParameters,
   /**
