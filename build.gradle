@@ -7,7 +7,7 @@ buildscript {
       'minSdk'                      : 21,
       'targetSdk'                   : 31,
       'compileSdk'                  : 31,
-      'gradle'                      : '7.2.0',
+      'gradle'                      : '7.2.1',
       'kotlin'                      : '1.6.20',
 
       // core
