@@ -133,7 +133,9 @@ class PlayerViewModel @Inject constructor(
             _playerToken.value = playerToken
           }
           lastUpdatedProgress = 0
-          _currentEpisode.value = episode.setVideoUrl(videoContent.datum)
+          videoContent.datum?.let { data ->
+            _currentEpisode.value = data
+          }
           nowPlayingPosition = position
         } catch (error: Throwable) {
           log(error)
@@ -425,7 +427,9 @@ class PlayerViewModel @Inject constructor(
     viewModelScope.launch {
 
       val resetPlaybackToken = try {
-        _playerToken.value = repository.getVideoPlaybackToken()?.getPlayerToken()
+        repository.getVideoPlaybackToken()?.getPlayerToken()?.let { playerToken ->
+          _playerToken.value = playerToken
+        }
         false
       } catch (error: Throwable) {
         log(error)

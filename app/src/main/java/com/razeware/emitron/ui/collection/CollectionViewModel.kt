@@ -135,7 +135,9 @@ class CollectionViewModel @Inject constructor(
   fun loadCollection(content: Data) {
     uiState.value = UiStateManager.UiState.LOADING
     _collection.value = content
-    _collectionContentType.value = content.getContentType()
+    content.getContentType()?.let { contentType ->
+      _collectionContentType.value = contentType
+    }
 
     val contentId = content.id
     if (contentId.isNullOrBlank()) {

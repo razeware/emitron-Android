@@ -109,9 +109,6 @@ dependencies {
   implementation "com.google.dagger:hilt-android:${versions.hilt}"
   kapt "com.google.dagger:hilt-android-compiler:${versions.hilt}"
 
-  implementation "androidx.hilt:hilt-lifecycle-viewmodel:${versions.hiltViewModel}"
-  kapt "androidx.hilt:hilt-compiler:${versions.hiltViewModel}"
-
   implementation "androidx.hilt:hilt-work:${versions.hiltWorkManager}"
   kapt "androidx.hilt:hilt-compiler:${versions.hiltWorkManager}"
 
