@@ -22,8 +22,8 @@ buildscript {
       'multidex'                    : "2.0.1",
       'browser'                     : "1.2.0", // Chrome custom tabs
 
-      'hilt'                        : '2.40.1',
-      'hiltViewModel'               : '1.0.0-alpha02',
+      'hilt'                        : '2.42',
+      'hiltViewModel'               : '1.0.0',
       'hiltWorkManager'             : '1.0.0',
       'coroutines'                  : "1.3.9",
 
