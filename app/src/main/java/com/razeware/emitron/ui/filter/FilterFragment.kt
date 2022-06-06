@@ -174,7 +174,7 @@ class FilterFragment : Fragment() {
   }
 
   private fun loadPlatforms() {
-    viewModel.domains.observe(this, Observer { domainList ->
+    viewModel.domains.observe(viewLifecycleOwner, Observer { domainList ->
       binding.filterProgress.visibility = View.GONE
       filterAdapter.setFilterOptions(
         domainList,
@@ -186,7 +186,7 @@ class FilterFragment : Fragment() {
   }
 
   private fun loadCategories() {
-    viewModel.categories.observe(this, Observer { categoryList ->
+    viewModel.categories.observe(viewLifecycleOwner, Observer { categoryList ->
       binding.filterProgress.visibility = View.GONE
       filterAdapter.setFilterOptions(
         categoryList,
