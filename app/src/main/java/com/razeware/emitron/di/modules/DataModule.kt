@@ -10,13 +10,13 @@ import com.razeware.emitron.data.progressions.dao.WatchStatDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 
 /**
  * Data module
  */
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 class DataModule {
 
   /**

@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
-apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'com.google.firebase.firebase-perf'
 
@@ -16,11 +15,14 @@ apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
 apply plugin: 'dagger.hilt.android.plugin'
 
+apply plugin: 'kotlin-parcelize'
+
 android {
   compileSdkVersion versions.compileSdk
 
-  dataBinding {
-    enabled = true
+  buildFeatures {
+    dataBinding true
+    viewBinding true
   }
 
   signingConfigs {
@@ -43,7 +45,6 @@ android {
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary true
     multiDexEnabled true
-    javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
     resValue 'string', "client_api_key", "${client_api_key}"
     resValue 'string', "app_token", "${app_token}"
     buildConfigField 'String', "BASE_API_URL", "\"https://api.raywenderlich.com/api/\""
@@ -82,10 +83,7 @@ android {
   sourceSets {
     androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
   }
-
-  androidExtensions {
-    experimental = true
-  }
+  namespace 'com.razeware.emitron'
 }
 
 dependencies {
@@ -110,9 +108,6 @@ dependencies {
   // https://developer.android.com/training/dependency-injection/hilt-android
   implementation "com.google.dagger:hilt-android:${versions.hilt}"
   kapt "com.google.dagger:hilt-android-compiler:${versions.hilt}"
-
-  implementation "androidx.hilt:hilt-lifecycle-viewmodel:${versions.hiltViewModel}"
-  kapt "androidx.hilt:hilt-compiler:${versions.hiltViewModel}"
 
   implementation "androidx.hilt:hilt-work:${versions.hiltWorkManager}"
   kapt "androidx.hilt:hilt-compiler:${versions.hiltWorkManager}"
@@ -197,15 +192,14 @@ dependencies {
   testImplementation "junit:junit:${versions.junit}"
   testImplementation "org.mockito:mockito-core:${versions.mockito}"
   testImplementation "org.mockito:mockito-inline:${versions.mockito}"
-  testImplementation "org.mockito:mockito-android:${versions.mockito}"
-  testImplementation "android.arch.core:core-testing:${versions.architectureComponents}"
+  androidTestImplementation "org.mockito:mockito-android:${versions.mockito}"
+  testImplementation "android.arch.core:core-testing:${versions.architectureComponentsTest}"
   testImplementation "androidx.test:runner:${versions.testRunner}"
   testImplementation "androidx.test:rules:${versions.testRunner}"
   testImplementation "com.squareup.retrofit2:retrofit-mock:${versions.retrofit}"
   testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.coroutines}"
   testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${versions.mockitoKotlin}"
   testImplementation "com.google.truth:truth:${versions.googleTruth}"
-
   implementation "androidx.mediarouter:mediarouter:${versions.mediarouter}"
   implementation "com.google.android.gms:play-services-cast-framework:${versions.castFramework}"
 

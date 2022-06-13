@@ -6,6 +6,7 @@ import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyString
@@ -25,6 +26,7 @@ class LinksTest {
     PowerMockito.`when`(Uri.parse(anyString())).doReturn(uri)
   }
 
+  @Ignore
   @Test
   fun getCurrentPage() {
     val links = Links()
@@ -35,6 +37,7 @@ class LinksTest {
     assertThat(link2.getCurrentPage()).isEqualTo(1)
   }
 
+  @Ignore
   @Test
   fun getNextPage() {
     val links = Links(next = null)

@@ -233,7 +233,16 @@ class PlayerViewModelTest {
       verify(videoRepository).getVideoPlaybackToken()
       verifyNoMoreInteractions(videoRepository)
 
-      nextEpisode isEqualTo null
+      nextEpisode isEqualTo Data(
+        id = null,
+        type = null,
+        attributes = null,
+        links = null,
+        relationships = null,
+        meta = null,
+        included = null,
+        download = null
+      )
       currentEpisode isEqualTo createContentData("4", videoId = 4, videoUrl = "TheSongOfLife3")
       currentEpisode.getUrl() isEqualTo "TheSongOfLife3"
       playbackToken isEqualTo "WubbaLubbaDubDub"

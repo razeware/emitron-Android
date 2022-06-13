@@ -2,13 +2,13 @@
 buildscript {
   ext.versions = [
       // build
-      'versionCode'                 : 32,
-      'versionName'                 : "1.2.0",
+      'versionCode'                 : 33,
+      'versionName'                 : "1.3.0",
       'minSdk'                      : 21,
-      'targetSdk'                   : 30,
-      'compileSdk'                  : 30,
-      'gradle'                      : '4.0.1',
-      'kotlin'                      : '1.4.10',
+      'targetSdk'                   : 31,
+      'compileSdk'                  : 31,
+      'gradle'                      : '7.2.1',
+      'kotlin'                      : '1.6.20',
 
       // core
       'coreKtx'                     : "1.3.2",
@@ -16,15 +16,15 @@ buildscript {
       'preferenceKtx'               : "1.1.1",
       'architectureComponents'      : "2.2.0",
       'architectureComponentsPaging': "2.1.2",
-      'workManager'                 : '2.4.0',
+      'workManager'                 : '2.7.1',
       'annotations'                 : "1.1.0",
       'appCompat'                   : "1.2.0",
       'multidex'                    : "2.0.1",
       'browser'                     : "1.2.0", // Chrome custom tabs
 
-      'hilt'                        : '2.28.3-alpha',
-      'hiltViewModel'               : '1.0.0-alpha02',
-      'hiltWorkManager'             : '1.0.0-alpha02',
+      'hilt'                        : '2.42',
+      'hiltViewModel'               : '1.0.0',
+      'hiltWorkManager'             : '1.0.0',
       'coroutines'                  : "1.3.9",
 
       // cast
@@ -33,8 +33,8 @@ buildscript {
 
       // ui
       'constraintLayout'            : "2.0.2",
-      'exoplayer'                   : "2.10.4",
-      'navigation'                  : "2.3.1",
+      'exoplayer'                   : "2.17.1",
+      'navigation'                  : '2.5.0-rc01',
       'materialDesign'              : '1.2.1',
       'vectorDrawable'              : '1.1.0',
       'recyclerView'                : "1.0.0",
@@ -45,29 +45,30 @@ buildscript {
 
 
       // db
-      'room'                        : '2.2.5',
+      'room'                        : '2.4.0-alpha03',
 
       // time
       'threetenabp'                 : "1.2.4",
 
       //network
       'retrofit'                    : '2.9.0',
-      'moshi'                       : '1.9.2',
+      'moshi'                       : '1.13.0',
       'okHttp'                      : '4.8.1',
       'glide'                       : '4.10.0',
 
       //quality
       'ktlint'                      : "0.33.0",
-      'crashlytics'                 : "2.3.0",
+      'crashlytics'                 : '2.5.2',
 
       //test
-      'powerMock'                   : "2.0.2",
-      'mockito'                     : "3.0.0",
+      'powerMock'                   : "2.0.9",
+      'mockito'                     : "4.5.1",
       'junit'                       : "4.12",
       'hamcrest'                    : "1.3",
-      'googleTruth'                 : "1.0",
-      'mockitoKotlin'               : "2.1.0",
+      'googleTruth'                 : "1.1.3",
+      'mockitoKotlin'               : "2.2.0",
       'testRunner'                  : "1.2.0",
+      'architectureComponentsTest'  : "1.0.0",
 
       // firebase
       'firebaseConfig'              : '18.0.0',
@@ -80,15 +81,15 @@ buildscript {
       'playCoreKtx'                 : '1.8.1',
 
       // plugins
-      'firebasePerfPlugin'          : "1.2.1",
+      'firebasePerfPlugin'          : '1.4.1',
       'jacocoPlugin'                : "0.8.1",
-      'googleServicesPlugin'        : "4.2.0",
-      'ossLicenses'                 : "0.9.5"
+      'googleServicesPlugin'        : '4.3.10',
+      'ossLicenses'                 : "0.10.4"
   ]
 
   repositories {
     google()
-    jcenter()
+    mavenCentral()
   }
 
   dependencies {
@@ -107,8 +108,7 @@ buildscript {
 allprojects {
   repositories {
     google()
-    jcenter()
-
+    mavenCentral()
   }
 }
 

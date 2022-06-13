@@ -1,17 +1,19 @@
 package com.razeware.emitron.ui.download.workers
 
 import android.content.Context
-import androidx.hilt.Assisted
-import androidx.hilt.work.WorkerInject
+import androidx.hilt.work.HiltWorker
 import androidx.work.*
 import com.razeware.emitron.data.download.DownloadRepository
 import com.razeware.emitron.ui.download.DownloadService
 import com.razeware.emitron.ui.download.workers.StartDownloadWorker.Companion.DOWNLOAD_EPISODE_ID
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 
 /**
  * Worker for stopping downloads
  */
-class RemoveDownloadWorker @WorkerInject constructor(
+@HiltWorker
+class RemoveDownloadWorker @AssistedInject constructor(
   @Assisted val appContext: Context,
   @Assisted workerParameters: WorkerParameters,
   /**

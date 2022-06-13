@@ -1,17 +1,17 @@
 package com.raywenderlich.android.preferences.di
 
 import android.content.Context
-import com.raywenderlich.android.preferences.PrefUtils
 import com.raywenderlich.android.preferences.GeneralSettingsPrefs
+import com.raywenderlich.android.preferences.PrefUtils
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 class PreferencesModule {
 
   @Provides

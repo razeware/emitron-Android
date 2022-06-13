@@ -1,13 +1,14 @@
 package com.razeware.emitron.ui.download.workers
 
 import android.content.Context
-import androidx.hilt.Assisted
-import androidx.hilt.work.WorkerInject
+import androidx.hilt.work.HiltWorker
 import androidx.work.*
 import com.razeware.emitron.data.download.DownloadRepository
 import com.razeware.emitron.model.DownloadProgress
 import com.razeware.emitron.model.DownloadState
 import com.razeware.emitron.ui.download.DownloadService
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 
 /**
  *  Worker for updating a download,
@@ -16,7 +17,8 @@ import com.razeware.emitron.ui.download.DownloadService
  * It will be followed by [DownloadWorker] which will read from database and forward downloads
  * to [DownloadService]
  */
-class UpdateDownloadWorker @WorkerInject constructor(
+@HiltWorker
+class UpdateDownloadWorker @AssistedInject constructor(
   @Assisted appContext: Context,
   @Assisted workerParameters: WorkerParameters,
   /**

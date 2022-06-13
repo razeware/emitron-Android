@@ -1,6 +1,5 @@
 package com.razeware.emitron.ui.collection
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,16 +24,19 @@ import com.razeware.emitron.ui.onboarding.OnboardingActionDelegate
 import com.razeware.emitron.ui.player.Playlist
 import com.razeware.emitron.utils.Event
 import com.razeware.emitron.utils.UiStateManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.threeten.bp.Clock
 import org.threeten.bp.LocalDateTime
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
 /**
  * ViewModel for content detail view
  */
-class CollectionViewModel @ViewModelInject constructor(
+@HiltViewModel
+class CollectionViewModel @Inject constructor(
   private val repository: ContentRepository,
   private val bookmarkActionDelegate: BookmarkActionDelegate,
   private val progressionActionDelegate: ProgressionActionDelegate,
@@ -133,7 +135,9 @@ class CollectionViewModel @ViewModelInject constructor(
   fun loadCollection(content: Data) {
     uiState.value = UiStateManager.UiState.LOADING
     _collection.value = content
-    _collectionContentType.value = content.getContentType()
+    content.getContentType()?.let { contentType ->
+      _collectionContentType.value = contentType
+    }
 
     val contentId = content.id
     if (contentId.isNullOrBlank()) {

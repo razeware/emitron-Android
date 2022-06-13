@@ -1,6 +1,4 @@
 ## Changes
-- Separated Settings into its own tab for ease-of-use
-- Fixed a few UI bugs
-- Cleaned up code
-- Enabled watching of free episodes even if the course is locked
-- Improved the codebase to allow open-source contributors to help
+- Fixed a login bug on some non-Google devices
+- Upgraded many dependencies, including ExoPlayer, Kotlin, AGP & Navigation
+- Upgraded guardpost version
