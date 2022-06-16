@@ -15,7 +15,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="true"
-    android:paddingBottom="@{bottomPadding}">
+    android:paddingBottom="@{bottomPadding}"
+    android:layout_marginBottom="?actionBarSize">
 
     <androidx.constraintlayout.widget.Guideline
       android:id="@+id/guideline_top"
