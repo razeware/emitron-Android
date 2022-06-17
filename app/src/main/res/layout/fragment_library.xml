@@ -73,8 +73,7 @@
         android:paddingBottom="0dp"
         app:endIconDrawable="@drawable/ic_material_icon_close"
         app:endIconMode="clear_text"
-        app:startIconDrawable="@drawable/ic_material_icon_search"
-        app:startIconTint="@color/colorIcon3">
+        app:startIconDrawable="@drawable/ic_material_icon_search">
 
         <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/edit_text_library_search"
