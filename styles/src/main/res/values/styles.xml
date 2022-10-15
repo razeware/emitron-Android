@@ -19,8 +19,8 @@
     <item name="android:minHeight">@dimen/button_height_default</item>
     <item name="android:textColor">@color/white</item>
     <item name="android:textAllCaps">false</item>
-    <item name="android:fontFamily">@font/roboto_bold</item>
-    <item name="fontFamily">@font/roboto_bold</item>
+    <item name="android:fontFamily">@font/relative_bold_pro</item>
+    <item name="fontFamily">@font/relative_bold_pro</item>
     <item name="android:textAppearance">@style/TextAppearance.Button.Regular</item>
     <item name="android:paddingStart">@dimen/button_padding_internal</item>
     <item name="android:paddingEnd">@dimen/button_padding_internal</item>
@@ -110,28 +110,28 @@
   <style name="Text" />
 
   <style name="Text.Regular">
-    <item name="android:fontFamily">@font/roboto</item>
-    <item name="fontFamily">@font/roboto</item>
+    <item name="android:fontFamily">@font/relative_book_pro</item>
+    <item name="fontFamily">@font/relative_book_pro</item>
   </style>
 
   <style name="Text.Medium">
-    <item name="android:fontFamily">@font/roboto_medium</item>
-    <item name="fontFamily">@font/roboto_medium</item>
+    <item name="android:fontFamily">@font/relative_medium_pro</item>
+    <item name="fontFamily">@font/relative_medium_pro</item>
   </style>
 
   <style name="Text.Bold">
-    <item name="android:fontFamily">@font/roboto_bold</item>
-    <item name="fontFamily">@font/roboto_bold</item>
+    <item name="android:fontFamily">@font/relative_bold_pro</item>
+    <item name="fontFamily">@font/relative_bold_pro</item>
   </style>
 
   <style name="Text.Headline">
-    <item name="android:fontFamily">@font/bitter_bold</item>
-    <item name="fontFamily">@font/bitter_bold</item>
+    <item name="android:fontFamily">@font/relative_bold_pro</item>
+    <item name="fontFamily">@font/relative_bold_pro</item>
   </style>
 
   <style name="Text.Headline.Normal">
-    <item name="android:fontFamily">@font/bitter</item>
-    <item name="fontFamily">@font/bitter</item>
+    <item name="android:fontFamily">@font/relative_medium_pro</item>
+    <item name="fontFamily">@font/relative_medium_pro</item>
   </style>
 
   <style name="TextAppearance.Headline" parent="Text.Headline">
