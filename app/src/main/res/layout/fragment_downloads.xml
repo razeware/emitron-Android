@@ -77,17 +77,6 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-      android:id="@+id/downloads_no_subscription_image"
-      android:layout_width="@dimen/login_onboarding_image_height_width"
-      android:layout_height="@dimen/login_onboarding_image_height_width"
-      app:layout_constraintBottom_toTopOf="@+id/downloads_no_subscription_title"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="@id/guideline_left"
-      app:layout_constraintTop_toBottomOf="@+id/toolbar"
-      app:layout_constraintVertical_chainStyle="packed"
-      app:srcCompat="@drawable/ic_download_offline_switch" />
-
     <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/downloads_no_subscription_title"
       style="@style/TextAppearance.Headline.2"
@@ -99,7 +88,7 @@
       app:layout_constraintBottom_toTopOf="@+id/downloads_no_subscription_body"
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintStart_toStartOf="@id/guideline_left"
-      app:layout_constraintTop_toBottomOf="@+id/downloads_no_subscription_image"
+      app:layout_constraintTop_toBottomOf="@+id/toolbar"
       app:layout_constraintVertical_chainStyle="packed" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -141,7 +130,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:visibility="visible"
-      app:constraint_referenced_ids="downloads_no_subscription_body,downloads_no_subscription_title,downloads_no_subscription_image,view_downloads_no_subscription,button_manage_subscription"
+      app:constraint_referenced_ids="downloads_no_subscription_body,downloads_no_subscription_title,view_downloads_no_subscription,button_manage_subscription"
       tools:visibility="visible" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,6 +22,7 @@
   <color name="slate_grey">#61656c</color>
   <color name="nice_blue">#157cb8</color>
   <color name="black_night">#14161E</color>
+  <color name="green_meadow">#00B87E</color>
 
   <color name="colorPrimary">@color/brand_orange_glow</color>
   <color name="colorPrimaryDark">@color/charcoal_black</color>
@@ -32,6 +33,7 @@
   <color name="colorSurfaceDark">@color/bright_grey</color>
   <color name="colorError">@color/copper</color>
   <color name="colorSuccess">@color/brand_orange_glow</color>
+  <color name="colorGreenSuccess">@color/green_meadow</color>
   <color name="colorWarning">@color/pumpkin_orange</color>
   <color name="colorOnPrimary">@color/white</color>
   <color name="colorOnError">@color/white</color>
