@@ -5,6 +5,7 @@
   <color name="colorOnBackground">@color/white</color>
   <color name="colorOnSurface">@color/white</color>
   <color name="colorNavBarBackground">@color/black_night</color>
+  <color name="colorSurfaceDark">@color/black_night</color>
 
   <color name="textColorBody1">@color/white</color>
   <color name="textColorButton">@color/white</color>
@@ -41,4 +42,5 @@
   <color name="colorViewPagerIndicator">@color/colorPrimary</color>
   <color name="colorBadge">@color/nice_blue</color>
   <color name="colorBadgeStroke">@color/white</color>
+  <color name="searchInputColor">@color/light_gray_blue</color>
 </resources>

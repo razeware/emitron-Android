@@ -71,10 +71,11 @@
         android:minHeight="@dimen/search_view_height_default"
         android:paddingTop="0dp"
         android:paddingBottom="0dp"
+        app:boxStrokeColor="@color/searchInputColor"
         app:endIconDrawable="@drawable/ic_material_icon_close"
         app:endIconMode="clear_text"
         app:startIconDrawable="@drawable/ic_material_icon_search"
-        app:startIconTint="@color/colorIcon3">
+        app:startIconTint="@color/searchInputColor">
 
         <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/edit_text_library_search"

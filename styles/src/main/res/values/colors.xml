@@ -110,5 +110,6 @@
   <color name="colorViewPagerIndicator">@color/pale_blue</color>
   <color name="colorBadge">@color/nice_blue</color>
   <color name="colorBadgeStroke">@color/nice_blue</color>
+  <color name="searchInputColor">@color/light_gray_blue</color>
 
 </resources>
