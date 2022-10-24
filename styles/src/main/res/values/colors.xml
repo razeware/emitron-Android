@@ -2,6 +2,7 @@
 <resources>
   <color name="brand_orange_glow">#FF5A00</color>
   <color name="brand_orange_glow_2">#CF3B2B</color>
+  <color name="brand_orange_glow_3">#CE3F00</color>
   <color name="charcoal_black">#333333</color>
   <color name="charcoal_black_0_05">#0c333333</color>
   <color name="charcoal_black_0_0">#00333333</color>
@@ -111,5 +112,7 @@
   <color name="colorBadge">@color/nice_blue</color>
   <color name="colorBadgeStroke">@color/nice_blue</color>
   <color name="searchInputColor">@color/light_gray_blue</color>
+  <color name="primaryButtonTextColor">@color/blue_grey</color>
+  <color name="episodeNumberBackground">@color/bright_grey</color>
 
 </resources>

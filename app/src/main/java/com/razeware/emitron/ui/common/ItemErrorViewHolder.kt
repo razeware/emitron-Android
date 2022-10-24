@@ -61,12 +61,6 @@ class ItemErrorViewHolder(
         }
       }
 
-      buttonRetry.setIconResource(
-        getRetryActionIconResource(
-          type
-        )
-      )
-
       val resources = root.resources
 
       when (uiState) {
@@ -192,20 +186,6 @@ class ItemErrorViewHolder(
       ContentAdapter.Type.ContentInProgress,
       ContentAdapter.Type.ContentDownloaded ->
         resources.getString(R.string.button_explore_tutorials)
-    }
-
-  private fun getRetryActionIconResource(
-    type: ContentAdapter.Type
-  ) =
-    when (type) {
-      ContentAdapter.Type.ContentWithSearch,
-      ContentAdapter.Type.Content,
-      ContentAdapter.Type.ContentWithFilters -> 0
-      ContentAdapter.Type.ContentBookmarked,
-      ContentAdapter.Type.ContentCompleted,
-      ContentAdapter.Type.ContentInProgress,
-      ContentAdapter.Type.ContentDownloaded ->
-        R.drawable.ic_material_button_icon_arrow_right_green_contained
     }
 
   companion object {

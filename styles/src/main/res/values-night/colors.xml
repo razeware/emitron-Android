@@ -43,4 +43,6 @@
   <color name="colorBadge">@color/nice_blue</color>
   <color name="colorBadgeStroke">@color/white</color>
   <color name="searchInputColor">@color/light_gray_blue</color>
+  <color name="primaryButtonTextColor">@color/white</color>
+  <color name="episodeNumberBackground">@color/bright_grey</color>
 </resources>

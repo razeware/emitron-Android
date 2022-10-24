@@ -102,7 +102,7 @@ class CollectionEpisodeItemViewHolder(private val binding: ItemCollectionEpisode
       buttonCollectionEpisode.setBackgroundColor(
         ContextCompat.getColor(
           root.context,
-          R.color.colorSurfaceDark
+          R.color.episodeNumberBackground
         )
       )
     }

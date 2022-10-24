@@ -67,7 +67,7 @@
       android:minWidth="@dimen/button_episode_number_height_width"
       android:minHeight="@dimen/button_episode_number_height_width"
       android:text="@{episodePosition}"
-      app:backgroundTint="@color/colorSurface"
+      app:backgroundTint="@color/searchInputColor"
       app:layout_constraintBottom_toBottomOf="@+id/text_duration"
       app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@+id/text_title"
