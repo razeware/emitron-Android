@@ -38,17 +38,6 @@
       android:orientation="horizontal"
       app:layout_constraintGuide_end="@dimen/guideline_bottom_gesture" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-      android:id="@+id/login_onboarding_image"
-      android:layout_width="@dimen/login_onboarding_image_height_width"
-      android:layout_height="@dimen/login_onboarding_image_height_width"
-      app:layout_constraintBottom_toTopOf="@+id/login_onboarding_title"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="@id/guideline_left"
-      app:layout_constraintTop_toBottomOf="@id/guideline_top"
-      app:layout_constraintVertical_chainStyle="packed"
-      tools:srcCompat="@drawable/ic_login_onboarding_1" />
-
     <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/login_onboarding_title"
       style="@style/TextAppearance.Headline.1_1"
@@ -59,7 +48,7 @@
       app:layout_constraintBottom_toTopOf="@+id/login_onboarding_body"
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintStart_toStartOf="@id/guideline_left"
-      app:layout_constraintTop_toBottomOf="@+id/login_onboarding_image"
+      app:layout_constraintTop_toBottomOf="@+id/guideline_top"
       app:layout_constraintVertical_chainStyle="packed"
       tools:text="@string/title_downloads_no_subscription" />
 

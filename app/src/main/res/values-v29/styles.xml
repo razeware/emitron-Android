@@ -23,8 +23,8 @@
   </style>
 
   <style name="PopupMenuTextAppearanceSmall" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large">
-    <item name="android:fontFamily">@font/roboto_bold</item>
-    <item name="fontFamily">@font/roboto_bold</item>
+    <item name="android:fontFamily">@font/relative_bold_pro</item>
+    <item name="fontFamily">@font/relative_bold_pro</item>
     <item name="android:textSize">@dimen/text_size_button</item>
     <item name="android:textColor">@color/textColorButton</item>
     <item name="android:letterSpacing">@fraction/letter_spacing_button</item>

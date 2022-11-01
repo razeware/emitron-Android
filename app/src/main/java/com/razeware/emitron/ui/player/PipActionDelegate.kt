@@ -81,7 +81,19 @@ class PipActionDelegate(private val context: Context) {
             setPackage(context.packageName)
             putExtras(bundleOf(EXTRA_MEDIA_CONTROL_ACTION to type))
           }
-        PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntentFlag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+          PendingIntent.FLAG_IMMUTABLE
+
+        } else {
+          PendingIntent.FLAG_UPDATE_CURRENT
+
+        }
+        PendingIntent.getBroadcast(
+          context,
+          requestCode,
+          intent,
+          pendingIntentFlag
+        )
       }
 
 

@@ -96,6 +96,6 @@ internal abstract class SwipeActionCallback(
     isAntiAlias = true
     textSize = 14.toPx().toFloat()
     color = ContextCompat.getColor(ctx, R.color.textColorButtonOnError)
-    typeface = ResourcesCompat.getFont(ctx, R.font.roboto_bold)
+    typeface = ResourcesCompat.getFont(ctx, R.font.relative_bold_pro)
   }
 }

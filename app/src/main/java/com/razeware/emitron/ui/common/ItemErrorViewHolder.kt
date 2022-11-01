@@ -61,28 +61,12 @@ class ItemErrorViewHolder(
         }
       }
 
-      buttonRetry.setIconResource(
-        getRetryActionIconResource(
-          type
-        )
-      )
-
       val resources = root.resources
-
-      imageError.layoutParams.height =
-        resources.getDimensionPixelSize(R.dimen.error_image_height_width)
-      imageError.layoutParams.width =
-        resources.getDimensionPixelSize(R.dimen.error_image_height_width)
 
       when (uiState) {
         UiStateManager.UiState.ERROR_CONNECTION -> {
           textViewError.text = resources.getString(R.string.error_no_internet)
           textViewErrorBody.text = resources.getString(R.string.error_no_internet_body)
-          imageError.layoutParams.height =
-            resources.getDimensionPixelSize(R.dimen.empty_image_height_width)
-          imageError.layoutParams.width =
-            resources.getDimensionPixelSize(R.dimen.empty_image_height_width)
-          imageError.setImageResource(R.drawable.ic_emoji_crying)
           buttonRetry.setPadding(0)
           buttonRetry.icon = null
         }
@@ -93,13 +77,6 @@ class ItemErrorViewHolder(
             getEmptyErrorBodyForAdapterType(resources, type).isNotEmpty()
           buttonRetry.isVisible = !type.isContentWithFilters()
           buttonRetry.text = getRetryButtonLabelForAdapterType(resources, type)
-          val emptyDrawable = getEmptyDrawable(type)
-          if (null != emptyDrawable) {
-            imageError.setImageResource(emptyDrawable)
-          } else {
-            imageError.setImageDrawable(null)
-          }
-          imageError.isVisible = null != emptyDrawable
         }
         else -> if (root.context.isNetNotConnected()) {
           textViewError.text =
@@ -209,35 +186,6 @@ class ItemErrorViewHolder(
       ContentAdapter.Type.ContentInProgress,
       ContentAdapter.Type.ContentDownloaded ->
         resources.getString(R.string.button_explore_tutorials)
-    }
-
-  private fun getRetryActionIconResource(
-    type: ContentAdapter.Type
-  ) =
-    when (type) {
-      ContentAdapter.Type.ContentWithSearch,
-      ContentAdapter.Type.Content,
-      ContentAdapter.Type.ContentWithFilters -> 0
-      ContentAdapter.Type.ContentBookmarked,
-      ContentAdapter.Type.ContentCompleted,
-      ContentAdapter.Type.ContentInProgress,
-      ContentAdapter.Type.ContentDownloaded ->
-        R.drawable.ic_material_button_icon_arrow_right_green_contained
-    }
-
-  private fun getEmptyDrawable(
-    type: ContentAdapter.Type
-  ): Int? =
-    when (type) {
-      ContentAdapter.Type.ContentBookmarked ->
-        R.drawable.ic_bookmarks
-      ContentAdapter.Type.ContentCompleted ->
-        R.drawable.ic_completed
-      ContentAdapter.Type.ContentInProgress ->
-        R.drawable.ic_in_progress
-      ContentAdapter.Type.ContentDownloaded ->
-        R.drawable.ic_suitcaseempty
-      else -> null
     }
 
   companion object {
