@@ -5,8 +5,8 @@ buildscript {
       'versionCode'                 : 34,
       'versionName'                 : "2.0.0",
       'minSdk'                      : 21,
-      'targetSdk'                   : 31,
-      'compileSdk'                  : 31,
+      'targetSdk'                   : 33,
+      'compileSdk'                  : 33,
       'gradle'                      : '7.3.0',
       'kotlin'                      : '1.6.20',
 
