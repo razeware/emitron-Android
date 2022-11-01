@@ -1,6 +1,6 @@
 # emitron (Android)
 
-__emitron__ is the code name for the raywenderlich.com app. This repo contains the code for the Android version of the app.
+__emitron__ is the code name for the Kodeco app. This repo contains the code for the Android version of the app.
 
 ## Contributing
 
@@ -8,7 +8,7 @@ To contribute a __feature__ or __idea__ to emitron, create an issue explaining y
 
 If you find a __bug__, please create an issue.
 
-If you find a __security vulnerability__, please contact emitron@razeware.com as soon as possible. See [SECURITY.md](SECURITY.md) for further details.
+If you find a __security vulnerability__, please contact emitron@kodeco.com as soon as possible. See [SECURITY.md](SECURITY.md) for further details.
 
 There is more info about contributing in [CONTRIBUTING.md](CONTRIBUTING.md).
 
@@ -40,9 +40,9 @@ The **emitron** download feature requires a special secret key in `gradle.proper
 
 - `app_token`. Required in order to enable downloads. This is not provided in the repo, and is not generally available. Additionally, if you don't own a "Professional" subscription, you won't be able to use downloads.
 
-> __NOTE:__ To get the release build secrets, check the emitron S3 bucket, or contact emitron@razeware.com. Developers should never need these, as CI will handle it.
+> __NOTE:__ To get the release build secrets, check the emitron S3 bucket, or contact emitron@kodeco.com. Developers should never need these, as CI will handle it.
 
-If you are working on the download functionality and are having problems without an `app_token`, contact emitron@razeware.com and somebody will assist you with your specific needs.
+If you are working on the download functionality and are having problems without an `app_token`, contact emitron@kodeco.com and somebody will assist you with your specific needs.
 
 ### Continuous Integration & Deployment
 

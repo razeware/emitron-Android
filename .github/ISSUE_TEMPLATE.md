@@ -23,5 +23,5 @@
 <!-- It's really helpful to know your exact environment otherwise it can be difficult to help. -->
 
 * Android Version:
-* raywenderlich.com App Version:
+* Kodeco App Version:
 * Device:

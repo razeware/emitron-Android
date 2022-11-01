@@ -1,6 +1,6 @@
 # Contributing to emitron
 
-👋 Welcome! Thanks for expressing an interest in contributing to the raywenderlich.com app.
+👋 Welcome! Thanks for expressing an interest in contributing to the Kodeco app.
 
 ## Testing
 
@@ -19,7 +19,7 @@ Additionally, when creating pull requests, use the following naming scheme `EMA-
 
 ## API Documentation
 
-__emitron__ interfaces with the raywenderlich.com API to retrieve data. You can find API documentation here:
+__emitron__ interfaces with the Kodeco API to retrieve data. You can find API documentation here:
 
 https://raywenderlich.docs.apiary.io
 
