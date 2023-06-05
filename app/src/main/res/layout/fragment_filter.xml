@@ -80,7 +80,7 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/button_filter_clear"
-      style="@style/Button.Colored.2"
+      style="@style/Button.Colored.Primary"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginBottom="@dimen/activity_vertical_margin"
@@ -93,7 +93,7 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/button_filter_close"
-      style="@style/Button.Colored"
+      style="@style/Button.Colored.Primary"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/button_spacing_horizontal"

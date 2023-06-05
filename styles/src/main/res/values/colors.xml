@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="dark_sea_green">#158443</color>
-  <color name="dark_sea_green_2">#16914a</color>
+  <color name="brand_orange_glow">#FF5A00</color>
+  <color name="brand_orange_glow_2">#CF3B2B</color>
+  <color name="brand_orange_glow_3">#CE3F00</color>
   <color name="charcoal_black">#333333</color>
   <color name="charcoal_black_0_05">#0c333333</color>
   <color name="charcoal_black_0_0">#00333333</color>
   <color name="bright_grey">#3b4048</color>
   <color name="raven_grey">#6e7687</color>
   <color name="blue_grey">#73859f</color>
-  <color name="light_gray_blue">#a7adb4</color>
+  <color name="light_gray_blue">#D7D7D7</color>
   <color name="pale_blue">#dfe7f0</color>
   <color name="aqua_haze_grey">#6e7687</color>
   <color name="pale_grey">#f2f6fa</color>
@@ -21,8 +22,10 @@
   <color name="transparent">#00000000</color>
   <color name="slate_grey">#61656c</color>
   <color name="nice_blue">#157cb8</color>
+  <color name="black_night">#14161E</color>
+  <color name="green_meadow">#00B87E</color>
 
-  <color name="colorPrimary">@color/dark_sea_green</color>
+  <color name="colorPrimary">@color/brand_orange_glow</color>
   <color name="colorPrimaryDark">@color/charcoal_black</color>
 
   <color name="colorBackground">@color/pale_grey</color>
@@ -30,7 +33,8 @@
   <color name="colorSurface">@color/white</color>
   <color name="colorSurfaceDark">@color/bright_grey</color>
   <color name="colorError">@color/copper</color>
-  <color name="colorSuccess">@color/dark_sea_green</color>
+  <color name="colorSuccess">@color/brand_orange_glow</color>
+  <color name="colorGreenSuccess">@color/green_meadow</color>
   <color name="colorWarning">@color/pumpkin_orange</color>
   <color name="colorOnPrimary">@color/white</color>
   <color name="colorOnError">@color/white</color>
@@ -39,8 +43,8 @@
   <color name="cardShadow">@color/charcoal_black_0_05</color>
   <color name="colorNavBarBackground">@color/white</color>
 
-  <color name="colorButton1">@color/dark_sea_green</color>
-  <color name="colorButtonDialog">@color/dark_sea_green</color>
+  <color name="colorButton1">@color/brand_orange_glow</color>
+  <color name="colorButtonDialog">@color/brand_orange_glow</color>
   <color name="colorButton2">@color/bright_grey</color>
   <color name="colorButtonIconRipple">@color/pale_blue</color>
   <color name="colorButton3">@color/copper</color>
@@ -107,5 +111,8 @@
   <color name="colorViewPagerIndicator">@color/pale_blue</color>
   <color name="colorBadge">@color/nice_blue</color>
   <color name="colorBadgeStroke">@color/nice_blue</color>
+  <color name="searchInputColor">@color/light_gray_blue</color>
+  <color name="primaryButtonTextColor">@color/blue_grey</color>
+  <color name="episodeNumberBackground">@color/bright_grey</color>
 
 </resources>

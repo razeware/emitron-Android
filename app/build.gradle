@@ -47,7 +47,7 @@ android {
     multiDexEnabled true
     resValue 'string', "client_api_key", "${client_api_key}"
     resValue 'string', "app_token", "${app_token}"
-    buildConfigField 'String', "BASE_API_URL", "\"https://api.raywenderlich.com/api/\""
+    buildConfigField 'String', "BASE_API_URL", "\"https://api.kodeco.com/api/\""
 
     kapt {
       arguments {

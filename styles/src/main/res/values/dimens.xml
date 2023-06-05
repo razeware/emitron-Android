@@ -161,7 +161,7 @@
   <dimen name="height_card_divider">1dp</dimen>
 
   <!-- Login view -->
-  <dimen name="login_logo_height_width">56dp</dimen>
+  <dimen name="login_logo_height_width">30dp</dimen>
   <dimen name="login_onboarding_image_height_width">240dp</dimen>
   <dimen name="login_onboarding_image_margin_top">36dp</dimen>
   <dimen name="login_onboarding_body_margin_top">16dp</dimen>

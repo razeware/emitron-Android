@@ -143,7 +143,7 @@
       android:layout_width="@dimen/button_episode_number_height_width"
       android:layout_height="@dimen/button_episode_number_height_width"
       android:layout_marginEnd="@dimen/button_episode_number_margin_end"
-      android:backgroundTint="@color/colorSurface"
+      android:backgroundTint="@color/searchInputColor"
       android:insetTop="0dp"
       android:insetBottom="0dp"
       android:minWidth="@dimen/button_episode_number_height_width"

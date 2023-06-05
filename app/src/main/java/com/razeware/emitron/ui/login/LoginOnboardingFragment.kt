@@ -63,14 +63,12 @@ class LoginOnboardingFragment : Fragment() {
         with(binding) {
           loginOnboardingTitle.text = getString(R.string.title_login_onboarding_1)
           loginOnboardingBody.text = getString(R.string.body_login_onboarding_1)
-          loginOnboardingImage.setImageResource(R.drawable.ic_login_onboarding_1)
         }
       }
       else -> {
         with(binding) {
           loginOnboardingTitle.text = getString(R.string.title_login_onboarding_2)
           loginOnboardingBody.text = getString(R.string.body_login_onboarding_2)
-          loginOnboardingImage.setImageResource(R.drawable.ic_login_onboarding_2)
         }
       }
     }

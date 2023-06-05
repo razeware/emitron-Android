@@ -116,15 +116,11 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/button_on_boarding_submit"
-      style="@style/Button.Colored.Icon"
+      style="@style/Button.Colored.Primary"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/on_boarding_button_submit_margin_top"
       android:text="@string/button_label_got_it"
-      app:icon="@drawable/ic_material_button_icon_arrow_right_green_contained"
-      app:iconGravity="end"
-      app:iconTint="@color/white"
-      app:iconTintMode="multiply"
       app:layout_constraintBottom_toTopOf="@+id/button_on_boarding_close"
       app:layout_constraintEnd_toEndOf="@id/guideline_right"
       app:layout_constraintHorizontal_bias="0.0"
