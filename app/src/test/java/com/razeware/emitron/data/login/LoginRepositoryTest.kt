@@ -116,6 +116,20 @@ class LoginRepositoryTest {
   }
 
   @Test
+  fun hasPersonalPermission(){
+    whenever(loginPrefs.getPermissions()).doReturn(listOf("stream-personal-videos"))
+
+    repository.isPersonalVideosPlayback() isEqualTo true
+  }
+
+  @Test
+  fun hasTeamsPermission(){
+    whenever(loginPrefs.getPermissions()).doReturn(listOf("stream-team-videos"))
+
+    repository.isStreamTeamsVideosPlayback() isEqualTo true
+  }
+
+  @Test
   fun hasStreamProPermission_NoPermission() {
     // Given
     whenever(loginPrefs.getPermissions()).doReturn(listOf("stream-beginner-videos"))
