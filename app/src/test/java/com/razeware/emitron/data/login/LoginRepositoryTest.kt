@@ -110,9 +110,22 @@ class LoginRepositoryTest {
   fun hasStreamProPermission() {
     // Given
     whenever(loginPrefs.getPermissions()).doReturn(listOf("stream-professional-videos"))
-
     // Then
     repository.isProfessionalVideoPlaybackAllowed() isEqualTo true
+  }
+
+  @Test
+  fun hasPersonalPermission(){
+    whenever(loginPrefs.getPermissions()).doReturn(listOf("stream-personal-videos"))
+
+    repository.isPersonalVideosPlayback() isEqualTo true
+  }
+
+  @Test
+  fun hasTeamsPermission(){
+    whenever(loginPrefs.getPermissions()).doReturn(listOf("stream-team-videos"))
+
+    repository.isStreamTeamsVideosPlayback() isEqualTo true
   }
 
   @Test

@@ -34,6 +34,16 @@ interface PermissionsAction {
   fun isBeginnerVideoPlaybackAllowed(): Boolean
 
   /**
+   * @return true if personal videos can be played, else false
+   */
+  fun isPersonalVideos():Boolean
+
+  /**
+   * @return true if teams videos can be played, else false
+   */
+  fun isSteamTeamsVideo():Boolean
+
+  /**
    * LiveData for permission action
    */
   val permissionActionResult: LiveData<PermissionActionDelegate.PermissionActionResult>
@@ -120,4 +130,10 @@ class PermissionActionDelegate @Inject constructor(
 
   override fun isBeginnerVideoPlaybackAllowed(): Boolean =
     loginRepository.isBeginnerVideoPlaybackAllowed()
+
+  override fun isPersonalVideos(): Boolean =
+    loginRepository.isPersonalVideosPlayback()
+
+  override fun isSteamTeamsVideo(): Boolean =
+    loginRepository.isStreamTeamsVideosPlayback()
 }
