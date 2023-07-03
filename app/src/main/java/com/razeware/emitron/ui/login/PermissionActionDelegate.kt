@@ -36,12 +36,12 @@ interface PermissionsAction {
   /**
    * @return true if personal videos can be played, else false
    */
-  fun isPersonalVideos():Boolean
+  fun isPersonalVideosPlaybackAllowed():Boolean
 
   /**
    * @return true if teams videos can be played, else false
    */
-  fun isSteamTeamsVideo():Boolean
+  fun isSteamTeamsVideoPlaybackAllowed():Boolean
 
   /**
    * LiveData for permission action
@@ -87,7 +87,7 @@ class PermissionActionDelegate @Inject constructor(
     get() = _permissionActionResult
 
   /**
-   * We check if the user is in [BuildConfig.DEBUG] mode to allow contributors
+   * We check if the user is in [Build`Config.DEBUG] mode to allow contributors
    * to use the app (we give them fake permissions).
    *
    * Get permissions for the current logged in user
@@ -131,9 +131,9 @@ class PermissionActionDelegate @Inject constructor(
   override fun isBeginnerVideoPlaybackAllowed(): Boolean =
     loginRepository.isBeginnerVideoPlaybackAllowed()
 
-  override fun isPersonalVideos(): Boolean =
+  override fun isPersonalVideosPlaybackAllowed(): Boolean =
     loginRepository.isPersonalVideosPlayback()
 
-  override fun isSteamTeamsVideo(): Boolean =
+  override fun isSteamTeamsVideoPlaybackAllowed(): Boolean =
     loginRepository.isStreamTeamsVideosPlayback()
 }
