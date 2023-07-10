@@ -311,6 +311,8 @@ class CollectionViewModel @Inject constructor(
     val collection = _collection.value
     val isCollectionFree = collection?.attributes?.free ?: false
     val isProfessionalContent = collection?.isProfessional()
+    val isPersonalContent = collection?.isPersonal()
+    val isTeamsContent = collection?.isTeams()
     val isDownloaded = collection?.isDownloaded()
 
     return when {
@@ -319,6 +321,21 @@ class CollectionViewModel @Inject constructor(
           permissionActionDelegate.isDownloadAllowed()
         } else {
           permissionActionDelegate.isProfessionalVideoPlaybackAllowed()
+        }
+      }
+
+      isConnected && isPersonalContent == true ->{
+        if (checkDownloadPermission && isDownloaded()){
+          permissionActionDelegate.isDownloadAllowed()
+        }else{
+          permissionActionDelegate.isPersonalVideosPlaybackAllowed()
+        }
+      }
+      isConnected && isTeamsContent == true ->{
+        if (checkDownloadPermission && isDownloaded()){
+          permissionActionDelegate.isDownloadAllowed()
+        }else{
+          permissionActionDelegate.isSteamTeamsVideoPlaybackAllowed()
         }
       }
       !isConnected -> permissionActionDelegate.isDownloadAllowed()
