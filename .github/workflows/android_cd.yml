@@ -47,7 +47,6 @@ jobs:
         credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
     - name: Distribute app via Firebase
       env:
-         FIREBASE_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
       run: bundle exec fastlane distribute
 
