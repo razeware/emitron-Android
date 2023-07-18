@@ -74,8 +74,7 @@
         app:boxStrokeColor="@color/searchInputColor"
         app:endIconDrawable="@drawable/ic_material_icon_close"
         app:endIconMode="clear_text"
-        app:startIconDrawable="@drawable/ic_material_icon_search"
-        app:startIconTint="@color/searchInputColor">
+        app:startIconDrawable="@drawable/ic_material_icon_search">>
 
         <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/edit_text_library_search"
