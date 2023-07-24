@@ -1,4 +1,3 @@
 ## Changes
-- Fixed a login bug on some non-Google devices
-- Upgraded many dependencies, including ExoPlayer, Kotlin, AGP & Navigation
-- Upgraded guardpost version
+- Fixed issue with users not having permission to download videos
+- Fixed some login issues
