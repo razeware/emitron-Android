@@ -15,7 +15,21 @@ enum class PermissionTag(val param: String) {
   /**
    * Download allowed
    */
-  Download("download-videos");
+  Download("download-videos"),
+
+  /**
+   * For Teams
+   */
+
+  StreamTeams("stream-team-videos"),
+
+  /**
+   * Personal Videos
+   */
+
+  StreamPersonal("stream-personal-videos");
+
+
 
   companion object {
     /**

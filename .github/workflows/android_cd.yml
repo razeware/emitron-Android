@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: set up JDK 11
       uses: actions/setup-java@v2
       with:
@@ -40,9 +40,13 @@ jobs:
          scripts/download_s3.sh gradle.properties > gradle.properties
          scripts/download_s3.sh google-services.json > app/google-services.json
          scripts/download_s3.sh emitron_keystore.jks > emitron_keystore.jks
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
     - name: Distribute app via Firebase
       env:
-         FIREBASE_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
       run: bundle exec fastlane distribute
 

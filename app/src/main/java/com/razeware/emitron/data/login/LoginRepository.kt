@@ -106,4 +106,17 @@ class LoginRepository @Inject constructor(
    * Get stored permissions
    */
   fun getPermissionsFromPrefs(): List<String> = loginPrefs.getPermissions()
+
+  /**
+   * Check if user has permission to stream personal videos
+   */
+  fun isPersonalVideosPlayback(): Boolean =
+    loginPrefs.getPermissions().contains(PermissionTag.StreamPersonal.param)
+
+  /**
+   * Check if user has Team Videos permission
+   */
+
+   fun isStreamTeamsVideosPlayback():Boolean =
+     loginPrefs.getPermissions().contains(PermissionTag.StreamTeams.param)
 }
