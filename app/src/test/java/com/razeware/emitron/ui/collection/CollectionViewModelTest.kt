@@ -815,7 +815,7 @@ class CollectionViewModelTest {
       val content = createContent(data = contentData)
       whenever(contentRepository.getContent("1")).doReturn(content)
       viewModel.loadCollection(Data(id = "1"))
-      whenever(permissionActionDelegate.isProfessionalVideoPlaybackAllowed()).doReturn(true)
+      whenever(permissionActionDelegate.isPersonalVideosPlaybackAllowed()).doReturn(true)
 
       // When
       val result = viewModel.isContentPlaybackAllowed(true)
