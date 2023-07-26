@@ -125,7 +125,7 @@ class LoginRepositoryTest {
   fun hasTeamsPermission(){
     whenever(loginPrefs.getPermissions()).doReturn(listOf("stream-team-videos"))
 
-    repository.isStreamTeamsVideosPlayback() isEqualTo true
+    repository.isTeamsVideosPlayback() isEqualTo true
   }
 
   @Test

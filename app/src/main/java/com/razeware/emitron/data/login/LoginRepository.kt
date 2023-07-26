@@ -117,6 +117,6 @@ class LoginRepository @Inject constructor(
    * Check if user has Team Videos permission
    */
 
-   fun isStreamTeamsVideosPlayback():Boolean =
+   fun isTeamsVideosPlayback():Boolean =
      loginPrefs.getPermissions().contains(PermissionTag.StreamTeams.param)
 }

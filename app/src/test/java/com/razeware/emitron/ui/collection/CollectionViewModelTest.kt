@@ -52,6 +52,7 @@ class CollectionViewModelTest {
     viewModel =
       CollectionViewModel(
         contentRepository,
+        loginRepository,
         bookmarkActionDelegate,
         progressionActionDelegate,
         downloadActionDelegate,
