@@ -41,7 +41,7 @@ interface PermissionsAction {
   /**
    * @return true if teams videos can be played, else false
    */
-  fun isSteamTeamsVideoPlaybackAllowed():Boolean
+  fun isTeamsVideoPlaybackAllowed():Boolean
 
   /**
    * LiveData for permission action
@@ -134,6 +134,6 @@ class PermissionActionDelegate @Inject constructor(
   override fun isPersonalVideosPlaybackAllowed(): Boolean =
     loginRepository.isPersonalVideosPlayback()
 
-  override fun isSteamTeamsVideoPlaybackAllowed(): Boolean =
-    loginRepository.isStreamTeamsVideosPlayback()
+  override fun isTeamsVideoPlaybackAllowed(): Boolean =
+    loginRepository.isTeamsVideosPlayback()
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.offline.Download
 import com.raywenderlich.android.inappreview.InAppReviewView
 import com.razeware.emitron.data.content.ContentRepository
+import com.razeware.emitron.data.login.LoginRepository
 import com.razeware.emitron.model.Content
 import com.razeware.emitron.model.ContentType
 import com.razeware.emitron.model.Data
@@ -38,6 +39,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CollectionViewModel @Inject constructor(
   private val repository: ContentRepository,
+  private val loginRepository: LoginRepository,
   private val bookmarkActionDelegate: BookmarkActionDelegate,
   private val progressionActionDelegate: ProgressionActionDelegate,
   private val downloadActionDelegate: DownloadActionDelegate,
@@ -310,34 +312,27 @@ class CollectionViewModel @Inject constructor(
   ): Boolean {
     val collection = _collection.value
     val isCollectionFree = collection?.attributes?.free ?: false
-    val isProfessionalContent = collection?.isProfessional()
-    val isPersonalContent = collection?.isPersonal()
-    val isTeamsContent = collection?.isTeams()
+    val isPersonalContent = loginRepository.isPersonalVideosPlayback()
+    val isTeamsContent = loginRepository.isTeamsVideosPlayback()
     val isDownloaded = collection?.isDownloaded()
 
     return when {
-      isConnected && isProfessionalContent == true -> {
-        if (checkDownloadPermission && isDownloaded == true) {
-          permissionActionDelegate.isDownloadAllowed()
-        } else {
-          permissionActionDelegate.isProfessionalVideoPlaybackAllowed()
-        }
-      }
-
-      isConnected && isPersonalContent == true ->{
-        if (checkDownloadPermission && isDownloaded()){
+      isConnected && isPersonalContent -> {
+        if (checkDownloadPermission && isDownloaded == true){
           permissionActionDelegate.isDownloadAllowed()
         }else{
           permissionActionDelegate.isPersonalVideosPlaybackAllowed()
         }
       }
-      isConnected && isTeamsContent == true ->{
-        if (checkDownloadPermission && isDownloaded()){
+
+      isConnected && isTeamsContent -> {
+        if (checkDownloadPermission && isDownloaded == true){
           permissionActionDelegate.isDownloadAllowed()
         }else{
-          permissionActionDelegate.isSteamTeamsVideoPlaybackAllowed()
+          permissionActionDelegate.isTeamsVideoPlaybackAllowed()
         }
       }
+
       !isConnected -> permissionActionDelegate.isDownloadAllowed()
       else -> {
         if (checkDownloadPermission && isDownloaded == true) {

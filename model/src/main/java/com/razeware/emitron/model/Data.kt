@@ -106,14 +106,6 @@ data class Data(
   fun isProfessional(): Boolean = attributes?.professional == true
 
   /**
-   *  @return true if content requires a personal subscription, else false
-   */
-  fun isPersonal(): Boolean = attributes?.personal == true
-
-
-  fun isTeams(): Boolean = attributes?.teams == true
-
-  /**
    *  If data represents a progression object
    *
    *  @return percent completion value for progression

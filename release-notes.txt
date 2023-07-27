@@ -1,3 +1,2 @@
 ## Changes
-- Fixed issue with users not having permission to download videos
-- Fixed some login issues
+- Bug fix for pro video permissions

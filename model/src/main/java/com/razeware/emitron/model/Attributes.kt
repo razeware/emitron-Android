@@ -74,16 +74,6 @@ data class Attributes(
   val professional: Boolean? = null,
 
   /**
-   * Is content free?
-   */
-  val teams:Boolean? = null,
-
-  /**
-   * Is content free?
-   */
-  val personal:Boolean?= null,
-
-  /**
    * Content popularity
    */
   val popularity: Double? = null,
