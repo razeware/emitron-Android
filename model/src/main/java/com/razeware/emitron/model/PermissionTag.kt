@@ -20,16 +20,12 @@ enum class PermissionTag(val param: String) {
   /**
    * For Teams
    */
-
   StreamTeams("stream-team-videos"),
 
   /**
    * Personal Videos
    */
-
   StreamPersonal("stream-personal-videos");
-
-
 
   companion object {
     /**

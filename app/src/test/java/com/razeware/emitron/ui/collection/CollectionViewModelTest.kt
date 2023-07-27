@@ -52,6 +52,7 @@ class CollectionViewModelTest {
     viewModel =
       CollectionViewModel(
         contentRepository,
+        loginRepository,
         bookmarkActionDelegate,
         progressionActionDelegate,
         downloadActionDelegate,
@@ -802,7 +803,7 @@ class CollectionViewModelTest {
   }
 
   @Test
-  fun isContentPlaybackAllowed_Professional_isConnected() {
+  fun isContentPlaybackAllowed_Pro_Personal_isConnected() {
     createViewModel()
     testCoroutineRule.runBlockingTest {
       // Given
@@ -814,7 +815,8 @@ class CollectionViewModelTest {
       val content = createContent(data = contentData)
       whenever(contentRepository.getContent("1")).doReturn(content)
       viewModel.loadCollection(Data(id = "1"))
-      whenever(permissionActionDelegate.isProfessionalVideoPlaybackAllowed()).doReturn(true)
+      whenever(loginRepository.isPersonalVideosPlayback()).doReturn(true)
+      whenever(permissionActionDelegate.isPersonalVideosPlaybackAllowed()).doReturn(true)
 
       // When
       val result = viewModel.isContentPlaybackAllowed(true)
@@ -823,6 +825,30 @@ class CollectionViewModelTest {
       result isEqualTo true
     }
   }
+
+  // NOTE: Basic subscription free
+  @Test
+  fun isContentPlaybackAllowed_Pro_Basic_isConnected() {
+    createViewModel()
+    testCoroutineRule.runBlockingTest {
+      // Given
+      val contentData = createContentData(
+        type = "screencast",
+        groups = null,
+        professional = true
+      )
+      val content = createContent(data = contentData)
+      whenever(contentRepository.getContent("1")).doReturn(content)
+      viewModel.loadCollection(Data(id = "1"))
+      // When
+      val result = viewModel.isContentPlaybackAllowed(true)
+
+      permissionActionDelegate.isPersonalVideosPlaybackAllowed() isEqualTo false
+      // Then
+      result isEqualTo false
+    }
+  }
+
 
   @Test
   fun isContentPlaybackAllowed_isConnected_isDownloaded() {
